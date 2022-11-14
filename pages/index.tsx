@@ -3,14 +3,25 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import Axios from 'axios'
 import APIcall from '../utility/APIcall'
+import Random from '../utility/Randomizer'
+
+import React,  { useEffect, useState} from 'react'
+
 
 export default function Home() {
+  
+  const [pokemon, setPokemon ] = useState('')
+
   console.log('hey whats up')
   const checkAPI = async () => {
     console.log('functionality linked')    
-    await APIcall('all', null)
+    if (pokemon.length < 2) {
+    // if (pokemon === null || pokemon === undefined) {
+      console.log("hey are we over here")
+      await APIcall('all', null, setPokemon)
+    }
   }
-  checkAPI()
+  // checkAPI()
 
   return (
     <div className={styles.container}>
@@ -20,9 +31,10 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head> */}
     <main className={styles.main}>
-        <h1> 
-        hey 
-      </h1>
+        <h1>         
+          {pokemon || 'hey'}
+        </h1>
+        <button onClick={checkAPI} type="button"> </button>
     </main>
 
     </div>
