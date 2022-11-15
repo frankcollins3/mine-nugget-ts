@@ -18,34 +18,33 @@ async function APIcall(action:string, strain:(string|null), setState:(any|null))
         console.log(strains)
         return strains
     }
-    else if (action === 'specify' && typeof action === 'string' ) {  // i guess this is redundant? forcing 2nd evaluation of types 
-        console.log(strain)
-        console.log(typeof strain)
+    else if (action === 'specify' && typeof action === 'string' ) {  // i guess this is redundant? forcing 2nd evaluation of types         
+        const specifybucket = new Array()
 
-        strains.forEach( (loopstrain:any) => { // cant use strain:object because the goal output is to dig down an endpoint or 2 to the strain.strain (basically .name)
-            console.log('strain')
-                        
-            // let randomStrain:any = Random(strains) 
-            // specifying a type of any because ill be handling this array of objects (7) [{…}, {…}, {…}, {…}, {…}, {…}, {…}]
-            //  by accessing string data, and will get an error changing from object to string even if were just accessing a string-data endpoint within object
-            if (loopstrain.strain === strain) {                
-                console.log('strain we have looped and met our function argument ')
-                console.log(strain)
-                setState(strain)
-            }
-           
-        })
+        const specifyStrain = async () => {
+            strains.forEach( (loopstrain:any) => { // cant use strain:object because the goal output is to dig down an endpoint or 2 to the strain.strain (basically .name)                                
+                if (loopstrain.strain === strain) {                                    
+                    specifybucket.push(loopstrain.strain)
+                    setState(strain)
+                }
+            })
+        }
+        const checkbucket = () => {            
+            return specifybucket
+        }
+        const pushAndCheckBucket = async () => {
+            await specifyStrain()            
+            let checkbucket2 = checkbucket()
+            return checkbucket2
+        }
+        return pushAndCheckBucket()    
     }
 
     else if (action === 'random') {
         let randomstrain = await Random(strains)
-        let strainname:string = randomstrain.strain
-        console.log('strainname')
-        console.log(strainname)
+        let strainname:string = randomstrain.strain        
+        return strainname
     }
-    
-
-
 }
 export default APIcall
 
@@ -59,4 +58,3 @@ export default APIcall
 // stateToChange(name)
 // }
 // let prepokedata = await Axios.get(allurl)
-
