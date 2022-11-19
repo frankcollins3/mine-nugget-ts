@@ -10,18 +10,54 @@ import Client from '../utility/Prisma'
 import React,  { useEffect, useState} from 'react'
 import { PrismaClient } from '@prisma/client'
 import { collapseTextChangeRangesAcrossMultipleVersions, createNoSubstitutionTemplateLiteral } from 'typescript'
-
+import { networkInterfaces } from 'os'
+let prisma; 
 
 
 export async function getStaticProps(context:any) {
+
 let allstrains:any = await APIcall('all', null, null)
-console.log('allstrains')
-console.log(allstrains)
-console.log("oh jeez");
+prisma = new PrismaClient()
+
+let allusers = await prisma.users.findMany()
+let dbstrains = await prisma.strains.findMany()
+let strainlength = allstrains.length
+
+
+let length = allusers.length
+let randomStrain = await Random(allstrains)
+let strainname:string = randomStrain.strain
+
+
+const newuser = await prisma.strains.create({
+  data: {
+    id: dbstrains.length + 1,
+    strain: randomStrain.strain,
+    strainId: dbstrains.length + 1,    
+    dominant: randomStrain.dominant,
+    funfact: randomStrain.funfact, 
+    parents: randomStrain.parents,
+    createdAt: new Date(),
+    updatedAt: new Date()
+  }
+})
+console.log('newuser')
+console.log(newuser)
+
+
   return {
     props: { allstrains }, // will be passed to the page component as props
   }
 }
+
+// id | strainId | strain | dominant | funfact | parents | createdAt | updatedAt
+
+// const user = await prisma.user.create({
+//   data: {
+//     email: 'elsa@prisma.io',
+//     name: 'Elsa Prisma',
+//   },
+// })
 
 
 
@@ -50,6 +86,7 @@ export default function Home(allstrains:any) {
         <h1>         
           {currentStrain || 'hey'}
         </h1>
+     
         
 
         <button onClick={checkAPI} type="button"> </button>
