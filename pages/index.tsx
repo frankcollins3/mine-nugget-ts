@@ -9,8 +9,6 @@ import Client from '../utility/Prisma'
 // import QueryDB from '../index'
 import React,  { useEffect, useState} from 'react'
 import { PrismaClient } from '@prisma/client'
-import { collapseTextChangeRangesAcrossMultipleVersions, createNoSubstitutionTemplateLiteral } from 'typescript'
-import { networkInterfaces } from 'os'
 let prisma; 
 
 
@@ -28,21 +26,29 @@ let length = allusers.length
 let randomStrain = await Random(allstrains)
 let strainname:string = randomStrain.strain
 
-
-const newuser = await prisma.strains.create({
-  data: {
-    id: dbstrains.length + 1,
-    strain: randomStrain.strain,
-    strainId: dbstrains.length + 1,    
-    dominant: randomStrain.dominant,
-    funfact: randomStrain.funfact, 
-    parents: randomStrain.parents,
-    createdAt: new Date(),
-    updatedAt: new Date()
-  }
+const master = await prisma.users.findFirst({
+    where: {
+      username: 'mastermizery'
+    }
 })
-console.log('newuser')
-console.log(newuser)
+console.log('master')
+console.log(master)
+
+
+// const newstrain = await prisma.strains.create({
+//   data: {
+//     id: dbstrains.length + 1,
+//     strain: randomStrain.strain,
+//     strainId: dbstrains.length + 1,    
+//     dominant: randomStrain.dominant,
+//     funfact: randomStrain.funfact, 
+//     parents: randomStrain.parents,
+//     createdAt: new Date(),
+//     updatedAt: new Date()
+//   }
+// })
+// console.log('newstrain')
+// console.log(newstrain)
 
 
   return {
