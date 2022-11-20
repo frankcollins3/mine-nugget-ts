@@ -4,21 +4,19 @@ import APIcall from '../../utility/APIcall'
 const prisma = new PrismaClient();
 
 export default async function (req:any, res:any) {
-    let allstrainspost:any = await APIcall('all', null, null)
+    const { body } = req;      
+    let allstrainspost:any = await APIcall(body.key, null, null)
   if (req.method === 'POST') {      
       let status:string = req.status
       console.log('status')
       console.log(status)
 
-      const { body } = req;
-      console.log('body')
-      console.log(body)
           console.log("we are in the post method and req.body.key === all")
         console.log('allstrainspost')
         console.log(allstrainspost)
         
-    // const strains = await prisma.strains.create({ data: JSON.parse(body) });
-    // res.json(strains);
+    // const movie = await prisma.strains.create({ data: JSON.parse(body) });
+    // res.json(movie);
   }
   try {
       res.json( { successObject: allstrainspost})
