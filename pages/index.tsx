@@ -6,10 +6,11 @@ import Axios from 'axios'
 import APIcall from '../utility/APIcall'
 import Random from '../utility/Randomizer'
 import Client from '../utility/Prisma'
-// import QueryDB from '../index'
+import CSS from '../utility/CSStool'
+import allStrain from './api/allStrain'
+import $ from 'jquery' // import * as $ from 'jquery'
 import React,  { useEffect, useState} from 'react'
 import { PrismaClient } from '@prisma/client'
-import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript'
 let prisma; 
 
 
@@ -27,6 +28,8 @@ let prisma;
 
 
 export default function Home(  ) {
+  
+
   const [pokemon, setPokemon ] = useState('')
   const [currentStrain, setCurrentStrain] = useState('')
   const [savedStrains, setSavedStrains] = useState('')
@@ -34,16 +37,22 @@ export default function Home(  ) {
   const [users, setUsers] = useState([])
   const [dbStrains, setDbStrains] = useState([])
 
+  const classList = [styles.Container, styles.Column].join(" ")
+
   const checkAPI = async () => {  
     let predata: any[] = await [APIcall('all', null, setCurrentStrain)]
     // console.log(dbStrains)
-
-
     // let specify = await APIcall('specify', 'wedding cake', setCurrentStrain)
-    // let randomstrain = await APIcall('random', null, setCurrentStrain)      
-    
+    let randomstrain = await APIcall('random', null, setCurrentStrain)      
+    // allStrain({strain: randomstrain.strain})
     }
-  const classList = [styles.Container, styles.Column].join(" ")
+
+  const strainfunc = async () => {
+    console.log("we are clicking the strainfunc");
+    // $('.button').css('border', '5px solid hotpink');
+    let btn = $('.button')
+    CSS(btn, 'border', '5px solid hotpink');
+  }
 
   return (
     <div className={classList}>
@@ -57,6 +66,16 @@ export default function Home(  ) {
         
 
         <button onClick={checkAPI} type="button"> </button>
+
+          <button     
+           className="button"     
+           onClick={strainfunc}
+           type="submit"
+           style={{ minHeight: '5em', minWidth: '5em', backgroundColor: 'papayawhip', borderRadius: '50%'}}
+           id='straininput'          
+          >
+          </button>
+          
     </main>
 
     </div>
@@ -104,7 +123,7 @@ export async function getStaticProps() {
 
   const findStrain = await prisma.strains.findFirst({
     where: { strain: 'mimosa'}
-  }).then( (strain) => {
+  }).then( (strain:any) => {
     let name:(string|any) = strain.strain
     console.log('name')
     console.log(name)  
