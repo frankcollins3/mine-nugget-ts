@@ -9,52 +9,10 @@ import Client from '../utility/Prisma'
 // import QueryDB from '../index'
 import React,  { useEffect, useState} from 'react'
 import { PrismaClient } from '@prisma/client'
+import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript'
 let prisma; 
 
 
-export async function getStaticProps(context:any) {
-
-let allstrains:any = await APIcall('all', null, null)
-prisma = new PrismaClient()
-
-let allusers = await prisma.users.findMany()
-let dbstrains = await prisma.strains.findMany()
-let strainlength = allstrains.length
-
-
-let length = allusers.length
-let randomStrain = await Random(allstrains)
-let strainname:string = randomStrain.strain
-
-const master = await prisma.users.findFirst({
-    where: {
-      username: 'mastermizery'
-    }
-})
-console.log('master')
-console.log(master)
-
-
-// const newstrain = await prisma.strains.create({
-//   data: {
-//     id: dbstrains.length + 1,
-//     strain: randomStrain.strain,
-//     strainId: dbstrains.length + 1,    
-//     dominant: randomStrain.dominant,
-//     funfact: randomStrain.funfact, 
-//     parents: randomStrain.parents,
-//     createdAt: new Date(),
-//     updatedAt: new Date()
-//   }
-// })
-// console.log('newstrain')
-// console.log(newstrain)
-
-
-  return {
-    props: { allstrains }, // will be passed to the page component as props
-  }
-}
 
 // id | strainId | strain | dominant | funfact | parents | createdAt | updatedAt
 
@@ -68,18 +26,21 @@ console.log(master)
 
 
 
-export default function Home(allstrains:any) {
+export default function Home(  ) {
   const [pokemon, setPokemon ] = useState('')
   const [currentStrain, setCurrentStrain] = useState('')
   const [savedStrains, setSavedStrains] = useState('')
 
+  const [users, setUsers] = useState([])
+  const [dbStrains, setDbStrains] = useState([])
+
   const checkAPI = async () => {  
     let predata: any[] = await [APIcall('all', null, setCurrentStrain)]
-    
+    // console.log(dbStrains)
 
 
     // let specify = await APIcall('specify', 'wedding cake', setCurrentStrain)
-    let randomstrain = await APIcall('random', null, setCurrentStrain)      
+    // let randomstrain = await APIcall('random', null, setCurrentStrain)      
     
     }
   const classList = [styles.Container, styles.Column].join(" ")
@@ -92,7 +53,7 @@ export default function Home(allstrains:any) {
         <h1>         
           {currentStrain || 'hey'}
         </h1>
-     
+      {/* <p> {} </p> */}
         
 
         <button onClick={checkAPI} type="button"> </button>
@@ -103,3 +64,55 @@ export default function Home(allstrains:any) {
 }
 
 
+export async function getStaticProps() {
+
+  let allstrains:any = await APIcall('all', null, null)
+  prisma = new PrismaClient()
+  
+  let allusers = await prisma.users.findMany()
+  let dbstrains = await prisma.strains.findMany()
+  let strainlength = allstrains.length
+  
+  // let length = allusers.length
+  let randomStrain = await Random(allstrains)
+ 
+  let strainname:string = randomStrain.strain
+  console.log('strainname')
+  console.log(strainname)
+  
+  // const master = await prisma.users.findFirst({
+  //     where: {
+  //       username: 'mastermizery' // old runescape account name.
+  //     }
+  // })
+  // console.log(master)
+  // id | strainId | strain | dominant | funfact | parents
+
+
+  // const newstrain = await prisma.strains.create({
+  //   data: {
+  //     id: dbstrains.length + 1,
+  //     strain: randomStrain.strain,
+  //     strainId: dbstrains.length + 1,    
+  //     dominant: randomStrain.dominant,
+  //     funfact: randomStrain.funfact, 
+  //     parents: randomStrain.parents,      
+  //   }
+  // })    
+  // console.log('newstrain')
+  // console.log(newstrain)
+
+  const findStrain = await prisma.strains.findFirst({
+    where: { strain: 'mimosa'}
+  }).then( (strain) => {
+    let name:(string|any) = strain.strain
+    console.log('name')
+    console.log(name)  
+
+  })
+
+    return {
+      props: {  } // will be passed to the page component as props
+    }
+  }
+  
