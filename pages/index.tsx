@@ -1,57 +1,173 @@
-import { PrismaClient } from '@prisma/client';
-import APIcall from '../../utility/APIcall'
+import Head from 'next/head'
+import Image from 'next/image'
+// import styles from '../styles/Home.module.css'
+import styles from '../styles/Home.module.scss'
+import Axios from 'axios'
+import APIcall from '../utility/APIcall'
+import Random from '../utility/Randomizer'
+import Client from '../utility/Prisma'
+import CSS from '../utility/CSStool'
+import allStrain from './api/allStrain'
+import $ from 'jquery' // import * as $ from 'jquery'
+import React,  { useEffect, useState} from 'react'
+import { PrismaClient } from '@prisma/client'
+let prisma; 
 
-const prisma = new PrismaClient();
 
-export default async function (req:any, res:any) {
 
-    const { body } = req;      
-    console.log(body)
-    let allstrainspost:any = await APIcall(body.key, null, null)
-    let dbstrainlist = await prisma.strains.findMany()
-    let strains = prisma.strains
+// id | strainId | strain | dominant | funfact | parents | createdAt | updatedAt
 
-    
-      allstrainspost.map( (mapitem:any, index:number) => {
-      let strainId = mapitem.strainId
-      let strain = mapitem.strain
-      let dominant = mapitem.dominant
-      let parents = mapitem.parents
-      let funfact = mapitem.funfact
-            
-      
-    })
-        // id, strain, strainId, dominant, funfact, parents
-        //  id | strainId | strain |   dominant    |                            funfact                             |         parents
-    
+// const user = await prisma.user.create({
+//   data: {
+//     email: 'elsa@prisma.io',
+//     name: 'Elsa Prisma',
+//   },
+// })
 
-  if (req.method === 'POST') {      
-      let status:string = req.status
-      console.log('status')
-      console.log(status)
-            
-      let dblength = dbstrainlist.length
-      if (dbstrainlist.length) {
 
+
+
+export default function Home(  ) {
+  
+
+  const [pokemon, setPokemon ] = useState('')
+  const [currentStrain, setCurrentStrain] = useState('')
+  const [savedStrains, setSavedStrains] = useState('')
+
+  const [users, setUsers] = useState([])
+  const [dbStrains, setDbStrains] = useState([])
+
+  const classList = [styles.Container, styles.Column].join(" ")
+
+  const checkAPI = async () => {  
+    let predata: any[] = await [APIcall('all', null, setCurrentStrain)]
+    // console.log(dbStrains)
+    // let specify = await APIcall('specify', 'wedding cake', setCurrentStrain)
+    let randomstrain = await APIcall('random', null, setCurrentStrain)      
+    // allStrain({strain: randomstrain.strain})
+    }
+
+  const strainfunc = async () => {
+    let btn = $('.button')
+    console.log("we are clicking the strainfunc");
+    // $('.button').css('border', '5px solid hotpink');
+    CSS(btn, 'border', '5px solid hotpink');
+    $.ajax({
+      method: 'post',
+      url: '/api/allStrain',
+      data: {
+       key: 'all'
       }
-      
-    
-    // const movie = await prisma.strains.create({ data: JSON.parse(body) });
-    // res.json(movie);
+    }).then( (msg) => {
+      console.log('msg we are in the .then() statement')
+      console.log(msg)      // res.json( { successObject: allstrainspost})   * the console.log(msg) is this    res.json() 
+    })
   }
-  try {
-      res.json( { successObject: allstrainspost, length: dbstrainlist.length})
+
+  const getRouteTest = async () => {
+    console.log("were in the getRoutesTest function")
+    $.ajax({
+      method: 'get',
+      url: '/api/getAllStrain',
+        data: {
+          key: 'GETall'
+        }
+      }).then( (resFromAPI) => {
+        console.log('resFromAPI')
+        console.log(resFromAPI)
+        let res = resFromAPI
+        // *  this is client side 
+      })
   }
-  catch (err) {
-    console.log(err)
-  }
-//   console.log('res.status')
-//   console.log(res.status)
-//   console.log(res.status)
-//   if (res.status(403)) {
-//     console.log('we have failure')
-//     // can also redirect to an error page.
-//   } else {
-//     res.status(200).json( { successobject: allstrainspost})
-//   }
+  
+
+  return (
+    <div className={classList}>    
+    <main className={styles.main}>
+        <h1>         
+          {currentStrain || 'hey'}
+        </h1>
+      {/* <p> {} </p> */}
+        
+
+        <button onClick={checkAPI} type="button"> </button>
+
+          <button     
+           className="button"     
+           onClick={strainfunc}
+           type="submit"
+           style={{ minHeight: '5em', minWidth: '5em', backgroundColor: 'papayawhip', borderRadius: '50%'}}
+           id='straininput'          
+          >
+          </button>
+
+          <button     
+           className="button"     
+           onClick={getRouteTest}
+           type="submit"
+           style={{ minHeight: '5em', minWidth: '5em', backgroundColor: 'orange', borderRadius: '50%'}}
+           id='straininput'          
+          >
+          </button>
+  
+          
+          
+    </main>
+
+    </div>
+  )
 }
+
+
+export async function getStaticProps() {
+
+  let allstrains:any = await APIcall('all', null, null)
+  prisma = new PrismaClient()
+  
+  let allusers = await prisma.users.findMany()
+  let dbstrains = await prisma.strains.findMany()
+  let strainlength = allstrains.length
+  
+  // let length = allusers.length
+  let randomStrain = await Random(allstrains)
+ 
+  let strainname:string = randomStrain.strain
+  console.log('strainname')
+  console.log(strainname)
+  
+  // const master = await prisma.users.findFirst({
+  //     where: {
+  //       username: 'mastermizery' // old runescape account name.
+  //     }
+  // })
+  // console.log(master)
+  // id | strainId | strain | dominant | funfact | parents
+
+
+  // const newstrain = await prisma.strains.create({
+  //   data: {
+  //     id: dbstrains.length + 1,
+  //     strain: randomStrain.strain,
+  //     strainId: dbstrains.length + 1,    
+  //     dominant: randomStrain.dominant,
+  //     funfact: randomStrain.funfact, 
+  //     parents: randomStrain.parents,      
+  //   }
+  // })    
+  // console.log('newstrain')
+  // console.log(newstrain)
+
+  // const findStrain = await prisma.strains.findFirst({
+  //   where: { strain: 'mimosa'}
+  // }).then( (strain:any) => {
+  //   let name:(string|any) = strain.strain
+  //   console.log('name')
+  //   console.log(name)  
+
+  // })
+
+    return {
+      props: {  } // will be passed to the page component as props
+    }
+  }
+  
