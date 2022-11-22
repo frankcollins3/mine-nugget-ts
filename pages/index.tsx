@@ -7,7 +7,7 @@ import APIcall from '../utility/APIcall'
 import Random from '../utility/Randomizer'
 import Client from '../utility/Prisma'
 import CSS from '../utility/CSStool'
-import allStrain from './api/allStrain'
+// import allStrain from './api/allStrain'
 import $ from 'jquery' // import * as $ from 'jquery'
 import React,  { useEffect, useState} from 'react'
 import { PrismaClient } from '@prisma/client'
@@ -27,10 +27,14 @@ let prisma;
 
 
 
-export default function Home(  ) {
+export default function Home( props: any, {poke}:any) {
+  console.log('props from the home function!')
+  console.log(props)
   
+  console.log('poke')
+  console.log(poke)
 
-  const [pokemon, setPokemon ] = useState('')
+  const [ pokemon, setPokemon ] = useState('')
   const [currentStrain, setCurrentStrain] = useState('')
   const [savedStrains, setSavedStrains] = useState('')
 
@@ -134,8 +138,18 @@ export async function getStaticProps() {
   let strainname:string = randomStrain.strain
   console.log('strainname')
   console.log(strainname)
+
+  let response = await fetch(`https://pokeapi.co/api/v2/pokemon/ditto`)
+  let pokemon:any = await response.json()
+
+
+    return {
+      props: { poke: pokemon } // will be passed to the page component as props
+    }
+  }
   
-  // const master = await prisma.users.findFirst({
+
+    // const master = await prisma.users.findFirst({
   //     where: {
   //       username: 'mastermizery' // old runescape account name.
   //     }
@@ -165,9 +179,3 @@ export async function getStaticProps() {
   //   console.log(name)  
 
   // })
-
-    return {
-      props: {  } // will be passed to the page component as props
-    }
-  }
-  
