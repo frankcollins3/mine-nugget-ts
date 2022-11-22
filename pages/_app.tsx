@@ -12,6 +12,7 @@ export default function App({ Component, pageProps }: AppProps) {
   // const [theme, setTheme] = useState(themes.dark)      this is for context in the example.
   const [url, setUrl] = useState('')    // url:string
   const [ currentStrain, setCurrentStrain ] = useState('')
+  const [allStrains, setAllStrains] = useState([])
 
   // const ThemeContext = createContext(theme)
   // globalContext()
@@ -31,6 +32,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <Component {...pageProps}
      currentStrain={currentStrain} setCurrentStrain={setCurrentStrain}
      url={url} setUrl={setUrl}
+     allStrains={allStrains} setAllStrains={setAllStrains}
      />
    {/* </ThemeContext.Provider> */}
    </>
