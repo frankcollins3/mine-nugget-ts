@@ -1,14 +1,11 @@
 import $ from 'jquery'
 // import modulecss from '../styles/Strain.module.scss'
-
 // import { $ }  from 'react-jquery-plugin'
-
 import styles from '../styles/Strain.module.scss'
 import getAllStrain from './api/getAllStrain'
-
 import AllStrainContainer from '../components/AllStrainContainer'
-
-import React, { useEffect, useState } from 'react'
+// import useSWR from 'swr'
+import React, { useEffect, useState, useContext } from 'react'
 // import getAllStrain from './api/getAllStrain'
 
 export async function getStaticProps(context:any) {
@@ -17,18 +14,16 @@ export async function getStaticProps(context:any) {
     console.log('currentdirectory')
     console.log(currentdirectory)
     
-    // let getdbALL = await fetch('/pages/api/allStrain.ts')
-    // console.log('getdbALL')
-    // console.log(getdbALL)
-
-    // const protocol = req.headers['x-forwarded-proto'] || 'http'
+    let url = return_url(context);
+    const data = await fetch(`${url}/yourEndPoint`).then((res) => res.json());
+    
+    
+        // const protocol = req.headers['x-forwarded-proto'] || 'http'
     // const baseUrl = req ? `${protocol}://${req.headers.host}` : ''
 
     // let strains = await fetch(`/Users/medium/Desktop/mine-nugget-ts/pages/api/getAllStrain.ts`)
 
-    // console.log('strains')
-    // console.log(strains)
-
+    
     // $.ajax({
     //     method: 'get',
     //     url: '/api/getAllStrains',
@@ -46,11 +41,10 @@ export async function getStaticProps(context:any) {
 
 }
 
-export default function Strain (props:any,) {
-    
-    
-    
-    
+export default function Strain (props:any, allpokemon:any) {
+    console.log('allpokemon')        
+    console.log(allpokemon)        
+
     const classList:string = [styles.Page, 'Column'].join(" ")
     const textClasses:string = [styles.FontSizeTest, styles.BorderTest].join(" ");
     // const classList = [modulecss.Parent-Cont, modulecss.Test-Border].join(" ")
