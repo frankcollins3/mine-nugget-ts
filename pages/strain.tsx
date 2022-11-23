@@ -1,45 +1,71 @@
 import $ from 'jquery'
 // import modulecss from '../styles/Strain.module.scss'
 // import { $ }  from 'react-jquery-plugin'
-import styles from '../styles/Strain.module.scss'
-import getAllStrain from './api/getAllStrain'
-import AllStrainContainer from '../components/AllStrainContainer'
-// import useSWR from 'swr'
+import styles from 'styles/Strain.module.scss'
+import getAllStrain from 'pages/api/getAllStrain'
+import AllStrainContainer from 'components/AllStrainContainer'
 import React, { useEffect, useState, useContext } from 'react'
+import ReturnUrl from '.././utility/ReturnUrl'
+import Axios from 'axios';
+
+// import useSWR from 'swr'
 // import getAllStrain from './api/getAllStrain'
 
-export async function getStaticProps(context:any) {
-    console.log('server side! in the strain!')
-    let currentdirectory = process.cwd()
-    console.log('currentdirectory')
-    console.log(currentdirectory)
-    
-    let url = return_url(context);
-    const data = await fetch(`${url}/yourEndPoint`).then((res) => res.json());
-    
-    
-        // const protocol = req.headers['x-forwarded-proto'] || 'http'
-    // const baseUrl = req ? `${protocol}://${req.headers.host}` : ''
-
-    // let strains = await fetch(`/Users/medium/Desktop/mine-nugget-ts/pages/api/getAllStrain.ts`)
-
-    
-    // $.ajax({
-    //     method: 'get',
-    //     url: '/api/getAllStrains',
-    //     data: 'json'    
-    // }).then( (data) => {
-    //     console.log('data')
-    //     console.log(data)
-    // })
-    return {
-        props: {
-            
-        }
-    }
-
+const access = () => {
+    console.log('access')
+    $.ajax({
+        method: 'get',
+        url: '/api/getAllStrain',
+        data: {
+            key: 'all'
+        },        
+    }).then( (clientdata) => {
+        console.log('data')
+        console.log(clientdata)
+    })
 
 }
+
+
+export async function getServerSideProps(context:any) {
+    console.log("in the serverside props function")
+
+    // let url:any = await ReturnUrl(context);
+    let url = '/pages/api/getAllStrain'
+    // let url = 'https://pokeapi.co/api/v2/pokemon/2'
+
+    const baseURL = 'http://localhost'
+    let pokeurl = `https://pokeapi.co/api/v2/pokemon/`
+    // fetch(new URL(url, baseURL))
+
+    // let finallydata = await fetch(new URL(pokeurl))
+    let finallydata = await fetch(new URL(`https://localhost:3000/pages/api/getAllStrain`))
+
+    // let finallydata = await fetch(new URL(url, baseURL))
+    console.log('finallydata')
+    console.log(finallydata)
+//     fetch(new URL(url, baseURL, {
+//         method: 'POST',
+//         headers: {authorization: 'Bearer ' + process.env.AUTHO_TOKEN},
+// -        data: '{"user_metadata": {"displayName": "FooName"}',
+// +        body: '{"user_metadata": {"displayName": "FooName"}',
+//     }))
+    
+
+    
+    // console.log('data')
+    // console.log(data)
+    // /let newdata = JSON.parse(JSON.stringify(data))
+    // console.log('newdata')
+    // console.log(newdata)/
+
+    // const data = await fetch(`${url}/pages/api/getAllStrain.ts`).then((res) => res.json());
+    return {
+      props: {
+        // data: data,
+      }
+    };
+  }
 
 export default function Strain (props:any, allpokemon:any) {
     console.log('allpokemon')        
@@ -60,6 +86,7 @@ export default function Strain (props:any, allpokemon:any) {
              />
 
             <p className={textClasses}> quick look </p>
+            <button onClick={access}>   </button>
         </div>
     )
 }
