@@ -1,4 +1,4 @@
-import $ from 'jquery'
+ import $ from 'jquery'
 // import modulecss from '../styles/Strain.module.scss'
 // import { $ }  from 'react-jquery-plugin'
 import styles from 'styles/Strain.module.scss'
@@ -41,36 +41,23 @@ export async function getServerSideProps(context:any) {
 
     // let finallydata = await fetch(new URL(pokeurl))
     let predata = await fetch(new URL(`${url}/api/getAllStrain`))
-    let data = await predata.json()
+    let serverdata = await predata.json()
+    console.log('this is my data')
     console.log('data')
-    console.log(data)
+    console.log(serverdata)
 
-//     fetch(new URL(url, baseURL, {
-//         method: 'POST',
-//         headers: {authorization: 'Bearer ' + process.env.AUTHO_TOKEN},
-// -        data: '{"user_metadata": {"displayName": "FooName"}',
-// +        body: '{"user_metadata": {"displayName": "FooName"}',
-//     }))
-    
-
-    
-    // console.log('data')
-    // console.log(data)
-    // /let newdata = JSON.parse(JSON.stringify(data))
-    // console.log('newdata')
-    // console.log(newdata)/
-
-    // const data = await fetch(`${url}/pages/api/getAllStrain.ts`).then((res) => res.json());
     return {
       props: {
-        // data: data,
+        serverdata    
       }
     };
   }
 
-export default function Strain (props:any, allpokemon:any) {
-    console.log('allpokemon')        
-    console.log(allpokemon)        
+export default function Strain ( props:any  ) {  
+    console.log('props')
+    console.log(props)
+    
+    
 
     const classList:string = [styles.Page, 'Column'].join(" ")
     const textClasses:string = [styles.FontSizeTest, styles.BorderTest].join(" ");
