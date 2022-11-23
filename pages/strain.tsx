@@ -16,9 +16,10 @@ const access = () => {
     $.ajax({
         method: 'get',
         url: '/api/getAllStrain',
-        data: {
-            key: 'all'
-        },        
+        // data: {
+        //     key: 'all'
+        // },        
+        // http://localhost:3000/pages/api/getAllStrain?key=all      look at keyall how it ends up in the url
     }).then( (clientdata) => {
         console.log('data')
         console.log(clientdata)
@@ -30,8 +31,8 @@ const access = () => {
 export async function getServerSideProps(context:any) {
     console.log("in the serverside props function")
 
-    // let url:any = await ReturnUrl(context);
-    let url = '/pages/api/getAllStrain'
+    let url:any = await ReturnUrl(context);
+    // let url = '/pages/api/getAllStrain'
     // let url = 'https://pokeapi.co/api/v2/pokemon/2'
 
     const baseURL = 'http://localhost'
@@ -39,11 +40,11 @@ export async function getServerSideProps(context:any) {
     // fetch(new URL(url, baseURL))
 
     // let finallydata = await fetch(new URL(pokeurl))
-    let finallydata = await fetch(new URL(`https://localhost:3000/pages/api/getAllStrain`))
+    let predata = await fetch(new URL(`${url}/api/getAllStrain`))
+    let data = await predata.json()
+    console.log('data')
+    console.log(data)
 
-    // let finallydata = await fetch(new URL(url, baseURL))
-    console.log('finallydata')
-    console.log(finallydata)
 //     fetch(new URL(url, baseURL, {
 //         method: 'POST',
 //         headers: {authorization: 'Bearer ' + process.env.AUTHO_TOKEN},
