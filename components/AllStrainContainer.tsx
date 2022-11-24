@@ -12,23 +12,37 @@ export default  function AllStrainContainer(props:any) {
     console.log('props from the container')
     console.log(props)
 
-    let db:string = props.serverdata
-    console.log('db')
-    console.log(db)
+    let db:any = props.serverdata.getdata
+    let strainmap = db.map( (item:any, index:number) => {
+        console.log('item')
+        console.log(item)
+        console.log(item.strain)
+        let strain = item.strain
+        let id:number = item.id
+        return (
+            // <ul key={index}> this would create a ul for every element that we are mapping through.
+                <li key={id}> {strain} </li>
+            // </ul>
+        )
+
+    })
+
+
     
+
 
     // tried page:string .... page:any works.
     let allstrains: any[] = [   APIcall('any', null, null)]
     // const classList = [modulecss.Parent-Cont, modulecss.Test-Border].join(" ")
     return (
     // let doubleClass = [modulecss.Parent-Cont, ]
+        
         <>
-        {/* <ThemeContext> */}
-        <button type="button"></button>
         <Container fluid className={styles.ColumnCenter}>
-
+            <ul>
+            {strainmap}
+            </ul>
         </Container>
-        {/* </ThemeContext> */}
         </>
     
 
