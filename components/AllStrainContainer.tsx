@@ -21,14 +21,14 @@ export default  function AllStrainContainer(props:any) {
         let id:number = item.id
         return (
             // <ul key={index}> this would create a ul for every element that we are mapping through.
-                <li key={id}> {strain} </li>
+                <li className={styles.li} key={id}> {strain} </li>
             // </ul>
         )
 
     })
 
 
-    
+
 
 
     // tried page:string .... page:any works.
@@ -38,7 +38,9 @@ export default  function AllStrainContainer(props:any) {
     // let doubleClass = [modulecss.Parent-Cont, ]
         
         <>
-        <Container fluid className={styles.ColumnCenter}>
+        <Container 
+            style={{ overflowY: 'scroll' }}
+            fluid className={styles.ColumnCenter}>
             <ul>
             {strainmap}
             </ul>
