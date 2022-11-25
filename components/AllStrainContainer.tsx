@@ -4,6 +4,8 @@ import styles from 'styles/AllStrainContainer.module.scss'
 import React, { useEffect, useState} from 'react';  
 import Alert from 'react-bootstrap/Alert';
 import Container from 'react-bootstrap/Container'
+import Card from 'react-bootstrap/Card'
+
 import $, { data } from 'jquery' // import * as $ from 'jquery'
 
 import APIcall from 'utility/APIcall'
@@ -13,34 +15,11 @@ import MasterListStyle from 'utility/MasterListStyle'
 
 export default  function AllStrainContainer(props:any) {   
     const [styleFile, setStyleFile] = useState('')
-    // const [styleFile:string, setStyleFile:string] = useState('')
 
-
-    const checkstyles = async () => {
-        let homesass = await MasterListStyle('homepage')
-        let strainpage = await MasterListStyle('strainpage')
-        let containersass = await MasterListStyle('straincontainer')
-        let allsass = await MasterListStyle('straincontainer')
-
-        let containerul = containersass.ul
-
-        
-
-        console.log( containersass)
-        console.log( containerul )
-        console.log(typeof containersass)
-        setStyleFile(containerul)
-
-
-
-
-
-
-     
+    const checkstyles = async () => {        
+        let allsass = await MasterListStyle('straincontainer')                
     }
-
-
-
+    const joinedClassStr = [styles.ul, styles.FlexBottom].join(" ")
 
     
     let db:any = props.serverdata.getdata
@@ -50,7 +29,13 @@ export default  function AllStrainContainer(props:any) {
         return (        
             <div key={'column' + index} className="Column">
             <img key={`id ${strain} `} src=""/>
-            <li className={styles.li} key={id}> {strain} </li>
+
+            <Card style={{ width: '18rem' }}>
+            {/* <Card.Img variant="top" src="" /> */}
+            <Card.Body>
+            <li className={styles.li} key={id}> {strain} </li>                          
+            </Card.Body>
+            </Card>
 
             </div>            
         )
@@ -66,11 +51,9 @@ export default  function AllStrainContainer(props:any) {
         <Container 
             style={{ overflowY: 'scroll' }}
             className={styles.ColumnCenter}>
-            <ul className={styles.ul}>
-            {/* <ul className={styleFile}> */}
+            {/* <ul className={joinedClassStr}> */}
             {strainmap}
-            </ul>
-            <button onClick={checkstyles}></button>
+            {/* </ul>             */}
         </Container>
         </>
     
