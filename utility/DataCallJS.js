@@ -39,36 +39,40 @@ export default async function DataCall (method, url, data) {
         console.log("we are over here")
         return this.ajaxcall()
     }
+    
+    get axios() {
+        return this.axioscall()
+    }
 
     // methods 
-    async ajaxcall() {
-            console.log('url in the ajaxcall method')
-            console.log(url)
-            let hi = {hey: 'hi'} 
-
+    async ajaxcall() {            
+            // let hi = {hey: 'hi'} this was a minimum-viable test that steered things correctly
             let datacall = await $.ajax({
                 method: 'get',
                 url: url,
                 data: 'json'
-            })
-
-            console.log('datacall')
-            console.log(datacall)
+            })            
             let actualdata = datacall.getdata            
             return actualdata    
     }
+
+    async axioscall() {
+        let datacall = await Axios.get(url)
+        console.log('datacall in the axios')
+        console.log(datacall)
+        let data = datacall.data
+        return data
+    }
+
 }   // ajax call ending 
 
         if (method === 'ajax') {
             console.log("we are over here doing it this way")
             const returnajaxcall = await new Call(url).ajax
-            return returnajaxcall
-            console.log('returnajaxcall')
-            console.log(returnajaxcall)
-            
+            return returnajaxcall                        
+        } else if (method === 'axios') {
+            const returnaxiosdata = await new Call(url).axios
+            return returnaxiosdata
         }
-
-
-
 
 }       // function end
