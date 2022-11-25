@@ -5,6 +5,7 @@ import React, { useEffect, useState} from 'react';
 import Alert from 'react-bootstrap/Alert';
 import Container from 'react-bootstrap/Container'
 import Card from 'react-bootstrap/Card'
+import CSS from 'utility/CSStool'
 
 import $, { data } from 'jquery' // import * as $ from 'jquery'
 
@@ -26,9 +27,18 @@ export default  function AllStrainContainer(props:any) {
     const toggleBg = async () => {
         if (bgToggle === 'old') setBgToggle('new')
         else if (bgToggle === 'new') setBgToggle('old')
+    }
+
+    const nowYouSee = (event:any) => {
+        CSS($(event.target), 'color', 'papayawhip')
+    }
+    const nowYouDont = (event:any) => {
+        let tgt: object = $(event.target)
+        CSS($(event.target), 'color', 'transparent')
+    }
+    // const nowYouSee = (event) => CSS($(event.target), 'opacity', '1.0')
 
     
-    }
     const joinedClassStr = [styles.ul, styles.FlexBottom].join(" ")
 
     
@@ -56,6 +66,8 @@ export default  function AllStrainContainer(props:any) {
                 <li
                  style={{ 
                     // border: '2px solid papayawhip',
+                    letterSpacing: '0.25em',                    
+                    color: 'transparent',
                     margin: '3.33em',
                     minHeight: '10em',
                     minWidth: '10em',
@@ -64,8 +76,9 @@ export default  function AllStrainContainer(props:any) {
                     listStyleType: 'none'
 
                 }}
-                 className={styles.li} key={id}> {nothing} </li>                          
-                 {/* className={styles.li} key={id}> {strain} </li>                           */}
+                  onMouseEnter={nowYouSee} onMouseLeave={nowYouDont}
+                  className={styles.li} key={id}> {strain} </li>                           
+                {/* //  className={styles.li} key={id}> {nothing} </li>                           */}
             </ul>
             }
 
