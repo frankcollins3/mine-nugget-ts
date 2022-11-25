@@ -12,7 +12,7 @@ import MasterListStyle from 'utility/MasterListStyle'
 
 
 export default  function AllStrainContainer(props:any) {   
-    const [setStyleFile, setStyleFile] = useState('')
+    const [styleFile, setStyleFile] = useState('')
     // const [styleFile:string, setStyleFile:string] = useState('')
 
 
@@ -20,10 +20,23 @@ export default  function AllStrainContainer(props:any) {
         let homesass = await MasterListStyle('homepage')
         let strainpage = await MasterListStyle('strainpage')
         let containersass = await MasterListStyle('straincontainer')
-
         let allsass = await MasterListStyle('straincontainer')
-     
+
+        let containerul = containersass.ul
+
         
+
+        console.log( containersass)
+        console.log( containerul )
+        console.log(typeof containersass)
+        setStyleFile(containerul)
+
+
+
+
+
+
+     
     }
 
 
@@ -54,6 +67,7 @@ export default  function AllStrainContainer(props:any) {
             style={{ overflowY: 'scroll' }}
             className={styles.ColumnCenter}>
             <ul className={styles.ul}>
+            {/* <ul className={styleFile}> */}
             {strainmap}
             </ul>
             <button onClick={checkstyles}></button>
