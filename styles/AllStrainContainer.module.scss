@@ -1,8 +1,50 @@
 .ColumnCenter {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    height: 30vh;
-    border: 5px solid hotpink;
+    color: papayawhip;
+    box-shadow: 10px 10px 10px rgb(247, 208, 32);    
+
+    padding: 2em;
+    
+    height: 60vh;
+    width:  80vw;
+    border: 3px solid rgb(247, 208, 36);
 }
+
+// .FlexBottom {
+//     display: flex;
+//     flex-direction: column;
+//     align-items: flex-start
+// }
+
+.BstrapContCard {
+    margin: 3em;
+}
+
+.ul {
+    width: 60%;    
+
+    // :hover{       it would be nice if you could put .ul:hover over here like this and it apply to the above target element/class
+
+    // }
+    
+    .li {
+        text-align: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        width: 100%;            // if i don't have width: 100% the li is only the length of the <li> { data } </li>
+        margin: 1.1em;
+        list-style-type: none;
+        font-size: 22px;
+        color: papayawhip;
+        line-height: 12.9em;    
+        text-shadow: 1px 1px 1px rgb(247, 208, 36);    
+        box-shadow: 3px 3px 9px papayawhip;
+    }
+    
+}
+// * possible phone settings.
+// min-height: 10%;
+// min-width: 10%;
