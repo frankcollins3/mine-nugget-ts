@@ -16,6 +16,7 @@ import { convertCompilerOptionsFromJson } from 'typescript';
 
 export default  function AllStrainContainer(props:any) {   
     const [styleFile, setStyleFile] = useState('')
+    const [nothing, setNothing] = useState()
     const [bgToggle, setBgToggle] = useState('old')
 
     const checkstyles = async () => {        
@@ -51,6 +52,7 @@ export default  function AllStrainContainer(props:any) {
             </Card>
             :
             <ul>
+            {/* <ul className={styles.ul}> */}
                 <li
                  style={{ 
                     // border: '2px solid papayawhip',
@@ -62,7 +64,8 @@ export default  function AllStrainContainer(props:any) {
                     listStyleType: 'none'
 
                 }}
-                 className={styles.li} key={id}> {strain} </li>                          
+                 className={styles.li} key={id}> {nothing} </li>                          
+                 {/* className={styles.li} key={id}> {strain} </li>                           */}
             </ul>
             }
 
@@ -84,10 +87,8 @@ export default  function AllStrainContainer(props:any) {
            {bgToggle === 'new' 
            ?
            strainmap
-           :
-        //    <ul className={styles.ul}>
-           strainmap
-        //    </ul>
+           :    
+           strainmap        
            }
         
         </Container>
