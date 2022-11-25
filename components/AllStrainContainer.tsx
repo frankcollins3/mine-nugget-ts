@@ -7,17 +7,19 @@ import Container from 'react-bootstrap/Container'
 import $, { data } from 'jquery' // import * as $ from 'jquery'
 
 import APIcall from 'utility/APIcall'
-import MasterListStlye from 'utility/MasterListStyle'
+import MasterListStyle from 'utility/MasterListStyle'
 
 
 
 export default  function AllStrainContainer(props:any) {    
 
-    const grabClasses = async () => {
-        let flexbottom = await styles.FlexBottom
-        console.log('flexbottom')        
-        console.log(flexbottom)        
+    const checkstyles = async () => {
+        let sassfiles = await MasterListStyle('strain')
+        console.log('sassfiles')
+        console.log(sassfiles)
     }
+
+
 
 
     
@@ -47,6 +49,7 @@ export default  function AllStrainContainer(props:any) {
             <ul className={styles.ul}>
             {strainmap}
             </ul>
+            <button onClick={checkstyles}></button>
         </Container>
         </>
     
