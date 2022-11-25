@@ -1,4 +1,4 @@
-// import $ from 'jquery'
+    // import $ from 'jquery'
 // import modulecss from '../styles/Strain.module.scss'
 // import { $ }  from 'react-jquery-plugin'
 import styles from 'styles/Strain.module.scss'
@@ -7,16 +7,20 @@ import AllStrainContainer from 'components/AllStrainContainer'
 import Random from 'utility/Randomizer'
 import React, { useEffect, useState, useContext } from 'react'
 import ReturnUrl from 'utility/ReturnUrl'
+import AjaxCall from 'utility/AjaxCall'
 import Axios from 'axios';
+let relativepath = `/api/getAllStrain.ts`
 
-    const access = () => {
-        // console.log("heyy") tested pokeAPI on/off here.
+    const access = async (context:any) => {        
+        let url:string = await ReturnUrl(context);  
+        let ajaxstraindata = await AjaxCall(`${url}/api/getAllStrain`, null, null) // /pages/api/getAllStrains
+        console.log('ajaxstraindata')
+        console.log(ajaxstraindata)
     }
 
 export async function getServerSideProps(context:any) {            
         let url:any = await ReturnUrl(context);    
         let pokeurl = `https://pokeapi.co/api/v2/pokemon/`    
-        let relativepath = `pages/api/getAllStrain.ts`
         let predata = await fetch(new URL(`${url}/api/getAllStrain`))
         let serverdata = await predata.json()
     return {
