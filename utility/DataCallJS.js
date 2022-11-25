@@ -41,57 +41,31 @@ export default async function DataCall (method, url, data) {
     }
 
     // methods 
-    ajaxcall() {
+    async ajaxcall() {
             console.log('url in the ajaxcall method')
             console.log(url)
             let hi = {hey: 'hi'} 
 
-            const getdata = async () => {
-                let ajaxCallForStrain = $.ajax({
-                    method: 'get',
-                    url: url,
-                    data: 'json'
-                }).then( (data) => {
-                    return data
-                })
-            }
-            let returndata = await getdata()
-            console.log('returndata')
-            console.log(returndata)
-            
+            let datacall = await $.ajax({
+                method: 'get',
+                url: url,
+                data: 'json'
+            })
 
-
-            // const ajaxCall = () => {
-            //     $.ajax({
-            //     // let ajax = $.ajax({
-            //         method: 'get',
-            //         url: url,
-            //         data: 'json',
-            //         // success: (ajaxdata) => {
-            //         //     console.log('ajaxdata')
-            //         //     console.log(ajaxdata)
-            //         //     return ajaxdata
-            //     }).then( (data) => {
-            //         let data = data.getdata
-            //         console.log('data')
-            //         console.log(data)
-            //         return data        
-            //     })            
-            // }
-            // return ajaxCall()
-            
+            console.log('datacall')
+            console.log(datacall)
+            let actualdata = datacall.getdata            
+            return actualdata    
     }
 }   // ajax call ending 
 
         if (method === 'ajax') {
             console.log("we are over here doing it this way")
-            const returnajaxcall = new Call(url).ajax
+            const returnajaxcall = await new Call(url).ajax
+            return returnajaxcall
             console.log('returnajaxcall')
             console.log(returnajaxcall)
-            // console.log(returnajaxcall.responseJSON)
-            // let actualdata = returnajaxcall.responseJSON.getdata
-            // console.log('actualdata')
-            // console.log(actualdata)
+            
         }
 
 
