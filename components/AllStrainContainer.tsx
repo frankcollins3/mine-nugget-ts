@@ -10,6 +10,7 @@ import $, { data } from 'jquery' // import * as $ from 'jquery'
 
 import APIcall from 'utility/APIcall'
 import MasterListStyle from 'utility/MasterListStyle'
+import { convertCompilerOptionsFromJson } from 'typescript';
 
 
 
@@ -43,11 +44,26 @@ export default  function AllStrainContainer(props:any) {
             className={styles.BstrapContCard}
             style={{ width: '18rem' }}>            
             <Card.Body>
-            <li className={styles.li} key={id}> {strain} </li>                          
+            <li  
+            style={{ textAlign: 'center' }}
+            key={id}> {strain} </li>                          
             </Card.Body>
             </Card>
             :
-             <li className={styles.li} key={id}> {strain} </li>                          
+            <ul>
+                <li
+                 style={{ 
+                    // border: '2px solid papayawhip',
+                    margin: '3.33em',
+                    minHeight: '10em',
+                    minWidth: '10em',
+                    backgroundSize: 'cover',
+                    backgroundRepeat: 'no-repeat',
+                    listStyleType: 'none'
+
+                }}
+                 className={styles.li} key={id}> {strain} </li>                          
+            </ul>
             }
 
             </div>            
@@ -64,15 +80,16 @@ export default  function AllStrainContainer(props:any) {
         <Container 
             style={{ overflowY: 'scroll' }}
             className={styles.ColumnCenter}>
-            {strainmap}
-            {/* {bgToggle === 'new' 
-            ?
-            {strainmap}
-            :
-            <ul className={joinedClassStr}> 
-            {strainmap}
-            </ul>
-             } */}
+            {/* {strainmap} */}
+           {bgToggle === 'new' 
+           ?
+           strainmap
+           :
+        //    <ul className={styles.ul}>
+           strainmap
+        //    </ul>
+           }
+        
         </Container>
         <button onClick={toggleBg}></button>
         </>
