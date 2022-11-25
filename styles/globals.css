@@ -24,3 +24,39 @@ a {
     background: black;
   }
 }
+
+.Column {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+li {
+  align-self: flex-start;
+  /* position: relative;   */
+  background-image: url('/img/gold.png');
+  background-position: right 90%;
+  background-size: 30%;
+  background-repeat: repeat;
+}
+
+li:hover {
+  background-color:rgba(255,255,255,0.6)
+}
+
+::-webkit-scrollbar {
+  width: 40px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+  box-shadow: inset 5px 9px 5px grey;
+  border-radius: 10px;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+  background: papayawhip;
+  border-radius: 10px;
+  }
