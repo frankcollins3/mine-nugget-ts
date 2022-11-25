@@ -15,9 +15,17 @@ import MasterListStyle from 'utility/MasterListStyle'
 
 export default  function AllStrainContainer(props:any) {   
     const [styleFile, setStyleFile] = useState('')
+    const [bgToggle, setBgToggle] = useState('old')
 
     const checkstyles = async () => {        
         let allsass = await MasterListStyle('straincontainer')                
+    }
+
+    const toggleBg = async () => {
+        if (bgToggle === 'old') setBgToggle('new')
+        else if (bgToggle === 'new') setBgToggle('old')
+
+    
     }
     const joinedClassStr = [styles.ul, styles.FlexBottom].join(" ")
 
@@ -30,12 +38,17 @@ export default  function AllStrainContainer(props:any) {
             <div key={'column' + index} className="Column">
             <img key={`id ${strain} `} src=""/>
 
-            <Card style={{ width: '18rem' }}>
-            {/* <Card.Img variant="top" src="" /> */}
+            {bgToggle === 'new' ?
+            <Card 
+            className={styles.BstrapContCard}
+            style={{ width: '18rem' }}>            
             <Card.Body>
             <li className={styles.li} key={id}> {strain} </li>                          
             </Card.Body>
             </Card>
+            :
+             <li className={styles.li} key={id}> {strain} </li>                          
+            }
 
             </div>            
         )
@@ -51,10 +64,17 @@ export default  function AllStrainContainer(props:any) {
         <Container 
             style={{ overflowY: 'scroll' }}
             className={styles.ColumnCenter}>
-            {/* <ul className={joinedClassStr}> */}
             {strainmap}
-            {/* </ul>             */}
+            {/* {bgToggle === 'new' 
+            ?
+            {strainmap}
+            :
+            <ul className={joinedClassStr}> 
+            {strainmap}
+            </ul>
+             } */}
         </Container>
+        <button onClick={toggleBg}></button>
         </>
     
 
