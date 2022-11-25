@@ -7,8 +7,14 @@ export default async function MasterListStyle(stylekeyword:string) {
         console.log(AllStrainContainerSASS)
         console.log(StrainSASS)
         console.log(HomePageSASS)
-        if (stylekeyword === 'strain') {
-            return stylekeyword
+        if (stylekeyword === 'strainpage') {
+            // return stylekeyword
+            return StrainSASS
+        } else if (stylekeyword === 'home') {
+            return HomePageSASS
+        }
+        else if (stylekeyword  === 'straincontainer') {
+            return AllStrainContainerSASS
         }
     }
 
