@@ -6,9 +6,8 @@ import Alert from 'react-bootstrap/Alert';
 import Container from 'react-bootstrap/Container'
 import Card from 'react-bootstrap/Card'
 import CSS from 'utility/CSStool'
-
+import SeeAndSave from 'utility/SeeAndSave'
 import $, { data } from 'jquery' // import * as $ from 'jquery'
-
 import APIcall from 'utility/APIcall'
 import MasterListStyle from 'utility/MasterListStyle'
 import { convertCompilerOptionsFromJson } from 'typescript';
@@ -18,7 +17,9 @@ import { convertCompilerOptionsFromJson } from 'typescript';
 export default  function AllStrainContainer(props:any) {   
     const [styleFile, setStyleFile] = useState('')
     const [nothing, setNothing] = useState()
-    const [bgToggle, setBgToggle] = useState('old')
+    const [bgToggle, setBgToggle] = useState('new')
+    const [textState, setTextState] = useState('')
+    const [clickedStrain, setClickedStrain] = useState('')
 
     const checkstyles = async () => {        
         let allsass = await MasterListStyle('straincontainer')                
@@ -35,6 +36,18 @@ export default  function AllStrainContainer(props:any) {
     const nowYouDont = (event:any) => {
         let tgt: object = $(event.target)
         CSS($(event.target), 'color', 'transparent')
+    }
+
+    const strainClick = async (event:any) => {
+        console.log(event)
+        let target = event.target
+        let text = event.target.innerText
+        CSS(target, 'border', '5px solid limegreen')
+        let clickedstrain = await APIcall('specify', text, setClickedStrain)
+        console.log('clickedstrain')
+        console.log(clickedstrain)
+
+        // seeAndSave(target, )
     }
     // const nowYouSee = (event) => CSS($(event.target), 'opacity', '1.0')
 
@@ -56,6 +69,7 @@ export default  function AllStrainContainer(props:any) {
             style={{ width: '18rem' }}>            
             <Card.Body>
             <li  
+            onClick={strainClick}
             style={{ textAlign: 'center' }}
             key={id}> {strain} </li>                          
             </Card.Body>
@@ -64,6 +78,7 @@ export default  function AllStrainContainer(props:any) {
             <ul>
             {/* <ul className={styles.ul}> */}
                 <li
+                 onClick={strainClick}
                  style={{ 
                     // border: '2px solid papayawhip',
                     letterSpacing: '0.25em',                    
@@ -86,10 +101,6 @@ export default  function AllStrainContainer(props:any) {
         )
     })
 
-
-
-
-    
     let allstrains: any[] = [   APIcall('any', null, null)]    
     return (            
         <>
