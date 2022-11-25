@@ -1,98 +1,155 @@
-import $ from 'jquery'
-import Axios from 'axios'
+import Strain from 'pages/strain'
+import $ from 'jquery' // import * as $ from 'jquery'
+import styles from 'styles/AllStrainContainer.module.scss'
+import getAllStrain from 'pages/api/getAllStrain'
+import React, { useEffect, useState} from 'react';  
+import specifyDbStrain from 'pages/api/getSpecifiedStrain'
+import Alert from 'react-bootstrap/Alert';
+import Container from 'react-bootstrap/Container'
+import Card from 'react-bootstrap/Card'
 
-// export default async function DataCall ( method:string, url:string, data:(string|null)) { 
-//     const ajaxCall = async () => {
-//         if (method === 'ajax') {
-//             let ajax = $.ajax({
-//                 method: 'get',
-//                 url: url,
-//                 data: 'json',
-//                 success: (ajaxdata) => {
-//                     console.log('ajaxdata')
-//                     console.log(ajaxdata)
-//                     return ajaxdata
-//                 }
-//             })
-//             return ajax
-//         }
-//     }
-//         return ajaxCall()
 
-//         if (method === 'axios') {
+import DataCall from 'utility/DataCallJS'
+import CSS from 'utility/CSStool'
+import SeeAndSave from 'utility/SeeAndSave'
+import APIcall from 'utility/APIcall'
+import MasterListStyle from 'utility/MasterListStyle'
+import getSpecifiedStrain from 'pages/api/getSpecifiedStrain';
 
-//         }    
 
-//         }
 
-export default async function DataCall (method, url, data) {
-    console.log('url')
-    console.log(url)
 
-    class Call {
 
-        constructor(url) {        
-            this.url = url
-        }      
-    // method getters
-    get ajax() {
-        console.log("we are over here")
-        return this.ajaxcall()
+export default  function AllStrainContainer(props:any) {   
+    const [styleFile, setStyleFile] = useState('')
+    const [nothing, setNothing] = useState()
+    const [bgToggle, setBgToggle] = useState('new')
+    const [textState, setTextState] = useState('')
+    const [clickedStrain, setClickedStrain] = useState('')
+
+    const checkstyles = async () => {        
+        let allsass = await MasterListStyle('straincontainer')                
     }
+    const toggleBg = async () => {
+        if (bgToggle === 'old') setBgToggle('new')
+        else if (bgToggle === 'new') setBgToggle('old')
+    }
+    const nowYouSee = (event:any) => {
+        CSS($(event.target), 'color', 'papayawhip')
+    }
+    const nowYouDont = (event:any) => {
+        let tgt: object = $(event.target)
+        CSS($(event.target), 'color', 'transparent')
+    }
+
     
-    get axios() {
-        return this.axioscall()
+    const strainClick = async (event:any) => {     
+        console.log("are we in here");
+        let target = event.target
+        let text = event.target.innerText        
+        
+        console.log('text')
+        console.log(text)
+        
+        $.ajax({
+            method: 'get',
+            url: 'api/getSpecifiedStrain',   
+            data: text.toString(),
+            success: async () => {
+                console.log("in the success block")
+                let clientside = await getSpecifiedStrain(text, '')
+                console.log('clientside')
+                console.log(clientside)
+            }
+        }).then( (data) => {
+            console.log('data over here!')
+            console.log(data)
+        })
+
+        
+
+
+        // $.ajax({ 
+        //     method: 'get',
+        //     url: `/api/getAllStrain`,
+        //     data: 'json'
+        // }).then( (data) => {
+        //     console.log('data')
+        //     console.log(data)
+             
+        // })
+
+        let clickedstrain = await APIcall('specify', text, setClickedStrain)                
+        
+        
     }
 
-    get fetchit() {
-        return this.fetchcall()
-    }
+    const joinedClassStr = [styles.ul, styles.FlexBottom].join(" ")    
+    let db:any = props.serverdata.getdata
+    let strainmap = db.map( (item:any, index:number) => {        
+        let strain = item.strain
+        let id:number = item.id
+        return (        
+            <div key={'column' + index} className="Column">
+            <img key={`id ${strain} `} src=""/>
 
-    // methods 
-    async ajaxcall() {            
-            // let hi = {hey: 'hi'} this was a minimum-viable test that steered things correctly
-            let datacall = await $.ajax({
-                method: 'get',
-                url: url,
-                data: 'json'
-            })            
-            let actualdata = datacall.getdata     
-            console.log('actualdata in the ajax call')       
-            console.log(actualdata)       
-            return actualdata    
-    }
+            {bgToggle === 'new' ?
+            <Card 
+            className={styles.BstrapContCard}
+            style={{ width: '18rem' }}>            
+            <Card.Body>
+            <li  
+            onClick={strainClick}
+            style={{ textAlign: 'center' }}
+            key={id}> {strain} </li>                          
+            </Card.Body>
+            </Card>
+            :
+            <ul>
+            {/* <ul className={styles.ul}> */}
+                <li
+                 onClick={strainClick}
+                 style={{ 
+                    // border: '2px solid papayawhip',
+                    letterSpacing: '0.25em',                    
+                    color: 'transparent',
+                    margin: '3.33em',
+                    minHeight: '10em',
+                    minWidth: '10em',
+                    backgroundSize: 'cover',
+                    backgroundRepeat: 'no-repeat',
+                    listStyleType: 'none'
 
-    async axioscall() {
-        let datacall = await Axios.get(url)
-        console.log('datacall in the axios')
-        console.log(datacall)
-        let data = datacall.data
-        console.log('data in the axioscall')
-        console.log(data)
-        return data
-    }
+                }}
+                  onMouseEnter={nowYouSee} onMouseLeave={nowYouDont}
+                  className={styles.li} key={id}> {strain} </li>                           
+                {/* //  className={styles.li} key={id}> {nothing} </li>                           */}
+            </ul>
+            }
 
-    async fetchcall() {
-        let predata = await fetch(url)
-        let actualdata = await predata.json()
-        return actualdata    
-    }
-}   // ajax call ending 
+            </div>            
+        )
+    })
 
-        if (method === 'ajax') {
-            console.log("we are over here doing it this way AJAX")
-            const returnajaxcall = await new Call(url).ajax
-            console.log(returnajaxcall)
-            return returnajaxcall                        
-        } else if (method === 'axios') {
-            console.log('mama axios')
-            const returnaxiosdata = await new Call(url).axios
-            return returnaxiosdata
-        } else if (method === 'fetch') {
-            const fetchdata = await new Call(url).fetchit
-            return fetchdata
-            // should be good with else { } but just to be stricter  using else if (stated expression) 
+    let allstrains: any[] = [   APIcall('any', null, null)]    
+    return (            
+        <>
+        <Container 
+            style={{ overflowY: 'scroll' }}
+            className={styles.ColumnCenter}>
+            {/* {strainmap} */}
+           {bgToggle === 'new' 
+           ?
+           strainmap
+           :    
+           strainmap        
+           }
+        
+        </Container>
+        <button onClick={toggleBg}></button>
+        </>
+    
 
-        }
 
-}       // function end
+    )
+}
