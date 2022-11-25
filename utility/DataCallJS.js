@@ -44,6 +44,10 @@ export default async function DataCall (method, url, data) {
         return this.axioscall()
     }
 
+    get fetchit() {
+        return this.fetchcall()
+    }
+
     // methods 
     async ajaxcall() {            
             // let hi = {hey: 'hi'} this was a minimum-viable test that steered things correctly
@@ -64,6 +68,14 @@ export default async function DataCall (method, url, data) {
         return data
     }
 
+    async fetchcall() {
+        let predata = await fetch(url)
+        let actualdata = await predata.json()
+        return actualdata
+        
+
+    }
+
 }   // ajax call ending 
 
         if (method === 'ajax') {
@@ -73,6 +85,11 @@ export default async function DataCall (method, url, data) {
         } else if (method === 'axios') {
             const returnaxiosdata = await new Call(url).axios
             return returnaxiosdata
+        } else if (method === 'fetch') {
+            const fetchdata = await new Call(url).fetchit
+            return fetchdata
+            // should be good with else { } but just to be stricter  using else if (stated expression) 
+
         }
 
 }       // function end
