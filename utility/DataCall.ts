@@ -1,16 +1,33 @@
 import $ from 'jquery'
 import Axios from 'axios'
 
-export default async function ( method:string, url:string, data:(string|null), dataType:any ) { // thought you could do dataType:string
-        //  if (typeof method === 'string') { } this is redundant in TS no?
-        if (method === 'axios') {
+export default async function DataCall ( method:string, url:string, data:(string|null)) { 
+        if (method === 'ajax') {
             $.ajax({
                 method: 'get',
                 url: url,
-                data: 'json'
-            }).then( (data) => {            // cant do data:dataType and parse for a user-inputted 'string' or 'object'
-                console.log('data')
-                console.log(data)
+                data: 'json',
+                success: (ajaxdata) => {
+                    return ajaxdata
+                }
             })
         }
-}
+
+        if (method === 'axios') {
+
+        }    
+
+        }
+
+    
+    
+    
+    // cant do data:dataType and parse for a user-inputted 'string' or 'object'
+// export default async function AjaxCall(url:string, data:(string|null), error:(any|null)) {
+//     let ajaxCall = await $.ajax({
+//         method: 'get',
+//         url: url,
+//         data: 'json'
+//     })
+//     return ajaxCall
+// }
