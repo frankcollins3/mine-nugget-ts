@@ -24,7 +24,8 @@ async function APIcall(action:string, strain:(string|null), setState:(any|null))
         const specifyStrain = async () => {
             strains.forEach( (loopstrain:any) => { // cant use strain:object because the goal output is to dig down an endpoint or 2 to the strain.strain (basically .name)                                
                 if (loopstrain.strain === strain) {                                    
-                    specifybucket.push(loopstrain.strain)
+                    specifybucket.push(loopstrain)
+                    // specifybucket.push(loopstrain.strain)
                     setState(strain)
                 }
             })
@@ -42,7 +43,8 @@ async function APIcall(action:string, strain:(string|null), setState:(any|null))
 
     else if (action === 'random') {
         let randomstrain = await Random(strains)
-        let strainname:string = randomstrain.strain        
+        let strainname:string = randomstrain.strain    
+        setState(strainname)    
         return strainname
     }
 }
