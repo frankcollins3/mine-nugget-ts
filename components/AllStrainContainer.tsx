@@ -11,12 +11,19 @@ import MasterListStyle from 'utility/MasterListStyle'
 
 
 
-export default  function AllStrainContainer(props:any) {    
+export default  function AllStrainContainer(props:any) {   
+    const [setStyleFile, setStyleFile] = useState('')
+    // const [styleFile:string, setStyleFile:string] = useState('')
+
 
     const checkstyles = async () => {
-        let sassfiles = await MasterListStyle('strain')
-        console.log('sassfiles')
-        console.log(sassfiles)
+        let homesass = await MasterListStyle('homepage')
+        let strainpage = await MasterListStyle('strainpage')
+        let containersass = await MasterListStyle('straincontainer')
+
+        let allsass = await MasterListStyle('straincontainer')
+     
+        
     }
 
 
