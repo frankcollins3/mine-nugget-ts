@@ -1,5 +1,6 @@
 import Strain from 'pages/strain'
 import $ from 'jquery' // import * as $ from 'jquery'
+import Axios from 'axios'
 import styles from 'styles/AllStrainContainer.module.scss'
 import getAllStrain from 'pages/api/getAllStrain'
 import React, { useEffect, useState} from 'react';  
@@ -49,13 +50,37 @@ export default  function AllStrainContainer(props:any) {
     const strainClick = async (event:any) => {     
         console.log("are we in here");
         let target = event.target
+        let childrenOfTarget = await Children(target)
         let text = event.target.innerText        
     
-        await specifyDbStrain(target, {})
+        // let predata = await Axios.get(`api/getSpecifiedStrain`) 
+        // let predata = await Axios({
+        //     method: 'GET',
+        //     url: 'api/getAllStrain',           
+        // })
+        let predata = await DataCall('axios', `api/getAllStrain`, null)
+        let data = predata.getdata         // cant do data:string because then you can't use
+        data.forEach( (straindata:string) => {
+            console.log('straindata')
+            console.log(straindata)
+        })
+        
+        //*  */ let predata = await Axios.get(`api/getSpecifiedStrain`) working copy 
+        let pokedata = await Axios.get(`https://pokeapi.co/api/v2/pokemon/slowpoke`)
+        
+
+        console.log('pokedata')
+        console.log(pokedata)
+        // await specifyDbStrain(target, {})
+        // let returndata = await DataCall('ajax', '/api/getSpecifiedStrain', null)
+        
+        
+        
+
         
         // const familyTree = async () => {
-        //     let sis:object|any = await Siblings($(event.target))            
-        //     let niece:object|any = await Children(sis)            
+            // let sis:object|any = await Siblings($(event.target))            
+            // let niece:object|any = await Children(sis)            
         //     await AttrTool(niece, 'value', text)            
         // }
         // familyTree()        
