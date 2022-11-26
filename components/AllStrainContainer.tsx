@@ -12,6 +12,7 @@ import Card from 'react-bootstrap/Card'
 import DataCall from 'utility/DataCallJS'
 import AttrTool from 'utility/JqAttr'
 import Siblings from 'utility/JqSiblings'
+import Children from 'utility/jqChildren'
 import CSS from 'utility/CSStool'
 import SeeAndSave from 'utility/SeeAndSave'
 import APIcall from 'utility/APIcall'
@@ -58,9 +59,17 @@ export default  function AllStrainContainer(props:any) {
         // await AttrTool(target, 'value', text)
 
         // CSS($('.strainInput'), 'background-color', 'blue')
-        let sisterelem = await Siblings($(event.target))
-        console.log('sisterelem')
-        console.log(sisterelem)
+        
+        const familyTree = async () => {
+            let sis:any = await Siblings($(event.target))
+            console.log('sis')
+            console.log(sis)
+            let niece = await Children(sis)
+            console.log('niece')
+            console.log(niece)
+        }
+        familyTree()
+        
 
         // CSS(target, 'background-color', 'blue')
         
