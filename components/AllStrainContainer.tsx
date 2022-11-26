@@ -56,7 +56,8 @@ export default  function AllStrainContainer(props:any) {
             let sis:object|any = await Siblings($(event.target))            
             let niece:object|any = await Children(sis)            
             await AttrTool(niece, 'value', text)    // text is the innertext which is the name of the strain.
-
+            // $('#strainForm').css('border', '8px solid goldenrod')
+            sis.submit()
         }
         familyTree()
         
@@ -104,7 +105,7 @@ export default  function AllStrainContainer(props:any) {
             className={styles.BstrapContCard}
             style={{ width: '18rem' }}>            
             <Card.Body>
-            <form id="strainForm">
+            <form action="/api/getAllStrain" method="GET" id="strainForm">
             <input
             className="strainInput" 
             id={styles.InvisibleInput}
