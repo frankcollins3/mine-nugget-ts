@@ -10,6 +10,8 @@ import Card from 'react-bootstrap/Card'
 
 
 import DataCall from 'utility/DataCallJS'
+import AttrTool from 'utility/JqAttr'
+import Siblings from 'utility/JqSiblings'
 import CSS from 'utility/CSStool'
 import SeeAndSave from 'utility/SeeAndSave'
 import APIcall from 'utility/APIcall'
@@ -51,20 +53,25 @@ export default  function AllStrainContainer(props:any) {
         console.log('text')
         console.log(text)
         
-        $.ajax({
-            method: 'get',
-            url: 'api/getSpecifiedStrain',   
-            data: text.toString(),
-            success: async () => {
-                console.log("in the success block")
-                let clientside = await getSpecifiedStrain(text, '')
-                console.log('clientside')
-                console.log(clientside)
-            }
-        }).then( (data) => {
-            console.log('data over here!')
-            console.log(data)
-        })
+        // await AttrTool(target, 'value', text)
+        
+        // await AttrTool(target, 'value', text)
+
+        // CSS($('.strainInput'), 'background-color', 'blue')
+        let sisterelem = await Siblings($(event.target))
+        console.log('sisterelem')
+        console.log(sisterelem)
+
+        // CSS(target, 'background-color', 'blue')
+        
+        // $.ajax({
+        //     method: 'get',
+        //     url: 'api/getSpecifiedStrain',   
+        //     data: text,            
+        // }).then( (data) => {
+        //     console.log('data over here!')
+        //     console.log(data)
+        // })
 
         
 
@@ -98,6 +105,11 @@ export default  function AllStrainContainer(props:any) {
             className={styles.BstrapContCard}
             style={{ width: '18rem' }}>            
             <Card.Body>
+            <form>
+            <input
+            className="strainInput" 
+            id={styles.InvisibleInput}/>
+            </form>
             <li  
             onClick={strainClick}
             style={{ textAlign: 'center' }}
