@@ -19,6 +19,7 @@ import SeeAndSave from 'utility/SeeAndSave'
 import APIcall from 'utility/APIcall'
 import MasterListStyle from 'utility/MasterListStyle'
 import getSpecifiedStrain from 'pages/api/getSpecifiedStrain';
+import { createNoSubstitutionTemplateLiteral } from 'typescript'
 
 
 
@@ -52,7 +53,7 @@ export default  function AllStrainContainer(props:any) {
         let target = event.target
         let childrenOfTarget = await Children(target)
         let text = event.target.innerText        
-    
+        
         // let predata = await Axios.get(`api/getSpecifiedStrain`) 
         // let predata = await Axios({
         //     method: 'GET',
@@ -60,9 +61,18 @@ export default  function AllStrainContainer(props:any) {
         // })
         let predata = await DataCall('axios', `api/getAllStrain`, null)
         let data = predata.getdata         // cant do data:string because then you can't use
-        data.forEach( (straindata:string) => {
+        data.forEach( (straindata:any) => {           // this lets us avoid using [:any]
             console.log('straindata')
-            console.log(straindata)
+            let name:string = straindata.strain
+            console.log('name')
+            console.log(name)
+            
+            if (straindata.strain === text) {
+                console.log('we have a match in the loop')
+                console.log('text')
+                console.log(text)
+                setClickedStrain(text)
+            }
         })
         
         //*  */ let predata = await Axios.get(`api/getSpecifiedStrain`) working copy 
