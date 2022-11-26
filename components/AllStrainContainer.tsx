@@ -30,12 +30,19 @@ export default  function AllStrainContainer(props:any) {
     const [nothing, setNothing] = useState()
     const [bgToggle, setBgToggle] = useState('new')
     const [textState, setTextState] = useState('')
-    const [clickedStrain, setClickedStrain] = useState('')
+
+    let clickedStrain = props.clickedStrain
+    let setClickedStrain = props.setClickedStrain
+    console.log(clickedStrain)
+    console.log(setClickedStrain)
+    // const [clickedStrain, setClickedStrain] = useState('')
 
     const checkstyles = async () => {        
         let allsass = await MasterListStyle('straincontainer')                
     }
     const toggleBg = async () => {
+        // console.log('clickedStrain')
+        // console.log(clickedStrain)
         if (bgToggle === 'old') setBgToggle('new')
         else if (bgToggle === 'new') setBgToggle('old')
     }
@@ -60,18 +67,16 @@ export default  function AllStrainContainer(props:any) {
         //     url: 'api/getAllStrain',           
         // })
         let predata = await DataCall('axios', `api/getAllStrain`, null)
+
+
         let data = predata.getdata         // cant do data:string because then you can't use
         data.forEach( (straindata:any) => {           // this lets us avoid using [:any]
             console.log('straindata')
-            let name:string = straindata.strain
-            console.log('name')
-            console.log(name)
-            
+            let name:string = straindata.strain            
+
             if (straindata.strain === text) {
-                console.log('we have a match in the loop')
-                console.log('text')
                 console.log(text)
-                setClickedStrain(text)
+                // setClickedStrain(text)
             }
         })
         
