@@ -60,41 +60,32 @@ export default  function AllStrainContainer(props:any) {
         //     method: 'GET',
         //     url: 'api/getAllStrain',           
         // })
-        let predata = await DataCall('axios', `api/getAllStrain`, null)
+        // let predata = await DataCall('axios', `api/getSpecifiedStrain`, null)
 
+        // let predata = await Axios({
+        //     method: 'get',
+        //     url: `api/getSpecifiedStrain`,
+        // })
 
+        let predata = await Axios.create({
+            baseURL: 'api.getSpecifiedStrain',
+            // timeout: 2000
+            headers: {},
+            transformResponse: [function (data) {
+                // Do whatever you want to transform the data
+                    console.log("atleast we are in this function")                    
+                return data;
+              }],
+        })
+        
+        let pokedata = await Axios.get(`https://pokeapi.co/api/v2/pokemon/slowpoke`)
+        // let pokedata = DataCall('axios', `/getAllStrains`, null)
 
-        const VerifyThenStateChange = async () => {            
-            let data = predata.getdata         // cant do data:string because then you can't use
-            data.forEach( (straindata:any) => {           // this lets us avoid using [:any]
-                console.log('straindata')
-                let name:string = straindata.strain            
-                if (straindata.strain === text) {
-                    console.log(text)
-                    setClickedStrain(text)
-                    // setClickedStrain(text)
-                }
-            })
-        }
-
-        const getTheData = async () => {
-            //*  */ let predata = await Axios.get(`api/getSpecifiedStrain`) working copy 
-            // let pokedata = await Axios.get(`https://pokeapi.co/api/v2/pokemon/slowpoke`)
-            let pokedata = DataCall('axios', `getAllStrains`, null)
-            let goodfetch = await getSpecifiedStrain({myRequest: 'please'}, [], clickedStrain)
-            console.log('pokedata')
-            console.log(pokedata)
-
-            console.log('goodfetch')
-            console.log(goodfetch)
-        }
-
-        const doubleUp = async () => {
-            console.log("doubling up right now ")
-            await VerifyThenStateChange()
-            await getTheData()
-        }
-        doubleUp()
+        console.log('heres our data')
+        console.log('predata')
+        console.log(predata)
+        console.log(pokedata)
+        
                 
         // await specifyDbStrain(target, {})
         // let returndata = await DataCall('ajax', '/api/getSpecifiedStrain', null)
