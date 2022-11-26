@@ -51,42 +51,15 @@ export default  function AllStrainContainer(props:any) {
         let target = event.target
         let text = event.target.innerText        
     
+        await specifyDbStrain(target, {})
         
-        const familyTree = async () => {
-            let sis:object|any = await Siblings($(event.target))            
-            let niece:object|any = await Children(sis)            
-            await AttrTool(niece, 'value', text)    // text is the innertext which is the name of the strain.
-            // $('#strainForm').css('border', '8px solid goldenrod')
-            sis.submit()
-        }
-        familyTree()
-        
-
-        // CSS(target, 'background-color', 'blue')
-        
-        // $.ajax({
-        //     method: 'get',
-        //     url: 'api/getSpecifiedStrain',   
-        //     data: text,            
-        // }).then( (data) => {
-        //     console.log('data over here!')
-        //     console.log(data)
-        // })
-
-        
-
-
-        // $.ajax({ 
-        //     method: 'get',
-        //     url: `/api/getAllStrain`,
-        //     data: 'json'
-        // }).then( (data) => {
-        //     console.log('data')
-        //     console.log(data)
-             
-        // })
-
-        let clickedstrain = await APIcall('specify', text, setClickedStrain)                
+        // const familyTree = async () => {
+        //     let sis:object|any = await Siblings($(event.target))            
+        //     let niece:object|any = await Children(sis)            
+        //     await AttrTool(niece, 'value', text)            
+        // }
+        // familyTree()        
+        // let clickedstrain = await APIcall('specify', text, setClickedStrain)                
         
         
     }
@@ -105,13 +78,13 @@ export default  function AllStrainContainer(props:any) {
             className={styles.BstrapContCard}
             style={{ width: '18rem' }}>            
             <Card.Body>
-            <form action="/api/getAllStrain" method="GET" id="strainForm">
+            {/* <form action="/api/getAllStrain" method="POST" id="strainForm">
             <input
             className="strainInput" 
             id={styles.InvisibleInput}
             />
             <input type="submit"/>
-            </form>
+            </form> */}
             <li  
             onClick={strainClick}
             style={{ textAlign: 'center' }}
