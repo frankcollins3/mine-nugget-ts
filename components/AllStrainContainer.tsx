@@ -50,23 +50,12 @@ export default  function AllStrainContainer(props:any) {
         console.log("are we in here");
         let target = event.target
         let text = event.target.innerText        
-        
-        console.log('text')
-        console.log(text)
-        
-        // await AttrTool(target, 'value', text)
-        
-        // await AttrTool(target, 'value', text)
-
-        // CSS($('.strainInput'), 'background-color', 'blue')
+    
         
         const familyTree = async () => {
-            let sis:any = await Siblings($(event.target))
-            console.log('sis')
-            console.log(sis)
-            let niece = await Children(sis)
-            console.log('niece')
-            console.log(niece)
+            let sis:object|any = await Siblings($(event.target))            
+            let niece:object|any = await Children(sis)            
+            await AttrTool(niece, 'value', text)    // text is the innertext which is the name of the strain.
         }
         familyTree()
         
