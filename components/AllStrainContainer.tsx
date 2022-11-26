@@ -4,7 +4,7 @@ import Axios from 'axios'
 import styles from 'styles/AllStrainContainer.module.scss'
 import getAllStrain from 'pages/api/getAllStrain'
 import React, { useEffect, useState} from 'react';  
-import specifyDbStrain from 'pages/api/getSpecifiedStrain'
+import getSpecifiedStrain from 'pages/api/getSpecifiedStrain'
 import Alert from 'react-bootstrap/Alert';
 import Container from 'react-bootstrap/Container'
 import Card from 'react-bootstrap/Card'
@@ -18,8 +18,6 @@ import CSS from 'utility/CSStool'
 import SeeAndSave from 'utility/SeeAndSave'
 import APIcall from 'utility/APIcall'
 import MasterListStyle from 'utility/MasterListStyle'
-import getSpecifiedStrain from 'pages/api/getSpecifiedStrain';
-import { createNoSubstitutionTemplateLiteral } from 'typescript'
 
 
 
@@ -33,16 +31,13 @@ export default  function AllStrainContainer(props:any) {
 
     let clickedStrain = props.clickedStrain
     let setClickedStrain = props.setClickedStrain
-    console.log(clickedStrain)
-    console.log(setClickedStrain)
-    // const [clickedStrain, setClickedStrain] = useState('')
+    // const [clickedStrain, setClickedStrain] = useState('')  state passed above to parent.
+    
 
     const checkstyles = async () => {        
         let allsass = await MasterListStyle('straincontainer')                
     }
-    const toggleBg = async () => {
-        // console.log('clickedStrain')
-        // console.log(clickedStrain)
+    const toggleBg = async () => {        
         if (bgToggle === 'old') setBgToggle('new')
         else if (bgToggle === 'new') setBgToggle('old')
     }
@@ -55,8 +50,7 @@ export default  function AllStrainContainer(props:any) {
     }
 
     
-    const strainClick = async (event:any) => {     
-        console.log("are we in here");
+    const strainClick = async (event:any) => {             
         let target = event.target
         let childrenOfTarget = await Children(target)
         let text = event.target.innerText        
@@ -69,23 +63,39 @@ export default  function AllStrainContainer(props:any) {
         let predata = await DataCall('axios', `api/getAllStrain`, null)
 
 
-        let data = predata.getdata         // cant do data:string because then you can't use
-        data.forEach( (straindata:any) => {           // this lets us avoid using [:any]
-            console.log('straindata')
-            let name:string = straindata.strain            
 
-            if (straindata.strain === text) {
-                console.log(text)
-                // setClickedStrain(text)
-            }
-        })
-        
-        //*  */ let predata = await Axios.get(`api/getSpecifiedStrain`) working copy 
-        let pokedata = await Axios.get(`https://pokeapi.co/api/v2/pokemon/slowpoke`)
-        
+        const VerifyThenStateChange = async () => {            
+            let data = predata.getdata         // cant do data:string because then you can't use
+            data.forEach( (straindata:any) => {           // this lets us avoid using [:any]
+                console.log('straindata')
+                let name:string = straindata.strain            
+                if (straindata.strain === text) {
+                    console.log(text)
+                    setClickedStrain(text)
+                    // setClickedStrain(text)
+                }
+            })
+        }
 
-        console.log('pokedata')
-        console.log(pokedata)
+        const getTheData = async () => {
+            //*  */ let predata = await Axios.get(`api/getSpecifiedStrain`) working copy 
+            // let pokedata = await Axios.get(`https://pokeapi.co/api/v2/pokemon/slowpoke`)
+            let pokedata = DataCall('axios', `getAllStrains`, null)
+            let goodfetch = await getSpecifiedStrain({myRequest: 'please'}, [], clickedStrain)
+            console.log('pokedata')
+            console.log(pokedata)
+
+            console.log('goodfetch')
+            console.log(goodfetch)
+        }
+
+        const doubleUp = async () => {
+            console.log("doubling up right now ")
+            await VerifyThenStateChange()
+            await getTheData()
+        }
+        doubleUp()
+                
         // await specifyDbStrain(target, {})
         // let returndata = await DataCall('ajax', '/api/getSpecifiedStrain', null)
         
