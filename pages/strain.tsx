@@ -8,12 +8,12 @@ import AjaxCall from 'utility/AjaxCall'
 // import DataCall from 'utility/DataCall'
 import DataCall from 'utility/DataCallJS'
 import Axios from 'axios';
-
 let relativepath = `/api/getAllStrain.ts`
+
 
     const access = async (context:any) => {        
         let url:string = await ReturnUrl(context);  
-        let ajaxstraindata = await DataCall('fetch', `${url}/api/getAllStrain`, null) // /pages/api/getAllStrains
+        let ajaxstraindata = await DataCall('axios', `${url}/api/getAllStrain`, null) // /pages/api/getAllStrains
         console.log('ajaxstraindata')
         console.log(ajaxstraindata)
         // let ajaxstraindata = await AjaxCall(`${url}/api/getAllStrain`, null, null) // /pages/api/getAllStrains
@@ -32,7 +32,8 @@ export async function getServerSideProps(context:any) {
     };
   }
 
-export default  function Strain ( props:any ) {          
+export default  function Strain ( props:any ) {    
+    const [clickedStrain, setClickedStrain] = useState('')      
     console.log('props.serverdata')
     console.log(props.serverdata)
 
@@ -41,13 +42,14 @@ export default  function Strain ( props:any ) {
 
     return (
         <div className={classList}>
-            <AllStrainContainer           
+            <AllStrainContainer    
+                clickedStrain={clickedStrain} setClickedStrain={setClickedStrain}       
                 serverdata={props.serverdata}      
                 url={props.url} setUrl={props.setUrl}
                 allStrains={props.allStrains} setAllStrains={props.setAllStrains}
                 currentStrain={props.currentStrain} setCurrentStrain={props.setCurrentStrain}            
              />
-            <button onClick={access}> </button>            
+            {/* <button onClick={access}> </button>             */}
         </div>
     )
 }
