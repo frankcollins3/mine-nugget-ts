@@ -2,7 +2,7 @@ import Strain from 'pages/strain'
 import $ from 'jquery' // import * as $ from 'jquery'
 import Axios from 'axios'
 import styles from 'styles/AllStrainContainer.module.scss'
-import getAllStrain from 'pages/api/getAllStrain'
+import getAllStrain from 'pages/api/strains/strain'
 import React, { useEffect, useState} from 'react';  
 import getSpecifiedStrain from 'pages/api/getSpecifiedStrain'
 import Alert from 'react-bootstrap/Alert';
@@ -54,7 +54,8 @@ export default  function AllStrainContainer(props:any) {
         let target = event.target
         let childrenOfTarget = await Children(target)
         let text = event.target.innerText        
-        
+        console.log('target')
+        console.log(target)
         // let predata = await Axios.get(`api/getSpecifiedStrain`) 
         // let predata = await Axios({
         //     method: 'GET',
@@ -62,31 +63,38 @@ export default  function AllStrainContainer(props:any) {
         // })
         // let predata = await DataCall('axios', `api/getSpecifiedStrain`, null)
 
-        // let predata = await Axios({
-        //     method: 'get',
-        //     url: `api/getSpecifiedStrain`,
-        // })
-
-        let predata = await Axios.create({
-            baseURL: 'api.getSpecifiedStrain',
-            // timeout: 2000
-            headers: {},
-            transformResponse: [function (data) {
-                // Do whatever you want to transform the data
-                    console.log("atleast we are in this function")                    
-                return data;
-              }],
+        let predata = await Axios({
+            method: 'get',
+            url: `api/strains/strain/2`,
+            // data: text 
+            // data: { text }
         })
+
+        console.log('predata')
+        console.log(predata)
+
+        // let predata = await Axios.create({
+        //     method: 'get',
+        //     baseURL: 'api/strains/strain',
+        //     // timeout: 2000
+        //     headers: {},
+        //     data: { my: 'data' },
+        //     transformResponse: [function (data) {
+        //         // Do whatever you want to transform the data
+        //             console.log("atleast we are in this function")                    
+        //             console.log('data')
+        //             console.log(data)
+        //         return data;
+        //       }],
+        //     })
+            // let axiosfactory = predata.get()
+              
         
         let pokedata = await Axios.get(`https://pokeapi.co/api/v2/pokemon/slowpoke`)
         // let pokedata = DataCall('axios', `/getAllStrains`, null)
-
-        console.log('heres our data')
-        console.log('predata')
-        console.log(predata)
-        console.log(pokedata)
         
-                
+
+        
         // await specifyDbStrain(target, {})
         // let returndata = await DataCall('ajax', '/api/getSpecifiedStrain', null)
         
