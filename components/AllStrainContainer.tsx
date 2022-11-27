@@ -146,6 +146,7 @@ export default  function AllStrainContainer(props:any) {
             <ul>
             {/* <ul className={styles.ul}> */}
                 <li
+                 id={id.toString()}
                  onClick={strainClick}
                  style={{ 
                     // border: '2px solid papayawhip',
