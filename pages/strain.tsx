@@ -4,6 +4,7 @@ import StrainDisplay from 'components/StrainDisplay'
 import styles from 'styles/Strain.module.scss'
 import getAllStrain from 'pages/api/strains/strain'
 import Random from 'utility/Randomizer'
+import Children from 'utility/jqChildren'
 import React, { useEffect, useState, useContext } from 'react'
 import ReturnUrl from 'utility/ReturnUrl'
 import AjaxCall from 'utility/AjaxCall'
@@ -16,22 +17,17 @@ let relativepath = `/api/getAllStrain.ts`
 import styled from 'styled-components'
 import Display from 'styles/StrainDisplay'
 
-const changeMe = async (event) => {
-  console.log('hey im being clicked')
-  let target = $(event.target)
-  $(event.target).css('height', '400px')
-  await CSS($(event.target), 'border', '5px solid white')
-}
+
+
 
 
 export async function getServerSideProps(context:any) {      
-
+        
   
 
         let url:any = await ReturnUrl(context);    
         let pokeurl = `https://pokeapi.co/api/v2/pokemon/`    
         let predata = await fetch(new URL(`${url}/api/strains/strain`))
-
     
         // let updateit = await fetch(new URL(`${url}/api/strains/update`))        
         // let updateit = await DataCall('axios', `${url}/api/strains/update`, null)
@@ -46,7 +42,18 @@ export async function getServerSideProps(context:any) {
     };
   }
 
-export default  function Strain ( props:any, {changeMe} ) {       
+export default  function Strain ( props:any, context ) {       
+      useEffect( () => {
+        // let body = $('body')   this expression is not callable.
+        (async() => {
+
+          let childelem:any = await Children($('body'))
+          // let childelem:(object|string) = await Children(body)
+          console.log('childelem') 
+          console.log(childelem) 
+        })()
+        
+    }, [])
   
     const [clickedStrain, setClickedStrain] = useState()
 
@@ -78,12 +85,10 @@ export default  function Strain ( props:any, {changeMe} ) {
                 allStrains={props.allStrains} setAllStrains={props.setAllStrains}
                 currentStrain={props.currentStrain} setCurrentStrain={props.setCurrentStrain}            
                 />
-            {/* <button onClick={access}> </button>             */}
 
 
                     
                   <StrainDisplay  
-                  onClick={ changeMe }                
                   clickedStrain={clickedStrain} setClickedStrain={setClickedStrain}       
                   />                  
         </div>
