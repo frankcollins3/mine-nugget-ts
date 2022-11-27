@@ -8,34 +8,26 @@ import Card from 'react-bootstrap'
 import $ from 'jquery'
 import CSS from 'utility/CSStool'
 
-// const changeMe = async (event) => {
-//     console.log('hey im being clicked')
-//     let target = $(event.target)
-//     // $(event.target).css('height', '400px')
-//     CSS($(event.target), 'border', '5px solid white')
-// }
 
 export default function StrainDisplay (props) {
-// export default function StrainDisplay (props:(string|object)) {
-// if i do props:(object|string)
-//     Type '{ clickedStrain: string; setClickedStrain: Dispatch<SetStateAction<string>>; }' is not assignable to type 'IntrinsicAttributes & (string | object)'.
-//   Property 'clickedStrain' does not exist on type 'IntrinsicAttributes & object'.ts(2322)
-    
+    let columnclass = 'Column'
+    let card = 'card'   // i wonder if doing this likes this takes the string data out of the scope of being tied to bootstrap 
+    // bootstrap might only apply to inline styling. these 2 might be blended like a normal string.
+    let doubleCardClass = [card, columnclass].join(' ')
+
     return (
 
     // return as any (
-        // clickedStrain={props.clickedStrain}
-        // <Display
-    // 
-        // <p> hi</p>
 <>
         <CardStyle
         // <Display
             clickedStrain={props.clickedStrain} setClickedStrain={props.setClickedStrain}
         >
-            <div class="card">
+            <div className={doubleCardClass}>
+            {/* <div className="card Column"> */}
             {/* <div class="card-body"> */}
-                This is some text within a card body.
+                {/* This is some text within a card body. */}
+                <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
             {/* </div> */}
             </div>
     
