@@ -44,24 +44,21 @@ export default function Home( props: any, {poke}:any) {
   const classList = [styles.Container, styles.Column].join(" ")
 
   const checkAPI = async () => {  
-    let predata: any[] = await [APIcall('all', null, setCurrentStrain)]
-    // console.log(dbStrains)
-    // let specify = await APIcall('specify', 'wedding cake', setCurrentStrain)
-    let randomstrain = await APIcall('random', null, setCurrentStrain)      
-    // allStrain({strain: randomstrain.strain})
+    let predata: any[] = await [APIcall('all', null, setCurrentStrain)]        
+    let randomstrain = await APIcall('random', null, setCurrentStrain)          
     }
 
+
+
   const strainfunc = async () => {
-    let btn = $('.button')
-    console.log("we are clicking the strainfunc");
-    // $('.button').css('border', '5px solid hotpink');
+    let btn = $('.button')        
     CSS(btn, 'border', '5px solid hotpink');
     $.ajax({
       method: 'post',
-      url: '/api/allStrain',
-      data: {
-       key: 'all'
-      }
+      url: '/api/strains/allStrain',
+      // data: {
+      //  key: 'all'
+      // }
     }).then( (msg) => {
       console.log('msg we are in the .then() statement')
       console.log(msg)      // res.json( { successObject: allstrainspost})   * the console.log(msg) is this    res.json() 
