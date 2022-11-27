@@ -56,6 +56,7 @@ export default  function Strain ( props:any, context ) {
     }, [])
   
     const [clickedStrain, setClickedStrain] = useState()
+    const [bgToggle, setBgToggle] = useState('new')
 
     console.log('props.serverdata')
     console.log(props.serverdata)
@@ -78,7 +79,8 @@ export default  function Strain ( props:any, context ) {
         
 
         <div className={classList}>
-            <AllStrainContainer    
+            <AllStrainContainer   
+                bgToggle={bgToggle} setBgToggle={setBgToggle}
                 clickedStrain={clickedStrain} setClickedStrain={setClickedStrain}       
                 serverdata={props.serverdata}      
                 url={props.url} setUrl={props.setUrl}
@@ -89,6 +91,7 @@ export default  function Strain ( props:any, context ) {
 
                     
                   <StrainDisplay  
+                  bgToggle={bgToggle} setBgToggle={setBgToggle}
                   clickedStrain={clickedStrain} setClickedStrain={setClickedStrain}       
                   />                  
         </div>
