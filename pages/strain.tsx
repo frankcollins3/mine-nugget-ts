@@ -1,10 +1,11 @@
 import styles from 'styles/Strain.module.scss'
-import getAllStrain from 'pages/api/getAllStrain'
+import getAllStrain from 'pages/api/strains/strain'
 import AllStrainContainer from 'components/AllStrainContainer'
 import Random from 'utility/Randomizer'
 import React, { useEffect, useState, useContext } from 'react'
 import ReturnUrl from 'utility/ReturnUrl'
 import AjaxCall from 'utility/AjaxCall'
+import $ from 'jquery'
 // import DataCall from 'utility/DataCall'
 import DataCall from 'utility/DataCallJS'
 import Axios from 'axios';
@@ -12,10 +13,20 @@ let relativepath = `/api/getAllStrain.ts`
 
 
 
-export async function getServerSideProps(context:any) {            
+export async function getServerSideProps(context:any) {      
+
+  
+
         let url:any = await ReturnUrl(context);    
         let pokeurl = `https://pokeapi.co/api/v2/pokemon/`    
-        let predata = await fetch(new URL(`${url}/api/getAllStrain`))
+        let predata = await fetch(new URL(`${url}/api/strains/strain`))
+
+    
+        // let updateit = await fetch(new URL(`${url}/api/strains/update`))        
+        let updateit = await DataCall('axios', `${url}/api/strains/update`, null)
+        console.log('updateit')
+        console.log(updateit)
+        
         let serverdata = await predata.json()
     return {
       props: {
