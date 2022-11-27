@@ -5,9 +5,10 @@ import styles from 'styles/AllStrainContainer.module.scss'
 import getAllStrain from 'pages/api/strains/strain'
 import React, { useEffect, useState} from 'react';  
 import getSpecifiedStrain from 'pages/api/getSpecifiedStrain'
-import Alert from 'react-bootstrap/Alert';
+// import Alert from 'react-bootstrap/Alert';
 import Container from 'react-bootstrap/Container'
-import Card from 'react-bootstrap/Card'
+// import Card from 'react-bootstrap/Card'
+import {Alert, Card} from 'react-bootstrap'
 
 
 import DataCall from 'utility/DataCallJS'
@@ -26,7 +27,7 @@ import MasterListStyle from 'utility/MasterListStyle'
 export default  function AllStrainContainer(props:any) {   
     const [styleFile, setStyleFile] = useState('')
     const [nothing, setNothing] = useState()
-    const [bgToggle, setBgToggle] = useState('new')
+    // const [bgToggle, setBgToggle] = useState('new')
     const [textState, setTextState] = useState('')
 
     let clickedStrain = props.clickedStrain
@@ -38,8 +39,8 @@ export default  function AllStrainContainer(props:any) {
         let allsass = await MasterListStyle('straincontainer')                
     }
     const toggleBg = async () => {        
-        if (bgToggle === 'old') setBgToggle('new')
-        else if (bgToggle === 'new') setBgToggle('old')
+        if (props.bgToggle === 'old') props.setBgToggle('new')
+        else if (props.bgToggle === 'new') props.setBgToggle('old')
     }
     const nowYouSee = (event:any) => {
         CSS($(event.target), 'color', 'papayawhip')
@@ -53,11 +54,14 @@ export default  function AllStrainContainer(props:any) {
     const strainClick = async (event:any) => {             
         let target = event.target
         let childrenOfTarget = await Children(target)
-        let text = event.target.innerText      
-        let strainId = event.target.attributes[0].nodeValue       
-        let otherstrainId = event.target.id
+        let text:string = event.target.innerText      
+        let strainId:string = event.target.attributes[0].nodeValue       
+        let otherstrainId:(string|number) = event.target.id
         console.log('otherstrainId')   
         console.log(otherstrainId)   
+        props.setClickedStrain(text)
+        await console.log('props.clickedStrain this is in the strain click function')
+        await console.log(props.clickedStrain)
         // let predata = await Axios.get(`api/getSpecifiedStrain`) 
         // let predata = await Axios({
         //     method: 'GET',
@@ -89,8 +93,9 @@ export default  function AllStrainContainer(props:any) {
             }],
         })
         let axiosfactory = await predata.get(`api/strains/strain/${strainId}`) // oops didn't use async had promise returned.
-        console.log('axiosfactory')
-        console.log(axiosfactory)
+        let returnedId = axiosfactory.data
+        console.log('returnedId')
+        console.log(returnedId)
     
         
         let pokedata = await Axios.get(`https://pokeapi.co/api/v2/pokemon/slowpoke`)
@@ -126,7 +131,7 @@ export default  function AllStrainContainer(props:any) {
             <div key={'column' + index} className="Column">
             <img key={`id ${strain} `} src=""/>
 
-            {bgToggle === 'new' ?
+            {props.bgToggle === 'new' ?
             <Card 
             className={styles.BstrapContCard}
             style={{ width: '18rem' }}>            
@@ -180,7 +185,7 @@ export default  function AllStrainContainer(props:any) {
             style={{ overflowY: 'scroll' }}
             className={styles.ColumnCenter}>
             {/* {strainmap} */}
-           {bgToggle === 'new' 
+           {props.bgToggle === 'new' 
            ?
            strainmap
            :    
