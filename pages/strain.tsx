@@ -74,7 +74,9 @@ export default  function Strain ( props:any ) {
             <button onClick={access}> </button>            
 
                 <Display>
-                  <StrainDisplay/>
+                  <StrainDisplay                  
+                  clickedStrain={clickedStrain} setClickedStrain={setClickedStrain}       
+                  />
                 </Display>
         </div>
 
