@@ -41,7 +41,7 @@ export async function getServerSideProps(context:any) {
   }
 
 export default  function Strain ( props:any ) {    
-    const [clickedStrain, setClickedStrain] = useState('')
+    const [clickedStrain, setClickedStrain] = useState()
 
     console.log('props.serverdata')
     console.log(props.serverdata)
@@ -73,12 +73,15 @@ export default  function Strain ( props:any ) {
                 />
             <button onClick={access}> </button>            
 
-                <Display>
+                  <Display
+                  dummyProp='dummypropstring'
+                  clickedStrain={clickedStrain} setClickedStrain={setClickedStrain}       
+                  >
+                    
                   <StrainDisplay                  
-                  dummyProp={'dummypropstring'}
                   clickedStrain={clickedStrain} setClickedStrain={setClickedStrain}       
                   />
-                </Display>
+                  </Display>
         </div>
 
 
