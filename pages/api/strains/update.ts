@@ -6,6 +6,21 @@ export default async function update (req:any, res:any) {              // res:st
     // console.log(req)
 
     let dbstrains = await prisma.strains.findMany()
+    const orderstrains  = await prisma.strains.findMany({
+        orderBy: [
+          {
+            strainId: 'asc',
+          },
+        //   {
+        //     name: 'desc',
+        //   },
+        ],
+
+      })
+      
+    console.log('orderstrains')
+    console.log(orderstrains)
+
     dbstrains.forEach( (data:string|object) => {
         console.log('data in the dbstrains foreach')
         console.log(data)
