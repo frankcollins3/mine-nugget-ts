@@ -26,6 +26,10 @@ export default async function update (req:any, res:any) {              // res:st
         console.log(data)
     })
 
+    const count = {};
+    dbstrains.forEach(function(i) { count[i] = (count[i]||0) + 1;});
+    console.log(count);
+
 
 
     // console.log(strains)
