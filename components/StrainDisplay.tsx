@@ -23,12 +23,10 @@ export default function StrainDisplay (props) {
         // <Display
             clickedStrain={props.clickedStrain} setClickedStrain={props.setClickedStrain}
         >
-            <div className={doubleCardClass}>
-            {/* <div className="card Column"> */}
-            {/* <div class="card-body"> */}
-                {/* This is some text within a card body. */}
+                <div 
+                style={{ background: 'transparent'}}
+                className={doubleCardClass}>            
                 <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            {/* </div> */}
             </div>
     
          </CardStyle>            
