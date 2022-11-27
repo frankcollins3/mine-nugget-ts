@@ -3,9 +3,14 @@ import styled from 'styled-components';
 
 const Display = styled.div`
     
-    opacity: ${props => props.clickedStrain ? "1.0" : "0.1"};
+    
+    opacity: ${props => {
+        console.log('props in the styled component ')
+        console.log(props)
+    }}
+
     margin-top: 1.5em;
-    border: 5px solid hotpink;
+    border: 5px solid papayawhip;
     height: 200px;
     width: 400px;    
   }
