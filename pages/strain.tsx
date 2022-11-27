@@ -9,13 +9,19 @@ import ReturnUrl from 'utility/ReturnUrl'
 import AjaxCall from 'utility/AjaxCall'
 import $ from 'jquery'
 // import DataCall from 'utility/DataCall'
+import CSS from 'utility/CSStool'
 import DataCall from 'utility/DataCallJS'
 import Axios from 'axios';
 let relativepath = `/api/getAllStrain.ts`
 import styled from 'styled-components'
 import Display from 'styles/StrainDisplay'
 
-
+const changeMe = async (event) => {
+  console.log('hey im being clicked')
+  let target = $(event.target)
+  $(event.target).css('height', '400px')
+  await CSS($(event.target), 'border', '5px solid white')
+}
 
 
 export async function getServerSideProps(context:any) {      
@@ -40,7 +46,8 @@ export async function getServerSideProps(context:any) {
     };
   }
 
-export default  function Strain ( props:any ) {    
+export default  function Strain ( props:any, {changeMe} ) {       
+  
     const [clickedStrain, setClickedStrain] = useState()
 
     console.log('props.serverdata')
@@ -71,17 +78,14 @@ export default  function Strain ( props:any ) {
                 allStrains={props.allStrains} setAllStrains={props.setAllStrains}
                 currentStrain={props.currentStrain} setCurrentStrain={props.setCurrentStrain}            
                 />
-            <button onClick={access}> </button>            
+            {/* <button onClick={access}> </button>             */}
 
-                  <Display
-                  dummyProp='dummypropstring'
-                  clickedStrain={clickedStrain} setClickedStrain={setClickedStrain}       
-                  >
+
                     
-                  <StrainDisplay                  
+                  <StrainDisplay  
+                  onClick={ changeMe }                
                   clickedStrain={clickedStrain} setClickedStrain={setClickedStrain}       
-                  />
-                  </Display>
+                  />                  
         </div>
 
 
