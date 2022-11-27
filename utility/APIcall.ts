@@ -24,11 +24,13 @@ async function APIcall(action:string, strain:(string|number|null), setState:(any
         const specifybucket = new Array()
 
         const specifyStrain = async () => {
-            strains.forEach( (loopstrain:any) => { // cant use strain:object because the goal output is to dig down an endpoint or 2 to the strain.strain (basically .name)                                
+            strains.forEach( (loopstrain:any, index:number) => { // cant use strain:object because the goal output is to dig down an endpoint or 2 to the strain.strain (basically .name)                                
                 console.log('loopstrain')
                 console.log(loopstrain)
-                console.log(loopstrain.strainId)
-                console.log(typeof loopstrain.strainId)
+                // console.log(loopstrain.strainId)
+                // console.log(typeof loopstrain.strainId)
+                console.log('index')
+                console.log(index)
                 
                 if (loopstrain.strain === strain || loopstrain.strainId === strain) {                                    
                     console.log("loopstrain id or number equals strain as hoped for")
