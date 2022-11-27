@@ -75,6 +75,7 @@ export default  function Strain ( props:any ) {
 
                 <Display>
                   <StrainDisplay                  
+                  dummyProp={'dummypropstring'}
                   clickedStrain={clickedStrain} setClickedStrain={setClickedStrain}       
                   />
                 </Display>
