@@ -1,15 +1,22 @@
 import styled from 'styled-components'
 import Display from 'styles/StrainDisplay'
 
-export default function StrainDisplay (props:string|object) {
+export default function StrainDisplay (props) {
     console.log('props')
     console.log(props)
     return (
-        <Display>
-
+    // return as any (
+        // clickedStrain={props.clickedStrain}
+        // <Display
+        // 
+        <Display
+        setClickedStrain={props.setClickedStrain}       
+        clickedStrain={props.clickedStrain} 
+        >
         <div>
-            <p> yeah sure </p>            
+                      
         </div>
-        </Display>
+
+         </Display>
     )
 }
