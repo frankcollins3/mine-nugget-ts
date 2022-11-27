@@ -4,8 +4,10 @@ let allurl = `https://pokeapi.co/api/v2/pokemon/`
 let strainurl = `https://frankcollins3.github.io/strainuous/strain.json`
 
 // export default async function APIcall (method:string, pokemon:(string | number | null), stateToChange:any) {
-async function APIcall(action:string, strain:(string|null), setState:(any|null)) {
-
+async function APIcall(action:string, strain:(string|number|null), setState:(any|null)) {
+    console.log('strain')
+    console.log(strain)
+    console.log(typeof strain)
   let accessAPI = await Axios({
         method: 'get',
         url: strainurl,
@@ -23,9 +25,16 @@ async function APIcall(action:string, strain:(string|null), setState:(any|null))
 
         const specifyStrain = async () => {
             strains.forEach( (loopstrain:any) => { // cant use strain:object because the goal output is to dig down an endpoint or 2 to the strain.strain (basically .name)                                
-                if (loopstrain.strain === strain) {                                    
+                console.log('loopstrain')
+                console.log(loopstrain)
+                console.log(loopstrain.strainId)
+                console.log(typeof loopstrain.strainId)
+                
+                if (loopstrain.strain === strain || loopstrain.strainId === strain) {                                    
+                    console.log("loopstrain id or number equals strain as hoped for")
                     specifybucket.push(loopstrain)
                     // specifybucket.push(loopstrain.strain)
+                    return loopstrain
                     setState(strain)
                 }
             })
