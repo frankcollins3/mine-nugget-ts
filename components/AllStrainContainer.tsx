@@ -117,7 +117,7 @@ export default  function AllStrainContainer(props:any) {
     let db:any = props.serverdata.getdata
     let strainmap = db.map( (item:any, index:number) => {        
         let strain = item.strain
-        let id:number = item.id
+        let id:(number|string) = item.id
         return (        
             <div key={'column' + index} className="Column">
             <img key={`id ${strain} `} src=""/>
@@ -135,6 +135,7 @@ export default  function AllStrainContainer(props:any) {
             <input type="submit"/>
             </form> */}
             <li  
+            id={id.toString()}
             onClick={strainClick}
             style={{ textAlign: 'center' }}
             key={id}> {strain} </li>                          
