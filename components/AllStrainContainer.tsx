@@ -63,32 +63,32 @@ export default  function AllStrainContainer(props:any) {
         // })
         // let predata = await DataCall('axios', `api/getSpecifiedStrain`, null)
 
-        let predata = await Axios({
-            method: 'get',
-            url: `api/strains/strain/2`,
+        // let predata = await Axios({
+        //     method: 'get',
+        //     url: `api/strains/strain/2`,
             // data: text 
             // data: { text }
+        // })
+
+        
+        let predata = await Axios.create({
+            // method: 'get',       defaults to get if unspecified.
+            // baseURL: 'api/strains/strain/3',
+            // timeout: 2000
+            // headers: {'Behind-The-Scenes-Thanks-To:': 'HTTP from AXIOS not XML from AJAX'}, oh wow there are valid response headings 
+            // data: { my: 'data' },
+            transformResponse: [function (data) {
+                // Do whatever you want to transform the data
+                console.log("transform response function!")                    
+                console.log('data')
+                console.log(data)
+                return data;
+            }],
         })
-
-        console.log('predata')
-        console.log(predata)
-
-        // let predata = await Axios.create({
-        //     method: 'get',
-        //     baseURL: 'api/strains/strain',
-        //     // timeout: 2000
-        //     headers: {},
-        //     data: { my: 'data' },
-        //     transformResponse: [function (data) {
-        //         // Do whatever you want to transform the data
-        //             console.log("atleast we are in this function")                    
-        //             console.log('data')
-        //             console.log(data)
-        //         return data;
-        //       }],
-        //     })
-            // let axiosfactory = predata.get()
-              
+        let axiosfactory = await predata.get(`api/strains/strain/3`) // oops didn't use async had promise returned.
+        console.log('axiosfactory')
+        console.log(axiosfactory)
+    
         
         let pokedata = await Axios.get(`https://pokeapi.co/api/v2/pokemon/slowpoke`)
         // let pokedata = DataCall('axios', `/getAllStrains`, null)
