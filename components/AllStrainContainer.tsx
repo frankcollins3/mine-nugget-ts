@@ -53,9 +53,13 @@ export default  function AllStrainContainer(props:any) {
     const strainClick = async (event:any) => {             
         let target = event.target
         let childrenOfTarget = await Children(target)
-        let text = event.target.innerText        
-        console.log('target')
-        console.log(target)
+        let text = event.target.innerText      
+        let strainId = event.target.attributes[0].nodeValue          
+        console.log(event)
+        console.log('strainId')
+        console.log(strainId)
+        
+
         // let predata = await Axios.get(`api/getSpecifiedStrain`) 
         // let predata = await Axios({
         //     method: 'GET',
@@ -117,7 +121,8 @@ export default  function AllStrainContainer(props:any) {
     let db:any = props.serverdata.getdata
     let strainmap = db.map( (item:any, index:number) => {        
         let strain = item.strain
-        let id:(number|string) = item.id
+        let id:(number|string) = item.strainId  //oh wow was using sequelize table id getting wrong id.
+        
         return (        
             <div key={'column' + index} className="Column">
             <img key={`id ${strain} `} src=""/>
