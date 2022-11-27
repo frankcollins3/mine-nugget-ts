@@ -7,28 +7,32 @@ export default async function update (req:any, res:any) {              // res:st
 
     let dbstrains = await prisma.strains.findMany()
     
-      await prisma.strains.update({
-        where: {
-          strain: '...',
-        },
-        data: {
-          strain: '',
-        },
-        orderBy: [
-            {
-                strainId: 'asc'
-            }
-        ]
-      })
+    //   await prisma.strains.update({
+    //     where: {
+    //       strain: '...',
+    //     },
+    //     data: {
+    //       strain: '',
+    //     },
+    //     orderBy: [
+    //         {
+    //             strainId: 'asc'
+    //         }
+    //     ]
+    //   })
 
     dbstrains.forEach( (data:string|object) => {
         console.log('data in the dbstrains foreach')
         console.log(data)
     })
 
-    const count = {};
-    dbstrains.forEach(function(i) { count[i] = (count[i]||0) + 1;});
-    console.log(count);
+    const straincount = dbstrains.reduce((acc:any, value:any) => ({
+        ...acc,
+        [value]: (acc[value] || 0) + 1
+     }), {});
+     
+     console.log('straincount');
+     console.log(straincount);
 
 
 
