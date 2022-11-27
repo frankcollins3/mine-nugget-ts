@@ -26,13 +26,26 @@ export default async function update (req:any, res:any) {              // res:st
         console.log(data)
     })
 
-    const straincount = dbstrains.reduce((acc:any, value:any) => ({
-        ...acc,
-        [value]: (acc[value] || 0) + 1
-     }), {});
-     
-     console.log('straincount');
-     console.log(straincount);
+   
+
+
+
+function reducecount(strainArray:string|object[] = []) {            // array:string fails need [str|obj]
+    console.log("we are in the reduce count function")  
+    return dbstrains.reduce( (countWords:any, word:any) => {
+        countWords[word] = ++countWords[word] || 1;
+
+        console.log('countWords')
+        console.log(countWords)
+
+        console.log('word')
+        console.log(word)
+        
+        return countWords;
+    }, {});
+}
+reducecount(dbstrains)
+
 
 
 
