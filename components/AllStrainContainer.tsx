@@ -55,11 +55,6 @@ export default  function AllStrainContainer(props:any) {
         let childrenOfTarget = await Children(target)
         let text = event.target.innerText      
         let strainId = event.target.attributes[0].nodeValue          
-        console.log(event)
-        console.log('strainId')
-        console.log(strainId)
-        
-
         // let predata = await Axios.get(`api/getSpecifiedStrain`) 
         // let predata = await Axios({
         //     method: 'GET',
@@ -80,16 +75,17 @@ export default  function AllStrainContainer(props:any) {
             // baseURL: 'api/strains/strain/3',
             // timeout: 2000
             // headers: {'Behind-The-Scenes-Thanks-To:': 'HTTP from AXIOS not XML from AJAX'}, oh wow there are valid response headings 
-            // data: { my: 'data' },
+            data: { strainId: strainId },
             transformResponse: [function (data) {
                 // Do whatever you want to transform the data
                 console.log("transform response function!")                    
-                console.log('data')
+                console.log('data in the transformResponse clientside')
                 console.log(data)
+
                 return data;
             }],
         })
-        let axiosfactory = await predata.get(`api/strains/strain/3`) // oops didn't use async had promise returned.
+        let axiosfactory = await predata.get(`api/strains/strain/${strainId}`) // oops didn't use async had promise returned.
         console.log('axiosfactory')
         console.log(axiosfactory)
     
