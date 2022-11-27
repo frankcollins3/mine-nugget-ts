@@ -14,18 +14,22 @@ import CSS from 'utility/CSStool'
 export default function StrainDisplay (props) {
     
     return (
+
     // return as any (
         // clickedStrain={props.clickedStrain}
         // <Display
-        // 
+    // 
+        // <p> hi</p>
+<>
         <Display
-        setClickedStrain={props.setClickedStrain}       
-        onClick={props.onClick}        
-        clickedStrain={props.clickedStrain} 
+            clickedStrain={props.clickedStrain} setClickedStrain={props.setClickedStrain}
         >
-        <div>
-            {/* <button onClick={changeMe}></button>               */}
-        </div>
-         </Display>
+            <div>
+
+            </div>
+  
+    
+         </Display>            
+</>
     )
 }
