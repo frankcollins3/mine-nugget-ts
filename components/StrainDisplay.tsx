@@ -1,4 +1,4 @@
-// @ts-nocheck
+\// @ts-nocheck
 import styled from 'styled-components'
 
 // import Display from 'styles/StrainDisplay'
@@ -21,10 +21,17 @@ export default function StrainDisplay (props) {
 <>
         <CardStyle
         // <Display
+            bgToggle={props.bgToggle} setBgToggle={props.setBgToggle}
             clickedStrain={props.clickedStrain} setClickedStrain={props.setClickedStrain}
         >
                 <div 
-                style={{ background: 'transparent'}}
+                style={
+                    { 
+                        background: props.bgToggle === 'old' ? 'transparent' : '', 
+                        color: props.bgToggle === 'old' ? 'white' : 'black'
+                    }
+                    
+                }
                 className={doubleCardClass}>            
                 <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
             </div>
