@@ -10,8 +10,25 @@ async function getSpecifiedStrain(req:any, res:any|null,) {          // changing
 
        const query = req.query
        let strain:string = query.strain
-       console.log('query')
-       console.log(query)
+        
+       let alldbstrains = await prisma.strains.findMany()
+       
+       alldbstrains.forEach( (item) => {
+//        alldbstrains.forEach( (item:object|string) => {                
+                if (item.strain === strain) {
+                        let strain:string = item.strain
+
+                        console.log(`i just clicked on the ${strain}`)
+                        console.log('strain')
+                        console.log(strain)
+                }
+       })
+
+//        prisma.strains.findUnique({
+//         where: {
+//                 strain: 'white widow'
+//         }
+//        })
 
         res.json( { strain })
         // return  { getdata: 'return statement instead of res.json'}
