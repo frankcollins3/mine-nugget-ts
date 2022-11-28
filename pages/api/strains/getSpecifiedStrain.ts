@@ -6,14 +6,16 @@ let prisma = new PrismaClient()
 let strainbucket = new Array() || []
 
 async function getSpecifiedStrain(req:any, res:any|null,) {          // changing or null. if you're invoking the function you don't want a value. its the ajax call that needs the value. this req can be the strain.strain/name
+        strainbucket.splice(0, strainbucket.length) 
         
+
         let prisma = new PrismaClient()
         // console.log('req SERVER SIDE')
        const query = req.query
        let strain:string = query.strain
        let alldbstrains = await prisma.strains.findMany()
         
-        await alldbstrains.forEach( (item) => {
+        await alldbstrains.forEach(async(item) => {
 //        let specifiedstrain = await alldbstrains.forEach( (item) => {
 //        alldbstrains.forEach( (item:object|string) => {                
                 if (item.strain === strain) {
@@ -23,6 +25,8 @@ async function getSpecifiedStrain(req:any, res:any|null,) {          // changing
                         console.log('item in the if block')
                         console.log(item)
                         // return item
+                        
+
                         strainbucket.push(item)
                 }
                 
