@@ -59,42 +59,19 @@ export default  function AllStrainContainer(props:any) {
         let text:string = event.target.innerText      
         let strainId:string = event.target.attributes[0].nodeValue       
         let otherstrainId:(string|number) = event.target.id
-        // console.log('otherstrainId')   
-        // console.log(otherstrainId)   
-        props.setClickedStrain(text)
+        await props.setClickedStrain(text)
 
-        // await console.log('props.clickedStrain this is in the strain click function')
-        // await console.log(props.clickedStrain)
+            let call2 = await $.ajax({
+                method: 'get',
+                url: `api/strains/getSpecifiedStrain`,                
+                data: {   strain: text  }})    
+                // let call2 = await DataCall('axios', `api/strains/getSpecifiedStrain`, null )
 
-        // let predata = await Axios.get(`api/getSpecifiedStrain`) 
-        // let predata = await Axios({
-        //     method: 'GET',
-        //     url: 'api/getAllStrain',           
-        // })
-        // let predata = await DataCall('axios', `api/getSpecifiedStrain`, null)
-
-        let call2 = await $.ajax({
-            method: 'get',
-            url: `api/strains/getSpecifiedStrain`,
-            // url: `https://pokeapi.co/api/v2/pokemon/squirtle`,
-            // data: 'json'
-            data: {
-                strain: text
-            }
-        })
-
-        console.log('call2')
-        console.log(call2)
-
-    
-
-        
-        let predata = await Axios.create({
-            // method: 'get',       defaults to get if unspecified.
-            // baseURL: 'api/strains/strain/3',
-            // timeout: 2000
-            // headers: {'Behind-The-Scenes-Thanks-To:': 'HTTP from AXIOS not XML from AJAX'}, oh wow there are valid response headings 
-            data: { strainId: otherstrainId },
+            console.log('call2')
+            console.log(call2)
+            
+        let predata = await Axios.create({            
+            data: { strain: text },
             transformResponse: [function (data) {
                 // Do whatever you want to transform the data
                 console.log("transform response function!")                    
@@ -107,30 +84,7 @@ export default  function AllStrainContainer(props:any) {
         let axiosfactory = await predata.get(`api/strains/strain/${strainId}`) // oops didn't use async had promise returned.
         let returnedId = axiosfactory.data
         console.log('returnedId')
-        console.log(returnedId)
-    
-        
-        let pokedata = await Axios.get(`https://pokeapi.co/api/v2/pokemon/slowpoke`)
-        // let pokedata = DataCall('axios', `/getAllStrains`, null)
-        
-
-        
-        // await specifyDbStrain(target, {})
-        // let returndata = await DataCall('ajax', '/api/getSpecifiedStrain', null)
-        
-        
-        
-
-        
-        // const familyTree = async () => {
-            // let sis:object|any = await Siblings($(event.target))            
-            // let niece:object|any = await Children(sis)            
-        //     await AttrTool(niece, 'value', text)            
-        // }
-        // familyTree()        
-        // let clickedstrain = await APIcall('specify', text, setClickedStrain)                
-        
-        
+        console.log(returnedId)        
     }
 
     const joinedClassStr = [styles.ul, styles.FlexBottom].join(" ")    
