@@ -13,17 +13,34 @@ strainbucket.splice(0, strainbucket.length)
 let prisma = new PrismaClient()
 // console.log('req SERVER SIDE')
 const query = req.query
-let strain:string = query.strain
+let strainq:string = query.strain
 let alldbstrains = await prisma.strains.findMany()
 
+// strain:(obect|string)
 
-await alldbstrains.forEach(async(item) => {
-        if (item.strain === strain) {
-                let strain:string = item.strain                        
-                // let onestrain = await APIcall('specify', strain, null)                        
-                        strainbucket.push(item)
-        }
-})
+        // let strains = await APIcall('all', null, null)
+        // await strains.forEach(async(strain) => {          
+        //         console.log('strain in the forEach loop')
+        //         console.log(strain)
+
+        //         if (strain.string === strainq) {
+        //                 console.log('strainq they equal each other!s')
+        //                 console.log(strainq)
+        //                 console.log(strain)
+        //                 await strainbucket.push(strain)
+        //         }
+        // })
+
+// let onestrain = await APIcall('specify', strain, null)                        
+
+                await alldbstrains.forEach(async(item) => {
+                        if (item.strain === strainq) {
+                                let strain:string = item.strain                        
+                                console.log('strain')
+                                console.log(strain)
+                                        strainbucket.push(item)
+                        }
+                })
 
 await res.json( strainbucket )
 //                 strain: 'white widow'
