@@ -74,15 +74,13 @@ export default  function AllStrainContainer(props:any) {
             }],
         })
         let axiosfactory = await predata.get(`api/strains/strain/nokey${strainId}`) // oops didn't use async had promise returned.
-        // console.log('axiosfactory')
-        // console.log(axiosfactory)
-        let returnedId = JSON.parse(axiosfactory.data)
         
-        console.log('returnedId')
-        console.log(returnedId)
-        // console.log(returnedId)
-        // console.log('typeof returnedId')
-        // console.log(typeof returnedId)
+        let returnedId = JSON.parse(axiosfactory.data)
+        const {strain, dominant, funfact, parents} = returnedId
+        console.log(strain)
+        console.log(dominant)
+        console.log(funfact)
+        console.log(parents)
         
     }
     
