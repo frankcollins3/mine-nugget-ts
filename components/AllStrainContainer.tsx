@@ -19,6 +19,7 @@ import CSS from 'utility/CSStool'
 import SeeAndSave from 'utility/SeeAndSave'
 import APIcall from 'utility/APIcall'
 import MasterListStyle from 'utility/MasterListStyle'
+import MasterRegex from 'utility/MasterRegex'
 import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript'
 
 
@@ -66,28 +67,26 @@ export default  function AllStrainContainer(props:any) {
                 method: 'get',
                 url: `api/strains/getSpecifiedStrain`,                
                 data: {   strain: text  }})    
-                // let call2 = await DataCall('axios', `api/strains/getSpecifiedStrain`, null )
-
-            console.log('call2')
-            console.log(call2)
-            
-        let predata = await Axios.create({            
-            // data: { key: 'returndata' }, // v.s. see data
-            transformResponse: [function (data) {                
-                console.log(data)
-                return 'see where this goes'
+                
+                
+        let predata = await Axios.create({                        
+            transformResponse: [function (data) {                        
+                return(data)
             }],
         })
-
-        let axiosfactory = await predata.get(`api/strains/strain/${strainId}`) // oops didn't use async had promise returned.
-        // let axiosfactory = await predata.get({
-        //     url: `api/strains/strain/${strainId}`,
-        //     data: {suzuki: 'honda'}
-        // })
+        let axiosfactory = await predata.get(`api/strains/strain/nokey${strainId}`) // oops didn't use async had promise returned.
+        // let axiosfactory = await predata.get({        
         let returnedId = axiosfactory.data
         console.log('returnedId')
         console.log(returnedId)        
+
+        let nokeyfactory = await predata.get(`api/strains/strain/key${strainId}`) // oops didn't use async had promise returned.
+        // let axiosfactory = await predata.get({        
+        let nokeydata = nokeyfactory.data    
+        console.log('nokeydata')        
+        console.log(nokeydata)        
     }
+    
 
     const joinedClassStr = [styles.ul, styles.FlexBottom].join(" ")    
     let db:any = props.serverdata.getdata
@@ -120,7 +119,7 @@ export default  function AllStrainContainer(props:any) {
             </Card>
             :
             <ul>
-                            
+
                 <li
                  id={id.toString()}
                  onClick={strainClick}
