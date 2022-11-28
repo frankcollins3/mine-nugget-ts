@@ -25,7 +25,7 @@ export default  function AllStrainContainer(props:any) {
     const [styleFile, setStyleFile] = useState('')
     const [nothing, setNothing] = useState()
     // const [bgToggle, setBgToggle] = useState('new')
-    const [textState, setTextState] = useState('')
+    // const [textState, setTextState] = useState('')
 
     let clickedStrain = props.clickedStrain
     let setClickedStrain = props.setClickedStrain
@@ -82,7 +82,7 @@ export default  function AllStrainContainer(props:any) {
         console.log(dominant)
         console.log(funfact)
         console.log(parents)
-        setTextState(strain)
+        props.setTextState(strain)
     }
     
 
