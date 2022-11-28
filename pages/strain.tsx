@@ -57,6 +57,7 @@ export default  function Strain ( props:any, context ) {
   
     const [clickedStrain, setClickedStrain] = useState()
     const [bgToggle, setBgToggle] = useState('new')
+    const [textState, setTextState] = useState('')
 
     console.log('props.serverdata')
     console.log(props.serverdata)
@@ -64,13 +65,9 @@ export default  function Strain ( props:any, context ) {
     const classList:string = [styles.Page, 'Column'].join(" ")
     const textClasses:string = [styles.FontSizeTest, styles.BorderTest].join(" ");
 
-    const access = async (context:any) => {       
-      console.log('clickedStrain') 
-      console.log(clickedStrain) 
+    const access = async (context:any) => {             
       let url:string = await ReturnUrl(context);  
-      let ajaxstraindata = await DataCall('axios', `${url}/api/getAllStrain`, null) // /pages/api/getAllStrains
-      console.log('ajaxstraindata')
-      console.log(ajaxstraindata)
+      let ajaxstraindata = await DataCall('axios', `${url}/api/getAllStrain`, null) // /pages/api/getAllStrains      
       // let ajaxstraindata = await AjaxCall(`${url}/api/getAllStrain`, null, null) // /pages/api/getAllStrains        
   }
 
@@ -81,6 +78,7 @@ export default  function Strain ( props:any, context ) {
         <div className={classList}>
             <AllStrainContainer   
                 bgToggle={bgToggle} setBgToggle={setBgToggle}
+                textState={textState} setTextState={setTextState}
                 clickedStrain={clickedStrain} setClickedStrain={setClickedStrain}       
                 serverdata={props.serverdata}      
                 url={props.url} setUrl={props.setUrl}
@@ -88,12 +86,11 @@ export default  function Strain ( props:any, context ) {
                 currentStrain={props.currentStrain} setCurrentStrain={props.setCurrentStrain}            
                 />
 
-
-                    
-                  <StrainDisplay  
-                  bgToggle={bgToggle} setBgToggle={setBgToggle}
-                  clickedStrain={clickedStrain} setClickedStrain={setClickedStrain}       
-                  />                  
+             <StrainDisplay  
+                textState={textState} setTextState={setTextState}
+                bgToggle={bgToggle} setBgToggle={setBgToggle}
+                clickedStrain={clickedStrain} setClickedStrain={setClickedStrain}       
+                />                  
         </div>
 
 
