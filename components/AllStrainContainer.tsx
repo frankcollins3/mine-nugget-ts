@@ -20,11 +20,6 @@ import SeeAndSave from 'utility/SeeAndSave'
 import APIcall from 'utility/APIcall'
 import MasterListStyle from 'utility/MasterListStyle'
 import MasterRegex from 'utility/MasterRegex'
-import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript'
-
-
-
-
 
 export default  function AllStrainContainer(props:any) {   
     const [styleFile, setStyleFile] = useState('')
@@ -40,9 +35,7 @@ export default  function AllStrainContainer(props:any) {
     const checkstyles = async () => {        
         let allsass = await MasterListStyle('straincontainer')                
 }
-    const toggleBg = async () => { 
-        console.log('props.bgToggle in the allstraincontainer')      
-        console.log(props.bgToggle)      
+    const toggleBg = async () => {         
         if (props.bgToggle === 'old') props.setBgToggle('new')
         else if (props.bgToggle === 'new') props.setBgToggle('old')
     }
@@ -67,6 +60,8 @@ export default  function AllStrainContainer(props:any) {
                 method: 'get',
                 url: `api/strains/getSpecifiedStrain`,                
                 data: {   strain: text  }})    
+            console.log('call2 from the getspecified strain')
+            console.log(call2)
 
         let predata = await Axios.create({                        
             transformResponse: [function (data) {                        
@@ -75,13 +70,19 @@ export default  function AllStrainContainer(props:any) {
         })
         let axiosfactory = await predata.get(`api/strains/strain/nokey${strainId}`) // oops didn't use async had promise returned.
         
+        
+
         let returnedId = JSON.parse(axiosfactory.data)
+        console.log('returnedId /strain/nokey${strainId} dynamic route')
+        console.log(returnedId)
         const {strain, dominant, funfact, parents} = returnedId
+        
         console.log(strain)
+        console.log(typeof strain)
         console.log(dominant)
         console.log(funfact)
         console.log(parents)
-        
+        setTextState(strain)
     }
     
 
