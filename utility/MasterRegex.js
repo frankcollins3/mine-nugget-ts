@@ -10,14 +10,19 @@ export default async function Regex(url, action ) {      // already forgot its n
             }
             
             numberexp () {
-                if (typeof url === 'string') {
+                // if (typeof url === 'string') {
                     let onlynumbers = url.replace(/[/\a-z]/g, '')
                     return onlynumbers
-                }
+                // }
             }
         }
-        
-
+        if (action !== null || action !== undefined && typeof action === 'string') {
+            if (action === 'numreturn') {
+                let getNumbers = await new Exp(url).numreturn
+                console.log('getNumbers')
+                console.log(getNumbers)
+            }
+        }
     }
 }
 
