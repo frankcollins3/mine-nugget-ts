@@ -4,7 +4,7 @@ import Axios from 'axios'
 import styles from 'styles/AllStrainContainer.module.scss'
 import getAllStrain from 'pages/api/strains/strain'
 import React, { useEffect, useState} from 'react';  
-import getSpecifiedStrain from 'pages/api/getSpecifiedStrain'
+import getSpecifiedStrain  from 'pages/api/strains/getSpecifiedStrain'
 // import Alert from 'react-bootstrap/Alert';
 import Container from 'react-bootstrap/Container'
 // import Card from 'react-bootstrap/Card'
@@ -37,8 +37,10 @@ export default  function AllStrainContainer(props:any) {
 
     const checkstyles = async () => {        
         let allsass = await MasterListStyle('straincontainer')                
-    }
-    const toggleBg = async () => {        
+}
+    const toggleBg = async () => { 
+        console.log('props.bgToggle in the allstraincontainer')      
+        console.log(props.bgToggle)      
         if (props.bgToggle === 'old') props.setBgToggle('new')
         else if (props.bgToggle === 'new') props.setBgToggle('old')
     }
@@ -57,11 +59,13 @@ export default  function AllStrainContainer(props:any) {
         let text:string = event.target.innerText      
         let strainId:string = event.target.attributes[0].nodeValue       
         let otherstrainId:(string|number) = event.target.id
-        console.log('otherstrainId')   
-        console.log(otherstrainId)   
+        // console.log('otherstrainId')   
+        // console.log(otherstrainId)   
         props.setClickedStrain(text)
-        await console.log('props.clickedStrain this is in the strain click function')
-        await console.log(props.clickedStrain)
+
+        // await console.log('props.clickedStrain this is in the strain click function')
+        // await console.log(props.clickedStrain)
+
         // let predata = await Axios.get(`api/getSpecifiedStrain`) 
         // let predata = await Axios({
         //     method: 'GET',
@@ -69,12 +73,20 @@ export default  function AllStrainContainer(props:any) {
         // })
         // let predata = await DataCall('axios', `api/getSpecifiedStrain`, null)
 
-        // let predata = await Axios({
-        //     method: 'get',
-        //     url: `api/strains/strain/2`,
-            // data: text 
-            // data: { text }
-        // })
+        let call2 = await $.ajax({
+            method: 'get',
+            url: `api/strains/getSpecifiedStrain`,
+            // url: `https://pokeapi.co/api/v2/pokemon/squirtle`,
+            // data: 'json'
+            data: {
+                strain: text
+            }
+        })
+
+        console.log('call2')
+        console.log(call2)
+
+    
 
         
         let predata = await Axios.create({
