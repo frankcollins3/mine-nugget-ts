@@ -67,25 +67,22 @@ export default  function AllStrainContainer(props:any) {
                 method: 'get',
                 url: `api/strains/getSpecifiedStrain`,                
                 data: {   strain: text  }})    
-                
-                
+
         let predata = await Axios.create({                        
             transformResponse: [function (data) {                        
                 return(data)
             }],
         })
         let axiosfactory = await predata.get(`api/strains/strain/nokey${strainId}`) // oops didn't use async had promise returned.
-        let returnedId = axiosfactory.data
+        // console.log('axiosfactory')
+        // console.log(axiosfactory)
+        let returnedId = JSON.parse(axiosfactory.data)
+        
         console.log('returnedId')
-        console.log(returnedId)        
-        for (const strain of returnedId) {
-            console.log(strain)
-            console.log(returnedId)
-            console.log(returnedId[strain])
-            
-        }
-        // let nokeyfactory = await predata.get(`api/strains/strain/key${strainId}`) // oops didn't use async had promise returned.
-        // let nokeydata = nokeyfactory.data    
+        console.log(returnedId)
+        // console.log(returnedId)
+        // console.log('typeof returnedId')
+        // console.log(typeof returnedId)
         
     }
     
