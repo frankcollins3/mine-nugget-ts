@@ -78,7 +78,12 @@ export default  function AllStrainContainer(props:any) {
         let returnedId = axiosfactory.data
         console.log('returnedId')
         console.log(returnedId)        
-
+        for (const strain of returnedId) {
+            console.log(strain)
+            console.log(returnedId)
+            console.log(returnedId[strain])
+            
+        }
         // let nokeyfactory = await predata.get(`api/strains/strain/key${strainId}`) // oops didn't use async had promise returned.
         // let nokeydata = nokeyfactory.data    
         
