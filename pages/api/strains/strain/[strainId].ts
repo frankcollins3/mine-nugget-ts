@@ -20,16 +20,17 @@ export default async function (req:any, res:any) {              // res:string do
         // console.log(typeof reqStr)
     
         // let reqStr = parseInt(req.query.strainId)        
-        let dbstrain = await prisma.strains.findMany()
+        let dbstrain:(object|string|number)[] = await prisma.strains.findMany()
+        // let dbstrain: { type: any } = await prisma.strains.findMany()
         
-        dbstrain.forEach( (strain) => {            
-            let strainstring:any = strain.strainId
-            if (strainstring.toString() === reqstr) {                
-                strainbucket.push({ strain })
-            }
-        })
         const returnRes = () => {
-            return res.json(  strainbucket  )
+            dbstrain.forEach( (strain) => {            
+                let strainstring:any = strain.strainId
+                if (strainstring.toString() === reqstr) {                
+                    // strainbucket.push({ strain })
+                    return res.json(  dbstrain  )
+                }
+            })
         }
         return returnRes()
         
