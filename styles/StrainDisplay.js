@@ -5,16 +5,19 @@ import $ from 'jquery'
 
 const Display = styled.div`        
         opacity: ${props => props.clickedStrain === undefined ? "0.1" : "1.0"};       
-        
-        
+        color: ${props => props.bgToggle === 'new' ? 'black' : 'white'};        
+        // backgroundColor: ${props => props.bgToggle === 'old' ? 'transparent' : 'blue'};
+        // backgroundColor: props.bgToggle === 'old' ? 'transparent' : 'blue', 
+
         display: flex;
         flex-flow: column wrap;
         justify-content: center;
         align-items: center;
         margin-top: 2em;
-        // color: papayawhip;
+        
         min-height: 8vh;
-        min-width: 50vw;
+        min-width: 30vw;
+        
         `        
         
         const CardStyle = styled(Display)`
