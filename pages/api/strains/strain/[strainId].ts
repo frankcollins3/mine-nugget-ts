@@ -13,8 +13,7 @@ export default async function (req:any, res:any) {              // res:string do
     let twostringkeys = req.query.strainId
 
     if (twostringkeys.includes('no')) {
-        console.log("it includes no!!!!")
-        
+        console.log("it includes no!!!!")        
         let reqstr = await Regex(twostringkeys, 'numreturn')
         console.log('reqstr')
         console.log(reqstr)
@@ -22,26 +21,26 @@ export default async function (req:any, res:any) {              // res:string do
     
         // let reqStr = parseInt(req.query.strainId)        
         let dbstrain = await prisma.strains.findMany()
-    
         
-    
-        dbstrain.forEach( (strain) => {
-            console.log('typeof strain.strainId')
-            console.log(typeof strain.strainId)
+        dbstrain.forEach( (strain) => {            
             let strainstring:any = strain.strainId
-    
-            if (strainstring.toString() === reqstr) {
-                console.log("strain is equal to param")            
-                console.log('strain here')
-                console.log(`strain ${strain}`)
+            if (strainstring.toString() === reqstr) {                
                 strainbucket.push({ strain })
             }
         })
+        const returnRes = () => {
+            return res.json(  strainbucket  )
+        }
+        return returnRes()
         
-        
-        res.json(  strainbucket  )
     } else if (!twostringkeys.includes('no')) {
         console.log("the data doesn't have that so this same function should return undefined.")
+        // return { christmas: 'coal'}
+        // return (             cant render react elements in .ts file
+        //     <div>
+
+        //     </div>
+        // )
         
     }
 }
