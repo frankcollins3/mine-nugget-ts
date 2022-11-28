@@ -1,42 +1,39 @@
-import styled from 'styled-components';
+// @ts-nocheck
+import styled from 'styled-components'
+
+// import Display from 'styles/StrainDisplay'
+import CardStyle from 'styles/StrainDisplay'
+
+import Card from 'react-bootstrap'
 import $ from 'jquery'
+import CSS from 'utility/CSStool'
 
 
+export default function StrainDisplay (props) {
+    let columnclass = 'Column'
+    let card = 'card'   // i wonder if doing this likes this takes the string data out of the scope of being tied to bootstrap 
+    // bootstrap might only apply to inline styling. these 2 might be blended like a normal string.
+    let doubleCardClass = [card, columnclass].join(' ')
 
-const Display = styled.div`        
-        opacity: ${props => props.clickedStrain === undefined ? "0.1" : "1.0"};       
-        color: ${props => props.bgToggle === 'new' ? 'black' : 'white'};        
-        // backgroundColor: ${props => props.bgToggle === 'old' ? 'transparent' : 'blue'};
-        // backgroundColor: props.bgToggle === 'old' ? 'transparent' : 'blue', 
+    return (
 
-        display: flex;
-        flex-flow: column wrap;
-        justify-content: center;
-        align-items: center;
-        margin-top: 2em;
-        
-        min-height: 8vh;
-        min-width: 30vw;
-        
-        `        
-        
-        const CardStyle = styled(Display)`
-        // background-color: ${props => props.bgToggle === 'new' ? "rgb(62, 50, 32)" : "transparent"};       
-        // background-color: ${props => props.bgToggle === 'new' ? "red" : "transparent"};       
-        box-shadow: 10px 10px 10px rgb(247, 208, 32);    
-        border: 3px solid rgb(247, 208, 36);
+    // return as any (
+<>
+        <CardStyle
+        // <Display
+            bgToggle={props.bgToggle} setBgToggle={props.setBgToggle}
+            clickedStrain={props.clickedStrain} setClickedStrain={props.setClickedStrain}
+        >
+                <div 
+                className={doubleCardClass}
+                >            
+                <p
+                style={{ backgroundColor: props.bgToggle === 'new' ? 'transparent' : 'rgb(62, 50, 32)'}}
+                 className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            </div>
     
-        
-        
-        
-     
-`
-
-
-
-
-
-
-
-export default CardStyle
-// export default [Display, CardStyle]
+         </CardStyle>            
+         {/* </Display>             */}
+</>
+    )
+}
