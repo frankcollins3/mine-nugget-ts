@@ -19,6 +19,7 @@ import CSS from 'utility/CSStool'
 import SeeAndSave from 'utility/SeeAndSave'
 import APIcall from 'utility/APIcall'
 import MasterListStyle from 'utility/MasterListStyle'
+import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript'
 
 
 
@@ -71,17 +72,18 @@ export default  function AllStrainContainer(props:any) {
             console.log(call2)
             
         let predata = await Axios.create({            
-            data: { strain: text },
-            transformResponse: [function (data) {
-                // Do whatever you want to transform the data
-                console.log("transform response function!")                    
-                console.log('data in the transformResponse clientside')
+            // data: { key: 'returndata' }, // v.s. see data
+            transformResponse: [function (data) {                
                 console.log(data)
-
-                return data;
+                return 'see where this goes'
             }],
         })
+
         let axiosfactory = await predata.get(`api/strains/strain/${strainId}`) // oops didn't use async had promise returned.
+        // let axiosfactory = await predata.get({
+        //     url: `api/strains/strain/${strainId}`,
+        //     data: {suzuki: 'honda'}
+        // })
         let returnedId = axiosfactory.data
         console.log('returnedId')
         console.log(returnedId)        
@@ -118,10 +120,11 @@ export default  function AllStrainContainer(props:any) {
             </Card>
             :
             <ul>
-            {/* <ul className={styles.ul}> */}
+                            
                 <li
                  id={id.toString()}
                  onClick={strainClick}
+
                  style={{ 
                     // border: '2px solid papayawhip',
                     letterSpacing: '0.25em',                    
@@ -132,7 +135,6 @@ export default  function AllStrainContainer(props:any) {
                     backgroundSize: 'cover',
                     backgroundRepeat: 'no-repeat',
                     listStyleType: 'none'
-
                 }}
                   onMouseEnter={nowYouSee} onMouseLeave={nowYouDont}
                   className={styles.li} key={id}> {strain} </li>                           
@@ -149,8 +151,7 @@ export default  function AllStrainContainer(props:any) {
         <>
         <Container 
             style={{ overflowY: 'scroll' }}
-            className={styles.ColumnCenter}>
-            {/* {strainmap} */}
+            className={styles.ColumnCenter}>            
            {props.bgToggle === 'new' 
            ?
            strainmap
