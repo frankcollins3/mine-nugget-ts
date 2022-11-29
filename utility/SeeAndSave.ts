@@ -3,8 +3,12 @@ export default async function SeeAndSave(element, textState:string, setTextState
     console.log('element')
     console.log(element)
 
+    let strain:string = element[0].strain
+    console.log('strain API functions')
+    console.log(strain)
+
     console.log('textState')
     console.log(textState)
 
-    setTextState('hey how are you')
+    setTextState(strain)
 }
