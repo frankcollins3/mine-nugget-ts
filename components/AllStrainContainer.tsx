@@ -59,11 +59,13 @@ export default  function AllStrainContainer(props:any) {
             let call2 = await $.ajax({
                 method: 'get',
                 url: `api/strains/getSpecifiedStrain`,                
-                data: {   strain: text  }})    
+                data: {  strain: text  }})    
             console.log('call2 from the getspecified strain')
-            console.log(call2)
-            let length = call2.length  
-            setApiLen(length)          
+
+            // find typeof call2 and get length based on that. possible methods Object.keys()
+            let keys = Object.keys(call2)
+            console.log('keys')
+            console.log(keys)
 
         let predata = await Axios.create({                        
             transformResponse: [function (data) {                        
@@ -79,7 +81,7 @@ export default  function AllStrainContainer(props:any) {
         console.log(returnedId)
         const {strain, dominant, funfact, parents} = returnedId
         
-        SeeAndSave(call2, apiLen, props.textState, props.setTextState)
+        await SeeAndSave(call2, apiLen, props.textState, props.setTextState)
         // props.setTextState(strain)
         
     }
