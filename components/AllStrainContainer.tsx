@@ -10,7 +10,6 @@ import Container from 'react-bootstrap/Container'
 // import Card from 'react-bootstrap/Card'
 import {Alert, Card} from 'react-bootstrap'
 
-
 import DataCall from 'utility/DataCallJS'
 import AttrTool from 'utility/JqAttr'
 import Siblings from 'utility/JqSiblings'
@@ -24,6 +23,7 @@ import MasterRegex from 'utility/MasterRegex'
 export default  function AllStrainContainer(props:any) {   
     const [styleFile, setStyleFile] = useState('')
     const [nothing, setNothing] = useState()
+    const [apiLen, setApiLen] = useState()
     // const [bgToggle, setBgToggle] = useState('new')
     // const [textState, setTextState] = useState('')
 
