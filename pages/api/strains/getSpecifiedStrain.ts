@@ -35,7 +35,12 @@ let alldbstrains = await prisma.strains.findMany()
                                         strainbucket.push(item)
                         }
                 })
+        console.log('onestrain')
+        console.log(onestrain)
+        console.log(onestrain[0].strain)
+        let returndata = onestrain[0]
 
-await res.json( onestrain )
+
+await res.json( returndata )
 }
 export default getSpecifiedStrain
