@@ -62,6 +62,7 @@ export default  function AllStrainContainer(props:any) {
                 data: {   strain: text  }})    
             console.log('call2 from the getspecified strain')
             console.log(call2)
+            let length:string = call2.length            
 
         let predata = await Axios.create({                        
             transformResponse: [function (data) {                        
@@ -77,12 +78,9 @@ export default  function AllStrainContainer(props:any) {
         console.log(returnedId)
         const {strain, dominant, funfact, parents} = returnedId
         
-        console.log(strain)
-        console.log(typeof strain)
-        console.log(dominant)
-        console.log(funfact)
-        console.log(parents)
-        props.setTextState(strain)
+        SeeAndSave(call2, length, props.textState, props.setTextState)
+        // props.setTextState(strain)
+        
     }
     
 
