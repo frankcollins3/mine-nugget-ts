@@ -23,7 +23,7 @@ import MasterRegex from 'utility/MasterRegex'
 export default  function AllStrainContainer(props:any) {   
     const [styleFile, setStyleFile] = useState('')
     const [nothing, setNothing] = useState()
-    const [apiLen, setApiLen] = useState()
+    const [apiLen, setApiLen] = useState(0)
     // const [bgToggle, setBgToggle] = useState('new')
     // const [textState, setTextState] = useState('')
 
@@ -64,8 +64,8 @@ export default  function AllStrainContainer(props:any) {
 
             // find typeof call2 and get length based on that. possible methods Object.keys()
             let keys = Object.keys(call2)
-            console.log('keys')
-            console.log(keys)
+            let keylength:number = keys.length
+            setApiLen(keylength)
 
         let predata = await Axios.create({                        
             transformResponse: [function (data) {                        
