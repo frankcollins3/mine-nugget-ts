@@ -1,4 +1,4 @@
-=import Strain from "pages/strain"
+import Strain from "pages/strain"
 
 export default async function SeeAndSave(api, apilength, textState:string, setTextState:any ) {
     // element to change, the string-data-textState that will be the display text, setTextState which will setState for textState()
@@ -6,14 +6,20 @@ export default async function SeeAndSave(api, apilength, textState:string, setTe
     console.log('api')
     console.log(api)
 
-    api.filter(data => {
+    // for (const apidata of api) {
+    //     console.log(apidata)
+    //     console.log(api[apidata])
+    // }
+
+    let myfilteredData:object = api.filter(data => {
         console.log('data')
         console.log(data)
         if (data !== 'parents') {
-            console.log('data without parents!!!! ')
-            console.log(data)
+            return data
         }
     })    
+    console.log('myfilteredData')
+    console.log(myfilteredData)
 
 // cbd
 // "0.1%"
