@@ -55,12 +55,13 @@ export default  function AllStrainContainer(props:any) {
         let strainId:string = event.target.attributes[0].nodeValue       
         let otherstrainId:(string|number) = event.target.id
         await props.setClickedStrain(text)
-
+        let callbucket:(string|object)[] = []
             let call2 = await $.ajax({
                 method: 'get',
                 url: `api/strains/getSpecifiedStrain`,                
                 data: {  strain: text  }})    
-            console.log('call2 from the getspecified strain')
+            
+            // callbucket.push(call2)
 
             // find typeof call2 and get length based on that. possible methods Object.keys()
             let keys = Object.keys(call2)
@@ -81,7 +82,7 @@ export default  function AllStrainContainer(props:any) {
         console.log(returnedId)
         const {strain, dominant, funfact, parents} = returnedId
         
-        await SeeAndSave(call2, apiLen, props.textState, props.setTextState)
+        await SeeAndSave(keys, apiLen, props.textState, props.setTextState)
         // props.setTextState(strain)
         
     }
