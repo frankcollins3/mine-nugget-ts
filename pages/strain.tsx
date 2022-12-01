@@ -70,8 +70,8 @@ export default  function Strain ( props:any, context ) {
                 currentStrain={props.currentStrain} setCurrentStrain={props.setCurrentStrain}            
                 />
 
-              {/* <div class={ }> */}
 
+              <div className={styles.Rows}>
              <StrainDisplay  
                 textState={textState} setTextState={setTextState}
                 bgToggle={bgToggle} setBgToggle={setBgToggle}
@@ -79,8 +79,8 @@ export default  function Strain ( props:any, context ) {
                 />                  
               <StrainDisplayValue/>
                 </div>
+            </div>        
               
-        // </div>        
     )
 }
 
