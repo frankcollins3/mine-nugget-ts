@@ -5,6 +5,8 @@ export default async function SeeAndSave(api, apilength, textState:string, setTe
         console.log('api')
         console.log(api)
 
+    
+
     if (api.includes('strain') && api.includes('dominant') && api.includes ('taste')) {
     // if (api.includes('strain' || 'parents' || 'cbd' || 'thc')) {
         try {
@@ -13,16 +15,23 @@ export default async function SeeAndSave(api, apilength, textState:string, setTe
                 if (data !== 'parents') {
                     return data                    
                 }
-            })    
-            let datalength = myfilteredData.length
-            // let datalength:number = myfilteredData.length
-            for (i; i < datalength; i++) {
-                // for (i; i < datalength; i++) {
-                console.log(myfilteredData[i])
-
-            }
-            //    if (textState === )
-               setTextState('thottie')
+            })                
+            let datalength = myfilteredData.length            
+          
+            // if (textState === null || undefined) {
+                if (length < 3) {
+                    await setTextState(myfilteredData[0])
+                } else {
+                    // await setTextState(myfilteredData[1])
+                    for (i; i < length; i++) {
+                        if (myfilteredData[i] === textState) {
+                            console.log('textState')
+                            console.log(textState)
+                        }
+                    }
+                }
+            console.log('textState')
+            console.log(textState)
 
         } catch (err) { console.log(err) // redirect to error page.}
     }
@@ -30,44 +39,4 @@ export default async function SeeAndSave(api, apilength, textState:string, setTe
 }
 
 }  
-    // * <StrainDisplayValue Left Side Object.key bucket from call2 AllSTrainContainer
-    // * <StrainDisplay the old container is the object.values bucket 
-    // * remake textState 
-
-
-// cbd
-// "0.1%"
-// dominant
-// "balanced hybrid"
-// funfact
-// "passed genes to white rhino & white russian, growers prefer original"
-// gold
-// "euphoria, conversation, energy"
-// nugget
-// "white trichomes, frosty"
-// parents
-// "south indian indica, brazilian sativa landrace"
-// smell
-// "tropical, fruity"
-// strain
-// "white widow"
-// taste
-// "not very tasty, earthy, piney, smooth, disappointing to fruity fans"
-// "15%, 20%"
-            // filter(callbackFn, thisArg)
-
-    // let strain:string = api[0].strain
-    // console.log('apilength')
-    // console.log(apilength)
-
-    // if (apilength === api.length) {
-    //     console.log('apilength is equal to each other')
-    //     console.log(apilength)
-    //     console.log(`api length ${api.length}`)
-    // }
-
-
-    
-
-    
 
