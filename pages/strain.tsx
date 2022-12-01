@@ -42,6 +42,7 @@ export default  function Strain ( props:any, context ) {
     const [clickedStrain, setClickedStrain] = useState()
     const [bgToggle, setBgToggle] = useState('new')
     const [textState, setTextState] = useState('')
+    const [displayText, setDisplayText] = useState('')
 
     console.log('props.serverdata')
     console.log(props.serverdata)
@@ -54,7 +55,6 @@ export default  function Strain ( props:any, context ) {
       let ajaxstraindata = await DataCall('axios', `${url}/api/getAllStrain`, null) // /pages/api/getAllStrains      
       // let ajaxstraindata = await AjaxCall(`${url}/api/getAllStrain`, null, null) // /pages/api/getAllStrains        
   }
-
 
     return (
         
@@ -75,10 +75,11 @@ export default  function Strain ( props:any, context ) {
              <StrainDisplay  
                 textState={textState} setTextState={setTextState}
                 bgToggle={bgToggle} setBgToggle={setBgToggle}
-                clickedStrain={clickedStrain} setClickedStrain={setClickedStrain}       
-                />                  
+                clickedStra in={clickedStrain} setClickedStrain={setClickedStrain}       
+                />
+
               <StrainDisplayValue
-                z
+                displayText={displayText} setDisplayText={setDisplayText}
                 bgToggle={bgToggle} setBgToggle={setBgToggle}
                 clickedStrain={clickedStrain} setClickedStrain={setClickedStrain}       
               />
