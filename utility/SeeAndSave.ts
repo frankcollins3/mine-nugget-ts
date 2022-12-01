@@ -1,4 +1,5 @@
 import Strain from "pages/strain"
+import { propTypes } from "react-bootstrap/esm/Image";
 let i = 0; 
 export default async function SeeAndSave(api, apilength, textState:string, setTextState:any ) {
     // element to change, the string-data-textState that will be the display text, setTextState which will setState for textState()
@@ -49,21 +50,32 @@ export default async function SeeAndSave(api, apilength, textState:string, setTe
     
 } else {
     console.log("that stuff isn't in the API")
-    // get the index of parents get 
-    // declare that index of api as a variable. 
-    // filter variable
+    
 
-    console.log('api')
-    console.log(api)
     
     let elsefilter= api.filter(data => {        
         if (data !== api[3]) {
-            console.log('data')
-            console.log(data)
+            return data
             // returning no the parents
         }
     })  
-    
+    console.log('elsefilter')
+    console.log(elsefilter)
+
+    if (textState.length < 2) {
+        console.log("text state is less than 2")
+        setTextState('yes')            
+    // if (elsefilter[i] === displayText) {
+        // setTextState(elsefilter[i])
+    }
+    else if (textState.length >2 ) {
+    for (i; i < elsefilter.length; i++) {
+    // console.log(elsefilter[i])
+    // console.log(textState.length)
+            setTextState('yes again')
+        }
+
+    }
 
     // console.log('elsefilter')
     // console.log(elsefilter)
