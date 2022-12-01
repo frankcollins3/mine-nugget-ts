@@ -24,6 +24,7 @@ export default  function AllStrainContainer(props:any) {
     const [styleFile, setStyleFile] = useState('')
     const [nothing, setNothing] = useState()
     const [apiLen, setApiLen] = useState(0)
+
     // const [bgToggle, setBgToggle] = useState('new')
     // const [textState, setTextState] = useState('')
 
@@ -65,6 +66,7 @@ export default  function AllStrainContainer(props:any) {
 
             // find typeof call2 and get length based on that. possible methods Object.keys()
             let keys = Object.keys(call2)
+            let vals = Object.values(call2)
             let keylength:number = keys.length
             setApiLen(keylength)
 
@@ -77,12 +79,11 @@ export default  function AllStrainContainer(props:any) {
         
         
 
-        let returnedId = JSON.parse(axiosfactory.data)
-        console.log('returnedId /strain/nokey${strainId} dynamic route')
-        console.log(returnedId)
+        let returnedId = JSON.parse(axiosfactory.data)        
         const {strain, dominant, funfact, parents} = returnedId
         
         await SeeAndSave(keys, apiLen, props.textState, props.setTextState)
+        await SeeAndSave(vals, apiLen, props.displayTextState, props.setTextState)
         // props.setTextState(strain)
         
     }
@@ -103,13 +104,7 @@ export default  function AllStrainContainer(props:any) {
             className={styles.BstrapContCard}
             style={{ width: '18rem' }}>            
             <Card.Body>
-            {/* <form action="/api/getAllStrain" method="POST" id="strainForm">
-            <input
-            className="strainInput" 
-            id={styles.InvisibleInput}
-            />
-            <input type="submit"/>
-            </form> */}
+
             <li  
             id={id.toString()}
             onClick={strainClick}
@@ -137,7 +132,7 @@ export default  function AllStrainContainer(props:any) {
                 }}
                   onMouseEnter={nowYouSee} onMouseLeave={nowYouDont}
                   className={styles.li} key={id}> {strain} </li>                           
-                {/* //  className={styles.li} key={id}> {nothing} </li>                           */}
+                
             </ul>
             }
 
@@ -161,8 +156,6 @@ export default  function AllStrainContainer(props:any) {
         </Container>
         <button onClick={toggleBg}></button>
         </>
-    
-
 
     )
 }
