@@ -2,13 +2,13 @@ import Strain from "pages/strain"
 let i = 0; 
 export default async function SeeAndSave(api, apilength, textState:string, setTextState:any ) {
     
+    let myfilteredData = api.filter(data => {        
+        if (data !== 'parents') {
+            return data                    
+        }
+    })                
     if (api.includes('strain') && api.includes('dominant') && api.includes ('taste')) {
         try {
-            let myfilteredData = api.filter(data => {        
-                if (data !== 'parents') {
-                    return data                    
-                }
-            })                
             let datalength = myfilteredData.length             
                 if (textState.length < 2) {
                     await setTextState(myfilteredData[0])
