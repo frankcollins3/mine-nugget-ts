@@ -1,11 +1,12 @@
 import AllStrainContainer from 'components/AllStrainContainer'
 import StrainDisplay from 'components/StrainDisplay'
+import StrainDisplayValue from 'components/StrainDisplay'
 
 import styles from 'styles/Strain.module.scss'
 import getAllStrain from 'pages/api/strains/strain'
 import Random from 'utility/Randomizer'
 import Children from 'utility/jqChildren'
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState, useContext, createContext } from 'react'
 import ReturnUrl from 'utility/ReturnUrl'
 import AjaxCall from 'utility/AjaxCall'
 import $ from 'jquery'
@@ -19,34 +20,12 @@ import Display from 'styles/StrainDisplay'
 
 
 
+export default  function Strain ( props:any, context ) {   
 
-
-export async function getServerSideProps(context:any) {      
-        
-  
-
-        let url:any = await ReturnUrl(context);    
-        let pokeurl = `https://pokeapi.co/api/v2/pokemon/`    
-        let predata = await fetch(new URL(`${url}/api/strains/strain`))
-    
-        // let updateit = await fetch(new URL(`${url}/api/strains/update`))        
-        // let updateit = await DataCall('axios', `${url}/api/strains/update`, null)
-        // console.log('updateit')
-        // console.log(updateit)
-        
-        let serverdata = await predata.json()
-    return {
-      props: {
-        serverdata    
-      }
-    };
-  }
-
-export default  function Strain ( props:any, context ) {       
       useEffect( () => {
-        // let body = $('body')   this expression is not callable.
+        
         (async() => {
-
+          
           let childelem:any = await Children($('body'))
           // let childelem:(object|string) = await Children(body)
           console.log('childelem') 
@@ -54,7 +33,12 @@ export default  function Strain ( props:any, context ) {
         })()
         
     }, [])
-  
+
+    const TextContext = createContext('')
+    console.log('TextContext')
+    console.log(TextContext)
+
+    // * State 
     const [clickedStrain, setClickedStrain] = useState()
     const [bgToggle, setBgToggle] = useState('new')
     const [textState, setTextState] = useState('')
@@ -86,15 +70,28 @@ export default  function Strain ( props:any, context ) {
                 currentStrain={props.currentStrain} setCurrentStrain={props.setCurrentStrain}            
                 />
 
+              {/* <div class={ }> */}
+
              <StrainDisplay  
                 textState={textState} setTextState={setTextState}
                 bgToggle={bgToggle} setBgToggle={setBgToggle}
                 clickedStrain={clickedStrain} setClickedStrain={setClickedStrain}       
                 />                  
-        </div>
-
-
-        
-        
+              <StrainDisplayValue/>
+                </div>
+              
+        // </div>        
     )
+}
+
+export async function getServerSideProps(context:any) {              
+  let url:any = await ReturnUrl(context);    
+  let pokeurl = `https://pokeapi.co/api/v2/pokemon/`    
+  let predata = await fetch(new URL(`${url}/api/strains/strain`))            
+  let serverdata = await predata.json()        
+return {
+props: {
+  serverdata    
+}
+};
 }
