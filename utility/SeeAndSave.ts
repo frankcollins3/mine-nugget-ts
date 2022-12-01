@@ -1,22 +1,31 @@
 import Strain from "pages/strain"
-
+let i = 0; 
 export default async function SeeAndSave(api, apilength, textState:string, setTextState:any ) {
     // element to change, the string-data-textState that will be the display text, setTextState which will setState for textState()
-    
-    if (api === 'keys') {
+        console.log('api')
+        console.log(api)
+
+    if (api.includes('strain') && api.includes('dominant') && api.includes ('taste')) {
+    // if (api.includes('strain' || 'parents' || 'cbd' || 'thc')) {
         try {
             console.log('atleast were trying')
-            let myfilteredData:object = api.filter(data => {        
+            let myfilteredData = api.filter(data => {        
                 if (data !== 'parents') {
                     return data
                     console.log('myfilteredData')
                     console.log(myfilteredData)
                 }
             })    
+            let datalength:number = myfilteredData.length
+            for (i; i < datalength; i++) {
+                
+            }
+            //    if (textState === )
+               setTextState('thottie')
+
         } catch (err) { console.log(err) // redirect to error page.}
     }
     
-    setTextState('hey')
 }
 
 }  
