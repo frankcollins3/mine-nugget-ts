@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import Strain from 'pages/strain'
 import $ from 'jquery' // import * as $ from 'jquery'
 import Axios from 'axios'
@@ -53,43 +55,52 @@ export default  function AllStrainContainer(props:any) {
             
         let target = event.target
         let childrenOfTarget = await Children(target)
-        let siblings = await Siblings(target)
-        
-        console.log('siblings')
-        console.log(siblings)
+
+        // $(event.target.siblings()).hide()
+
+        // $( event.target ).siblings().css( "background-color", "red" );
+        // CSS(siblings)
+        // console.log('siblings')
+        // console.log(siblings)
 
         let text:string = event.target.innerText      
         let strainId:string = event.target.attributes[0].nodeValue       
         let otherstrainId:(string|number) = event.target.id
         await props.setClickedStrain(text)
-        let callbucket:(string|object)[] = []
-            let call2 = await $.ajax({
-                method: 'get',
-                url: `api/strains/getSpecifiedStrain`,                
-                data: {  strain: text  }})    
+
+        if (props.clickedStrain === text) {
+            console.log('all strain container')
+            console.log(`container ${text}`)
+            let callbucket:(string|object)[] = []
+                let call2 = await $.ajax({
+                    method: 'get',
+                    url: `api/strains/getSpecifiedStrain`,                
+                    data: {  strain: text  }})    
+                
+    
+                let keys = Object.keys(call2)
+                let vals = Object.values(call2)
+                let keylength:number = keys.length
+                setApiLen(keylength)
+    
+            let predata = await Axios.create({                        
+                transformResponse: [function (data) {                        
+                    return(data)
+                }],
+            })
+            let axiosfactory = await predata.get(`api/strains/strain/nokey${strainId}`) // oops didn't use async had promise returned.
             
-            // callbucket.push(call2)
-
-            // find typeof call2 and get length based on that. possible methods Object.keys()
-            let keys = Object.keys(call2)
-            let vals = Object.values(call2)
-            let keylength:number = keys.length
-            setApiLen(keylength)
-
-        let predata = await Axios.create({                        
-            transformResponse: [function (data) {                        
-                return(data)
-            }],
-        })
-        let axiosfactory = await predata.get(`api/strains/strain/nokey${strainId}`) // oops didn't use async had promise returned.
-        
-        let returnedId = JSON.parse(axiosfactory.data)        
-        const {strain, dominant, funfact, parents} = returnedId
-        
-        await SeeAndSave(keys, apiLen, props.textState, props.setTextState)
-        await SeeAndSave(vals, apiLen, props.displayText, props.setDisplayText)
-        // props.setTextState(strain)   
-    }
+            let returnedId = JSON.parse(axiosfactory.data)        
+            const {strain, dominant, funfact, parents} = returnedId
+            
+            await SeeAndSave(keys, apiLen, props.textState, props.setTextState)
+            await SeeAndSave(vals, apiLen, props.displayText, props.setDisplayText)
+            // props.setTextState(strain)   
+        } else { 
+            props.setTextState('')
+            props.setDisplayText('')
+        }
+        }
     
 
     const joinedClassStr = [styles.ul, styles.FlexBottom].join(" ")    
