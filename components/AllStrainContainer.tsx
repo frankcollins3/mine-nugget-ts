@@ -49,9 +49,15 @@ export default  function AllStrainContainer(props:any) {
     }
 
     
-    const strainClick = async (event:any) => {             
+    const strainClick = async (event:any) => {      
+            
         let target = event.target
         let childrenOfTarget = await Children(target)
+        let siblings = await Siblings(target)
+        
+        console.log('siblings')
+        console.log(siblings)
+
         let text:string = event.target.innerText      
         let strainId:string = event.target.attributes[0].nodeValue       
         let otherstrainId:(string|number) = event.target.id
@@ -77,15 +83,12 @@ export default  function AllStrainContainer(props:any) {
         })
         let axiosfactory = await predata.get(`api/strains/strain/nokey${strainId}`) // oops didn't use async had promise returned.
         
-        
-
         let returnedId = JSON.parse(axiosfactory.data)        
         const {strain, dominant, funfact, parents} = returnedId
         
         await SeeAndSave(keys, apiLen, props.textState, props.setTextState)
         await SeeAndSave(vals, apiLen, props.displayText, props.setDisplayText)
-        // props.setTextState(strain)
-        
+        // props.setTextState(strain)   
     }
     
 
@@ -94,7 +97,7 @@ export default  function AllStrainContainer(props:any) {
     let strainmap = db.map( (item:any, index:number) => {        
         let strain = item.strain
         let id:(number|string) = item.strainId  //oh wow was using sequelize table id getting wrong id.
-        
+
         return (        
             <div key={'column' + index} className="Column">
             <img key={`id ${strain} `} src=""/>
