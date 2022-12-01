@@ -63,6 +63,7 @@ export default  function Strain ( props:any, context ) {
             <AllStrainContainer   
                 bgToggle={bgToggle} setBgToggle={setBgToggle}
                 textState={textState} setTextState={setTextState}
+                displayText={displayText} setDisplayText={setDisplayText}
                 clickedStrain={clickedStrain} setClickedStrain={setClickedStrain}       
                 serverdata={props.serverdata}      
                 url={props.url} setUrl={props.setUrl}
@@ -75,7 +76,7 @@ export default  function Strain ( props:any, context ) {
              <StrainDisplay  
                 textState={textState} setTextState={setTextState}
                 bgToggle={bgToggle} setBgToggle={setBgToggle}
-                clickedStra in={clickedStrain} setClickedStrain={setClickedStrain}       
+                clickedStrain={clickedStrain} setClickedStrain={setClickedStrain}       
                 />
 
               <StrainDisplayValue
