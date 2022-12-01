@@ -14,10 +14,9 @@ export default async function StrainDisplayValue(props) {
 
     return (
 
-        <CardStyle
-        // <Display
-            bgToggle={props.bgToggle} setBgToggle={props.setBgToggle}
-            clickedStrain={props.clickedStrain} setClickedStrain={props.setClickedStrain}
+        <CardStyle        
+        bgToggle={props.bgToggle} setBgToggle={props.setBgToggle}
+        clickedStrain={props.clickedStrain} setClickedStrain={props.setClickedStrain}                   
         >
         <div className={doubleCardClass}>
             <p> right side container </p>
