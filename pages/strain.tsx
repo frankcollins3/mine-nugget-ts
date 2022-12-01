@@ -77,7 +77,11 @@ export default  function Strain ( props:any, context ) {
                 bgToggle={bgToggle} setBgToggle={setBgToggle}
                 clickedStrain={clickedStrain} setClickedStrain={setClickedStrain}       
                 />                  
-              <StrainDisplayValue/>
+              <StrainDisplayValue
+                z
+                bgToggle={bgToggle} setBgToggle={setBgToggle}
+                clickedStrain={clickedStrain} setClickedStrain={setClickedStrain}       
+              />
                 </div>
             </div>        
               
