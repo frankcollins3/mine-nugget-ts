@@ -1,57 +1,33 @@
 import Strain from "pages/strain"
 let i = 0; 
 export default async function SeeAndSave(api, apilength, textState:string, setTextState:any ) {
-    // element to change, the string-data-textState that will be the display text, setTextState which will setState for textState()
-        console.log('api')
-        console.log(api)
-
     
-
     if (api.includes('strain') && api.includes('dominant') && api.includes ('taste')) {
-    // if (api.includes('strain' || 'parents' || 'cbd' || 'thc')) {
         try {
-            console.log('atleast were trying')
             let myfilteredData = api.filter(data => {        
                 if (data !== 'parents') {
                     return data                    
                 }
             })                
-            let datalength = myfilteredData.length            
-          
-            // if (textState === null || undefined) {
-                
+            let datalength = myfilteredData.length             
                 if (textState.length < 2) {
-                    console.log('were over here in the 3')
                     await setTextState(myfilteredData[0])
                 } 
                 else if (textState.length > 2) {
-                // else if (textState.length > 6) {
                     for (let i = 0; i < myfilteredData.length; i++) {                        
-                        console.log(myfilteredData[i])
                         if (myfilteredData[i] === textState) {
-                            let newindex = myfilteredData[i] + 1
-                            console.log('newindex')
-                            console.log(newindex)
-
+                            let newindex:string = myfilteredData[i] + 1                        
                             await setTextState('')
-                            await setTextState(myfilteredData[i + 1])
-                            // if(i > apilength) setTextState('y')
+                            await setTextState(newindex)                            
                         }   else if (textState === 'thc')  setTextState('')
-                    }
-                    
-                        // await setTextState(myfilteredData[i + 1])
-                    // }
-                    console.log('were in here now')
+                    }                                       
                 }
-                // if (textState.length > 6) {
-                // }
-                // else {
-                    
-            
 
-        } catch (err) { console.log(err) // redirect to error page.}
+        } catch (err) { console.log(err) // res.redirect(error)
     }
     
+} else {
+    console.log("our api does not include that stuff")
 }
 
 }  
