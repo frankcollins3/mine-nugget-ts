@@ -1,0 +1,24 @@
+.Page {
+    min-height: 100vh;
+    min-width: 100vh;
+    // overflow: hidden;        
+    background-color: rgb(62, 50, 32);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.Rows {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+    
+.StrainBox {
+    border: 5px solid papayawhip;
+    min-height: 33em;
+    min-width: 33em;
+}
+
+
