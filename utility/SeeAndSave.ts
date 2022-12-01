@@ -2,24 +2,28 @@ import Strain from "pages/strain"
 
 export default async function SeeAndSave(api, apilength, textState:string, setTextState:any ) {
     // element to change, the string-data-textState that will be the display text, setTextState which will setState for textState()
-    console.log('api element and length')
-    console.log('api')
-    console.log(api)
+    
+    if (api === 'keys') {
+        try {
+            console.log('atleast were trying')
+            let myfilteredData:object = api.filter(data => {        
+                if (data !== 'parents') {
+                    return data
+                    console.log('myfilteredData')
+                    console.log(myfilteredData)
+                }
+            })    
+        } catch (err) { console.log(err) // redirect to error page.}
+    }
+    
+    setTextState('hey')
+}
 
-    // for (const apidata of api) {
-    //     console.log(apidata)
-    //     console.log(api[apidata])
-    // }
+}  
+    // * <StrainDisplayValue Left Side Object.key bucket from call2 AllSTrainContainer
+    // * <StrainDisplay the old container is the object.values bucket 
+    // * remake textState 
 
-    let myfilteredData:object = api.filter(data => {
-        console.log('data')
-        console.log(data)
-        if (data !== 'parents') {
-            return data
-        }
-    })    
-    console.log('myfilteredData')
-    console.log(myfilteredData)
 
 // cbd
 // "0.1%"
@@ -52,10 +56,8 @@ export default async function SeeAndSave(api, apilength, textState:string, setTe
     //     console.log(`api length ${api.length}`)
     // }
 
-    setTextState('hey')
 
     
 
     
 
-}
