@@ -83,7 +83,7 @@ export default  function AllStrainContainer(props:any) {
         const {strain, dominant, funfact, parents} = returnedId
         
         await SeeAndSave(keys, apiLen, props.textState, props.setTextState)
-        await SeeAndSave(vals, apiLen, props.displayTextState, props.setTextState)
+        await SeeAndSave(vals, apiLen, props.displayText, props.setTextState)
         // props.setTextState(strain)
         
     }
