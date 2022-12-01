@@ -1,6 +1,6 @@
 import AllStrainContainer from 'components/AllStrainContainer'
 import StrainDisplay from 'components/StrainDisplay'
-import StrainDisplayValue from 'components/StrainDisplay'
+import StrainDisplayValue from 'components/strainDisplayvalue'
 
 import styles from 'styles/Strain.module.scss'
 import getAllStrain from 'pages/api/strains/strain'
@@ -80,10 +80,13 @@ export default  function Strain ( props:any, context ) {
                 />
 
               <StrainDisplayValue
-                displayText={displayText} setDisplayText={setDisplayText}
-                bgToggle={bgToggle} setBgToggle={setBgToggle}
-                clickedStrain={clickedStrain} setClickedStrain={setClickedStrain}       
-              />
+              displayText={displayText} setDisplayText={setDisplayText}
+              bgToggle={bgToggle} setBgToggle={setBgToggle}
+              clickedStrain={clickedStrain} setClickedStrain={setClickedStrain}       
+              >
+              </StrainDisplayValue>
+                
+
                 </div>
             </div>        
               
