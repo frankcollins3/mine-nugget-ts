@@ -20,21 +20,27 @@ export default async function SeeAndSave(api, apilength, textState:string, setTe
           
             // if (textState === null || undefined) {
                 
-                if (textState.length < 3) {
+                if (textState.length < 2) {
                     console.log('were over here in the 3')
                     await setTextState(myfilteredData[0])
                 } 
-                else if (textState === 'strain') {
+                else if (textState.length > 2) {
                 // else if (textState.length > 6) {
-                    for (let i = 0; i < myfilteredData.length; i++) {
-                        
+                    for (let i = 0; i < myfilteredData.length; i++) {                        
                         console.log(myfilteredData[i])
                         if (myfilteredData[i] === textState) {
-                    console.log('strict equality met on state and index')
-                            console.log('textState')
-                            console.log(textState)
-                        }
+                            let newindex = myfilteredData[i] + 1
+                            console.log('newindex')
+                            console.log(newindex)
+
+                            await setTextState('')
+                            await setTextState(myfilteredData[i + 1])
+                            // if(i > apilength) setTextState('y')
+                        }   else if (textState === 'thc')  setTextState('')
                     }
+                    
+                        // await setTextState(myfilteredData[i + 1])
+                    // }
                     console.log('were in here now')
                 }
                 // if (textState.length > 6) {
