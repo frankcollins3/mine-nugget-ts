@@ -11,14 +11,15 @@ export default async function SeeAndSave(api, apilength, textState:string, setTe
             console.log('atleast were trying')
             let myfilteredData = api.filter(data => {        
                 if (data !== 'parents') {
-                    return data
-                    console.log('myfilteredData')
-                    console.log(myfilteredData)
+                    return data                    
                 }
             })    
-            let datalength:number = myfilteredData.length
+            let datalength = myfilteredData.length
+            // let datalength:number = myfilteredData.length
             for (i; i < datalength; i++) {
-                
+                // for (i; i < datalength; i++) {
+                console.log(myfilteredData[i])
+
             }
             //    if (textState === )
                setTextState('thottie')
