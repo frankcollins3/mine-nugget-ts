@@ -1,6 +1,7 @@
 import AllStrainContainer from 'components/AllStrainContainer'
 import StrainDisplay from 'components/StrainDisplay'
 import StrainDisplayValue from 'components/strainDisplayvalue'
+import PickMines from 'components/PickMines'
 
 import styles from 'styles/Strain.module.scss'
 import getAllStrain from 'pages/api/strains/strain'
@@ -18,26 +19,18 @@ let relativepath = `/api/getAllStrain.ts`
 import styled from 'styled-components'
 import Display from 'styles/StrainDisplay'
 
-
-
+  
 export default  function Strain ( props:any, context ) {   
 
-      useEffect( () => {
-        
-        (async() => {
-          
-          let childelem:any = await Children($('body'))
-          // let childelem:(object|string) = await Children(body)
-          console.log('childelem') 
-          console.log(childelem) 
+      useEffect( () => {        
+        (async() => {          
+          let childelem:any = await Children($('body'))           
         })()
         
     }, [])
 
     const TextContext = createContext('')
-    console.log('TextContext')
-    console.log(TextContext)
-
+    
     // * State 
     const [clickedStrain, setClickedStrain] = useState()
     const [bgToggle, setBgToggle] = useState('new')
@@ -60,6 +53,7 @@ export default  function Strain ( props:any, context ) {
         
 
         <div className={classList}>
+
             <AllStrainContainer   
                 bgToggle={bgToggle} setBgToggle={setBgToggle}
                 textState={textState} setTextState={setTextState}
@@ -85,9 +79,12 @@ export default  function Strain ( props:any, context ) {
               clickedStrain={clickedStrain} setClickedStrain={setClickedStrain}       
               >
               </StrainDisplayValue>
-                
+              
 
                 </div>
+              <PickMines
+          
+              ></PickMines>
             </div>        
               
     )
