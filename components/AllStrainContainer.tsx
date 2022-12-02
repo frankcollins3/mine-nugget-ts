@@ -165,11 +165,19 @@ export default  function AllStrainContainer(props:any) {
            strainmap
            :    
            strainmap        
-           }
-        
+           }       
         </Container>
-        <button onClick={toggleBg}></button>
+        <button id={styles.BgButton}
+        // style={ 
+        //     {
+        //         // backgroundColor: 'green',
+        //         backgroundImage: 'public/img/gold.png',
+        //         backgroundSize: 'cover',
+        //         backgroundRepeat: 'no-repeat'
+        //     } 
+        // }
+        onClick={toggleBg}></button>
         </>
 
     )
-}
+}       
