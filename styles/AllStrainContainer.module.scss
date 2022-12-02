@@ -3,21 +3,13 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    color: papayawhip;
-    box-shadow: 10px 10px 10px rgb(247, 208, 32);    
-
     padding: 2em;
-    
     height: 60vh;
     width:  80vw;
+    color: papayawhip;
+    box-shadow: 10px 10px 10px rgb(247, 208, 32);    
     border: 3px solid rgb(247, 208, 36);
 }
-
-// .FlexBottom {
-//     display: flex;
-//     flex-direction: column;
-//     align-items: flex-start
-// }
 
 .BstrapContCard {
     margin: 3em;
@@ -25,10 +17,6 @@
 
 .ul {
     width: 60%;    
-
-    // :hover{       it would be nice if you could put .ul:hover over here like this and it apply to the above target element/class
-
-    // }
     
     .li {
         text-align: center;
@@ -44,6 +32,25 @@
         box-shadow: 3px 3px 9px papayawhip;
     }
     
+}
+
+@mixin BgBtnImg {
+    background-image: '/img/gold.png';
+    background-size: cover;
+    background-repeat: no-repeat;  
+    background-color: blue;
+}
+
+#BgButton {
+    @include BgBtnImg
+    // background-image:  url(BgBtnImg);
+    // background-size: cover;
+    // background-repeat: no-repeat;
+}
+
+#InvisibleInput {
+    // border: 5px solid orange;
+    border: transparent;
 }
 // * possible phone settings.
 // min-height: 10%;
