@@ -42,12 +42,18 @@ a {
   flex-direction: column;
 }
 
+.PickMineCont {
+  transform: scale(0.2);
+  /* width: 400px; */
+  /* width: 40%; */
+  border: 5px solid hotpink;
+}
+
 .PickMineP {
   margin-top: 2em;
   /* border: 5px solid limegreen; */
   width: 300px;
 }
-
 
 li {
   align-self: flex-start;
