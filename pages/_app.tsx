@@ -8,6 +8,7 @@ import '../styles/globals.css'
   import Axios from 'axios';
   import ERROR from 'utility/CatchBlockErr'
   import Link from 'next/link'
+
   console.log('Link from the home page')
   console.log(Link)
 
@@ -33,7 +34,7 @@ import '../styles/globals.css'
         // console.log(testfetch)
       } 
       catch(err) {              
-        const testError:string = await ERROR(err, error, setError)
+        const testError:string = await ERROR(err, setError)
         setError(testError)
       }
 
