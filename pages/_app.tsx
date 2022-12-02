@@ -7,7 +7,10 @@ import '../styles/globals.css'
   import styled from 'styled-components'
   import Axios from 'axios';
   import ERROR from 'utility/CatchBlockErr'
-  
+  import Link from 'next/link'
+  console.log('Link from the home page')
+  console.log(Link)
+
   // import { themes, ThemeContext} from '.././utility/Context'
   // import globalContext from   '.././utility/Context'
 
@@ -52,6 +55,7 @@ import '../styles/globals.css'
       <button onClick={testError}>
         ERROR TEST 
       </button>
+      
       <p> {error || 'no error'} </p>
       <Component {...pageProps}
       error={error} setError={setError}
