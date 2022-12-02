@@ -29,10 +29,9 @@ import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
         // console.log('testfetch')
         // console.log(testfetch)
       } 
-      catch(err:unknown) {              
+      catch(err) {              
         const testError = await ERROR(err, error, setError)
-        console.log('testError')
-        console.log(testError)
+        setError(testError)
       }
 
     }
