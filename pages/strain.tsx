@@ -53,7 +53,9 @@ export default  function Strain ( props:any, context ) {
     return (
         
 
-          <Container className={classList}>
+          <Container 
+          style={ { minWidth: '100%'}}
+          className={classList}>
 
             <AllStrainContainer   
                 bgToggle={bgToggle} setBgToggle={setBgToggle}
