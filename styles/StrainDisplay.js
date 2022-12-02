@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import $ from 'jquery'
 
 const Display = styled.div`        
         opacity: ${props => props.clickedStrain === undefined ? "0.1" : "1.0"};       
@@ -9,7 +10,8 @@ const Display = styled.div`
         align-items: center;
         margin-top: 2em;
         min-height: 8vh;
-        min-width: 30vw;        
+        // min-width: 30vw;
+        padding: 2em;        
         `        
 
 const CardStyle = styled(Display)`        
