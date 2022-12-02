@@ -18,12 +18,12 @@ export default function PickMines() {
     return (
 
 
-        <Container>
+        // <Container>
         
         <MineCont>
         <p className={double}> test text </p>
         </MineCont>
 
-        </Container>
+        // </Container>
     )
 }
