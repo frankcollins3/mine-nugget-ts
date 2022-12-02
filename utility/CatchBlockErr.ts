@@ -1,25 +1,14 @@
 // @ts-nocheck
 import Axios from 'axios'
 export default async function ERROR (url) {
-                            // * also do error state, setError
-
-    // try {
-    //     let getdata = await Axios.get(url)
-    // }
-    // catch(err:unknown) {
-    //     let status:string = err.response.status
-    // }
-    const testError = async () => {
+                            // * also do error state, setError    
+    const testError = async (url:string) => {
         try {
-          // let testfetch = await Axios.get('https://pokeapi.co/api/v2/pokemon')        
-          let test = await Axios.get('hi')
-          // console.log('testfetch')
-          // console.log(testfetch)
+          let test = await Axios.get(url)
         } 
         catch(err:unknown) {      
-          let errorstatus:string = err.response.status      
-        
-
+          let errorstatus:string = err.response.status              
+          return errorstatus
         }
       }
 }
