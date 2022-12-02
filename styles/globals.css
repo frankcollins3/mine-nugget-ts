@@ -2,8 +2,7 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: open-sans;
 }
 
 a {
@@ -25,11 +24,11 @@ a {
   }
 }
 
-.card-text {
-  background-color: transparent;
-  background-color: rgb(62, 50, 32);
+.card-text { 
+  /* background-color: transparent; */
+  /* background-color: rgb(62, 50, 32); */
   /* background-color: blue; */
-}
+ } 
 
 /* .card {          
   border-radius: 50%;
@@ -43,8 +42,11 @@ a {
   flex-direction: column;
 }
 
-
-
+.PickMineP {
+  margin-top: 2em;
+  /* border: 5px solid limegreen; */
+  width: 300px;
+}
 
 
 li {
