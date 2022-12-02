@@ -4,6 +4,7 @@ import StrainDisplayValue from 'components/strainDisplayvalue'
 import PickMines from 'components/PickMines'
 
 import styles from 'styles/Strain.module.scss'
+import Container from 'react-bootstrap/Container';
 import getAllStrain from 'pages/api/strains/strain'
 import Random from 'utility/Randomizer'
 import Children from 'utility/jqChildren'
@@ -52,7 +53,7 @@ export default  function Strain ( props:any, context ) {
     return (
         
 
-        <div className={classList}>
+          <Container className={classList}>
 
             <AllStrainContainer   
                 bgToggle={bgToggle} setBgToggle={setBgToggle}
@@ -79,13 +80,11 @@ export default  function Strain ( props:any, context ) {
               clickedStrain={clickedStrain} setClickedStrain={setClickedStrain}       
               >
               </StrainDisplayValue>
-              
+                
 
                 </div>
-              <PickMines
-          
-              ></PickMines>
-            </div>        
+            </Container>
+            
               
     )
 }
