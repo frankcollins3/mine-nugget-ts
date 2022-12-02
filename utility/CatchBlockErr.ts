@@ -1,6 +1,6 @@
 // @ts-nocheck
 import Axios from 'axios'
-export default async function ERROR (url) {
+export default async function ERROR (url, errorobj, errorState, setErrorState) {
                             // * also do error state, setError    
     const testError = async (url:string) => {
         try {
