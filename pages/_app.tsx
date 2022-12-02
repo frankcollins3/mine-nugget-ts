@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app'
 import Head from "next/head";
 import React, { useState, useContext, createContext } from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
+import styled from 'styled-components'
 // import { themes, ThemeContext} from '.././utility/Context'
 // import globalContext from   '.././utility/Context'
 
@@ -11,16 +12,16 @@ export default function App({ Component, pageProps }: AppProps) {
   
   // const [theme, setTheme] = useState(themes.dark)      this is for context in the example.
   const [url, setUrl] = useState('')    // url:string
-  const [ currentStrain, setCurrentStrain ] = useState('')
+  const [currentStrain, setCurrentStrain ] = useState('')
   const [allStrains, setAllStrains] = useState([])
-
+  const [error, setError] = useState()
+    
   // const ThemeContext = createContext(theme)
   // globalContext()
   // const appContext = createContext({
   //   default
   // })
   
-
   return (
     <>
       <Head>
@@ -30,6 +31,7 @@ export default function App({ Component, pageProps }: AppProps) {
     {/* <ThemeContext.Provider value={theme}> */}
 
     <Component {...pageProps}
+     error={error} setError={setError}
      currentStrain={currentStrain} setCurrentStrain={setCurrentStrain}
      url={url} setUrl={setUrl}
      allStrains={allStrains} setAllStrains={setAllStrains}
