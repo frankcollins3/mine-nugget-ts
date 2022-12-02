@@ -6,6 +6,8 @@ import '../styles/globals.css'
   import 'bootstrap/dist/css/bootstrap.css'
   import styled from 'styled-components'
   import Axios from 'axios';
+  import ERROR from 'utility/CatchBlockErr'
+  
 import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
   // import { themes, ThemeContext} from '.././utility/Context'
   // import globalContext from   '.././utility/Context'
@@ -19,16 +21,20 @@ import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
     const [error, setError] = useState()
       
     const testError = async () => {
+      let url = `https://pokeapi.co/api/v2/pokemon/`
+      let url2 = 'hi'
       try {
         // let testfetch = await Axios.get('https://pokeapi.co/api/v2/pokemon')        
         let test = await Axios.get('hi')
         // console.log('testfetch')
         // console.log(testfetch)
       } 
-      catch(err:unknown) {      
-        let errorstatus:string = err.response.status      
-        await setError(errorstatus)     
+      catch(err:unknown) {              
+        const testError = await ERROR(err, error, setError)
+        console.log('testError')
+        console.log(testError)
       }
+
     }
 
     // const ThemeContext = createContext(theme)
@@ -36,9 +42,7 @@ import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
     // const appContext = createContext({
     //   default
     // })
-    
 
-    
     return (
       <>
         <Head>
