@@ -1,4 +1,4 @@
-  import '../styles/globals.css'
+import '../styles/globals.css'
   import type { AppProps } from 'next/app'
   import Head from "next/head";
   import React, { useState, useContext, createContext } from 'react'
@@ -11,6 +11,7 @@ import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
 
   const testError = async () => {
     try {
+      
       // let testfetch = await Axios.get('https://pokeapi.co/api/v2/pokemon')
       let test = await Axios.get('hi')
       // console.log('testfetch')
@@ -19,6 +20,11 @@ import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
     catch(err) {
       console.log('err')
       console.log(err)
+      // console.log(err.response.status)
+      let errorstatus:string = err.response.status
+      console.log('errorstatus')
+      console.log(errorstatus)
+      // setError(status)
     }
   }
 
