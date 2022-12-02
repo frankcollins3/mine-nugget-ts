@@ -21,7 +21,10 @@ export default function PickMines() {
         // <Container>
         
         <MineCont>
-        <p className={double}> test text </p>
+        {/* <p className={double}> test text </p> */}
+        <img  
+        style={ { height: '5em', width: '5em'}}
+        src="/img/pick.png"/>
         </MineCont>
 
         // </Container>
