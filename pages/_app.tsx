@@ -10,26 +10,6 @@ import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
   // import { themes, ThemeContext} from '.././utility/Context'
   // import globalContext from   '.././utility/Context'
 
-  const testError = async () => {
-    try {
-      
-      // let testfetch = await Axios.get('https://pokeapi.co/api/v2/pokemon')
-      let test = await Axios.get('hi')
-      // console.log('testfetch')
-      // console.log(testfetch)
-    } 
-    catch(err) {
-      console.log('err')
-      console.log(err)
-      // console.log(err.response.status)
-      let errorstatus:string = err.response.status
-      console.log('errorstatus')
-      console.log(errorstatus)
-      // setError(status)
-    }
-  }
-
-
   export default function App({ Component, pageProps }: AppProps) {
     
     // const [theme, setTheme] = useState(themes.dark)      this is for context in the example.
@@ -38,6 +18,18 @@ import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
     const [allStrains, setAllStrains] = useState([])
     const [error, setError] = useState()
       
+    const testError = async () => {
+      try {
+        // let testfetch = await Axios.get('https://pokeapi.co/api/v2/pokemon')        
+        let test = await Axios.get('hi')
+        // console.log('testfetch')
+        // console.log(testfetch)
+      } 
+      catch(err:unknown) {      
+        let errorstatus:string = err.response.status      
+        await setError(errorstatus)     
+      }
+    }
 
     // const ThemeContext = createContext(theme)
     // globalContext()
@@ -57,6 +49,7 @@ import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
       <button onClick={testError}>
         ERROR TEST 
       </button>
+      <p> {error || 'no error'} </p>
       <Component {...pageProps}
       error={error} setError={setError}
       currentStrain={currentStrain} setCurrentStrain={setCurrentStrain}
