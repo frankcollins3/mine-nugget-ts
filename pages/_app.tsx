@@ -8,7 +8,6 @@ import '../styles/globals.css'
   import Axios from 'axios';
   import ERROR from 'utility/CatchBlockErr'
   
-import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
   // import { themes, ThemeContext} from '.././utility/Context'
   // import globalContext from   '.././utility/Context'
 
@@ -19,6 +18,7 @@ import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
     const [currentStrain, setCurrentStrain ] = useState('')
     const [allStrains, setAllStrains] = useState([])
     const [error, setError] = useState()
+    const [errAcknowledge, setErrAcknowledge] = useState('')
       
     const testError = async () => {
       let url = `https://pokeapi.co/api/v2/pokemon/`
@@ -30,7 +30,7 @@ import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
         // console.log(testfetch)
       } 
       catch(err) {              
-        const testError = await ERROR(err, error, setError)
+        const testError:string = await ERROR(err, error, setError)
         setError(testError)
       }
 
