@@ -6,17 +6,30 @@ import {useEffect, useState, useContext, createContext, useMemo} from 'react'
 //   const [savedStrains, setSavedStrains] = useState('')
 //   const [users, setUsers] = useState([])
 //   const [dbStrains, setDbStrains] = useState([])
-
 // * strain.tsx
 // const [clickedStrain, setClickedStrain] = useState()
 // const [bgToggle, setBgToggle] = useState('new')
 // const [textState, setTextState] = useState('')
 // const [displayText, setDisplayText] = useState('')
-
 // * AllStrainContainer
 // const [styleFile, setStyleFile] = useState('')
 // const [nothing, setNothing] = useState()
 // const [apiLen, setApiLen] = useState(0)
+
+let initialstate = {
+    pokemon: '',
+    currentStrain: '',
+    savedStrains: '',
+    users: [],
+    dbStrains: [],
+    clickedStrain: undefined || null,
+    bgToggle: 'new',
+    textState: '',
+    displayText: '',
+    styleFile: '',
+    nothing: '',
+    apiLen: 0
+}
 
 
 
