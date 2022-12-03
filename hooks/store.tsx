@@ -1,4 +1,4 @@
-import {useEffect, useState, createContext, useMemo} from 'react'
+import {useEffect, useState, useContext, createContext, useMemo} from 'react'
 export default async function StateStore () {
     const [state, setState] = useState('')
     const context = createContext(null as any) // a default value has to be provided   
@@ -13,6 +13,13 @@ export default async function StateStore () {
         
         // return <context.Provider value={contextvalue}> {children} </context.Provider>;
         return <context.Provider value={contextvalue}> {children} </context.Provider>;
+        }
 
-    }
+        // this hook consumes store:
+        const useStore = useContext(context)
+        console.log('useStore')       
+        console.log(useStore)       
+        return {Provider, useStore}
+        // was returning Provider within the Provider at first.
+
 }
