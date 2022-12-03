@@ -1,8 +1,8 @@
-import {useEffect, useState, useContext, createContext, useMemo} from 'react'
-
+import {useState, useEffect, useContext, createContext } from 'react'
 
 let initialstate = {
-    pokemon: '',
+    // pokemon:string: '',  cant
+    // pokemon: '',
     currentStrain: '',
     savedStrains: '',
     users: [],
@@ -16,48 +16,21 @@ let initialstate = {
     apiLen: 0
 }
 
-
-
-
-export default async function StateStore({children}) {
-    // Make a context for the store
-    const Context = createContext(null as any);
+const StateStore = ({children}) => {
     const [state, setState] = useState(initialstate)
 
+    // const [state, setState] = useState()
+    // export default function StateStore({children}) {    
+    // Make a context for the store
+    const Context = createContext(null as any);
     return (
-        <Context.Provider value={[state, setState]}>{children}</Context.Provider>
+        <Context.Provider value={[state, setState]}>{children}</Context.Provider> || {my: 'life'}
+// w o w 
+// {i: 'kept invoking like a utility function'}: provider is literally like a <p> elem w/ open-close tag
+// it can be imported and used as a wrapper. {children} the var that gets destructured threw me off.
 
+        // {my: 'life'}
+        // <Context.Provider value={[state, setState]}>{children}</Context.Provider> || {my: 'life'}
     )
-
 }
-
-
-// * index.tsx
-//   const [ pokemon, setPokemon ] = useState('')
-//   const [currentStrain, setCurrentStrain] = useState('')
-//   const [savedStrains, setSavedStrains] = useState('')
-//   const [users, setUsers] = useState([])
-//   const [dbStrains, setDbStrains] = useState([])
-// * strain.tsx
-// const [clickedStrain, setClickedStrain] = useState()
-// const [bgToggle, setBgToggle] = useState('new')
-// const [textState, setTextState] = useState('')
-// const [displayText, setDisplayText] = useState('')
-// * AllStrainContainer
-// const [styleFile, setStyleFile] = useState('')
-// const [nothing, setNothing] = useState()
-// const [apiLen, setApiLen] = useState(0)
-
-// initialValue provider
-    // const Provider = ({ initialValue = {}, children }) => {
-    //   state
-    //   const [state, setState] = useState(initialValue);
-      // cache/memo for
-    //   const contextValue = useMemo(() => [state, setState], [state]);
-      // Provide the store to children
-    //   return <context.Provider value={contextValue}>{children}</context.Provider>;
-    // };
-    // A hook to help consume the store
-    // const useStore = () => useContext(context);
-    // return { Provider, useStore };
-//   }
+export default StateStore
