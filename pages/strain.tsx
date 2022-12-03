@@ -20,15 +20,10 @@ let relativepath = `/api/getAllStrain.ts`
 import styled from 'styled-components'
 import Display from 'styles/StrainDisplay'
 
-  
+                    
 export default  function Strain ( props:any, context ) {   
-
-      useEffect( () => {        
-        (async() => {          
-          let childelem:any = await Children($('body'))           
-        })()
-        
-    }, [])
+    // console.log('props')
+    // console.log(props)
 
     const TextContext = createContext('')
     
@@ -38,8 +33,7 @@ export default  function Strain ( props:any, context ) {
     const [textState, setTextState] = useState('')
     const [displayText, setDisplayText] = useState('')
 
-    console.log('props.serverdata')
-    console.log(props.serverdata)
+    const globalstrain = props.globalstate
 
     const classList:string = [styles.Page, 'Column'].join(" ")
     const textClasses:string = [styles.FontSizeTest, styles.BorderTest].join(" ");
@@ -58,6 +52,7 @@ export default  function Strain ( props:any, context ) {
           className={classList}>
 
             <AllStrainContainer   
+                globalState={globalstrain}
                 bgToggle={bgToggle} setBgToggle={setBgToggle}
                 textState={textState} setTextState={setTextState}
                 displayText={displayText} setDisplayText={setDisplayText}
@@ -71,12 +66,14 @@ export default  function Strain ( props:any, context ) {
 
               <div className={styles.Rows}>
              <StrainDisplay  
+                globalState={globalstrain}
                 textState={textState} setTextState={setTextState}
                 bgToggle={bgToggle} setBgToggle={setBgToggle}
                 clickedStrain={clickedStrain} setClickedStrain={setClickedStrain}       
                 />
 
               <StrainDisplayValue
+              globalState={globalstrain}
               displayText={displayText} setDisplayText={setDisplayText}
               bgToggle={bgToggle} setBgToggle={setBgToggle}
               clickedStrain={clickedStrain} setClickedStrain={setClickedStrain}       
@@ -93,7 +90,7 @@ export default  function Strain ( props:any, context ) {
 
 export async function getServerSideProps(context:any) {              
   let url:any = await ReturnUrl(context);    
-  let pokeurl = `https://pokeapi.co/api/v2/pokemon/`    
+  // let pokeurl = `https://pokeapi.co/api/v2/pokemon/`    
   let predata = await fetch(new URL(`${url}/api/strains/strain`))            
   let serverdata = await predata.json()        
 return {
