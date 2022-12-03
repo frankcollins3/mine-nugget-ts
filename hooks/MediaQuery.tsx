@@ -1,20 +1,23 @@
+// @ts-nocheck
 import { useState, useEffect, useLayoutEffect} from 'react'
 import useResizeObserver from "@react-hook/resize-observer";
 
-
-function useSize(target) {
+export default function Resize(target) {
   const [size, setSize] = useState([])
 
   useLayoutEffect(() => {
     target && setSize(target.getBoundingClientRect());
   }, [target]);
 
-   // magic
-  useResizeObserver(target, (entry) => setSize(entry.contentRect));
-  return size;
+  // magical. 
+  useResizeObserver(target, (entry) => {
+      console.log("atleast were here")
+      console.log('target')
+      console.log(target)
+      setSize(entry.contentRect);
+      return size;
+    })
 }
-
-
     // const BreakPointHook = (widthparam:string) => {
     //     const [matches, setMatches] = useState('')
     //     useEffect( () => {
@@ -23,4 +26,3 @@ function useSize(target) {
     //         console.log(media)
     //     }, [matches])
     // }
-
