@@ -1,9 +1,13 @@
+import {useRef} from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import ErrorCont from 'styles/Error'
 import styles from 'styles/Misc.module.sass'
 import Random from 'utility/Randomizer'
+import Resize from 'hooks/MediaQuery'
+
+
 
 
 export default function Error () {    
@@ -12,7 +16,8 @@ export default function Error () {
         let screenSizeBucket:(string)[] = ['800px', '400px', '1200px']
         let randomSize:string =  await Random(screenSizeBucket)
         // console.log('randomSize')
-        window.addEventListener("resize", '500px');
+        // window.addEventListener("resize", '500px');
+
         // console.log(randomSize)
         // import Card from 'react-bootstrap'
     }
