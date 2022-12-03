@@ -12,7 +12,7 @@ import Resize from 'hooks/MediaQuery'
 
 export default function Error () {    
     const changeSize = async () => {
-        
+        let targetRef = useRef(null)
         let screenSizeBucket:(string)[] = ['800px', '400px', '1200px']
         let randomSize:string =  await Random(screenSizeBucket)
         // console.log('randomSize')
@@ -24,6 +24,8 @@ export default function Error () {
     return ( 
         
         // <Container>
+            <pre ref={target}>
+
             <Container className="Column">
                 {/* <p> {media.matches } </p> */}
             <ErrorCont>
@@ -45,6 +47,7 @@ export default function Error () {
                src="/img/barrier.png"></img>
               </Col>
               </Row>
+               </pre>
               {/* <img src="/img/pick.png"/> */}
                           
             </ErrorCont>
