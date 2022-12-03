@@ -44,13 +44,14 @@ import '../styles/globals.css'
   const [errAcknowledge, setErrAcknowledge] = useState('')
 
   const StateStore = (children) => {
-    console.log('children')
-    console.log(children)    
+    // console.log('children')
+    // console.log(children)    
+       const Context = createContext(null as any);
     // const [state, setState] = useState()
     // export default function StateStore({children}) {        
       return (
-        {children} || {my: 'life'}
-        // <Context.Provider value={[state, setState]}>{children}</Context.Provider> || {my: 'life'}
+        <Context.Provider value={[state, setState]}>{children}</Context.Provider> || {my: 'life'}
+        // {children} || {my: 'life'}
         // <Context.Provider value={[state, setState]}>{}</Context.Provider> || {my: 'life'}
     )
   }
