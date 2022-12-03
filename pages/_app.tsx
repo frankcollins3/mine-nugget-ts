@@ -15,29 +15,70 @@ import '../styles/globals.css'
   
   export default function App({ Component, pageProps }: AppProps) {
     
-    let initialstate = {
-      currentStrain: '',
-      savedStrains: '',
-      users: [],
-      dbStrains: [],
-      clickedStrain: undefined || null,
-      bgToggle: 'new',
-      textState: '',
-      displayText: '',
-      styleFile: '',
-      nothing: '',
-      apiLen: 0
-  }
-
+  //  const [ pokemon, setPokemon ] = useState('')
+   const [currentStrain, setCurrentStrain] = useState('')
+   const [savedStrains, setSavedStrains] = useState('')
+   const [users, setUsers] = useState([])
+   const [dbStrains, setDbStrains] = useState([])
+ 
+ const [clickedStrain, setClickedStrain] = useState()
+ const [bgToggle, setBgToggle] = useState('new')
+ const [textState, setTextState] = useState('')
+ const [displayText, setDisplayText] = useState('')
+ const [styleFile, setStyleFile] = useState('')
+ const [nothing, setNothing] = useState()
+ const [apiLen, setApiLen] = useState(0)
   
-  
+ const [url, setUrl] = useState('')    // url:string
+//  const [currentStrain, setCurrentStrain ] = useState('')
+ const [allStrains, setAllStrains] = useState([])
+ const [error, setError] = useState()
+ const [errAcknowledge, setErrAcknowledge] = useState('')
   // const [theme, setTheme] = useState(themes.dark)      this is for context in the example.
+  
   const [state, setState] = useState()
-  const [url, setUrl] = useState('')    // url:string
-  const [currentStrain, setCurrentStrain ] = useState('')
-  const [allStrains, setAllStrains] = useState([])
-  const [error, setError] = useState()
-  const [errAcknowledge, setErrAcknowledge] = useState('')
+
+    let indexObj = {     
+      // currentStrain: [currentStrain, setCurrentStrains] 
+      currentStrain: currentStrain,
+      setCurrentStrain: setCurrentStrain,
+      savedStrains: savedStrains,
+      users: users,
+      setUsers: setUsers,
+      dbStrains: dbStrains,
+      setDbStrains: setDbStrains
+    }
+  
+    let strainObj = {
+      clickedStrain: clickedStrain,
+      setClickedStrain: setClickedStrain,
+      bgToggle: bgToggle,
+      setBgToggle: setBgToggle,
+      textState: textState,
+      displayText: displayText,
+      setDisplayText: setDisplayText,
+      styleFile: styleFile,
+      setStyleFile: setStyleFile,
+      nothing: nothing,
+      setNothing: setNothing,
+      apiLen: apiLen,
+      setApiLen: setApiLen
+    }
+
+    let errorObj = {
+      url: url,
+      setUrl: setUrl,
+      currentStrain: currentStrain, 
+      setCurrentStrain: setCurrentStrain,
+      allStrains: allStrains,
+      setAllStrains: setAllStrains,
+      error: error,
+      setError: setError,
+      errAcknowledge: errAcknowledge,
+      setErrAcknowledge: setErrAcknowledge
+    }
+
+    let stateArray = [indexObj, strainObj, errorObj]
 
 
           
@@ -68,7 +109,7 @@ import '../styles/globals.css'
       {/* <Context.Provider>         */}
       <StateStore>
       <Component {...pageProps}
-      homebody={initialstate}
+      globalstate={stateArray}// homebody={initialstate}
       error={error} setError={setError}
       currentStrain={currentStrain} setCurrentStrain={setCurrentStrain}
       url={url} setUrl={setUrl}
