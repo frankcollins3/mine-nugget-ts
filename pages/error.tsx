@@ -10,15 +10,20 @@ export default function Error () {
         // <Container>
                 <Container className="Column">
             <ErrorCont>
-                {/* time for an image bank function! */}
-
+                {/* time for an image bank! */}
+              <Row>
+              <Col>
               <img src="/img/barrier.png"></img>
+              </Col>
+              <Col>
               <img src="/img/dynamite.png"></img>
+              </Col>
+              <Col>
               <img src="/img/barrier.png"></img>
+              </Col>
+              </Row>
               {/* <img src="/img/pick.png"/> */}
-              {/*  was going to use  no-digging sign */}
-              {/* barrier dynamite barrier */}
-              {/* everything blew up! */}
+                          
             </ErrorCont>
                 </Container>
         //  </Container> 
