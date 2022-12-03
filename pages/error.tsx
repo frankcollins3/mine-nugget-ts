@@ -8,12 +8,13 @@ import Random from 'utility/Randomizer'
 
 export default function Error () {    
     const changeSize = async () => {
-        // window.addEventListener("resize", '1000px');
+        
         let screenSizeBucket:(string)[] = ['800px', '400px', '1200px']
         let randomSize:string =  await Random(screenSizeBucket)
+        // console.log('randomSize')
+        window.addEventListener("resize", '500px');
+        // console.log(randomSize)
         // import Card from 'react-bootstrap'
-        console.log('randomSize')
-        console.log(randomSize)
     }
     return ( 
         
