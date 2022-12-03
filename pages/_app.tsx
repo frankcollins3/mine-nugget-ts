@@ -16,8 +16,6 @@ import '../styles/globals.css'
   export default function App({ Component, pageProps }: AppProps) {
     
     let initialstate = {
-      // pokemon:string: '',  cant
-      // pokemon: '',
       currentStrain: '',
       savedStrains: '',
       users: [],
@@ -35,26 +33,14 @@ import '../styles/globals.css'
   
   // const [theme, setTheme] = useState(themes.dark)      this is for context in the example.
   const [state, setState] = useState()
-  let globalshorthand = [state, setState]
   const [url, setUrl] = useState('')    // url:string
   const [currentStrain, setCurrentStrain ] = useState('')
   const [allStrains, setAllStrains] = useState([])
   const [error, setError] = useState()
   const [errAcknowledge, setErrAcknowledge] = useState('')
 
-      //  const Context = createContext(null as any);    
-      // <Context.Provider value={ 'he4y'  }> {initialstate} </Context.Provider>       
 
-  // const StateStore = (children) => {    
-  //      const Context = createContext(null as any);    
-  //      return (
-  //         <Context.Provider value={[state, setState]}> {initialstate}</Context.Provider> || {my: 'life'}        
-  //      )
-  // }
-    
-    
-  
-        
+          
     const testError = async () => {
       let url = `https://pokeapi.co/api/v2/pokemon/`
       let url2 = 'hi'          
