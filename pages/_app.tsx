@@ -8,50 +8,67 @@ import '../styles/globals.css'
   import Axios from 'axios';
   import ERROR from 'utility/CatchBlockErr'
   import Link from 'next/link'
-  import StateStore from 'hooks/store'
-  console.log('StateStore')
-  console.log(StateStore)
 
-  let initialstate = {
-    // pokemon:string: '',  cant
-    pokemon: '',
-    currentStrain: '',
-    savedStrains: '',
-    users: [],
-    dbStrains: [],
-    clickedStrain: undefined || null,
-    bgToggle: 'new',
-    textState: '',
-    displayText: '',
-    styleFile: '',
-    nothing: '',
-    apiLen: 0
-}
-
+  // import StateStore from 'hooks/store'
+  // console.log('StateStore')
+  // console.log(StateStore)
   
-
-
-
-
-
   export default function App({ Component, pageProps }: AppProps) {
     
-    // const [theme, setTheme] = useState(themes.dark)      this is for context in the example.
-    const [url, setUrl] = useState('')    // url:string
-    const [currentStrain, setCurrentStrain ] = useState('')
-    const [allStrains, setAllStrains] = useState([])
-    const [error, setError] = useState()
-    const [errAcknowledge, setErrAcknowledge] = useState('')
-      
+    let initialstate = {
+      // pokemon:string: '',  cant
+      // pokemon: '',
+      currentStrain: '',
+      savedStrains: '',
+      users: [],
+      dbStrains: [],
+      clickedStrain: undefined || null,
+      bgToggle: 'new',
+      textState: '',
+      displayText: '',
+      styleFile: '',
+      nothing: '',
+      apiLen: 0
+  }
+
+  let fakestate = {
+    state: 'fake'
+  }
+  
+  // const [theme, setTheme] = useState(themes.dark)      this is for context in the example.
+  const [state, setState] = useState()
+  const [url, setUrl] = useState('')    // url:string
+  const [currentStrain, setCurrentStrain ] = useState('')
+  const [allStrains, setAllStrains] = useState([])
+  const [error, setError] = useState()
+  const [errAcknowledge, setErrAcknowledge] = useState('')
+
+  const StateStore = (children) => {
+    console.log('children')
+    console.log(children)    
+    // const [state, setState] = useState()
+    // export default function StateStore({children}) {        
+      return (
+        {children} || {my: 'life'}
+        // <Context.Provider value={[state, setState]}>{children}</Context.Provider> || {my: 'life'}
+        // <Context.Provider value={[state, setState]}>{}</Context.Provider> || {my: 'life'}
+    )
+  }
+        
     const testError = async () => {
       // test store of state that it returns the values declared across the app that i manually stored as obj
       
       // let url = `https://pokeapi.co/api/v2/pokemon/`
-      console.log("hey whats up!")
-      let globalstate = await StateStore()
-      console.log(StateStore)
+      
+      // let globalstate = await StoreState()
+      // console.log('globalstate')
+      // console.log(globalstate)
+      console.log('initialstate')
+      console.log(initialstate)
+      let globalstate = await StateStore(initialstate)      
       console.log('globalstate')
       console.log(globalstate)
+
       // let url2 = 'hi'
       try {
         // let testfetch = await Axios.get('https://pokeapi.co/api/v2/pokemon')        
@@ -60,7 +77,7 @@ import '../styles/globals.css'
         // console.log(testfetch)
       } 
       catch(err) {              
-      //   const testError:string = await ERROR(err, setError)
+        // const testError:string = await ERROR(err, setError)
       //   setError(testError)
       }
 
