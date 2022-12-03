@@ -68,6 +68,7 @@ import '../styles/globals.css'
       {/* <Context.Provider>         */}
       <StateStore>
       <Component {...pageProps}
+      homebody={initialstate}
       error={error} setError={setError}
       currentStrain={currentStrain} setCurrentStrain={setCurrentStrain}
       url={url} setUrl={setUrl}
