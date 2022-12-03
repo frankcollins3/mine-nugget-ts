@@ -90,7 +90,8 @@ import '../styles/globals.css'
         let test = await Axios.get(url2)       
       } 
       catch(err) {              
-        const testError:string = await ERROR(err, setError)      
+        let globalSetError = stateArray[2].setError
+        const testError:string = await ERROR(err, globalSetError)      
       }
     }
 
