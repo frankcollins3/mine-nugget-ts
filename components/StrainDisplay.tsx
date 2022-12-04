@@ -38,11 +38,11 @@ export default function StrainDisplay (props) {
                 <div 
                 className={doubleCardClass}
                 >            
-                <p
+                <h1
                 style={{ backgroundColor: props.bgToggle === 'new' ? 'transparent' : 'rgb(62, 50, 32)'}}
                  className="card-text">
                     {stateString || ''}
-                 </p>
+                 </h1>
             </div>    
          </CardStyle>            
          {/* </Display>             */}
