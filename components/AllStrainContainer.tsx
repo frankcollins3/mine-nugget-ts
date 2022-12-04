@@ -48,10 +48,18 @@ export default  function AllStrainContainer(props:any) {
     // let globaltext:string = globalstrains.textState
     // let setglobal = globalstrains.setTextState
 
-    useEffect( () => {        
-        console.log("dang")
-        // if (props.textState === 'thc')           
-    }, [props.textState])
+    // useEffect( () => {        
+    //     console.log("dang")
+    //     // if (props.textState === 'thc')           
+    // }, [props.textState])
+
+    let text:string = props.textState
+    useEffect( () => {
+      console.log("running the useEffect function")
+      if (text === 'thc') {
+        console.log("hey weve reached out endpoint")
+      } 
+    }, [text])
 
     const checkstyles = async () => {        
         let allsass = await MasterListStyle('straincontainer')                
