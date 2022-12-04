@@ -11,12 +11,12 @@ import {useEffect, useState} from 'react'
 
 export default function StrainDisplay (props) {
     
-    useEffect( () => {
-        console.log("state is being changed in the effect change.")
-        console.log(props.globalState[1])
-    }, [props.globalState[1]])
+    // useEffect( () => {
+    //     console.log("state is being changed in the effect change.")
+    //     console.log(props.globalState[1])
+    // }, [props.globalState[1]])
 
-    console.log(props.globalState[1].bgToggle)
+    // console.log(props.globalState[1].bgToggle)
 
     
     let stateString:string = props.textState    // this should still satisfy accessing the global state with this declaration.
