@@ -26,7 +26,11 @@ import MasterRegex from 'utility/MasterRegex'
 export default  function AllStrainContainer(props:any) {   
     console.log('props')
     console.log(props)
-    console.log(props.apiLen)
+
+    let strainSave = props.strainSave
+    let setStrainSave = props.setStrainSave
+    console.log(strainSave)
+
 
 
     // const [styleFile, setStyleFile] = useState('')
@@ -56,9 +60,12 @@ export default  function AllStrainContainer(props:any) {
     let text:string = props.textState
     useEffect( () => {
       console.log("running the useEffect function")
-      if (text === 'thc') {
-        console.log("hey weve reached out endpoint")
-      } 
+      if (text === 'thc') props.setStrainSave(true)
+    //   if (text === 'thc') {
+    //       props.setStrainSave(true)
+    //   } else { props.setStrainSave(false)}
+      //   if (text === 'thc') props.setStrainSave(true)
+      
     }, [text])
 
     const checkstyles = async () => {        
@@ -82,11 +89,16 @@ export default  function AllStrainContainer(props:any) {
 
     
     const strainClick = async (event:any) => {      
-            
+        let text:string = event.target.innerText      
+
+        if (text === 'thc') {
+            console.log('this doesnt matter now but if you rely on it for rendering its a step behind without the power of useEffect')
+    //       props.setStrainSave(true)
+      } else { props.setStrainSave(false)}  // all we really want is for the falsy else block to be an expression that makes changes.
+
         let target = event.target
         let childrenOfTarget = await Children(target)
 
-        let text:string = event.target.innerText      
         let strainId:string = event.target.attributes[0].nodeValue       
         let otherstrainId:(string|number) = event.target.id
 
