@@ -22,8 +22,9 @@ import Display from 'styles/StrainDisplay'
 
                     
 export default  function Strain ( props:any, context ) {   
-    // console.log('props')
-    // console.log(props)
+    console.log('props')
+    console.log(props)
+
 
     const TextContext = createContext('')
     
@@ -52,7 +53,7 @@ export default  function Strain ( props:any, context ) {
           className={classList}>
 
             <AllStrainContainer   
-                globalState={globalstrain}
+                // globalState={globalstrain}
                 bgToggle={bgToggle} setBgToggle={setBgToggle}
                 textState={textState} setTextState={setTextState}
                 displayText={displayText} setDisplayText={setDisplayText}
@@ -63,17 +64,16 @@ export default  function Strain ( props:any, context ) {
                 currentStrain={props.currentStrain} setCurrentStrain={props.setCurrentStrain}            
                 />
 
-
               <div className={styles.Rows}>
-             <StrainDisplay  
-                globalState={globalstrain}
+              <StrainDisplay  
+                // globalState={globalstrain}
                 textState={textState} setTextState={setTextState}
                 bgToggle={bgToggle} setBgToggle={setBgToggle}
                 clickedStrain={clickedStrain} setClickedStrain={setClickedStrain}       
                 />
 
               <StrainDisplayValue
-              globalState={globalstrain}
+              // globalState={globalstrain}
               displayText={displayText} setDisplayText={setDisplayText}
               bgToggle={bgToggle} setBgToggle={setBgToggle}
               clickedStrain={clickedStrain} setClickedStrain={setClickedStrain}       
