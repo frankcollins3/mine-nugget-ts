@@ -68,9 +68,14 @@ export default  function Strain ( props:any, context ) {
                 currentStrain={props.currentStrain} setCurrentStrain={props.setCurrentStrain}            
                 />
 
+              {/* { props.strainSave === false      this made it take an extra 30 minutes
+                            ? */}
+
 
               <div className={styles.Rows}>
-              
+              {props.strainSave === false 
+                ?
+                <>
               <StrainDisplay  
                 strainSave={props.strainSave} setStrainSave={props.setStrainSave}
                 // globalState={globalstrain}
@@ -87,14 +92,16 @@ export default  function Strain ( props:any, context ) {
               clickedStrain={clickedStrain} setClickedStrain={setClickedStrain}       
               >
               </StrainDisplayValue>
-
+                </>
+              :
+              ''
+               }
                 </div>
-
-              { props.saveStrain === false 
+            {props.strainSave === false 
               ?
                ''
-               :
-               <PickMines/>
+              :
+              <PickMines/>
               }
                  
           </Container>
