@@ -14,13 +14,13 @@ import '../styles/globals.css'
   
   
   export default function App({ Component, pageProps }: AppProps) {
-    
+// * index.tsx 
   //  const [ pokemon, setPokemon ] = useState('')
    const [currentStrain, setCurrentStrain] = useState('')
    const [savedStrains, setSavedStrains] = useState('')
    const [users, setUsers] = useState([])
    const [dbStrains, setDbStrains] = useState([])
- 
+//  * strain.tsx global state
  const [clickedStrain, setClickedStrain] = useState()
  const [bgToggle, setBgToggle] = useState('new')
  const [textState, setTextState] = useState('')
@@ -28,9 +28,11 @@ import '../styles/globals.css'
  const [styleFile, setStyleFile] = useState('')
  const [nothing, setNothing] = useState()
  const [apiLen, setApiLen] = useState(0)
-  
+const [strainSave, setStrainSave] = useState(false)
+
+  // * error.tsx global state
+ //  const [currentStrain, setCurrentStrain ] = useState('')
  const [url, setUrl] = useState('')    // url:string
-//  const [currentStrain, setCurrentStrain ] = useState('')
  const [allStrains, setAllStrains] = useState([])
  const [error, setError] = useState()
  const [errAcknowledge, setErrAcknowledge] = useState('')
@@ -78,10 +80,7 @@ import '../styles/globals.css'
       setErrAcknowledge: setErrAcknowledge
     }
 
-    let stateArray = [indexObj, strainObj, errorObj]
-
-
-          
+    let stateArray = [indexObj, strainObj, errorObj]    
     const testError = async () => {
       let url = `https://pokeapi.co/api/v2/pokemon/`
       let url2 = 'hi'          
@@ -115,6 +114,16 @@ import '../styles/globals.css'
       currentStrain={currentStrain} setCurrentStrain={setCurrentStrain}
       url={url} setUrl={setUrl}
       allStrains={allStrains} setAllStrains={setAllStrains}
+
+      // * strain.tsx state 
+      clickedStrain={clickedStrain} setClickedStrain={setClickedStrain}
+      bgToggle={bgToggle} setBgToggle={setBgToggle} textState={textState} setTextState={setTextState} displayText={displayText} setDisplayText={setDisplayText}
+      styleFile={styleFile} setStyleFile={setStyleFile} nothing={nothing} setNothing={setNothing} apiLen={apiLen} setApiLen={setApiLen}
+      // * error.tsx related state
+      url={url} setUrl={setUrl} allStrains={allStrains} setAllStrains={setAllStrains} 
+      error={error} setError={setError} errAcknowledge={errAcknowledge} setErrAcknowledge={setErrAcknowledge}
+      strainSave={strainSave} setStrainSave={setStrainSave}
+
       />
       </StateStore>      
       {/* </Context.Provider> */}
@@ -124,3 +133,4 @@ import '../styles/globals.css'
     )
 
   }
+  
