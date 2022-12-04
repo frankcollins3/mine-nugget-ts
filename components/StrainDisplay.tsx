@@ -1,53 +1,51 @@
 // @ts-nocheck
-
 import styled from 'styled-components'
+// import Display from 'styles/StrainDisplay'
 import CardStyle from 'styles/StrainDisplay'
+import Card from 'react-bootstrap'
+import $ from 'jquery'
+import CSS from 'utility/CSStool'
+import {useEffect, useState} from 'react'
 
 
-export default function StrainDisplayValue(props) {
-    console.log("hello from strain display values!")
+
+export default function StrainDisplay (props) {
+    
+    // useEffect( () => {
+    //     console.log("state is being changed in the effect change.")
+    //     console.log(props.globalState[1])
+    // }, [props.globalState[1]])
+
+    // console.log(props.globalState[1].bgToggle)
+
+    
+    let stateString:string = props.textState    // this should still satisfy accessing the global state with this declaration.
+
     let columnclass = 'Column'
-    let card = 'card' 
+    let card = 'card'   // i wonder if doing this likes this takes the string data out of the scope of being tied to bootstrap 
+    // bootstrap might only apply to inline styling. these 2 might be blended like a normal string.
     let doubleCardClass = [card, columnclass].join(' ')
-    // sister container to the original underdisplay of the rendererd strains
-    // now [Left: Object.Keys(i.e. 'strain')] && [Right: Object.Values(i.e. Do-Si-Dos)]
-    console.log('props in the strain display value')
-    console.log('props')
-    console.log(props)
-
-
     return (
-        <>        
-        {/* <CardStyle        
-        bgToggle={props.bgToggle} setBgToggle={props.setBgToggle}
-        clickedStrain={props.clickedStrain} setClickedStrain={props.setClickedStrain}                   
-            >
-        <div className={doubleCardClass}>
-            <p
-            // className="Column"
-            style={{ backgroundColor: props.bgToggle === 'new' ? 'transparent' : 'rgb(62, 50, 32)'}}
-            style={{ color: props.bgToggle === 'color' ? 'transparent' : 'rgb(62, 50, 32)'}}
-            > {props.displayText} </p>
-        </div>
-        </CardStyle> 
-         */}
-                 <CardStyle        
-            bgToggle={props.bgToggle} setBgToggle={props.setBgToggle}
+    // return as any (
+<>
+        <CardStyle        
+            bgToggle={props.bgToggle} 
+            // bgToggle={props.bgToggle} setBgToggle={props.setBgToggle}
             clickedStrain={props.clickedStrain} setClickedStrain={props.setClickedStrain}
-            // bgToggle={props.globalState[1].bgToggle} setBgToggle={props.setBgToggle}
-            // clickedStrain={props.globalState[1].clickedStrain} setClickedStrain={props.setClickedStrain}
-                >
+            // clickedStrain={props.clickedStrain} setClickedStrain={props.setClickedStrain}
 
+        >
                 <div 
                 className={doubleCardClass}
                 >            
                 <p
                 style={{ backgroundColor: props.bgToggle === 'new' ? 'transparent' : 'rgb(62, 50, 32)'}}
                  className="card-text">
-                    {props.displayText || ''}
+                    {stateString || ''}
                  </p>
             </div>    
-         </CardStyle>   
-        </>
+         </CardStyle>            
+         {/* </Display>             */}
+</>
     )
 }
