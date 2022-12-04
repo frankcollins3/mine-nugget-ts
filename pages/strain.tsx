@@ -24,7 +24,15 @@ import Display from 'styles/StrainDisplay'
 export default  function Strain ( props:any, context ) {   
     console.log('props')
     console.log(props)
+    let localText:string = props.displayText
 
+    useEffect( () => {
+      console.log('localText')
+      console.log(localText)
+      if (localText === 'thc') {
+        console.log("hey weve reached out endpoint")
+      } 
+    }, [props.displayText])
 
     const TextContext = createContext('')
     
