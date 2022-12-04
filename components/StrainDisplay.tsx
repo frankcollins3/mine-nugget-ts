@@ -29,8 +29,11 @@ export default function StrainDisplay (props) {
     // return as any (
 <>
         <CardStyle        
-            bgToggle={props.bgToggle} setBgToggle={props.setBgToggle}
-            clickedStrain={props.clickedStrain} setClickedStrain={props.setClickedStrain}
+            bgToggle={props.globalState[1].bgToggle}
+            // bgToggle={props.bgToggle} setBgToggle={props.setBgToggle}
+            clickedStrain={props.globalState[1].clickedStrain} setClickedStrain={props.setClickedStrain}
+            // clickedStrain={props.clickedStrain} setClickedStrain={props.setClickedStrain}
+
         >
                 <div 
                 className={doubleCardClass}
