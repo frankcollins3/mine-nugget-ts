@@ -12,6 +12,7 @@ export default function StrainDisplayValue(props) {
     // sister container to the original underdisplay of the rendererd strains
     // now [Left: Object.Keys(i.e. 'strain')] && [Right: Object.Values(i.e. Do-Si-Dos)]
     console.log('props in the strain display value')
+    console.log('props')
     console.log(props)
 
 
@@ -31,18 +32,20 @@ export default function StrainDisplayValue(props) {
         </CardStyle> 
          */}
                  <CardStyle        
-            bgToggle={props.globalState[1].bgToggle} setBgToggle={props.setBgToggle}
-            clickedStrain={props.globalState[1].clickedStrain} setClickedStrain={props.setClickedStrain}
+            bgToggle={props.bgToggle} setBgToggle={props.setBgToggle}
+            clickedStrain={props.clickedStrain} setClickedStrain={props.setClickedStrain}
+            // bgToggle={props.globalState[1].bgToggle} setBgToggle={props.setBgToggle}
+            // clickedStrain={props.globalState[1].clickedStrain} setClickedStrain={props.setClickedStrain}
                 >
 
                 <div 
                 className={doubleCardClass}
                 >            
-                <p
+                <h2
                 style={{ backgroundColor: props.bgToggle === 'new' ? 'transparent' : 'rgb(62, 50, 32)'}}
                  className="card-text">
                     {props.displayText || ''}
-                 </p>
+                 </h2>
             </div>    
          </CardStyle>   
         </>
