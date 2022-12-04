@@ -19,7 +19,7 @@ export default function StrainDisplay (props) {
     console.log(props.globalState[1].bgToggle)
 
     
-    let stateString:string = props.textState
+    let stateString:string = props.textState    // this should still satisfy accessing the global state with this declaration.
 
     let columnclass = 'Column'
     let card = 'card'   // i wonder if doing this likes this takes the string data out of the scope of being tied to bootstrap 
@@ -29,9 +29,9 @@ export default function StrainDisplay (props) {
     // return as any (
 <>
         <CardStyle        
-            bgToggle={props.globalState[1].bgToggle}
+            bgToggle={props.bgToggle}
             // bgToggle={props.bgToggle} setBgToggle={props.setBgToggle}
-            clickedStrain={props.globalState[1].clickedStrain} setClickedStrain={props.setClickedStrain}
+            clickedStrain={props.bgToggle} setClickedStrain={props.setClickedStrain}
             // clickedStrain={props.clickedStrain} setClickedStrain={props.setClickedStrain}
 
         >
