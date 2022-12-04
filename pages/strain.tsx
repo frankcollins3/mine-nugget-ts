@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import AllStrainContainer from 'components/AllStrainContainer'
 import StrainDisplay from 'components/StrainDisplay'
 import StrainDisplayValue from 'components/strainDisplayvalue'
@@ -66,7 +68,9 @@ export default  function Strain ( props:any, context ) {
                 currentStrain={props.currentStrain} setCurrentStrain={props.setCurrentStrain}            
                 />
 
+
               <div className={styles.Rows}>
+              
               <StrainDisplay  
                 strainSave={props.strainSave} setStrainSave={props.setStrainSave}
                 // globalState={globalstrain}
@@ -83,10 +87,17 @@ export default  function Strain ( props:any, context ) {
               clickedStrain={clickedStrain} setClickedStrain={setClickedStrain}       
               >
               </StrainDisplayValue>
-                
 
                 </div>
-            </Container>
+
+              { props.saveStrain === false 
+              ?
+               ''
+               :
+               <PickMines/>
+              }
+                 
+          </Container>
             
               
     )
