@@ -128,8 +128,8 @@ export default  function AllStrainContainer(props:any) {
             await SeeAndSave(vals, keylength, props.displayText, props.setDisplayText)
             // props.setTextState(strain)   
         } else { 
-            // props.setTextState('')
-            // props.setDisplayText('')
+            props.setTextState('')
+            props.setDisplayText('')
         }
         }
     
