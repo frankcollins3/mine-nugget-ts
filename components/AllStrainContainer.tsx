@@ -12,6 +12,7 @@ import Container from 'react-bootstrap/Container'
 // import Card from 'react-bootstrap/Card'
 import {Alert, Card} from 'react-bootstrap'
 
+import ReturnEndpoints from 'utility/KeysOrValues'
 import DataCall from 'utility/DataCallJS'
 import AttrTool from 'utility/JqAttr'
 import Siblings from 'utility/JqSiblings'
@@ -23,24 +24,39 @@ import MasterListStyle from 'utility/MasterListStyle'
 import MasterRegex from 'utility/MasterRegex'
 
 export default  function AllStrainContainer(props:any) {   
+    console.log('props')
+    console.log(props)
+
     const [styleFile, setStyleFile] = useState('')
     const [nothing, setNothing] = useState()
     const [apiLen, setApiLen] = useState(0)
 
-    // const [bgToggle, setBgToggle] = useState('new')
-    // const [textState, setTextState] = useState('')
+    let globalstrains = props.globalState[1]
+    let globalclickedstrain = globalstrains.clickedStrain
+    let setglobalclickedstrain = globalstrains.setClickedStrain
 
-    let clickedStrain = props.clickedStrain
-    let setClickedStrain = props.setClickedStrain
-    // const [clickedStrain, setClickedStrain] = useState('')  state passed above to parent.
+    let BG:string = globalstrains.bgToggle
+    let setBG = globalstrains.setBgToggle
+    let clickedStrain:string = globalclickedstrain
+    let setClickedStrain = setglobalclickedstrain
+
+    let globalapilen = globalstrains.apiLen
+    let globalsetapilen = globalstrains.setApiLen
+
+    let globaltext:string = globalstrains.textState
+    let setglobal = globalstrains.setTextState
+
+
     
-
     const checkstyles = async () => {        
         let allsass = await MasterListStyle('straincontainer')                
 }
-    const toggleBg = async () => {         
-        if (props.bgToggle === 'old') props.setBgToggle('new')
-        else if (props.bgToggle === 'new') props.setBgToggle('old')
+    const toggleBg = async () => {                 
+        if (BG === 'old') setBG('new') 
+        if (BG === 'new') setBG('old')
+        // * create a logical OR operator to trigger a state-changing/rendering based on either props.bgToggle or globalstageBgToggle
+        // if (props.bgToggle === 'old')  props.setBgToggle('new')
+        // else if (props.bgToggle === 'new') props.setBgToggle('old')
     }
     const nowYouSee = (event:any) => {
         CSS($(event.target), 'color', 'papayawhip')
@@ -56,19 +72,13 @@ export default  function AllStrainContainer(props:any) {
         let target = event.target
         let childrenOfTarget = await Children(target)
 
-        // $(event.target.siblings()).hide()
-
-        // $( event.target ).siblings().css( "background-color", "red" );
-        // CSS(siblings)
-        // console.log('siblings')
-        // console.log(siblings)
-
         let text:string = event.target.innerText      
         let strainId:string = event.target.attributes[0].nodeValue       
         let otherstrainId:(string|number) = event.target.id
-        await props.setClickedStrain(text)
 
-        if (props.clickedStrain === text) {
+        await setglobalclickedstrain(text)
+
+        if (globalclickedstrain === text) {
             console.log('all strain container')
             console.log(`container ${text}`)
             let callbucket:(string|object)[] = []
@@ -77,11 +87,16 @@ export default  function AllStrainContainer(props:any) {
                     url: `api/strains/getSpecifiedStrain`,                
                     data: {  strain: text  }})    
                 
-    
-                let keys = Object.keys(call2)
-                let vals = Object.values(call2)
+                
+                // let keys = Object.keys(call2)
+                // let vals = Object.values(call2)
+                let keys = await ReturnEndpoints(call2, 'keys')
+                let vals = await ReturnEndpoints(call2, 'values')
+
+            
                 let keylength:number = keys.length
-                setApiLen(keylength)
+
+            globalsetapilen(keylength)
     
             let predata = await Axios.create({                        
                 transformResponse: [function (data) {                        
@@ -97,8 +112,8 @@ export default  function AllStrainContainer(props:any) {
             await SeeAndSave(vals, apiLen, props.displayText, props.setDisplayText)
             // props.setTextState(strain)   
         } else { 
-            props.setTextState('')
-            props.setDisplayText('')
+            // props.setTextState('')
+            // props.setDisplayText('')
         }
         }
     
@@ -113,7 +128,7 @@ export default  function AllStrainContainer(props:any) {
             <div key={'column' + index} className="Column">
             <img key={`id ${strain} `} src=""/>
 
-            {props.bgToggle === 'new' ?
+            {BG === 'new' ?
             <Card 
             className={styles.BstrapContCard}
             style={{ width: '18rem' }}>            
@@ -145,8 +160,7 @@ export default  function AllStrainContainer(props:any) {
                     listStyleType: 'none'
                 }}
                   onMouseEnter={nowYouSee} onMouseLeave={nowYouDont}
-                  className={styles.li} key={id}> {strain} </li>                           
-                
+                  className={styles.li} key={id}> {strain} </li>                                           
             </ul>
             }
 
@@ -160,7 +174,7 @@ export default  function AllStrainContainer(props:any) {
         <Container 
             style={{ overflowY: 'scroll' }}
             className={styles.ColumnCenter}>            
-           {props.bgToggle === 'new' 
+           {BG === 'new' 
            ?
            strainmap
            :    
@@ -180,4 +194,4 @@ export default  function AllStrainContainer(props:any) {
         </>
 
     )
-}       
+}
