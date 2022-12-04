@@ -26,6 +26,8 @@ import MasterRegex from 'utility/MasterRegex'
 export default  function AllStrainContainer(props:any) {   
     console.log('props')
     console.log(props)
+    console.log(props.apiLen)
+
 
     // const [styleFile, setStyleFile] = useState('')
     // const [nothing, setNothing] = useState()
@@ -35,7 +37,7 @@ export default  function AllStrainContainer(props:any) {
     // let globalclickedstrain = globalstrains.clickedStrain
     // let setglobalclickedstrain = globalstrains.setClickedStrain
 
-    // let BG:string = globalstrains.bgToggle
+    // let 86:string = globalstrains.bgToggle
     // let setBG = globalstrains.setBgToggle
     // let clickedStrain:string = globalclickedstrain
     // let setClickedStrain = setglobalclickedstrain
@@ -83,7 +85,7 @@ export default  function AllStrainContainer(props:any) {
         await props.setClickedStrain(text)
         // await setglobalclickedstrain(text)
 
-        if (globalclickedstrain === text) {
+        if (props.clickedStrain === text) {
             console.log('all strain container')
             console.log(`container ${text}`)
             let callbucket:(string|object)[] = []
@@ -101,7 +103,8 @@ export default  function AllStrainContainer(props:any) {
             
                 let keylength:number = keys.length
 
-            props.setApiLen(keylength)
+            // props.setApiLen(keylength)
+            
     
             let predata = await Axios.create({                        
                 transformResponse: [function (data) {                        
@@ -113,8 +116,8 @@ export default  function AllStrainContainer(props:any) {
             let returnedId = JSON.parse(axiosfactory.data)        
             const {strain, dominant, funfact, parents} = returnedId
             
-            await SeeAndSave(keys, apiLen, props.textState, props.setTextState)
-            await SeeAndSave(vals, apiLen, props.displayText, props.setDisplayText)
+            await SeeAndSave(keys, keylength, props.textState, props.setTextState)
+            await SeeAndSave(vals, keylength, props.displayText, props.setDisplayText)
             // props.setTextState(strain)   
         } else { 
             // props.setTextState('')
