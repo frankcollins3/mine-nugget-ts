@@ -1,30 +1,34 @@
 // @ts-nocheck
 import styled from 'styled-components'
-
 // import Display from 'styles/StrainDisplay'
 import CardStyle from 'styles/StrainDisplay'
-
 import Card from 'react-bootstrap'
 import $ from 'jquery'
 import CSS from 'utility/CSStool'
+import {useEffect, useState} from 'react'
+
 
 
 export default function StrainDisplay (props) {
-    console.log('props')
-    console.log(props)
+    
+    useEffect( () => {
+        console.log("state is being changed in the effect change.")
+        console.log(props.globalState[1])
+    }, [props.globalState[1]])
 
+    console.log(props.globalState[1].bgToggle)
+
+    
     let stateString:string = props.textState
 
     let columnclass = 'Column'
     let card = 'card'   // i wonder if doing this likes this takes the string data out of the scope of being tied to bootstrap 
     // bootstrap might only apply to inline styling. these 2 might be blended like a normal string.
     let doubleCardClass = [card, columnclass].join(' ')
-
     return (
     // return as any (
 <>
-        <CardStyle
-        // <Display
+        <CardStyle        
             bgToggle={props.bgToggle} setBgToggle={props.setBgToggle}
             clickedStrain={props.clickedStrain} setClickedStrain={props.setClickedStrain}
         >
@@ -36,8 +40,7 @@ export default function StrainDisplay (props) {
                  className="card-text">
                     {stateString || ''}
                  </p>
-            </div>
-    
+            </div>    
          </CardStyle>            
          {/* </Display>             */}
 </>
