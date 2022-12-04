@@ -179,7 +179,7 @@ export default  function AllStrainContainer(props:any) {
         <Container 
             style={{ overflowY: 'scroll' }}
             className={styles.ColumnCenter}>            
-           {BG === 'new' 
+           {props.BgToggle === 'new' 
            ?
            strainmap
            :    
