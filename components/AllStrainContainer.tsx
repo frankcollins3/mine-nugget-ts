@@ -46,26 +46,18 @@ export default  function AllStrainContainer(props:any) {
     let globaltext:string = globalstrains.textState
     let setglobal = globalstrains.setTextState
 
-    useEffect( () => {
-        console.log('globaltext is being changed')
-        if (globaltext === 'strain') {
-            console.log('strain endpoint reached early.')
-            // setComponentRenderingState NOW!
-        }
-        if (globaltext === 'thc' || globaltext === 'cbd') {
-            console.log("were reaching the end of the accessible API endpoints")
-        }
+    useEffect( () => {        
+        console.log("dang")
+        // if (props.textState === 'thc')           
+    }, [props.textState])
 
-    }, [globaltext])
-
-
-    
     const checkstyles = async () => {        
         let allsass = await MasterListStyle('straincontainer')                
 }
     const toggleBg = async () => {                 
-        if (BG === 'old') setBG('new') 
-        if (BG === 'new') setBG('old')
+        if (props.bgToggle === 'old') props.setBgToggle('new') 
+        if (props.bgToggle === 'new') props.setBgToggle('old') 
+        // if (BG === 'new') setBG('old')
         // * create a logical OR operator to trigger a state-changing/rendering based on either props.bgToggle or globalstageBgToggle
         // if (props.bgToggle === 'old')  props.setBgToggle('new')
         // else if (props.bgToggle === 'new') props.setBgToggle('old')
@@ -88,7 +80,8 @@ export default  function AllStrainContainer(props:any) {
         let strainId:string = event.target.attributes[0].nodeValue       
         let otherstrainId:(string|number) = event.target.id
 
-        await setglobalclickedstrain(text)
+        await props.setClickedStrain(text)
+        // await setglobalclickedstrain(text)
 
         if (globalclickedstrain === text) {
             console.log('all strain container')
@@ -108,7 +101,7 @@ export default  function AllStrainContainer(props:any) {
             
                 let keylength:number = keys.length
 
-            globalsetapilen(keylength)
+            props.setApiLen(keylength)
     
             let predata = await Axios.create({                        
                 transformResponse: [function (data) {                        
@@ -140,7 +133,7 @@ export default  function AllStrainContainer(props:any) {
             <div key={'column' + index} className="Column">
             <img key={`id ${strain} `} src=""/>
 
-            {BG === 'new' ?
+            {props.bgToggle === 'new' ?
             <Card 
             className={styles.BstrapContCard}
             style={{ width: '18rem' }}>            
