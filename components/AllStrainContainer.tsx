@@ -27,24 +27,24 @@ export default  function AllStrainContainer(props:any) {
     console.log('props')
     console.log(props)
 
-    const [styleFile, setStyleFile] = useState('')
-    const [nothing, setNothing] = useState()
-    const [apiLen, setApiLen] = useState(0)
+    // const [styleFile, setStyleFile] = useState('')
+    // const [nothing, setNothing] = useState()
+    // const [apiLen, setApiLen] = useState(0)
 
-    let globalstrains = props.globalState[1]
-    let globalclickedstrain = globalstrains.clickedStrain
-    let setglobalclickedstrain = globalstrains.setClickedStrain
+    // let globalstrains = props.globalState[1]
+    // let globalclickedstrain = globalstrains.clickedStrain
+    // let setglobalclickedstrain = globalstrains.setClickedStrain
 
-    let BG:string = globalstrains.bgToggle
-    let setBG = globalstrains.setBgToggle
-    let clickedStrain:string = globalclickedstrain
-    let setClickedStrain = setglobalclickedstrain
+    // let BG:string = globalstrains.bgToggle
+    // let setBG = globalstrains.setBgToggle
+    // let clickedStrain:string = globalclickedstrain
+    // let setClickedStrain = setglobalclickedstrain
 
-    let globalapilen = globalstrains.apiLen
-    let globalsetapilen = globalstrains.setApiLen
+    // let globalapilen = globalstrains.apiLen
+    // let globalsetapilen = globalstrains.setApiLen
 
-    let globaltext:string = globalstrains.textState
-    let setglobal = globalstrains.setTextState
+    // let globaltext:string = globalstrains.textState
+    // let setglobal = globalstrains.setTextState
 
     useEffect( () => {        
         console.log("dang")
