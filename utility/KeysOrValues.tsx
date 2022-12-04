@@ -7,5 +7,6 @@ export default async function ReturnEndpoints(object:object, method:string) {
 
     if (method === 'keys') return Object.keys(object)
     if (method === 'values') return Object.keys(object)
+    if (method ===' all') return [{keys:Object.keys(object), values:Object.values(object)}]
 
 }
