@@ -31,8 +31,8 @@ export default function StrainDisplayValue(props) {
         </CardStyle> 
          */}
                  <CardStyle        
-            bgToggle={props.bgToggle} setBgToggle={props.setBgToggle}
-            clickedStrain={props.clickedStrain} setClickedStrain={props.setClickedStrain}
+            bgToggle={props.globalState[1].bgToggle} setBgToggle={props.setBgToggle}
+            clickedStrain={props.globalState[1].clickedStrain} setClickedStrain={props.setClickedStrain}
                 >
 
                 <div 
