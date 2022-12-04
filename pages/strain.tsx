@@ -22,17 +22,10 @@ import Display from 'styles/StrainDisplay'
 
                     
 export default  function Strain ( props:any, context ) {   
-    console.log('props')
-    console.log(props)
-    let localText:string = props.displayText
+    // console.log('props')
+    // console.log(props)
+    
 
-    useEffect( () => {
-      console.log('localText')
-      console.log(localText)
-      if (localText === 'thc') {
-        console.log("hey weve reached out endpoint")
-      } 
-    }, [props.displayText])
 
     const TextContext = createContext('')
     
@@ -61,6 +54,7 @@ export default  function Strain ( props:any, context ) {
           className={classList}>
 
             <AllStrainContainer   
+                strainSave={props.strainSave} setStrainSave={props.setStrainSave}
                 // globalState={globalstrain}
                 bgToggle={bgToggle} setBgToggle={setBgToggle}
                 textState={textState} setTextState={setTextState}
@@ -74,6 +68,7 @@ export default  function Strain ( props:any, context ) {
 
               <div className={styles.Rows}>
               <StrainDisplay  
+                strainSave={props.strainSave} setStrainSave={props.setStrainSave}
                 // globalState={globalstrain}
                 textState={textState} setTextState={setTextState}
                 bgToggle={bgToggle} setBgToggle={setBgToggle}
@@ -82,6 +77,7 @@ export default  function Strain ( props:any, context ) {
 
               <StrainDisplayValue
               // globalState={globalstrain}
+              strainSave={props.strainSave} setStrainSave={props.setStrainSave}
               displayText={displayText} setDisplayText={setDisplayText}
               bgToggle={bgToggle} setBgToggle={setBgToggle}
               clickedStrain={clickedStrain} setClickedStrain={setClickedStrain}       
