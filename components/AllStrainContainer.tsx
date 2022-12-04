@@ -46,6 +46,18 @@ export default  function AllStrainContainer(props:any) {
     let globaltext:string = globalstrains.textState
     let setglobal = globalstrains.setTextState
 
+    useEffect( () => {
+        console.log('globaltext is being changed')
+        if (globaltext === 'strain') {
+            console.log('strain endpoint reached early.')
+            // setComponentRenderingState NOW!
+        }
+        if (globaltext === 'thc' || globaltext === 'cbd') {
+            console.log("were reaching the end of the accessible API endpoints")
+        }
+
+    }, [globaltext])
+
 
     
     const checkstyles = async () => {        
