@@ -2,7 +2,7 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: open-sans;
+  font-family: open-sans;  
 }
 
 a {
@@ -42,17 +42,20 @@ a {
   flex-direction: column;
 }
 
-.PickMineCont {
-  transform: scale(0.2);
-  /* width: 400px; */
-  /* width: 40%; */
-  border: 5px solid hotpink;
+.goldFinger {
+  color: 'white';
+  text-shadow: '35px 25px 55px white';
+  box-shadow: '35px 25px 55px orange';
+  /* font-weight: 'bold'; */
 }
 
+/* .PickMineCont {
+  transform: scale(0.2);
+  border: 5px solid hotpink;
+} */
+
 .PickMineP {
-  margin-top: 2em;
-  /* border: 5px solid limegreen; */
-  width: 300px;
+  margin-top: 2em;  
 }
 
 li {
@@ -63,15 +66,6 @@ li {
   background-size: 30%;
   background-repeat: repeat;
 }
-
-
-
-/* li:hover {
-  background-color: papayawhip;
-}
-  */
-
-
 
  ::-webkit-scrollbar {
   width: 40px;
