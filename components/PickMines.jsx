@@ -14,9 +14,15 @@ let double = [column, ptag].join(' ')
 // let tripleclass = [column, ptag, CardStyle].join(' ')
 
 
-export default function PickMines() {
-    return (
+export default function PickMines(props) {
+    console.log('props')
+    console.log(props)
 
+    let globalstate = props.global
+    // let globalstate:(string|object|number)  = props.global
+
+
+    return (
 
         <Container
          style={ {
