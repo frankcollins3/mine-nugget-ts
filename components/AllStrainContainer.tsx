@@ -24,12 +24,12 @@ import MasterListStyle from 'utility/MasterListStyle'
 import MasterRegex from 'utility/MasterRegex'
 
 export default  function AllStrainContainer(props:any) {   
-    console.log('props from the allstraincontainer')
-    console.log(props)
+    // console.log('props from the allstraincontainer')
+    // console.log(props)
 
     let strainSave = props.strainSave
     let setStrainSave = props.setStrainSave
-    console.log(strainSave)
+    // console.log(strainSave)
 
 
 
@@ -88,60 +88,54 @@ export default  function AllStrainContainer(props:any) {
     }
 
     
-    const strainClick = async (event:any) => {      
-        let text:string = event.target.innerText      
-
-        if (text === 'thc') {
-            console.log('this doesnt matter now but if you rely on it for rendering its a step behind without the power of useEffect')
-    //       props.setStrainSave(true)
-      } else { props.setStrainSave(false)}  // all we really want is for the falsy else block to be an expression that makes changes.
-
-        let target = event.target
-        let childrenOfTarget = await Children(target)
-
-        let strainId:string = event.target.attributes[0].nodeValue       
-        let otherstrainId:(string|number) = event.target.id
-
-        await props.setClickedStrain(text)
-        await props.setClickedStrain(text)
-        // await setglobalclickedstrain(text)
-
-        if (props.clickedStrain === text) {
-            console.log('all strain container')
-            console.log(`container ${text}`)
-            let callbucket:(string|object)[] = []
-                let call2 = await $.ajax({
-                    method: 'get',
-                    url: `api/strains/getSpecifiedStrain`,                
-                    data: {  strain: text  }})    
-                
-                
-                // let keys = Object.keys(call2)
-                // let vals = Object.values(call2)
-                let keys = await ReturnEndpoints(call2, 'keys')
-                let vals = await ReturnEndpoints(call2, 'values')
-
-            
-                let keylength:number = keys.length
-
-            // props.setApiLen(keylength)
-            
+    const strainClick = async (event:any) => {    
+        if (props.bgToggle === 'new' || props.bgToggle === 'old') {
+            console.log('were clicking')  
+            let text:string = event.target.innerText      
     
-            let predata = await Axios.create({                        
-                transformResponse: [function (data) {                        
-                    return(data)
-                }],
-            })
-            let axiosfactory = await predata.get(`api/strains/strain/nokey${strainId}`) // oops didn't use async had promise returned.
-            
-            let returnedId = JSON.parse(axiosfactory.data)        
-            const {strain, dominant, funfact, parents} = returnedId
-            
-            await SeeAndSave(keys, keylength, props.textState, props.setTextState)
-            await SeeAndSave(vals, keylength, props.displayText, props.setDisplayText)
-        } else { 
-            props.setTextState('')
-            props.setDisplayText('')
+            if (text === 'thc') {            
+          } else { props.setStrainSave(false)} 
+    
+            let target = event.target
+            let childrenOfTarget = await Children(target)
+    
+            let strainId:string = event.target.attributes[0].nodeValue       
+            let otherstrainId:(string|number) = event.target.id
+    
+            // await props.global.setClickedStrain(text)
+            await props.global.setCurrentStrain(text)
+            await props.setClickedStrain(text)
+    
+            if (props.clickedStrain === text) {            
+                let callbucket:(string|object)[] = []
+                    let call2 = await $.ajax({
+                        method: 'get',
+                        url: `api/strains/getSpecifiedStrain`,                
+                        data: {  strain: text  }})                    
+                    let keys = await ReturnEndpoints(call2, 'keys')
+                    let vals = await ReturnEndpoints(call2, 'values')
+                
+                    let keylength:number = keys.length
+    
+                    
+                let predata = await Axios.create({                        
+                    transformResponse: [function (data) {                        
+                        return(data)
+                    }],
+                })
+                let axiosfactory = await predata.get(`api/strains/strain/nokey${strainId}`) // oops didn't use async had promise returned.
+                
+                let returnedId = JSON.parse(axiosfactory.data)        
+                const {strain, dominant, funfact, parents} = returnedId
+                
+                await SeeAndSave(keys, keylength, props.textState, props.setTextState)
+                await SeeAndSave(vals, keylength, props.displayText, props.setDisplayText)
+
+            } else { 
+                props.setTextState('')
+                props.setDisplayText('')
+            }
+
         }
         }
     
