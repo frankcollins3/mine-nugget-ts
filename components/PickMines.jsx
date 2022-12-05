@@ -84,7 +84,7 @@
                 boxShadow: '35px 25px 55px orange',
                 fontWeight: 'bold',
             }}
-            > 'You Saved {props.global.clickedStrain}!'</h3>
+            > 'You Saved {props.global.currentStrain}!'</h3>
             <p
             style = { { color: 'white', fontWeight: 'bold' }}
             > gold to be mine. mine to be gold. </p>
