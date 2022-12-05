@@ -24,7 +24,7 @@ import MasterListStyle from 'utility/MasterListStyle'
 import MasterRegex from 'utility/MasterRegex'
 
 export default  function AllStrainContainer(props:any) {   
-    console.log('props')
+    console.log('props from the allstraincontainer')
     console.log(props)
 
     let strainSave = props.strainSave
@@ -103,6 +103,7 @@ export default  function AllStrainContainer(props:any) {
         let otherstrainId:(string|number) = event.target.id
 
         await props.setClickedStrain(text)
+        await props.setClickedStrain(text)
         // await setglobalclickedstrain(text)
 
         if (props.clickedStrain === text) {
@@ -138,7 +139,6 @@ export default  function AllStrainContainer(props:any) {
             
             await SeeAndSave(keys, keylength, props.textState, props.setTextState)
             await SeeAndSave(vals, keylength, props.displayText, props.setDisplayText)
-            // props.setTextState(strain)   
         } else { 
             props.setTextState('')
             props.setDisplayText('')
@@ -191,7 +191,6 @@ export default  function AllStrainContainer(props:any) {
                   className={styles.li} key={id}> {strain} </li>                                           
             </ul>
             }
-
             </div>            
         )
     })
