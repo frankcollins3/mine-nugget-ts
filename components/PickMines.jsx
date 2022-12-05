@@ -18,15 +18,27 @@ export default function PickMines() {
     return (
 
 
-        // <Container>
-        
-        <MineCont>
-        {/* <p className={double}> test text </p> */}
-        <img  
+        <Container
+         style={ {
+             display: 'flex',
+             flexDirection: 'column',
+             justifyContent: 'center',
+             alignItems: 'center',
+             height: '30%',
+             width: '30%'
+         }}
+        >
+                
+         {/* <p className={double}> test text </p>  */}
+         <MineCont
+        className={double}        
+            
+         >
+         <img  
         style={ { height: '5em', width: '5em'}}
         src="/img/pick.png"/>
-        </MineCont>
+         </MineCont>
+         </Container>
 
-        // </Container>
     )
 }
