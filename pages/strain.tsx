@@ -24,8 +24,9 @@ import Display from 'styles/StrainDisplay'
 
                     
 export default  function Strain ( props:any, context ) {   
-    // console.log('props')
-    // console.log(props)
+    console.log('props')
+    console.log(props)
+    let explicitprops:(string|object) = props
     
 
 
@@ -73,8 +74,8 @@ export default  function Strain ( props:any, context ) {
 
 
               <div className={styles.Rows}>
-              {props.strainSave === false 
-                ?
+              {props.strainSave === false
+                 ?
                 <>
               <StrainDisplay  
                 strainSave={props.strainSave} setStrainSave={props.setStrainSave}
@@ -101,7 +102,9 @@ export default  function Strain ( props:any, context ) {
               ?
                ''
               :
-              <PickMines/>
+              <PickMines
+              global={explicitprops}
+              />
               }
                  
           </Container>
