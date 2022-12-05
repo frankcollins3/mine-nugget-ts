@@ -56,8 +56,13 @@
             className={double}        
                 
             >
+        
             <img  
-            onMouseEnter={() => setSavedStrain(props.global.clickedStrain)}
+            onClick={() => {
+                setSavedStrain(props.global.clickedStrain)
+                setSave(true)
+                
+            }}
             style={ { height: '5em', width: '7em'}}
             src="/img/pick.png"/>
 
@@ -71,7 +76,19 @@
             }}
             > save {props.global.clickedStrain || ''} to the mines?</h3>
             :
-            <p> ''</p>
+            <>
+            <h3
+            style={ { 
+                color: 'white',
+                textShadow: '35px 25px 55px white',
+                boxShadow: '35px 25px 55px orange',
+                fontWeight: 'bold',
+            }}
+            > 'You Saved {props.global.clickedStrain}!'</h3>
+            <p
+            style = { { color: 'white', fontWeight: 'bold' }}
+            > gold to be mine. mine to be gold. </p>
+            </>
             }
             </MineCont>
             </Container>
