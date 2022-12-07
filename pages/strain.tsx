@@ -42,12 +42,20 @@ export default  function Strain ( props:any, context ) {
 
     const classList:string = [styles.Page, 'Column'].join(" ")
     const textClasses:string = [styles.FontSizeTest, styles.BorderTest].join(" ");
-
+    
     const access = async (context:any) => {             
-      let url:string = await ReturnUrl(context);  
       let ajaxstraindata = await DataCall('axios', `${url}/api/getAllStrain`, null) // /pages/api/getAllStrains      
+      let url:string = await ReturnUrl(context);  
+      console.log('url')
+      console.log(url)
       // let ajaxstraindata = await AjaxCall(`${url}/api/getAllStrain`, null, null) // /pages/api/getAllStrains        
   }
+
+    const returnUrl = async (context:any) => { 
+      let url:string = await ReturnUrl(context)      
+      return url
+    } // no 1liner?
+    returnUrl()
 
     return (
         
@@ -104,6 +112,7 @@ export default  function Strain ( props:any, context ) {
               ''
               :
               <PickMines
+              url={returnUrl}
               global={explicitprops}
               let contextprops={context}
               />
