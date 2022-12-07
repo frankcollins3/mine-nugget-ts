@@ -5,6 +5,7 @@
     import MineCont from 'styles/PickMines'
     import React, { useEffect, useState, useContext, createContext } from 'react'
     import DataCall from 'utility/DataCallJS'
+    import Axios from 'axios'
     
 
 
@@ -42,32 +43,15 @@
             let localurl = await props.url()
             // let localurl:string = await props.url()
             let testuserdata = {testuserdata: 1}
-            let axiosdata = await DataCall('axios', `${localurl}/api/strains/postuserstrains`, testuserdata) // /pages/api/getAllStrains      
-            let ajaxdata = await DataCall('axios', `${localurl}/api/strains/postuserstrains`, testuserdata) // /pages/api/getAllStrains      
-            let fetchdata = await DataCall('axios', `${localurl}/api/strains/postuserstrains`, testuserdata) // /pages/api/getAllStrains      
+            // let axiosdata = await DataCall('axios', `${localurl}/api/strains/postuserstrains`, testuserdata) // /pages/api/getAllStrains      
+            Axios.post(`${localurl}/api/strains/postuserstrains`, {
+                data: testuserdata
+            }).then( (data) => {
+                console.log('data')
+                console.log(data)
 
-            let axiosdatanull = await DataCall('axios', `${localurl}/api/strains/postuserstrains`, null) // /pages/api/getAllStrains      
-            let ajaxdatanull = await DataCall('axios', `${localurl}/api/strains/postuserstrains`, null) // /pages/api/getAllStrains      
-            let fetchdatanull = await DataCall('axios', `${localurl}/api/strains/postuserstrains`, null) // /pages/api/getAllStrains      
+            })
 
-            console.log('axiosdata')
-            console.log(axiosdata)
-
-            console.log('ajaxdata')
-            console.log(ajaxdata)
-
-            console.log('fetchdata')
-            console.log(fetchdata)
-
-            console.log('axiosdatanull')
-            console.log(axiosdatanull)
-
-            console.log('ajaxdatanull')
-            console.log(ajaxdatanull)
-
-            console.log('fetchdatanull')
-            console.log(fetchdatanull)
-            
 
             setSavedStrain(props.global.clickedStrain)
             setSave(true)
