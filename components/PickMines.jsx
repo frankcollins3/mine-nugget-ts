@@ -41,9 +41,33 @@
         const clickPick = async () => {             
             let localurl = await props.url()
             // let localurl:string = await props.url()
-        let ajaxstraindata = await DataCall('axios', `${localurl}/api/strains/postuserstrains`, null) // /pages/api/getAllStrains      
-            console.log('ajaxstraindata')                        
-            console.log(ajaxstraindata)                        
+            let testuserdata = {testuserdata: 1}
+            let axiosdata = await DataCall('axios', `${localurl}/api/strains/postuserstrains`, testuserdata) // /pages/api/getAllStrains      
+            let ajaxdata = await DataCall('axios', `${localurl}/api/strains/postuserstrains`, testuserdata) // /pages/api/getAllStrains      
+            let fetchdata = await DataCall('axios', `${localurl}/api/strains/postuserstrains`, testuserdata) // /pages/api/getAllStrains      
+
+            let axiosdatanull = await DataCall('axios', `${localurl}/api/strains/postuserstrains`, null) // /pages/api/getAllStrains      
+            let ajaxdatanull = await DataCall('axios', `${localurl}/api/strains/postuserstrains`, null) // /pages/api/getAllStrains      
+            let fetchdatanull = await DataCall('axios', `${localurl}/api/strains/postuserstrains`, null) // /pages/api/getAllStrains      
+
+            console.log('axiosdata')
+            console.log(axiosdata)
+
+            console.log('ajaxdata')
+            console.log(ajaxdata)
+
+            console.log('fetchdata')
+            console.log(fetchdata)
+
+            console.log('axiosdatanull')
+            console.log(axiosdatanull)
+
+            console.log('ajaxdatanull')
+            console.log(ajaxdatanull)
+
+            console.log('fetchdatanull')
+            console.log(fetchdatanull)
+            
 
             setSavedStrain(props.global.clickedStrain)
             setSave(true)
