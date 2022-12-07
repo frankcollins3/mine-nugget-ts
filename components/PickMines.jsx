@@ -6,6 +6,7 @@
     import React, { useEffect, useState, useContext, createContext } from 'react'
     import DataCall from 'utility/DataCallJS'
     import Axios from 'axios'
+    import POST from 'utility/POSTdataJS'
     
 
 
@@ -41,16 +42,16 @@
         
         const clickPick = async () => {             
             let localurl = await props.url()
+            let realurl = `${localurl}/api/strains/postuserstrains`
             // let localurl:string = await props.url()
             let testuserdata = {testuserdata: 1}
-            // let axiosdata = await DataCall('axios', `${localurl}/api/strains/postuserstrains`, testuserdata) // /pages/api/getAllStrains      
-            Axios.post(`${localurl}/api/strains/postuserstrains`, {
-                data: testuserdata
-            }).then( (data) => {
-                console.log('data')
-                console.log(data)
-
-            })
+            
+            // let axiosdata = await DataCall('axios', realurl, testuserdata) // /pages/api/getAllStrains      
+            // console.log('axiosdata')
+            // console.log(axiosdata)
+            let xmldata = await POST(realurl, 45, 'testStrainName')
+            // console.log('xmldata')
+            // console.log(xmldata)
 
 
             setSavedStrain(props.global.clickedStrain)
