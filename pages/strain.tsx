@@ -44,7 +44,7 @@ export default  function Strain ( props:any, context ) {
     const textClasses:string = [styles.FontSizeTest, styles.BorderTest].join(" ");
     
     const access = async (context:any) => {             
-      let ajaxstraindata = await DataCall('axios', `${url}/api/getAllStrain`, null) // /pages/api/getAllStrains      
+      let ajaxstraindata = await DataCall('axios', `${url}/api/strains/allStrain`, null) // /pages/api/getAllStrains      
       let url:string = await ReturnUrl(context);  
       console.log('url')
       console.log(url)
