@@ -1,9 +1,11 @@
     import Container from 'react-bootstrap/Container'
-
+    
     import styled from 'styled-components'
     import CardStyle from 'styles/StrainDisplay'
     import MineCont from 'styles/PickMines'
-    import {useEffect, useState} from 'react'
+    import React, { useEffect, useState, useContext, createContext } from 'react'
+    import DataCall from 'utility/DataCallJS'
+    
 
 
 
@@ -21,19 +23,33 @@
         console.log(props)
 
 
+
         let globalstate = props.global
         let clickedStrain = props.global.clickedStrain
 
-        console.log('clickedStrain')
-        console.log(clickedStrain)
-        
         const [global, setGlobal] = useState()
         const [save, setSave] = useState(false)
         const [savedStrain, setSavedStrain] = useState('')
-
+        
+        // let localurl:string = props.url()
+        
+        
         useEffect( () => {
             setGlobal(globalstate)
-        }, [])    
+        }, [])   
+        
+        const clickPick = async () => {             
+            let localurl = await props.url()
+            // let localurl:string = await props.url()
+            console.log('localurl')
+            console.log(localurl)
+                        
+
+            setSavedStrain(props.global.clickedStrain)
+            setSave(true)
+        }
+
+        
 
         // let globalstate:(string|object|number)  = props.global
 
@@ -50,19 +66,14 @@
                 width: '50%'
             }}
             >
-                    
-            {/* <p className={double}> test text </p>  */}
+                            
             <MineCont
             className={double}        
                 
             >
         
             <img  
-            onClick={() => {
-                setSavedStrain(props.global.clickedStrain)
-                setSave(true)
-                
-            }}
+            onClick={clickPick}
             style={ { height: '5em', width: '7em'}}
             src="/img/pick.png"/>
 
