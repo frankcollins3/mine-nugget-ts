@@ -41,9 +41,9 @@
         const clickPick = async () => {             
             let localurl = await props.url()
             // let localurl:string = await props.url()
-            console.log('localurl')
-            console.log(localurl)
-                        
+        let ajaxstraindata = await DataCall('axios', `${localurl}/api/strains/postuserstrains`, null) // /pages/api/getAllStrains      
+            console.log('ajaxstraindata')                        
+            console.log(ajaxstraindata)                        
 
             setSavedStrain(props.global.clickedStrain)
             setSave(true)
