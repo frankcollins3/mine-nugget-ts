@@ -25,7 +25,9 @@ export default async function Regex(url, action) {      // already forgot its no
             alphabetexp() {
                 console.log('url')
                 console.log(url)
-                let onlyletters = url.replace(/^[/^[a-zA-Z]*$]/g, '')            
+                let onlyletters = url.replace(/[^\s/a-zA-Z]+/g, '')                                              
+                console.log('onlyletters')          
+                console.log(onlyletters)          
                 return onlyletters
             }
             whitespace() {
