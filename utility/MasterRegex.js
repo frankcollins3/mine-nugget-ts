@@ -25,11 +25,12 @@ export default async function Regex(url, action) {      // already forgot its no
             alphabetexp() {
                 console.log('url')
                 console.log(url)
-                let onlyletters = url.replace(/^[a-zA-Z]/g, '')
+                let onlyletters = url.replace(/^[/^[a-zA-Z]*$]/g, '')            
                 return onlyletters
             }
             whitespace() {
-                let predry = url.replace(/^\s+|\s+$|\s+(?=\s)/g, "")
+                let predry = url.replace(/\s/g, '');                
+                // let predry = url.replace(/^\s+|\s+$|\s+(?=\s)/g, "")
                 console.log(url.length)
                 console.log(predry.length)
                 return predry
@@ -46,6 +47,7 @@ export default async function Regex(url, action) {      // already forgot its no
             }
             if (action === 'whiteout') {
                 let cleanWhites = await new Exp(url).whiteout
+                return cleanWhites
                 console.log('cleanWhites')
                 console.log(cleanWhites)
             }
