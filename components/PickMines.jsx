@@ -6,7 +6,8 @@
     import React, { useEffect, useState, useContext, createContext } from 'react'
     import DataCall from 'utility/DataCallJS'
     import Axios from 'axios'
-    import POST from 'utility/POSTdataJS'
+    import POST from '/utility/POSTdataJS'
+    import MasterRegex from '/utility/MasterRegex'
     
 
 
@@ -41,17 +42,14 @@
         }, [])   
         
         const clickPick = async () => {             
-            let localurl = await props.url()
-            let realurl = `${localurl}/api/strains/postuserstrains`
-            // let localurl:string = await props.url()
-            let testuserdata = {testuserdata: 1}
-            
-            // let axiosdata = await DataCall('axios', realurl, testuserdata) // /pages/api/getAllStrains      
-            // console.log('axiosdata')
-            // console.log(axiosdata)
-            let xmldata = await POST(realurl, 45, 'testStrainName')
-            // console.log('xmldata')
-            // console.log(xmldata)
+            let localurl = await props.url();
+            let realurl = `${localurl}/api/strains/postuserstrains`;
+                         
+            let straindata = globalstate.currentStrain;                        
+            // let userid = '4'; this would/will be pulling global.userId                         
+            let dataForDb = [straindata, userid];                     
+            let xmldata = await POST(realurl, dataForDb);
+            console.log(xmldata)
 
 
             setSavedStrain(props.global.clickedStrain)
