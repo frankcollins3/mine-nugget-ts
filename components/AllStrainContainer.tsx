@@ -24,12 +24,12 @@ import MasterListStyle from 'utility/MasterListStyle'
 import MasterRegex from 'utility/MasterRegex'
 
 export default  function AllStrainContainer(props:any) {   
-    // console.log('props from the allstraincontainer')
-    // console.log(props)
+    console.log('props from the allstraincontainer')
+    console.log(props)
 
-    let strainSave = props.strainSave
-    let setStrainSave = props.setStrainSave
-    // console.log(strainSave)
+    let globalprops:any = props.global
+    console.log('globalprops')
+    console.log(globalprops)
 
 
 
@@ -106,14 +106,17 @@ export default  function AllStrainContainer(props:any) {
             await props.global.setCurrentStrain(text)
             await props.setClickedStrain(text)
     
-            if (props.clickedStrain === text) {            
+            if (props.clickedStrain === text && globalprops.setLock === false) {  
+                globalprops.setFetchLock(true)          
                 let callbucket:(string|object)[] = []
                     let call2 = await $.ajax({
                         method: 'get',
                         url: `api/strains/getSpecifiedStrain`,                
                         data: {  strain: text  }})                    
                     let keys = await ReturnEndpoints(call2, 'keys')
+                    await globalprops.setKeyState(keys)
                     let vals = await ReturnEndpoints(call2, 'values')
+                    await globalprops.setValueState(vals)
                 
                     let keylength:number = keys.length
     
@@ -128,10 +131,11 @@ export default  function AllStrainContainer(props:any) {
                 let returnedId = JSON.parse(axiosfactory.data)        
                 const {strain, dominant, funfact, parents} = returnedId
                 
-                await SeeAndSave(keys, keylength, props.textState, props.setTextState)
-                await SeeAndSave(vals, keylength, props.displayText, props.setDisplayText)
+                await SeeAndSave(keys || globalprops.keyState, keylength, props.textState, props.setTextState)
+                await SeeAndSave(vals || globalprops.valueState, keylength, props.displayText, props.setDisplayText)
 
             } else { 
+                globalprops.setFetchLock(false)
                 props.setTextState('')
                 props.setDisplayText('')
             }
