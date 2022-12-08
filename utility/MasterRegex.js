@@ -1,4 +1,4 @@
-]export default async function Regex(url, action) {      // already forgot its not TS file: !(url:string)
+export default async function Regex(url, action) {      // already forgot its not TS file: !(url:string)
     if (url !== null || url !== undefined && typeof url === 'string') {
         class Exp {
             constructor(url) {
@@ -11,6 +11,9 @@
 
             get athruzreturn () {
                 return this.alphabetexp()
+            }
+            get whiteout() {
+                return this.whitespace()
             }
             
             numberexp () {
@@ -25,18 +28,26 @@
                 let onlyletters = url.replace(/^[a-zA-Z]/g, '')
                 return onlyletters
             }
+            whitespace() {
+                let predry = url.replace(/^\s+|\s+$|\s+(?=\s)/g, "")
+                console.log(url.length)
+                console.log(predry.length)
+                return predry
+            }
         }
         if (action !== null || action !== undefined && typeof action === 'string') {
-            if (action === 'numreturn') {
-                
+            if (action === 'numreturn') {                
                 let getNumbers = await new Exp(url).numreturn                
                 return getNumbers
             }
             if (action === 'alphareturn') {
                 let getLetters = await new Exp(url).athruzreturn
-                console.log('getLetters')
-                console.log(getLetters)
                 return getLetters
+            }
+            if (action === 'whiteout') {
+                let cleanWhites = await new Exp(url).whiteout
+                console.log('cleanWhites')
+                console.log(cleanWhites)
             }
         }
     }
