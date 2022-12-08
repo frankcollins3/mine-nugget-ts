@@ -13,7 +13,8 @@ import '../styles/globals.css'
   // import StateStore from 'components/store'
   
   
-  export default function App({ Component, pageProps }: AppProps) {
+  export default function App({ Component, pageProps, context }: AppProps) {
+    
 // * index.tsx 
   //  const [ pokemon, setPokemon ] = useState('')
    const [currentStrain, setCurrentStrain] = useState('')
@@ -28,7 +29,10 @@ import '../styles/globals.css'
  const [styleFile, setStyleFile] = useState('')
  const [nothing, setNothing] = useState()
  const [apiLen, setApiLen] = useState(0)
-const [strainSave, setStrainSave] = useState(false)
+ const [strainSave, setStrainSave] = useState(false)
+ const [keyState, setKeyState] = useState([])
+ const [valueState, setValueState] = useState([])
+ const [fetchLock, setFetchLock] = useState(false)
 
   // * error.tsx global state
  //  const [currentStrain, setCurrentStrain ] = useState('')
@@ -115,6 +119,7 @@ const [strainSave, setStrainSave] = useState(false)
       url={url} setUrl={setUrl}
       allStrains={allStrains} setAllStrains={setAllStrains}
 
+
       // * strain.tsx state 
       clickedStrain={clickedStrain} setClickedStrain={setClickedStrain}
       bgToggle={bgToggle} setBgToggle={setBgToggle} textState={textState} setTextState={setTextState} displayText={displayText} setDisplayText={setDisplayText}
@@ -123,6 +128,9 @@ const [strainSave, setStrainSave] = useState(false)
       url={url} setUrl={setUrl} allStrains={allStrains} setAllStrains={setAllStrains} 
       error={error} setError={setError} errAcknowledge={errAcknowledge} setErrAcknowledge={setErrAcknowledge}
       strainSave={strainSave} setStrainSave={setStrainSave}
+      keyState={keyState} setKeyState={setKeyState}
+      valueState={valueState} setValueState={setValueState}
+      fetchLock={fetchLock} setFetchLock={setFetchLock}
 
       />
       </StateStore>      
