@@ -106,17 +106,25 @@ export default  function AllStrainContainer(props:any) {
             await props.global.setCurrentStrain(text)
             await props.setClickedStrain(text)
     
-            if (props.clickedStrain === text && globalprops.setLock === false) {  
-                globalprops.setFetchLock(true)          
+            if (props.clickedStrain === text) {  
                 let callbucket:(string|object)[] = []
-                    let call2 = await $.ajax({
+                let call2;
+                let redeclaredkeys = {}
+                let redeclaredvalues = {}
+                
+                if (globalprops.setFetchLock === false) {
+
+                    call2 = await $.ajax({
                         method: 'get',
                         url: `api/strains/getSpecifiedStrain`,                
                         data: {  strain: text  }})                    
-                    let keys = await ReturnEndpoints(call2, 'keys')
-                    await globalprops.setKeyState(keys)
-                    let vals = await ReturnEndpoints(call2, 'values')
-                    await globalprops.setValueState(vals)
+                        let keys = await ReturnEndpoints(call2, 'keys')
+                         redeclaredkeys = await ReturnEndpoints(call2, 'keys')
+                        await globalprops.setKeyState(keys)
+                        let vals = await ReturnEndpoints(call2, 'values')
+                        await globalprops.setValueState(vals)
+                        globalprops.setFetchLock(true)          
+                    }
                 
                     let keylength:number = keys.length
     
