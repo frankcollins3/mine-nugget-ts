@@ -1,5 +1,6 @@
-import $ from 'jquery'
 import Axios from 'axios'
+import $ from 'jquery'
+import Regex from 'utility/MasterRegex'
 
 export default async function POST (url, data) {
 // export default async function DataCall (method, url, data) {
@@ -21,28 +22,31 @@ export default async function POST (url, data) {
         
         // methods 
         async xmlcall() {       
-            const xhr = await new XMLHttpRequest();  
-            let myrequest = await xhr.open('POST', url, true);           
-            console.log('myrequest')
-            console.log(myrequest)
+            console.log('data')
+            console.log(data)
+            let id = await  Regex(data, 'numreturn')
+            console.log('id')
+            console.log(id)
+            // let strainId:number = await Regex(data, 'numReturn')
 
-            let response = await xhr.responseText
-            console.log('response')
-            console.log(response)
+            // Axios.post({
+                
+            // })
+            // const xhr = await new XMLHttpRequest();  
+            // await xhr.open('POST', url, true);                   
+            // xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            // let response = await xhr.responseText            
             // xhr.onreadystatechange = () => { // Call a function when the state changes.                
                 // if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-                if (xhr.status === 200) {
-                    console.log("im right here you heard")
-                    console.log(xhr)
-                    console.log(xhr.response)
-                    return xhr.response
- 
-                }
+                // if (xhr.status === 200) {            
+                    // return xhr.response            
+                    // }
             // }
-            let postobject = {url: url, data: data, hello: 'hi'}
-            // this is sending the url but sending [object object for the postobject] 
-            xhr.send(url);
- 
+            // let postobject = {url: url, data: data}
+            // xhr.send(postobject);             
+
+
+            
             
     }
 
