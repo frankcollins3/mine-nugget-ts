@@ -1,4 +1,4 @@
-import MasterRegex from 'utility/MasterRegex'
+=import MasterRegex from 'utility/MasterRegex'
 import { PrismaClient } from '@prisma/client';
 import Regex from 'utility/MasterRegex'
 import APIcall from 'utility/APIcall'
@@ -50,10 +50,10 @@ export default async function (req, res) {
                     console.log('strain')
                     console.log(strain)
                 }
-            } else if (realdata == 'Do-Si-Dos') {
+            } else if (realdata === 'DoSiDos') {
                 if (strain.strain === 'Do-Si-Dos') {
-                    console.log('strain.strain')
-                    console.log(strain.strain)
+                    console.log('strain.strain in the dosidos logic')
+                    console.log(strain)
                 }
             }
         })
