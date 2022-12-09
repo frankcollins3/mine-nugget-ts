@@ -25,27 +25,38 @@ export default async function (req, res) {
         let strains = await prisma.strains.findMany()
         let apistrains = await APIcall('all', null, null)
 
-        apistrains.forEach( (strain) => {
+        // apistrains.forEach( (strain) => {
+        //     if (strain.strain === realdata) {
+        //         console.log('strain finally!')
+        //         console.log(strain)
+        //     } else if (realdata === 'GorillaGlue') {
+        //         console.log('strain passed the condition')
+        //         if (strain.strain === 'GorillaGlue#4') {
+        //             console.log('strain condition')
+        //             console.log(strain)
+        //         }
+        //     }
+        // })
 
+        strains.forEach( (strain) => {
             if (strain.strain === realdata) {
+                console.log('strain in the DB!')
                 console.log('strain finally!')
                 console.log(strain)
             } else if (realdata === 'GorillaGlue') {
                 console.log('strain passed the condition')
                 if (strain.strain === 'GorillaGlue#4') {
                     console.log('strain condition')
+                    console.log('strain')
                     console.log(strain)
+                }
+            } else if (realdata == 'Do-Si-Dos') {
+                if (strain.strain === 'Do-Si-Dos') {
+                    console.log('strain.strain')
+                    console.log(strain.strain)
                 }
             }
         })
-
-        // strains.forEach( (strain) => {
-        //     if (strain.strain === realdata) {
-        //         console.log('strain in the DB!')
-        //         console.log(strian.taste)
-        //         console.log(strain.funfact)
-        //     }
-        // })
         // let dbstrainlist = await prisma.strains.findMany()
 
         // const result = await prisma.strains.findUnique({
