@@ -47,7 +47,7 @@ export default async function (req, res) {
                 // let cleanStrain = await NumberStringLoop(strainid, 7)
                 // let resobject = {name: strainid, id: strainid}
 
-                // let mystrains = await prisma.strains.findMany()
+                let mystrains = await prisma.strains.findMany()
                 // mystrains.forEach(async(strain) => {
                 //     if (strain.id === strainid) {
                 //         let mystrain = await prisma.strains.findUnique({
@@ -80,19 +80,16 @@ export default async function (req, res) {
                     }
                 })
 
+                let findstrain = await prisma.strains.findFirst({
+                    where: {
+                        strain: 'white widow'                        
+                    }
+                }).then( (foundit) => {
+                    console.log('foundit')                    
+                    console.log(foundit)
+                })
 
-
-                // let mystrain = await prisma.strains.findUnique({
-                //     where: {
-                //         strain: 'white widow'
-                //         id: 1
-                //         strainId: 2
-                //     }
-                // }).then( (data) => {
-                //     console.log('data we in here')
-                //     console.log(data)
-                // })
-
+            
                 // const newstrain = await prisma.UsersOnStrains.create({
                 //     data: {
                 //       usersId: newNumber,
