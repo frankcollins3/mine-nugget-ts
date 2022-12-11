@@ -72,6 +72,7 @@ export default async function (req, res) {
                             let returnid:number = mydata.id
                             let returnStrainId:number = mydata.strainId
                             console.groupCollapsed()
+                            // console.log(mydata)
                             console.log(`name: ${returnstrain} parents: ${momdad}`)
                             console.log(`testing numbers ${returnid} ${returnStrainId}`)
                             console.groupEnd()
@@ -82,14 +83,45 @@ export default async function (req, res) {
 
                 let findstrain = await prisma.strains.findFirst({
                     where: {
-                        strain: 'white widow'                        
+                        strainId: strainid                        
                     }
-                }).then( (foundit) => {
-                    console.log('foundit')                    
-                    console.log(foundit)
                 })
-
-            
+                
+                const createPost = await prisma.strains.create({
+                    data: {
+                      strainId: findstrain.strainId,
+                      UsersOnStrains: {
+                        connectOrCreate: {
+                          where: {
+                            strainsId: findstrain.strainId                             
+                          },
+                          create: {
+                            UsersId: req.body.id,
+                            strainsId: findstrain.strainid
+                            // email: 'viola@prisma.io',
+                            // name: 'Viola',
+                          },
+                        },
+                      },
+                    },
+                    include: {
+                    //   strains: true,
+                      users: true
+                    },
+                  }).then( (created) => {
+                    console.log('created wow success!')
+                    console.log(created)
+                  })
+                
+                
+                // await prisma.strains.findUnique({
+                //     where: {
+                //          id: { findstrain.id }
+                //     }
+                // }).then( (unique) => {
+                //     console.log('unique')
+                //     console.log(unique)
+                // })
                 // const newstrain = await prisma.UsersOnStrains.create({
                 //     data: {
                 //       usersId: newNumber,
