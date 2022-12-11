@@ -47,27 +47,74 @@ export default async function (req, res) {
                 // let cleanStrain = await NumberStringLoop(strainid, 7)
                 // let resobject = {name: strainid, id: strainid}
 
-                const newstrain = await prisma.UsersOnStrains.create({
-                    data: {
-                      usersId: newNumber,
-                      strainsId: strainid,
-                    },
-                    include: {
-                        users: true,
-                        strains: true
+                // let mystrains = await prisma.strains.findMany()
+                // mystrains.forEach(async(strain) => {
+                //     if (strain.id === strainid) {
+                //         let mystrain = await prisma.strains.findUnique({
+                //             where: {
+                //                 id: strain.id
+                //             }
+                //         }).then( (mydata) => {
+                //         })
+                //     }
+                //  })
+                
+                mystrains.forEach(async(strain) => {
+                    if (strain.id === strainid) {
+                        let typestrain:(object|string|number) = await prisma.strains.findUnique({
+                            where: {
+                                id: strain.id
+                            }
+                        }).then((mydata:(object|string|number)) => {
+                            console.log("return data specified type")
+                            let returnstrain:string = mydata.strain
+                            let momdad:string = mydata.parents
+                            let returnid:number = mydata.id
+                            let returnStrainId:number = mydata.strainId
+                            console.groupCollapsed()
+                            console.log(`name: ${returnstrain} parents: ${momdad}`)
+                            console.log(`testing numbers ${returnid} ${returnStrainId}`)
+                            console.groupEnd()
+                            
+                        })
                     }
-                }).then(async(data) => {
-                    console.log('data success for post route!')
-                    console.log(data)
-                }).catch( (error) => {
-                    console.log('error')
-                    console.log(error)
                 })
+
+
+
+                // let mystrain = await prisma.strains.findUnique({
+                //     where: {
+                //         strain: 'white widow'
+                //         id: 1
+                //         strainId: 2
+                //     }
+                // }).then( (data) => {
+                //     console.log('data we in here')
+                //     console.log(data)
+                // })
+
+                // const newstrain = await prisma.UsersOnStrains.create({
+                //     data: {
+                //       usersId: newNumber,
+                //       strainsId: strainid,
+                //     },
+                //     include: {
+                //         users: true,
+                //         strains: true
+                //     }
+                // }).then(async(data) => {
+                //     console.log('data success for post route!')
+                //     console.log(data)
+                // }).catch( (error) => {
+                //     console.log('error')
+                //     console.log(error)
+                // })
 
                 //   usersId | strainsId | assignedAt | assignedBy
           //   }).then(async(data:object|string|numbers) => {
+                res.json( {mydog: 'we made it'} )
+                // res.json( {mystrain} )
 
-                res.json( {number: newNumber, id: strainid} )
             } else if (realdata === 'GorillaGlue') {
                 console.log('strain passed the gorillaglue condition')
                 if (strain.strain === 'GorillaGlue#4') {
