@@ -86,32 +86,67 @@ export default async function (req, res) {
                         strainId: strainid                        
                     }
                 })
-                
-                const createPost = await prisma.strains.create({
+
+                const assignStrain = await prisma.users.create({
                     data: {
-                      strainId: findstrain.strainId,
-                      UsersOnStrains: {
-                        connectOrCreate: {
-                          where: {
-                            strainsId: findstrain.strainId                             
+                      username: 'good guy',
+                      password: 'nice pass',
+                      email: 'goodemail@gmail.com',
+                      age: 44,
+                      strains: {
+                        // usersId: req.body.id,
+                        // strainsId: strainid,
+                        create: [  
+                            {
+                            strains: {
+                                connect: {
+                                    id: strain.id
+                                }
+                            },
                           },
-                          create: {
-                            UsersId: req.body.id,
-                            strainsId: findstrain.strainid
-                            // email: 'viola@prisma.io',
-                            // name: 'Viola',
-                          },
-                        },
+                        ],
                       },
                     },
-                    include: {
-                    //   strains: true,
-                      users: true
-                    },
-                  }).then( (created) => {
-                    console.log('created wow success!')
-                    console.log(created)
                   })
+
+                const otherStrain = await prisma.users.create({
+                    data: {
+                      username: 'good guy',
+                      password: 'nice pass',
+                      email: 'goodemail@gmail.com',
+                      age: 44,
+                      strains: {
+                        // usersId: req.body.id,
+                        // strainsId: strainid,
+                        create: [  
+                            {
+                            strains: {
+                                connect: {
+                                    id: 5
+                                }
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  }).then( (data) => {
+                //   }).then( (data:(object|number|string)) => {
+                    console.log('data')
+                    console.log(data)
+                  })
+
+                
+                // const UsersAndUserStrains = await prisma.users.create({
+                //     data: {
+                //       name: 'good guy',
+                //       UsersOnStrains: {
+                //         create: [
+                //           { strainsId: strainid, usersId: req.body.id },
+                //         //   { title: 'The story of planet Earth' },
+                //         ],
+                //       },
+                //     },
+                //   })
                 
                 
                 // await prisma.strains.findUnique({
