@@ -18,18 +18,38 @@ export default async function (req, res) {
         let strains = await prisma.strains.findMany()
         let apistrains = await APIcall('all', null, null)
 
-        // apistrains.forEach( (strain) => {
-        //     if (strain.strain === realdata) {
-        //         console.log('strain finally!')
-        //         console.log(strain)
-        //     } else if (realdata === 'GorillaGlue') {
-        //         console.log('strain passed the condition')
-        //         if (strain.strain === 'GorillaGlue#4') {
-        //             console.log('strain condition')
-        //             console.log(strain)
-        //         }
-        //     }
-        // })
+            const reusableUserCreate = async (username:string, email:string, pw:string, age:number) => {
+                const createuser = await prisma.users.create({
+                    data: {
+                        username: username,
+                        password: pw,
+                        email: email,
+                        age: age
+                    }
+                }).then( (newuser:(object|number|string)) => {
+                    console.log(newuser)
+                    return newuser
+                })
+            }
+
+                        // const userAndStrains = await prisma.users.create({
+                //     data: {
+                //       username: 'me again',
+                //       password: '1000', 
+                //       age: 22, 
+                //       email: 'again@again.again',
+                //       strains: {
+                //         create: [
+                //           { strainsId: 5 }
+                //         ],
+                //       },
+                //     },
+                //   }).then( (newrecord) => {
+                //     console.log('newrecord')
+                //     console.log(newrecord)
+                //   })
+
+
 
         strains.forEach(async(strain) => {
             if (strain.strain === realdata) {
@@ -87,84 +107,8 @@ export default async function (req, res) {
                     } 
                 })
 
-                // const assignStrain = await prisma.users.create({
-                //     data: {
-                //       username: 'good guy',
-                //       password: 'nice pass',
-                //       email: 'goodemail@gmail.com',
-                //       age: 44,
-                //       strains: {
-                //         // usersId: req.body.id,
-                //         // strainsId: strainid,
-                //         create: [  
-                //             {
-                //             strains: {
-                //                 connect: {
-                //                     id: strain.id
-                //                 }
-                //             },
-                //           },
-                //         ],
-                //       },
-                //     },
-                //   })
-
-                // const assignStrain = await prisma.users.findFirst({
-                // const assignStrain = await prisma.users.create({
-                //     where: {
-                //       username: 'good guy',
-                //       password: 'nice pass',
-                //       email: 'goodemail@gmail.com',
-                //       age: 44,
-                //       strains: {
-                //         usersId: req.body.id,
-                //         strainsId: strainid,
-                //         create: [  
-                //             {
-                //             strains: {
-                //                 connect: {
-                //                     id: strain.id
-                //                 }
-                //             },
-                //           },
-                //         ],
-                //       },
-                //     },
-                //   }).then( (data) => {
-                //     console.log('data')
-                //     console.log(data)
-                //   }
-
-                // model Post {
-                //     author      String     @id
-                //     lastUpdated DateTime   @updatedAt
-                //     categories  Category[]
-                //   }
-                  
-                //   model Category {
-                //     id    Int    @id
-                //     posts Post[]
-                //   }
-                // *   As for the query, it would look like this:                  
-                //   const categories = [
-                //     { create: { id: 1 }, where: { id: 1 } },
-                //     { create: { id: 2 }, where: { id: 2 } },
-                //   ]
-               
-                const newStrain =  { create: { strainsId: parseInt(strainid) }, where: { usersId: 1 } }
-                  
-              
-                
-                
-                  
 
 
-                  // const updatePost = await prisma.users.update({
-                
-                
-                  //     where: {
-                //       id: 3,
-                //     },
 
                 // const userAndStrains = await prisma.users.create({
                 //     data: {
@@ -254,9 +198,12 @@ export default async function (req, res) {
             } else if (realdata === 'GorillaGlue') {
                 console.log('strain passed the gorillaglue condition')
                 if (strain.strain === 'GorillaGlue#4') {
-                    let strainid:(string|number) = strain.strainId    
-                    console.log('strainid GG!')                                    
-                    console.log(strainid)                                    
+                    let strainid:(string|number) = strain.strainId  
+                    let mario = await reusableUserCreate('supermario', 'mario@nintendo.com', 'luigi', 41)  
+                    console.log('mario')
+                    console.log(mario)
+                    // console.log('strainid GG!')                                    
+                    // console.log(strainid)                                    
                 }
             } else if (realdata === 'DoSiDos') {
                 if (strain.strain === 'Do-Si-Dos') {
