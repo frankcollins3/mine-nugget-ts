@@ -205,15 +205,17 @@ export default async function (req, res) {
                     //     console.log(record)
                     //   })
 
-                    const update = await prisma.users.update({
+                    const changepassword = await prisma.users.update({
                         where: {
-                          id: 4,
+                          id: 1,
+                        //   username: 'good guy',
                         },
                         data: {
-                          strains: {
-                            deleteMany: [{ strainsId: 4 }, { strainsId: 2}],
-                          },
+                          password: '777',
                         },
+                      }).then( (newrecord:(object|string|number)) => {
+                        console.log('newrecord')
+                        console.log(newrecord)
                       })
 
 
