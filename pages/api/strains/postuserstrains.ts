@@ -153,50 +153,57 @@ export default async function (req, res) {
                
                 const newStrain =  { create: { strainsId: parseInt(strainid) }, where: { usersId: 1 } }
                   
-                const user = await prisma.users.findMany({
-                    include: {
-                      strains: {
-                        include: {
-                          strains: true,
-                        },
-                      },
-                    },
-                  }).then( (strain) => {
-                    console.log('strain')
-                    console.log(strain)
-                  })
+              
+                
                 
                   
+
+
                   // const updatePost = await prisma.users.update({
-                //     where: {
+                
+                
+                  //     where: {
                 //       id: 3,
                 //     },
+
+                // const userAndStrains = await prisma.users.create({
                 //     data: {
+                //       username: 'me again',
+                //       password: '1000', 
+                //       age: 22, 
+                //       email: 'again@again.again',
                 //       strains: {
-                //         disconnect: [{ id: 3 }, { id: 5 }],
-                //         // disconnect: [{ id: 3 }, { id: 5 }],
+                //         create: [
+                //           { strainsId: 5 }
+                //         ],
                 //       },
                 //     },
-                //     select: {
-                //       strains: true,
-                //     },
-                //   }).then( (confirm) => {
-                //     console.log('confirm')
-                //     console.log(confirm)
+                //   }).then( (newrecord) => {
+                //     console.log('newrecord')
+                //     console.log(newrecord)
                 //   })
 
                 
                 // const UsersAndUserStrains = await prisma.users.create({
                 //     data: {
-                //       name: 'good guy',
-                //       UsersOnStrains: {
-                //         create: [
-                //           { strainsId: strainid, usersId: req.body.id },
-                //         //   { title: 'The story of planet Earth' },
-                //         ],
-                //       },
-                //     },
-                //   })
+
+
+                    const user = await prisma.users.update({
+                        where: {
+                          id: 4,
+                        },
+                        data: {
+                          strains: {
+                            createMany: {
+                              data: [{ strainsId: 5}],
+                            //   data: [{ strainsId: 4 }, { strainsId: 3 }, { strainsId: 2}],
+                            },
+                          },
+                        },
+                      }).then( (record) => {
+                        console.log('   record')
+                        console.log(record)
+                      })
                 
                 
                 // await prisma.strains.findUnique({
