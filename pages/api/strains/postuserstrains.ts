@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 import Regex from 'utility/MasterRegex'
 import APIcall from 'utility/APIcall'
 import NumberStringLoop from 'utility/NumberStringLoop'
+import ReturnEndpoints from 'utility/KeysOrValues'
 const prisma = new PrismaClient()
 
 export default async function (req, res) {
@@ -10,12 +11,9 @@ export default async function (req, res) {
 
         let data = req.body.dataname
         let id = req.body.id
-        // let id:number = parseInt(req.body.id)
         console.log('id')
         console.log(id)
         let realdata = await Regex(data, 'alphareturn')
-        console.log('realdata')
-        console.log(realdata)
 
 
         let strains = await prisma.strains.findMany()
@@ -29,33 +27,48 @@ export default async function (req, res) {
                         email: email,
                         age: age
                     }
-                }).then( (newuser) => {
-                // }).then( (newuser:(object|number|string)) => {
+                }).then( (newuser:(object|number|string)) => {
                     console.log(newuser)
                     return newuser
                 })
             }
 
-            const relationalStrainToUser = async (userid:number|string, strainsId:number) => {
-                let dbid:number = parseInt(userid)
-                const user = await prisma.users.update({
+            const relationalStrainToUser = async (user:number|string, strainsId) => {
+                const checkstrain = await prisma.users.findFirst({
                     where: {
-                      id: dbid  ,
-                    //   id: 4,
+                      id: user 
                     },
-                    data: {
-                               strains: {                            // usersOnStrains
-                        createMany: {
-                               data: [{ strainsId: strainsId }],   
-    // #                           data: [{ strainsId: 5}],   
-                        },
-                      },
-                    },
-                  }).then( (record:(string|object|number)) => {                       
-                    return record
-                  })
-                }
+                    include: {
+                        strains: true
+                    }
+                }).then(async(founduser) => {
+                    let userstrains = founduser.strains
+                    let values = await ReturnEndpoints(founduser.strains, 'values')
+                    console.log('values')
+                    console.log(values.strainId)
+                    return founduser
+                })
+                // console.log('checkstrain')
+                // console.log(checkstrain)
 
+            //     const strainuser = await prisma.users.update({
+            //         where: {
+            //           id: 6,
+            //         },
+            //         data: {
+            //               strains: {          
+            //             createMany: {
+            //                data: [{ strainsId: strainsId}],  //   data: [{ strainsId: 4 }, { strainsId: 3 }, { strainsId: 2}]
+            //             },
+            //           },
+            //         },
+            //       }).then( (record) => {
+            //         console.log('record')
+            //         console.log(record)
+            //       })
+            //       console.log('strainuser')
+            //       console.log(strainuser)
+            }
 
                         // const userAndStrains = await prisma.users.create({
                 //     data: {
@@ -106,6 +119,8 @@ export default async function (req, res) {
                 
                 mystrains.forEach(async(strain) => {
                     if (strain.id === strainid) {
+                        console.log('strainid')
+                        console.log(strainid)
                         let typestrain:(object|string|number) = await prisma.strains.findUnique({
                             where: {
                                 id: strain.id
@@ -120,9 +135,12 @@ export default async function (req, res) {
                             // console.log(mydata)
                             console.log(`name: ${returnstrain} parents: ${momdad}`)
                             console.log(`testing numbers ${returnid} ${returnStrainId}`)
-                            console.groupEnd()
-                            
+                            console.groupEnd()                            
                         })
+
+                        let newuser = await relationalStrainToUser(parseInt(req.body.id), strain.id)
+                        console.log('newuser')
+                        console.log(newuser)
                     }
                 })
 
@@ -132,8 +150,7 @@ export default async function (req, res) {
                     } 
                 })
 
-                let newstrain = await relationalStrainToUser(id, strainid)
-                return newstrain
+
 
 
                 // const userAndStrains = await prisma.users.create({
@@ -175,18 +192,17 @@ export default async function (req, res) {
                     //     console.log(record)
                     //   })
 
-                    const changepassword = await prisma.users.update({
-                        where: {
-                          id: 1,
-                        //   username: 'good guy',
-                        },
-                        data: {
-                          password: '777',
-                        },
-                      }).then( (newrecord:(object|string|number)) => {
-                        console.log('newrecord')
-                        console.log(newrecord)
-                      })
+                    // const changepassword = await prisma.users.update({
+                    //     where: {
+                    //       id: 1,
+                    //     },
+                    //     data: {
+                    //       password: '777',
+                    //     },
+                    //   }).then( (newrecord:(object|string|number)) => {
+                    //     console.log('newrecord')
+                    //     console.log(newrecord)
+                    //   })
 
 
                 
@@ -225,12 +241,9 @@ export default async function (req, res) {
                 console.log('strain passed the gorillaglue condition')
                 if (strain.strain === 'GorillaGlue#4') {
                     let strainid:(string|number) = strain.strainId  
-                    // let mario = await reusableUserCreate('supermario', 'mario@nintendo.com', 'luigi', 41)  
-                    // console.log('mario')
-                    // console.log(mario)
-                    let newuser = await relationalStrainToUser(4, strainid)
-                    console.log('newuser')
-                    console.log(newuser)
+                    let mario = await reusableUserCreate('supermario', 'mario@nintendo.com', 'luigi', 41)  
+                    console.log('mario')
+                    console.log(mario)
                     // console.log('strainid GG!')                                    
                     // console.log(strainid)                                    
                 }
@@ -238,12 +251,6 @@ export default async function (req, res) {
                 if (strain.strain === 'Do-Si-Dos') {
                     console.log("we passed the Do-Si-Dos condition!")
                     let strainid:(string|number) = strain.strainId                    
-                    let newuser = await relationalStrainToUser(4, strainid)
-                    console.log('newuser')
-                    console.log(newuser)
-                    // ** create relationalStrainToUser
-
-                    
                 }
             }
         })           
