@@ -26,7 +26,8 @@ export default async function (req, res) {
                         email: email,
                         age: age
                     }
-                }).then( (newuser:(object|number|string)) => {
+                }).then( (newuser) => {
+                // }).then( (newuser:(object|number|string)) => {
                     console.log(newuser)
                     return newuser
                 })
@@ -35,20 +36,19 @@ export default async function (req, res) {
             const relationalStrainToUser = async (userid:number, strainsId:number) => {
                 const user = await prisma.users.update({
                     where: {
-                      id: userid,
+                      id: parseInt(userid)  ,
                     //   id: 4,
                     },
                     data: {
-    #                           strains: {                            // usersOnStrains
+                               strains: {                            // usersOnStrains
                         createMany: {
-    #                           data: [{ strainsId: strainsId}],   
+                               data: [{ strainsId: strainsId}],   
     // #                           data: [{ strainsId: 5}],   
                         },
                       },
                     },
                   }).then( (record) => {
-                    console.log('record')
-                    console.log(record)
+                    return record
                   })
                 }
 
@@ -128,7 +128,9 @@ export default async function (req, res) {
                     } 
                 })
 
-
+                let newstrain = await relationalStrainToUser(req.body.id, strainid)
+                console.log('newstrain')
+                console.log(newstrain)
 
 
                 // const userAndStrains = await prisma.users.create({
@@ -220,9 +222,12 @@ export default async function (req, res) {
                 console.log('strain passed the gorillaglue condition')
                 if (strain.strain === 'GorillaGlue#4') {
                     let strainid:(string|number) = strain.strainId  
-                    let mario = await reusableUserCreate('supermario', 'mario@nintendo.com', 'luigi', 41)  
-                    console.log('mario')
-                    console.log(mario)
+                    // let mario = await reusableUserCreate('supermario', 'mario@nintendo.com', 'luigi', 41)  
+                    // console.log('mario')
+                    // console.log(mario)
+                    let newuser = await relationalStrainToUser(4, strainid)
+                    console.log('newuser')
+                    console.log(newuser)
                     // console.log('strainid GG!')                                    
                     // console.log(strainid)                                    
                 }
@@ -230,9 +235,7 @@ export default async function (req, res) {
                 if (strain.strain === 'Do-Si-Dos') {
                     console.log("we passed the Do-Si-Dos condition!")
                     let strainid:(string|number) = strain.strainId                    
-                    let newuser = await relationalStrainToUser(req.body.id, strainid)
-                    console.log('newuser')
-                    console.log(newuser)
+                    
                 }
             }
         })           
