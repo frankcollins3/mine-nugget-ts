@@ -14,6 +14,8 @@ export default async function (req, res) {
         console.log('id')
         console.log(id)
         let realdata = await Regex(data, 'alphareturn')
+        console.log('realdata')
+        console.log(realdata)
 
 
         let strains = await prisma.strains.findMany()
@@ -44,12 +46,12 @@ export default async function (req, res) {
                     data: {
                                strains: {                            // usersOnStrains
                         createMany: {
-                               data: [{ strainsId: strainsId}],   
+                               data: [{ strainsId: strainsId }],   
     // #                           data: [{ strainsId: 5}],   
                         },
                       },
                     },
-                  }).then( (record) => {
+                  }).then( (record:(string|object|number)) => {                       
                     return record
                   })
                 }
@@ -131,8 +133,7 @@ export default async function (req, res) {
                 })
 
                 let newstrain = await relationalStrainToUser(id, strainid)
-                console.log('newstrain')
-                console.log(newstrain)
+                return newstrain
 
 
                 // const userAndStrains = await prisma.users.create({
@@ -237,6 +238,11 @@ export default async function (req, res) {
                 if (strain.strain === 'Do-Si-Dos') {
                     console.log("we passed the Do-Si-Dos condition!")
                     let strainid:(string|number) = strain.strainId                    
+                    let newuser = await relationalStrainToUser(4, strainid)
+                    console.log('newuser')
+                    console.log(newuser)
+                    // ** create relationalStrainToUser
+
                     
                 }
             }
