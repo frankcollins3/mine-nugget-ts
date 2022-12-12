@@ -10,6 +10,7 @@ export default async function (req, res) {
 
         let data = req.body.dataname
         let id = req.body.id
+        // let id:number = parseInt(req.body.id)
         console.log('id')
         console.log(id)
         let realdata = await Regex(data, 'alphareturn')
@@ -33,10 +34,11 @@ export default async function (req, res) {
                 })
             }
 
-            const relationalStrainToUser = async (userid:number, strainsId:number) => {
+            const relationalStrainToUser = async (userid:number|string, strainsId:number) => {
+                let dbid:number = parseInt(userid)
                 const user = await prisma.users.update({
                     where: {
-                      id: parseInt(userid)  ,
+                      id: dbid  ,
                     //   id: 4,
                     },
                     data: {
@@ -128,7 +130,7 @@ export default async function (req, res) {
                     } 
                 })
 
-                let newstrain = await relationalStrainToUser(req.body.id, strainid)
+                let newstrain = await relationalStrainToUser(id, strainid)
                 console.log('newstrain')
                 console.log(newstrain)
 
