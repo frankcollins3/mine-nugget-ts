@@ -187,23 +187,36 @@ export default async function (req, res) {
                 // const UsersAndUserStrains = await prisma.users.create({
                 //     data: {
 
+                    // ** this works and adds strains to user !!!!!!
+                    // const user = await prisma.users.update({
+                    //     where: {
+                    //       id: 4,
+                    //     },
+                    //     data: {
+                    //       strains: {
+                    //         createMany: {
+                    //           data: [{ strainsId: strainid}],
+                    //           data: [{ strainsId: 4 }, { strainsId: 3 }, { strainsId: 2}],
+                    //         },
+                    //       },
+                    //     },
+                    //   }).then( (record) => {
+                    //     console.log('   record')
+                    //     console.log(record)
+                    //   })
 
-                    const user = await prisma.users.update({
+                    const update = await prisma.users.update({
                         where: {
                           id: 4,
                         },
                         data: {
                           strains: {
-                            createMany: {
-                              data: [{ strainsId: 5}],
-                            //   data: [{ strainsId: 4 }, { strainsId: 3 }, { strainsId: 2}],
-                            },
+                            deleteMany: [{ strainsId: 4 }, { strainsId: 2}],
                           },
                         },
-                      }).then( (record) => {
-                        console.log('   record')
-                        console.log(record)
                       })
+
+
                 
                 
                 // await prisma.strains.findUnique({
