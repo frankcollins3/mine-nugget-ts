@@ -32,6 +32,27 @@ export default async function (req, res) {
                 })
             }
 
+            const relationalStrainToUser = async (userid:number, strainsId:number) => {
+                const user = await prisma.users.update({
+                    where: {
+                      id: userid,
+                    //   id: 4,
+                    },
+                    data: {
+    #                           strains: {                            // usersOnStrains
+                        createMany: {
+    #                           data: [{ strainsId: strainsId}],   
+    // #                           data: [{ strainsId: 5}],   
+                        },
+                      },
+                    },
+                  }).then( (record) => {
+                    console.log('record')
+                    console.log(record)
+                  })
+                }
+
+
                         // const userAndStrains = await prisma.users.create({
                 //     data: {
                 //       username: 'me again',
@@ -209,6 +230,9 @@ export default async function (req, res) {
                 if (strain.strain === 'Do-Si-Dos') {
                     console.log("we passed the Do-Si-Dos condition!")
                     let strainid:(string|number) = strain.strainId                    
+                    let newuser = await relationalStrainToUser(req.body.id, strainid)
+                    console.log('newuser')
+                    console.log(newuser)
                 }
             }
         })           
