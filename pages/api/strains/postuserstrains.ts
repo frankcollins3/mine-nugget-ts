@@ -4,6 +4,8 @@ import Regex from 'utility/MasterRegex'
 import APIcall from 'utility/APIcall'
 import NumberStringLoop from 'utility/NumberStringLoop'
 import ReturnEndpoints from 'utility/KeysOrValues'
+import LoopAndPush from 'utility/LoopAndPush'
+
 const prisma = new PrismaClient()
 
 export default async function (req, res) {
@@ -34,6 +36,8 @@ export default async function (req, res) {
             }
 
             const relationalStrainToUser = async (user:number|string, strainsId) => {
+                const checkYes:(number)[] = []
+
                 const checkstrain = await prisma.users.findFirst({
                     where: {
                       id: user 
@@ -44,30 +48,54 @@ export default async function (req, res) {
                 }).then(async(founduser) => {
                     let userstrains = founduser.strains
                     let values = await ReturnEndpoints(founduser.strains, 'values')
-                    console.log('values')
-                    console.log(values.strainId)
-                    return founduser
-                })
+                    let valueArray = values[0]
+                    
+                    
+                    
+                    // console.log('values')
+                    // console.log(values)
+                    // console.log(values.strainId)
+
+                    values.forEach(async(value) => {
+                        let val:number = value.strainsId
+                        console.log(`val ${val} strainsId ${strainsId}`)
+                        if (val === strainsId) {
+                            console.log(`we already have this strain! dont do anything! ${strainsId}`)
+                            return // continue
+                        } else {
+                            console.log(` this is what we want! ${strainsId}`)
+                            const strainuser = await prisma.users.update({
+                                where: {
+                                id: 6,
+                                },
+                                data: {
+                                    strains: {          
+                                    createMany: {
+                                    data: [{ strainsId: strainsId}],  //   data: [{ strainsId: 4 }, { strainsId: 3 }, { strainsId: 2}]
+                                    },
+                                },
+                                },
+                            }).then( (record) => {
+                                console.log('record')
+                                console.log(record)
+                            }).catch( (error) => {
+                                console.log('hey theres a little error!')
+                                throw new Error('nice error!');
+                            })                            
+                                return founduser                        
+                        }                      
+                    })
+                    // let looputil = await LoopAndPush(values, checkYes, valueArray.strainId, strainsId, null)                    
+                    })
+                        
+
+                            
+
+
                 // console.log('checkstrain')
                 // console.log(checkstrain)
 
-            //     const strainuser = await prisma.users.update({
-            //         where: {
-            //           id: 6,
-            //         },
-            //         data: {
-            //               strains: {          
-            //             createMany: {
-            //                data: [{ strainsId: strainsId}],  //   data: [{ strainsId: 4 }, { strainsId: 3 }, { strainsId: 2}]
-            //             },
-            //           },
-            //         },
-            //       }).then( (record) => {
-            //         console.log('record')
-            //         console.log(record)
-            //       })
-            //       console.log('strainuser')
-            //       console.log(strainuser)
+
             }
 
                         // const userAndStrains = await prisma.users.create({
@@ -118,29 +146,19 @@ export default async function (req, res) {
                 //  })
                 
                 mystrains.forEach(async(strain) => {
-                    if (strain.id === strainid) {
-                        console.log('strainid')
-                        console.log(strainid)
+                    if (strain.id === strainid) {                        
                         let typestrain:(object|string|number) = await prisma.strains.findUnique({
                             where: {
                                 id: strain.id
                             }
-                        }).then((mydata:(object|string|number)) => {
-                            console.log("return data specified type")
+                        }).then((mydata:(object|string|number)) => {                            
                             let returnstrain:string = mydata.strain
                             let momdad:string = mydata.parents
                             let returnid:number = mydata.id
-                            let returnStrainId:number = mydata.strainId
-                            console.groupCollapsed()
-                            // console.log(mydata)
-                            console.log(`name: ${returnstrain} parents: ${momdad}`)
-                            console.log(`testing numbers ${returnid} ${returnStrainId}`)
-                            console.groupEnd()                            
+                            let returnStrainId:number = mydata.strainId                            
                         })
 
-                        let newuser = await relationalStrainToUser(parseInt(req.body.id), strain.id)
-                        console.log('newuser')
-                        console.log(newuser)
+                        let newuser = await relationalStrainToUser(parseInt(req.body.id), strain.id)                        
                     }
                 })
 
@@ -234,23 +252,60 @@ export default async function (req, res) {
 
                 //   usersId | strainsId | assignedAt | assignedBy
           //   }).then(async(data:object|string|numbers) => {
-                res.json( {mydog: 'we made it'} )
                 // res.json( {mystrain} )
 
             } else if (realdata === 'GorillaGlue') {
-                console.log('strain passed the gorillaglue condition')
                 if (strain.strain === 'GorillaGlue#4') {
+                    console.log('strain passed the gorillaglue condition')
                     let strainid:(string|number) = strain.strainId  
-                    let mario = await reusableUserCreate('supermario', 'mario@nintendo.com', 'luigi', 41)  
-                    console.log('mario')
-                    console.log(mario)
-                    // console.log('strainid GG!')                                    
-                    // console.log(strainid)                                    
-                }
+
+                    const strainuser = await prisma.users.update({
+                        where: {
+                        id: 6,
+                        },
+                        data: {
+                            strains: {          
+                            createMany: {
+                            data: [{ strainsId: 2}],  //   data: [{ strainsId: 4 }, { strainsId: 3 }, { strainsId: 2}]
+                            },
+                        },
+                        },
+                    }).then( (record) => {
+                        res.json( {record})                        
+                    }).catch( (error) => {                        
+                        res.json( {error} )
+                        throw new Error('nice error!');
+                    })                            
+                        return founduser                        
+                }                                
+                    // let mario = await reusableUserCreate('supermario', 'mario@nintendo.com', 'luigi', 41)  
+                    // let newuser = await relationalStrainToUser(parseInt(req.body.id), strainid)                                                    
             } else if (realdata === 'DoSiDos') {
                 if (strain.strain === 'Do-Si-Dos') {
                     console.log("we passed the Do-Si-Dos condition!")
-                    let strainid:(string|number) = strain.strainId                    
+                    let strainid:(string|number) = strain.strainId   
+                    // let newuser = await relationalStrainToUser(parseInt(req.body.id), strainid)
+
+                    const strainuser = await prisma.users.update({
+                        where: {
+                        id: 6,
+                        },
+                        data: {
+                            strains: {          
+                            createMany: {
+                            data: [{ strainsId: 3}],  //   data: [{ strainsId: 4 }, { strainsId: 3 }, { strainsId: 2}]
+                            },
+                        },
+                        },
+                    }).then( (record) => {
+                        res.json( {record})                        
+                    }).catch( (error) => {
+                        console.log('hey theres a little error!')
+                        throw new Error('nice error!');
+                    })      
+
+
+                    // let newuser = await relationalStrainToUser(parseInt(req.body.id), strainid)                 
                 }
             }
         })           
