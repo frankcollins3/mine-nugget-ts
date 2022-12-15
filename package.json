@@ -11,6 +11,7 @@
   "dependencies": {
     "@prisma/client": "^4.6.1",
     "@react-hook/resize-observer": "^1.2.6",
+    "@reduxjs/toolkit": "^1.9.1",
     "@types/node": "18.11.9",
     "@types/react": "18.0.25",
     "@types/react-dom": "18.0.8",
@@ -27,6 +28,7 @@
     "react-dom": "18.2.0",
     "react-jquery-plugin": "^1.1.7",
     "react-redux": "^8.0.5",
+    "redux": "^4.2.0",
     "sass": "^1.56.1",
     "stripe": "^11.1.0",
     "styled-components": "^5.3.6",
