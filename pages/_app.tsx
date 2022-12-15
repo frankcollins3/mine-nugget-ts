@@ -9,6 +9,11 @@ import '../styles/globals.css'
   import ERROR from 'utility/CatchBlockErr'
   import Link from 'next/link'
 
+  import {Provider} from 'react-redux';
+  import React from 'react';
+  import withRedux from "next-redux-wrapper";
+  import store from '../redux/store';
+
   import StateStore from 'hooks/store'
   // import StateStore from 'components/store'
   
@@ -99,6 +104,7 @@ import '../styles/globals.css'
     }
 
     return (
+
       <>
         <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -109,8 +115,10 @@ import '../styles/globals.css'
         ERROR TEST 
       </button>
       <p> {error || 'no error'} </p>
+
       
       {/* <Context.Provider>         */}
+      <Provider store={store}>
       <StateStore>
       <Component {...pageProps}
       globalstate={stateArray}// homebody={initialstate}
@@ -118,8 +126,8 @@ import '../styles/globals.css'
       currentStrain={currentStrain} setCurrentStrain={setCurrentStrain}
       url={url} setUrl={setUrl}
       allStrains={allStrains} setAllStrains={setAllStrains}
-
-
+      
+      
       // * strain.tsx state 
       clickedStrain={clickedStrain} setClickedStrain={setClickedStrain}
       bgToggle={bgToggle} setBgToggle={setBgToggle} textState={textState} setTextState={setTextState} displayText={displayText} setDisplayText={setDisplayText}
@@ -131,9 +139,10 @@ import '../styles/globals.css'
       keyState={keyState} setKeyState={setKeyState}
       valueState={valueState} setValueState={setValueState}
       fetchLock={fetchLock} setFetchLock={setFetchLock}
-
+      
       />
       </StateStore>      
+      </Provider>
       {/* </Context.Provider> */}
     
     </>
