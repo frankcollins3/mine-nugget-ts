@@ -10,7 +10,6 @@ import '../styles/globals.css'
   import Link from 'next/link'
 
   import {Provider} from 'react-redux';
-  import React from 'react';
   import withRedux from "next-redux-wrapper";
   import store from '../redux/store';
 
@@ -18,7 +17,7 @@ import '../styles/globals.css'
   // import StateStore from 'components/store'
   
   
-  export default function App({ Component, pageProps, context }: AppProps) {
+ function App({ Component, pageProps, context }: AppProps) {
     
 // * index.tsx 
   //  const [ pokemon, setPokemon ] = useState('')
@@ -150,4 +149,6 @@ import '../styles/globals.css'
     )
 
   }
-  
+const makeStore = () => store;
+//withRedux wrapper that passes the store to the App Component
+export default withRedux(makeStore)(App);
