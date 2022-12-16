@@ -1,80 +1,47 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import { configureStore } from "@reduxjs/toolkit";
-import { Provider } from "react-redux";
-import { useDispatch, useSelector } from "react-redux";
-import game from 'slices/game/gameslice'
-console.log('game')
-console.log(game)
-console.log(game.actions)
+import { TypedUseSelectorHook, useSelector } from 'react-redux'
+import {Provider} from 'react-redux';
+import withRedux from "next-redux-wrapper";
+import wrapper from '../redux/store';
 
-const store = configureStore({
-    reducer: game.reducer 
-})
+import store from 'redux/store'
 
-console.log(store.getState())
-// store.dispatch( {type: })
+const increment = { 
+    type: "INCREMENT"
+}
 
 
 
+console.log('app.js!')
+let mystate = store.getState()
+console.log('mystate')
+console.log(mystate)
+store.dispatch(increment)
+setTimeout( () => {
+    console.log("wow no way!")
+    console.log(store.getState())
+}, 2000 )
 
-// const { location } = useSelector(state=>state)
-// const dispatch = useDispatch();
-
-
-// const {  } = useSelector(state=>state)
-// const dispatch = useDispatch();
-
-
-// import reducer from "slices/game/gameslice";
-// const {  } = useSelector(state=>state)
-
-
-// const dispatch = useDispatch();
-// import { play } from 'slices/game/gameslice'
+// console.log(store.dispatch({ type: 'game/playing'}))
 
 
-// const store = configureStore({    
-//     reducer: reducer
-// });
-
-// console.log(store.getState())
-// store.dispatch( { type: 'playing'})
-// console.log("hey were over here")
-// console.log(store.getState())
-// const numbermethod = number => number + 1
-// let gotmynumber = numbermethod(1)
-// console.log('gotmynumber')
-// console.log(gotmynumber)
-
-
-// const playvalue = state => state.inplay
-// const locationvalue = state => state.location
-// const playval = playvalue(store.getState())
-// const locval = locationvalue(store.getState())
-
-// let newlocation = store.dispatch( { type: 'newlocation'})
-// console.log('newlocation')
-// console.log(newlocation)
-
-// console.log(playval)
-// console.log(locval)
-// import {decrementCounter, incrementCounter} from '../redux/actions/counterActions';
 
 
 
 export default function FamilyTree (props) {
     console.log('props')
     console.log(props)
-
+    console.log(props.store)
+    
     
 
     const checkredux = async () => {
+        await store.dispatch(increment)
         console.log("this is my redux")
-        // await props.store.getState()
-        // await props.store.displatch( { type: 'playing'})
-        // await props.store.getState()
+        await store.getState()
+
     }
     // let restaurants = {
     //     burger: 'wendys',
