@@ -4,10 +4,30 @@ import {connect} from 'react-redux';
 import { TypedUseSelectorHook, useSelector } from 'react-redux'
 import {Provider} from 'react-redux';
 import withRedux from "next-redux-wrapper";
+
+import {PLAYING_GAME, NOT_PLAYING_GAME} from 'redux/actions/gameActions'
+import { playingGame, notPlayingGame } from 'redux/actions/gameActions'
 import wrapper from '../redux/store';
-
-
 import store from 'redux/store'
+
+
+console.log('fam tree component')
+let state1 = store.getState()
+console.log('state1')
+console.log(state1)
+store.dispatch( { type: "PLAYING_GAME!"})
+store.dispatch( { type: "INCREMENT"})
+
+let state2 = store.getState()
+console.log('state2')
+console.log(state2)
+
+setTimeout(async() => {
+await store.dispatch( { type: "INCREMENT"})
+await store.getState()
+}, 2000)
+
+
 
 
 
@@ -22,15 +42,11 @@ import store from 'redux/store'
     console.log('props')
     console.log(props)
     console.log(props.store)
+    console.log(items)
+    
 
-    const increment = { 
-        type: "INCREMENT"
-    }
-    console.log('app.js!')
-    let mystate = store.getState()
-    console.log('mystate')
-    console.log(mystate)
-    store.dispatch(increment)
+
+    // store.dispatch(increment)
     setTimeout( () => {
         console.log("wow no way!")
         console.log(store.getState())
@@ -39,9 +55,7 @@ import store from 'redux/store'
     
 
     const checkredux = async () => {
-        await store.dispatch(increment)
-        console.log("this is my redux")
-        await store.getState()
+
 
     }
     // let restaurants = {
@@ -69,7 +83,8 @@ import store from 'redux/store'
 }
 
 const mapStateToProps = state => ({
-    items: state.counter
+    reduxstate: state
+    // items: state.counter
 });
 
 export default connect(mapStateToProps)(FamilyTree);
