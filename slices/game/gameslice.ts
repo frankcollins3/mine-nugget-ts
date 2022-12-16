@@ -2,24 +2,30 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const game = createSlice({
     name: "playing",
-    initialState: {
+    initialState: {                         // { actions } = game
         inplay: false
         // inplay: false
     },
-    reducers: {
-        save: (state = game.initialState, action) => {
+    reducers: {                 // { reducer } = game
+        play: (state = game.initialState, action) => {
             if (action.type === 'playing') {
                 return {
                     ...state, 
-                    state: true
+                    // inplay: state.inplay = true
+                    inplay: true
                 }
             } else if (action.type === 'notplaying') {
                 return {
                     ...state,
-                    state: false
+                    inplay: false
                 }
             }
-            // state.location = [...state.location, payload];
+            return state
         },
     }
 });
+
+// destructuring
+const { actions, reducer } = game   
+export const { play } = actions
+export default reducer
