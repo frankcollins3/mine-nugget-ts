@@ -6,23 +6,10 @@ import {Provider} from 'react-redux';
 import withRedux from "next-redux-wrapper";
 import wrapper from '../redux/store';
 
+
 import store from 'redux/store'
 
-const increment = { 
-    type: "INCREMENT"
-}
 
-
-
-console.log('app.js!')
-let mystate = store.getState()
-console.log('mystate')
-console.log(mystate)
-store.dispatch(increment)
-setTimeout( () => {
-    console.log("wow no way!")
-    console.log(store.getState())
-}, 2000 )
 
 // console.log(store.dispatch({ type: 'game/playing'}))
 
@@ -30,10 +17,24 @@ setTimeout( () => {
 
 
 
-export default function FamilyTree (props) {
+ function FamilyTree (props, {items}) {
+// export default function FamilyTree (props) {
     console.log('props')
     console.log(props)
     console.log(props.store)
+
+    const increment = { 
+        type: "INCREMENT"
+    }
+    console.log('app.js!')
+    let mystate = store.getState()
+    console.log('mystate')
+    console.log(mystate)
+    store.dispatch(increment)
+    setTimeout( () => {
+        console.log("wow no way!")
+        console.log(store.getState())
+    }, 2000 )
     
     
 
@@ -62,10 +63,16 @@ export default function FamilyTree (props) {
         <div>
             <h1> guessing game test render </h1>
             <button onClick={checkredux}></button>
+            
         </div>
     )
 }
 
+const mapStateToProps = state => ({
+    items: state.counter
+});
+
+export default connect(mapStateToProps)(FamilyTree);
 // reducer: rootReducer
 // export async function getServerSideProps(context) {              
 
