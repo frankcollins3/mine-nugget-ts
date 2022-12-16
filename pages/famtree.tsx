@@ -11,10 +11,16 @@ import wrapper from '../redux/store';
 import store from 'redux/store'
 
 
-console.log('fam tree component')
-let state1 = store.getState()
-console.log('state1')
-console.log(state1)
+import { useDispatch } from "react-redux";
+import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
+
+let gamestate = store.getState()
+console.log('gamestate')
+console.log(gamestate)
+console.log(gamestate.gameReducer.counter)
+
+
+
 store.dispatch( { type: "PLAYING_GAME!"})
 store.dispatch( { type: "INCREMENT"})
 
@@ -37,12 +43,25 @@ await store.getState()
 
 
 
- function FamilyTree (props, {items}) {
+ function FamilyTree (props) {
 // export default function FamilyTree (props) {
     console.log('props')
     console.log(props)
-    console.log(props.store)
-    console.log(items)
+
+    let counter = props.counter
+    let inplay = props.inplay
+    console.log('counter')
+    console.log(counter)
+
+    console.log('inplay')
+    console.log(inplay)
+
+    
+    
+    
+    
+
+    const dispatch = useDispatch()
     
 
 
@@ -55,9 +74,15 @@ await store.getState()
     
 
     const checkredux = async () => {
+        console.log('items')
 
-
+        await dispatch( {type: "INCREMENT"})
+        await dispatch( {type: "PLAYING_GAME"})
+        console.log('gamestate')
+        console.log(gamestate)
     }
+        
+    
     // let restaurants = {
     //     burger: 'wendys',
     //     shakes: 'wendys',
@@ -74,7 +99,7 @@ await store.getState()
     console.log('family tree component!')
 
     return (
-        <div>
+        <div style= {{ backgroundColor: 'dodgerBlue', minHeight: '100vh'}}>
             <h1> guessing game test render </h1>
             <button onClick={checkredux}></button>
             
@@ -82,10 +107,13 @@ await store.getState()
     )
 }
 
-const mapStateToProps = state => ({
-    reduxstate: state
-    // items: state.counter
-});
+const mapStateToProps = (gamestate) => {
+    return {
+         counter: gamestate.gameReducer.counter,
+         inplay: gamestate.gameReducer.inplay
+         }
+}
+
 
 export default connect(mapStateToProps)(FamilyTree);
 // reducer: rootReducer
