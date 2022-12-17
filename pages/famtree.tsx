@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import { TypedUseSelectorHook, useSelector } from 'react-redux'
 import {Provider} from 'react-redux';
 import withRedux from "next-redux-wrapper";
+import {useEffect, useState} from 'react'
 
 import {PLAYING_GAME, NOT_PLAYING_GAME} from 'redux/actions/gameActions'
 import { playingGame, notPlayingGame } from 'redux/actions/gameActions'
@@ -15,9 +16,7 @@ import { useDispatch } from "react-redux";
 import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
 
 let gamestate = store.getState()
-console.log('gamestate')
-console.log(gamestate)
-console.log(gamestate.gameReducer.counter)
+let game = gamestate.gameReducer
 
 
 
@@ -45,16 +44,27 @@ await store.getState()
 
  function FamilyTree (props) {
 // export default function FamilyTree (props) {
+
+    const [parents, setParents] = useState('')
     console.log('props')
     console.log(props)
 
     let counter = props.counter
     let inplay = props.inplay
+    let gamestateparents = props.parents
+
     console.log('counter')
     console.log(counter)
 
     console.log('inplay')
     console.log(inplay)
+
+    console.log('gamestateparents')
+    console.log(gamestateparents)
+
+    useEffect( () => {
+        // setParents(inplay)
+    }, [])
 
     
     
@@ -77,7 +87,14 @@ await store.getState()
         console.log('items')
 
         await dispatch( {type: "INCREMENT"})
-        await dispatch( {type: "PLAYING_GAME"})
+        // await dispatch( {type: "INCREMENT"})
+        if (gamestate.gameReducer.inplay === true) {
+            setParents(inplay)
+            await dispatch( {type: NOT_PLAYING_GAME})
+        } else if (gamestate.gameReducer.inplay === false) {
+            setParents('magic')
+            await dispatch( {type: PLAYING_GAME})            
+        }
         console.log('gamestate')
         console.log(gamestate)
     }
@@ -101,6 +118,7 @@ await store.getState()
     return (
         <div style= {{ backgroundColor: 'dodgerBlue', minHeight: '100vh'}}>
             <h1> guessing game test render </h1>
+            <h1> {parents || 'ayoo'} </h1>
             <button onClick={checkredux}></button>
             
         </div>
@@ -109,8 +127,9 @@ await store.getState()
 
 const mapStateToProps = (gamestate) => {
     return {
-         counter: gamestate.gameReducer.counter,
-         inplay: gamestate.gameReducer.inplay
+         counter: game.counter,
+         inplay: game.inplay,
+         parents: game.parents
          }
 }
 
