@@ -2,6 +2,7 @@
 import APIcall from 'utility/APIcall'
 import { PrismaClient } from '@prisma/client';
 import Regex from 'utility/MasterRegex'
+import StringInt from 'utility/StringInt'
 let prisma = new PrismaClient()
 let i = 0;
 
@@ -34,8 +35,13 @@ export default async function (req:any, res:any) {              // res:string do
             do {                    
                 if (dbstrain[i]) {                    
                     let index = dbstrain[i]
-                    let strainid = index.strainId                    
-                    if (index.strainId === parseInt(twostringkeys)) {                    
+                    let strainid = index.strainId    
+                    let parsedint = await StringInt(twostringkeys, 'parseInt')                
+
+                    console.log('parsedint')
+                    console.log(parsedint)
+
+                    if (index.strainId === parsedint) {                    
                         return res.json (index)
                     }
                 }
