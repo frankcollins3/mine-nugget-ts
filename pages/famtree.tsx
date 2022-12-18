@@ -55,6 +55,8 @@ await store.getState()
 
 let i = 0;
  function FamilyTree (props) {
+
+    
 // export default function FamilyTree (props) {
 
     const [parents, setParents] = useState('')
@@ -159,22 +161,42 @@ export async function getServerSideProps(context:any) {
     // let predata = await fetch(new URL(`${url}/api/strains/strain`))            
     let data = await APIcall('all', null, null)
     let apilen:number = data.length
+
+    let index1 = apilen-apilen + 1
+    console.log('index1')
+    console.log(index1)
+
+    let indexlast = apilen
+    console.log('indexlast') 
+    console.log(indexlast) 
+    
     console.log('data api call')
+    // let arraystate = []
     let arraystate:number[] = []
     // console.log(data)
-    const loop = () => {
-        do {
-            arraystate.push(i)
-            console.log('arraystate')
-            console.log(arraystate)
-            i++
-        }
-        while(i <= apilen)
-    }
-    loop()
+    // const loop = () => {
+    //     do {
+    //         arraystate.push(i)
+    //         console.log('arraystate')
+    //         console.log(arraystate)
+    //         i++
+    //     }
+    //     while(i <= apilen)
+    // }
+    // loop()
 
-        let randomvalue = await Random(arraystate)
-        let predata = await fetch(new URL(`${url}/api/strains/strain/5`))            
+    function randomNumber(min, max) { 
+        let random = Math.random() * (max-min) + min
+        let int = random.toFixed()
+        return int
+        // return Math.random() * (max - min) + min.;
+    } 
+    // let randomvalue = await Random(arraystate)
+    let randomvalue = await randomNumber(index1, indexlast)
+    console.log('randomvalue')
+    console.log(randomvalue)
+
+        let predata = await fetch(new URL(`${url}/api/strains/strain/${randomvalue}`))            
         // let predata = await fetch(new URL(`${url}/api/strains/strain/${randomvalue}`))            
         let serverdata = await predata.json()        
 
