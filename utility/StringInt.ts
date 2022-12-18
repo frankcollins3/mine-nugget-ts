@@ -4,5 +4,8 @@ export default async function StringInt (StringOrInt:(number|string), method:any
         let Int:number = parseInt(StringOrInt)
         return Int
     }
-
+    if (method === 'toString' && typeof StringOrInt === 'number') {
+        let String:string = StringOrInt.toString()
+        return String
+    }
 }
