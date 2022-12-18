@@ -1,4 +1,4 @@
-import React from 'react';
+ import React from 'react';
 import {connect} from 'react-redux';
 import { TypedUseSelectorHook, useSelector } from 'react-redux'
 import {Provider} from 'react-redux';
@@ -55,6 +55,8 @@ let i = 0;
 
     const [parents, setParents] = useState('')
     const [strains, setStrains] = useState('')
+    const [trigger, setTrigger] = useState(0)
+
 
     const [redux, setRedux] = useState(false)
 
@@ -67,34 +69,28 @@ let i = 0;
     let gamestateparents = props.parents
     let serverdata = props.serverdata
 
-    
-    // let momdad = useSelector(state => state.parents)
-    
     const dispatch = useDispatch()
 
     let result:any = useSelector(state => state)
-    let reduxparents:string = result.gameReducer.parents
-    console.log('result')
-    console.log(result)
-    console.log(result.gameReducer)
-    
+    let reduxparents = result.gameReducer.parents
+    // let reduxparents:string = result.gameReducer.parents
 
-    
-
-
-    const changeReduxState = () => {
-            dispatch( {type: 'SET_PARENTS', payload: {parents: 'banana-bonanza'}})
-
-            // let newresult:any = customReduxSelector(state => state.gamereducer.parents)
-            // let newresult:any = useSelector(state => state)
-
-            // const parentState = customReduxSelector(state => state.parents);
-            // let parentstate:string = useSelector(state => state.parents)
-
-            // console.log('newresult')
-            // console.log(newresult)
+    const checkState = () => {
+        // let newstate
+        // newstate = useSelector(state => state)
+        // [ let newstate = '' newstate  = useSelector() ] this didn't work 
+        console.log('reduxparents')
+        console.log(reduxparents)
     }
-    changeReduxState()
+    
+
+    useEffect( () => {
+
+
+
+    }, [trigger])
+    
+
 
 
     // {type: 'filters/statusFilterChanged', payload: filterValue}
@@ -105,56 +101,41 @@ let i = 0;
         // setParents(inplay)
     }, [])
 
-    
-    
-    
-    
 
-    
-
-
-    // store.dispatch(increment)
-    // setTimeout( () => {
-    //     console.log("wow no way!")
-    //     console.log(store.getState())
-    // }, 2000 )
     
     
 
-    const checkredux = async () => {
+        const checkredux = async () => {
+            let straindata:(object|string|number) = await APIcall('all', null, null)
+            let randomStrain = await Random(straindata)
+            let randomparents:string = randomStrain.parents
+            reduxparents = dispatch( { type: "SET_PARENTS", payload: { parents: randomparents}})
+            console.log('straindata')
+            console.log(straindata)
+            console.log('reduxparents')
+            console.log(reduxparents)
 
-        setRedux(true)
-        // let int = await dispatch( {type: "INCREMENT"})
 
-        // // await dispatch( {type: "INCREMENT"})
-        // if (gamestate.gameReducer.inplay === true) {
-        //     await dispatch( { type: "SET_PARENTS"} )
-        //     await dispatch( {type: NOT_PLAYING_GAME} )
+            // if (trigger === 1) {
+            //     reduxparents = dispatch( { type: 'SET_PARENTS', payload: { parents:'night owl'}})
+            // }
+            
+            // if (trigger === 2) {
+            //     reduxparents = dispatch( { type: 'SET_PARENTS', payload: { parents:'black night'}})
+            // }
+            // if (trigger === 3) {
+            //     reduxparents = dispatch( { type: 'SET_PARENTS', payload: { parents:'father time'}})
+            // }
 
-        //     await dispatch( { type: "WIN_STREAK"})
-        //     setParents('magic')
-        // } else if (gamestate.gameReducer.inplay === false) {
-        //     // await dispatch( {type: "SET_PARENTS"})
-        //     setParents(counter)
-        //     await dispatch( {type: PLAYING_GAME})            
-        // }
+            let letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+            let randomletter:string = await Random(letters)
+            console.log('randomletter')
+            console.log(randomletter)
+            setTrigger(trigger + 1)
+            await setRedux(true)
+        }
 
-    }
         
-    
-    // let restaurants = {
-    //     burger: 'wendys',
-    //     shakes: 'wendys',
-    //     fries: 'wendys'
-    // }
-
-    // let newrestaurants = {
-    //     ...restaurants,
-    //     burger: restaurants.burger.concat(' burgerking'),
-    //     shakes: restaurants.shakes = ['wendys', 'burgerking'],
-    //     fries: restaurants.fries += 'burger king'
-    // }
-    // console.log(newrestaurants)
     console.log('family tree component!')
 
     return (
@@ -163,11 +144,18 @@ let i = 0;
         // style= {{ backgroundColor: 'dodgerBlue', minHeight: '100vh'}}
         >       
             <GameContainer/>
-            <p> {redux === true ? reduxparents : 'hooo'} </p>
+            <h1
+            style={{ color: 'white'}}
+            > {redux === true ? reduxparents : 'not redux parents'} </h1>
+            <p> {trigger || 'random text'} </p>
             <button onClick={checkredux}></button>            
+
+            {/* <button 
+            style = { { backgroundColor: "orange"}}
+            onClick={checkredux2}></button>             */}
         </div>
         // </ShadowBorder>
-    )
+    )   
 }
 
     // function mapStateToProps(state) {
