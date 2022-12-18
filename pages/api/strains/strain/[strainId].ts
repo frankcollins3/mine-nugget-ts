@@ -14,55 +14,35 @@ export default async function (req:any, res:any) {              // res:string do
     let twostringkeys = req.query.strainId
     let dbstrain = await prisma.strains.findMany()
 
-    if (twostringkeys.includes('no')) {
-        console.log("it includes no!!!!")        
+    if (twostringkeys.includes('no')) {        
         let reqstr = await Regex(twostringkeys, 'numreturn')            
-        
-        
+                
         const returnRes = () => {
             dbstrain.forEach( (strain) => {            
                 let strainstring:any = strain.strainId
-                if (strainstring.toString() === reqstr) {                
-
-                    // strainbucket.push({ strain })
-                    // return res({hey: 'hi'})
+                if (strainstring.toString() === reqstr) {                                    
                     return res.json( strain )
                 }
             })
         }
         return returnRes()
         
-    } else if (!twostringkeys.includes('no')) {
-        console.log("the data doesn't have that so this same function should return undefined.")
+    } else if (!twostringkeys.includes('no')) {        
         let elseid:number = twostringkeys
-        console.log('there should be no data in this part')
-        do {    
-            console.log("hey we are in a do while loop")
-            // * slice next baby!
-            if (dbstrain[i]) {
-                
-                let index = dbstrain[i]
-                let strainid = index.strainId
-                console.log('strainid')
-                console.log(`${strainid}${typeof strainid}`)
-                console.log(`twostrainkeys ${twostringkeys} ${typeof twostringkeys} `)
-                if (index.strainId === parseInt(twostringkeys)) {
-                // if (strainid === parseInt(twostringkeys)) {
-                    console.log('twostringkeys if condition!')
-                    console.log(index)
-                    console.log(twostringkeys)
-                }
-            }
-            i++
-        }
-        while(i < dbstrain.length)
-        return res.json( {hey: 'hi'})
-        // return { christmas: 'coal'}
-        // return (             cant render react elements in .ts file
-        //     <div>
-
-        //     </div>
-        // )
         
+        const returnResponse = async  () => {
+            do {                    
+                if (dbstrain[i]) {                    
+                    let index = dbstrain[i]
+                    let strainid = index.strainId                    
+                    if (index.strainId === parseInt(twostringkeys)) {                    
+                        return res.json (index)
+                    }
+                }
+                i++
+            }
+            while(i < dbstrain.length)
+        }
+        return returnResponse()        
     }
 }
