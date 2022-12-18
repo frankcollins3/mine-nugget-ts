@@ -29,6 +29,8 @@ const gameReducer = (state=initState, action) => {
     }
     if (action.type === "SET_PARENTS") {
         if (state.parents === '') {
+            console.log('action.payload')
+            console.log(action.payload)
             state.parents = 'new parents'
         }
         else if (state.parents === 'new parents') {
