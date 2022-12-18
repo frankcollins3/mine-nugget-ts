@@ -1,32 +1,35 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import Container from 'styles/game/components/GameContainer'
 import { TypedUseSelectorHook, useSelector } from 'react-redux'
 import {Provider} from 'react-redux';
 import withRedux from "next-redux-wrapper";
 import {useEffect, useState} from 'react'
+import ReturnUrl from 'utility/ReturnUrl'
 
+// * CSS
+import ShadowBorder from 'styles/game/components/GameContainer'
+import styles from 'styles/game/sass/FamilyTree.module.scss'
+// import styles from 'styles/AllStrainContainer.module.scss'
+
+// * REDUX
 import {PLAYING_GAME, NOT_PLAYING_GAME} from 'redux/actions/gameActions'
 import { playingGame, notPlayingGame } from 'redux/actions/gameActions'
 import wrapper from '../redux/store';
 import store from 'redux/store'
-
-
 import { useDispatch } from "react-redux";
-import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
-
 let gamestate = store.getState()
 let game = gamestate.gameReducer
+
+// * Components that Comprise the Page
+import GameContainer from 'components/GameContainer'
+
+
+
 
 
 
 store.dispatch( { type: "PLAYING_GAME!"})
 store.dispatch( { type: "INCREMENT"})
-
-let state2 = store.getState()
-console.log('state2')
-console.log(state2)
-
 setTimeout(async() => {
 await store.dispatch( { type: "INCREMENT"})
 await store.getState()
@@ -53,15 +56,8 @@ await store.getState()
     let counter = props.counter
     let inplay = props.inplay
     let gamestateparents = props.parents
+    const dispatch = useDispatch()
 
-    console.log('counter')
-    console.log(counter)
-
-    console.log('inplay')
-    console.log(inplay)
-
-    console.log('gamestateparents')
-    console.log(gamestateparents)
 
     useEffect( () => {
         // setParents(inplay)
@@ -72,7 +68,6 @@ await store.getState()
     
     
 
-    const dispatch = useDispatch()
     
 
 
@@ -121,17 +116,21 @@ await store.getState()
     console.log('family tree component!')
 
     return (
-        <Container>
-        <div    
+        // <ShadowBorder>
+        <div className={styles.div}  
         // style= {{ backgroundColor: 'dodgerBlue', minHeight: '100vh'}}
-        >
-        
-            <h1> guessing game test render </h1>
-            <h1> {parents || 'ayoo'} </h1>
+        >       
+
+            <GameContainer/>
+
+            
+
+            {/* <h1> guessing game test render </h1>
+            <h1> {parents || 'ayoo'} </h1> */}
             <button onClick={checkredux}></button>
             
         </div>
-            </Container>
+        // </ShadowBorder>
     )
 }
 
@@ -143,6 +142,22 @@ const mapStateToProps = (game) => {
          winstreak: game.winstreak         
          }
 }
+
+export async function getServerSideProps(context:any) {              
+    let url:any = await ReturnUrl(context);    
+    // let pokeurl = `https://pokeapi.co/api/v2/pokemon/`    
+    let predata = await fetch(new URL(`${url}/api/strains/strain`))            
+    let serverdata = await predata.json()        
+
+    console.log('serverdata from family tree')
+    console.log(serverdata)
+
+  return {
+  props: {
+    serverdata    
+  }
+  };
+  }
 
 
 export default connect(mapStateToProps)(FamilyTree);
