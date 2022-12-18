@@ -22,13 +22,8 @@ import {PLAYING_GAME, NOT_PLAYING_GAME} from 'redux/actions/gameActions'
 import { playingGame, notPlayingGame } from 'redux/actions/gameActions'
 import wrapper from '../redux/store';
 import store from 'redux/store'
-console.log('store')
-console.log(store)
-console.log(store.getState())
 import { useDispatch } from "react-redux";
 import customReduxSelector from 'redux/reduxselector'
-
-
 
 let gamestate = store.getState()
 let game = gamestate.gameReducer
@@ -39,10 +34,6 @@ import GameContainer from 'components/GameContainer'
 import axios from 'axios';
 
 store.dispatch( { type: "PLAYING_GAME!"})
-// store.dispatch( { type: "INCREMENT"})
-// store.dispatch( { type: "INCREMENT"})
-// store.dispatch( { type: "INCREMENT"})
-// store.dispatch( { type: "INCREMENT"})
 store.dispatch( { type: "INCREMENT" })
 store.dispatch( { type: 'SET_PARENTS', payload: { parents: 'white rhino'}})
 store.getState()
@@ -56,13 +47,8 @@ let i = 0;
     const [parents, setParents] = useState('')
     const [strains, setStrains] = useState('')
     const [trigger, setTrigger] = useState(0)
-
-
     const [redux, setRedux] = useState(false)
-
     const [int, setInt] = useState('')
-    console.log('props')
-    console.log(props)
 
     let counter = props.counter
     let inplay = props.inplay
@@ -73,64 +59,28 @@ let i = 0;
 
     let result:any = useSelector(state => state)
     let reduxparents = result.gameReducer.parents
-    // let reduxparents:string = result.gameReducer.parents
-
+ 
     const checkState = () => {
-        // let newstate
-        // newstate = useSelector(state => state)
-        // [ let newstate = '' newstate  = useSelector() ] this didn't work 
-        console.log('reduxparents')
-        console.log(reduxparents)
+        
     }
     
 
     useEffect( () => {
 
-
-
     }, [trigger])
     
-
-
-
-    // {type: 'filters/statusFilterChanged', payload: filterValue}
-    
-
-
     useEffect( () => {
         // setParents(inplay)
     }, [])
-
-
-    
-    
 
         const checkredux = async () => {
             let straindata:(object|string|number) = await APIcall('all', null, null)
             let randomStrain = await Random(straindata)
             let randomparents:string = randomStrain.parents
             reduxparents = dispatch( { type: "SET_PARENTS", payload: { parents: randomparents}})
-            console.log('straindata')
-            console.log(straindata)
-            console.log('reduxparents')
-            console.log(reduxparents)
-
-
-            // if (trigger === 1) {
-            //     reduxparents = dispatch( { type: 'SET_PARENTS', payload: { parents:'night owl'}})
-            // }
-            
-            // if (trigger === 2) {
-            //     reduxparents = dispatch( { type: 'SET_PARENTS', payload: { parents:'black night'}})
-            // }
-            // if (trigger === 3) {
-            //     reduxparents = dispatch( { type: 'SET_PARENTS', payload: { parents:'father time'}})
-            // }
 
             let letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
-            let randomletter:string = await Random(letters)
-            console.log('randomletter')
-            console.log(randomletter)
+            let randomletter:string = await Random(letters)            
             setTrigger(trigger + 1)
             await setRedux(true)
         }
@@ -143,25 +93,18 @@ let i = 0;
         <div className={styles.div}  
         // style= {{ backgroundColor: 'dodgerBlue', minHeight: '100vh'}}
         >       
-            <GameContainer/>
+            <GameContainer redux={reduxparents}/>
+            
             <h1
-            style={{ color: 'white'}}
+            style ={{ color: 'white'}}
             > {redux === true ? reduxparents : 'not redux parents'} </h1>
             <p> {trigger || 'random text'} </p>
             <button onClick={checkredux}></button>            
 
-            {/* <button 
-            style = { { backgroundColor: "orange"}}
-            onClick={checkredux2}></button>             */}
-        </div>
-        // </ShadowBorder>
+            
+        </div>        
     )   
 }
-
-    // function mapStateToProps(state) {
-    //     const { todos } = state
-    //     return { todoList: todos.allIds }
-    //   }
 
 const mapStateToProps = (game) => {
     const { counter, inplay, parents, winstreak } = game    
@@ -174,36 +117,16 @@ const mapStateToProps = (game) => {
 }
 
 export async function getServerSideProps(context:any) {              
-    let url:any = await ReturnUrl(context);    
-    // let pokeurl = `https://pokeapi.co/api/v2/pokemon/`    
-    // let predata = await fetch(new URL(`${url}/api/strains/strain`))            
+    let url:any = await ReturnUrl(context);        
     let data = await APIcall('all', null, null)
     let apilen:number = data.length
 
     let index1 = apilen-apilen + 1
-    console.log('index1')
-    console.log(index1)
 
-    let indexlast = apilen
-    console.log('indexlast') 
-    console.log(indexlast) 
+    let indexlast = apilen    
     
-    console.log('data api call')
     // let arraystate = []
     let arraystate:number[] = []
-    // console.log(data)
-    // const loop = () => {
-    //     do {
-    //         arraystate.push(i)
-    //         console.log('arraystate')
-    //         console.log(arraystate)
-    //         i++
-    //     }
-    //     while(i <= apilen)
-    // }
-    // loop()
-
-
 
     function randomNumber(min, max) { 
         let random = Math.random() * (max-min) + min
@@ -216,8 +139,7 @@ export async function getServerSideProps(context:any) {
     console.log('randomvalue')
     console.log(randomvalue)
 
-        let predata = await fetch(new URL(`${url}/api/strains/strain/${randomvalue}`))            
-        // let predata = await fetch(new URL(`${url}/api/strains/strain/${randomvalue}`))            
+        let predata = await fetch(new URL(`${url}/api/strains/strain/${randomvalue}`))                    
         let serverdata = await predata.json()        
 
   return {
@@ -227,15 +149,4 @@ export async function getServerSideProps(context:any) {
   };
   }
 
-
 export default connect(mapStateToProps)(FamilyTree);
-// reducer: rootReducer
-// export async function getServerSideProps(context) {              
-
-//     return {
-//         props: {
-//             store
-//         }
-//     }
-
-//   }
