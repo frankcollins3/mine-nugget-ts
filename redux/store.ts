@@ -1,5 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { combineReducers } from 'redux'
+import APIcall from 'utility/APIcall'
+import Random from 'utility/Randomizer'
 
 const {createStore} = require("redux")
 
@@ -11,11 +13,14 @@ const initState = {
     wrongguess: 0
 }
 const gameReducer = (state=initState, action) => {
-        if(action.type==="INCREMENT") {
+        if(action.type === "INCREMENT") {
+        console.log('state from the increment')
+        console.log(state)
         state.counter++
         return state
+        // return state.counter
     }
-    else if(action.type==="DECREMENT") {
+    else if(action.type === "DECREMENT") {
         state.counter--
         return state
     }
@@ -27,18 +32,16 @@ const gameReducer = (state=initState, action) => {
         state.inplay = false
         return state
     }
-    if (action.type === "SET_PARENTS") {
-        if (state.parents === '') {
-            console.log('action.payload')
-            console.log(action.payload)
-            state.parents = 'new parents'
-        }
-        else if (state.parents === 'new parents') {
-            state.parents = ''        
-        }
-        // state.parents = ''
-        return state
+    if (action.type === "SET_PARENTS") {                
+                state.parents = action.payload.parents
+                return state        
     }
+    if (action.type === "CLEAR_PARENTS") {
+            state.parents = ''
+            return state
+    }
+    // return action.type === "SET_PARENTS" ? action.payload.parents : 'hey';
+
     if (action.type === "WIN_STREAK") {
         state.winstreak++
         if (state.winstreak > 4) {
