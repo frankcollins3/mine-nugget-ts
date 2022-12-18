@@ -47,20 +47,6 @@ store.dispatch( { type: "INCREMENT" })
 store.dispatch( { type: 'SET_PARENTS', payload: { parents: 'white rhino'}})
 store.getState()
 
-setTimeout(async() => {
-    console.log("hey imma timer!")
-     store.dispatch( {type: 'INCREMENT'})
-     console.log(store.getState())
-}, 3000)
-
-
-
-
-
-// console.log(store.dispatch({ type: 'game/playing'}))
-
-
-
 
 let i = 0;
  function FamilyTree (props) {
@@ -68,6 +54,10 @@ let i = 0;
     // export default function FamilyTree (props) {
 
     const [parents, setParents] = useState('')
+    const [strains, setStrains] = useState('')
+
+    const [redux, setRedux] = useState(false)
+
     const [int, setInt] = useState('')
     console.log('props')
     console.log(props)
@@ -133,7 +123,7 @@ let i = 0;
 
     const checkredux = async () => {
 
-
+        setRedux(true)
         // let int = await dispatch( {type: "INCREMENT"})
 
         // // await dispatch( {type: "INCREMENT"})
@@ -173,13 +163,17 @@ let i = 0;
         // style= {{ backgroundColor: 'dodgerBlue', minHeight: '100vh'}}
         >       
             <GameContainer/>
-            <p> {reduxparents} </p>
+            <p> {redux === true ? reduxparents : 'hooo'} </p>
             <button onClick={checkredux}></button>            
         </div>
         // </ShadowBorder>
     )
 }
 
+    // function mapStateToProps(state) {
+    //     const { todos } = state
+    //     return { todoList: todos.allIds }
+    //   }
 
 const mapStateToProps = (game) => {
     const { counter, inplay, parents, winstreak } = game    
