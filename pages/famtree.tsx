@@ -4,7 +4,13 @@ import { TypedUseSelectorHook, useSelector } from 'react-redux'
 import {Provider} from 'react-redux';
 import withRedux from "next-redux-wrapper";
 import {useEffect, useState} from 'react'
+import Axios from 'axios'
+
+// * utility functions
 import ReturnUrl from 'utility/ReturnUrl'
+import DataCall from 'utility/DataCall'
+import APIcall from 'utility/APIcall'
+import Random from 'utility/Randomizer'
 
 // * CSS
 import ShadowBorder from 'styles/game/components/GameContainer'
@@ -17,11 +23,14 @@ import { playingGame, notPlayingGame } from 'redux/actions/gameActions'
 import wrapper from '../redux/store';
 import store from 'redux/store'
 import { useDispatch } from "react-redux";
+
 let gamestate = store.getState()
 let game = gamestate.gameReducer
 
+
 // * Components that Comprise the Page
 import GameContainer from 'components/GameContainer'
+import axios from 'axios';
 
 
 
@@ -44,7 +53,7 @@ await store.getState()
 
 
 
-
+let i = 0;
  function FamilyTree (props) {
 // export default function FamilyTree (props) {
 
@@ -57,6 +66,7 @@ await store.getState()
     let inplay = props.inplay
     let gamestateparents = props.parents
     const dispatch = useDispatch()
+    
 
 
     useEffect( () => {
@@ -146,11 +156,27 @@ const mapStateToProps = (game) => {
 export async function getServerSideProps(context:any) {              
     let url:any = await ReturnUrl(context);    
     // let pokeurl = `https://pokeapi.co/api/v2/pokemon/`    
-    let predata = await fetch(new URL(`${url}/api/strains/strain`))            
-    let serverdata = await predata.json()        
+    // let predata = await fetch(new URL(`${url}/api/strains/strain`))            
+    let data = await APIcall('all', null, null)
+    let apilen:number = data.length
+    console.log('data api call')
+    let arraystate:number[] = []
+    // console.log(data)
+    const loop = () => {
+        do {
+            arraystate.push(i)
+            console.log('arraystate')
+            console.log(arraystate)
+            i++
+        }
+        while(i <= apilen)
+    }
+    loop()
 
-    console.log('serverdata from family tree')
-    console.log(serverdata)
+        let randomvalue = await Random(arraystate)
+        let predata = await fetch(new URL(`${url}/api/strains/strain/5`))            
+        // let predata = await fetch(new URL(`${url}/api/strains/strain/${randomvalue}`))            
+        let serverdata = await predata.json()        
 
   return {
   props: {
