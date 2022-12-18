@@ -22,7 +22,13 @@ import {PLAYING_GAME, NOT_PLAYING_GAME} from 'redux/actions/gameActions'
 import { playingGame, notPlayingGame } from 'redux/actions/gameActions'
 import wrapper from '../redux/store';
 import store from 'redux/store'
+console.log('store')
+console.log(store)
+console.log(store.getState())
 import { useDispatch } from "react-redux";
+import customReduxSelector from 'redux/reduxselector'
+
+
 
 let gamestate = store.getState()
 let game = gamestate.gameReducer
@@ -32,17 +38,20 @@ let game = gamestate.gameReducer
 import GameContainer from 'components/GameContainer'
 import axios from 'axios';
 
-
-
-
-
-
 store.dispatch( { type: "PLAYING_GAME!"})
-store.dispatch( { type: "INCREMENT"})
+// store.dispatch( { type: "INCREMENT"})
+// store.dispatch( { type: "INCREMENT"})
+// store.dispatch( { type: "INCREMENT"})
+// store.dispatch( { type: "INCREMENT"})
+store.dispatch( { type: "INCREMENT" })
+store.dispatch( { type: 'SET_PARENTS', payload: { parents: 'white rhino'}})
+store.getState()
+
 setTimeout(async() => {
-await store.dispatch( { type: "INCREMENT"})
-await store.getState()
-}, 2000)
+    console.log("hey imma timer!")
+     store.dispatch( {type: 'INCREMENT'})
+     console.log(store.getState())
+}, 3000)
 
 
 
@@ -55,9 +64,8 @@ await store.getState()
 
 let i = 0;
  function FamilyTree (props) {
-
     
-// export default function FamilyTree (props) {
+    // export default function FamilyTree (props) {
 
     const [parents, setParents] = useState('')
     const [int, setInt] = useState('')
@@ -67,7 +75,39 @@ let i = 0;
     let counter = props.counter
     let inplay = props.inplay
     let gamestateparents = props.parents
+    let serverdata = props.serverdata
+
+    
+    // let momdad = useSelector(state => state.parents)
+    
     const dispatch = useDispatch()
+
+    let result:any = useSelector(state => state)
+    let reduxparents:string = result.gameReducer.parents
+    console.log('result')
+    console.log(result)
+    console.log(result.gameReducer)
+    
+
+    
+
+
+    const changeReduxState = () => {
+            dispatch( {type: 'SET_PARENTS', payload: {parents: 'banana-bonanza'}})
+
+            // let newresult:any = customReduxSelector(state => state.gamereducer.parents)
+            // let newresult:any = useSelector(state => state)
+
+            // const parentState = customReduxSelector(state => state.parents);
+            // let parentstate:string = useSelector(state => state.parents)
+
+            // console.log('newresult')
+            // console.log(newresult)
+    }
+    changeReduxState()
+
+
+    // {type: 'filters/statusFilterChanged', payload: filterValue}
     
 
 
@@ -132,21 +172,17 @@ let i = 0;
         <div className={styles.div}  
         // style= {{ backgroundColor: 'dodgerBlue', minHeight: '100vh'}}
         >       
-
             <GameContainer/>
-
-            
-
-            {/* <h1> guessing game test render </h1>
-            <h1> {parents || 'ayoo'} </h1> */}
-            <button onClick={checkredux}></button>
-            
+            <p> {reduxparents} </p>
+            <button onClick={checkredux}></button>            
         </div>
         // </ShadowBorder>
     )
 }
 
+
 const mapStateToProps = (game) => {
+    const { counter, inplay, parents, winstreak } = game    
     return {
          counter: game.counter,
          inplay: game.inplay,
@@ -184,6 +220,8 @@ export async function getServerSideProps(context:any) {
     //     while(i <= apilen)
     // }
     // loop()
+
+
 
     function randomNumber(min, max) { 
         let random = Math.random() * (max-min) + min
