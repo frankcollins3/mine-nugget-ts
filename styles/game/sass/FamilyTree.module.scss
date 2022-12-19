@@ -3,7 +3,36 @@
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    min-height: 50vh;
-    min-width: 50vw;    
+    min-height: 100vh;
+    min-width: 100vw;    
+    background-color: rgb(62, 50, 32);
     // border: 5px solid orange;
+}
+
+.Row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 55vw;
+    min-width: 55vw;
+    
+    div {
+        margin: 0 2.2em;
+        padding: 0 0.75em;
+        text-align: center;
+        box-shadow: 10px 10px 10px rgb(247, 208, 32);    
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        color: papayawhip;
+        letter-spacing: 0.165em;
+        // letter-spacing: 0.75em;
+        // border: 3px solid papayawhip;            
+        // border: 3px solid rgb(247, 208, 36);            
+    }
+    
+    // width: 250px;  
+    
 }
