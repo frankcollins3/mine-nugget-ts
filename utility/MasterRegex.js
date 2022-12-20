@@ -26,26 +26,18 @@ export default async function Regex(url, action) {      // already forgot its no
                 // }
             }
             alphabetexp() {
-                console.log('url')
-                console.log(url)
-                let onlyletters = url.replace(/[^\s/a-zA-Z]+/g, '')  
-                                            
-                console.log('onlyletters')          
-                console.log(onlyletters)          
+                let onlyletters = url.replace(/[^\s/a-zA-Z]+/g, '')       
                 return onlyletters
             }
             whitespace() {
                 let predry = url.replace(/\s/g, '');                
                 // let predry = url.replace(/^\s+|\s+$|\s+(?=\s)/g, "")
-                console.log(url.length)
-                console.log(predry.length)
                 return predry
             }
             splitstring() {
                 console.log("in the string split method of the regex")
-                let splitit= url.split(', ')
-                console.log('splitit')
-                console.log(splitit)
+                let splitit = url.split(', ')
+                return [ splitit[0], splitit[1] ]                
                 // let splitit:string = url.split(', ')
             }
         }
@@ -61,14 +53,11 @@ export default async function Regex(url, action) {      // already forgot its no
             if (action === 'whiteout') {
                 let cleanWhites = await new Exp(url).whiteout
                 return cleanWhites
-                console.log('cleanWhites')
-                console.log(cleanWhites)
             }
             if (action === 'stringsplit') {
                 console.log("were in the if block right here")
-                let getString:string = new Exp(url).stringsplit
-
-                return getString || { hey: 'nice one' }
+                let getString = new Exp(url).stringsplit         
+                return getString
             }
         }
     }
