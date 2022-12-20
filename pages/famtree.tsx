@@ -11,6 +11,7 @@ import ReturnUrl from 'utility/ReturnUrl'
 import DataCall from 'utility/DataCall'
 import APIcall from 'utility/APIcall'
 import Random from 'utility/Randomizer'
+import Regex from 'utility/MasterRegex'
 
 // * CSS
 import ShadowBorder from 'styles/game/components/GameContainer'
@@ -28,10 +29,11 @@ import customReduxSelector from 'redux/reduxselector'
 let gamestate = store.getState()
 let game = gamestate.gameReducer
 
-
 // * Components that Comprise the Page
 import GameContainer from 'components/GameContainer'
-import axios from 'axios';
+import Container from 'react-bootstrap/Container'
+import Family from 'components/FamilyTreeContainer1'
+
 
 store.dispatch( { type: "PLAYING_GAME!"})
 store.dispatch( { type: "INCREMENT" })
@@ -56,28 +58,35 @@ let i = 0;
     let serverdata = props.serverdata
 
     const dispatch = useDispatch()
-
     let result:any = useSelector(state => state)
+    
+    let localstore = result.gameReducer
     let reduxparents = result.gameReducer.parents
- 
+    let parent1 = result.gameReducer.parent1
+    let parent2 = localstore.parent2
+    
     const checkState = () => {
         
     }
     
-
+    
     useEffect( () => {
-
+        
     }, [trigger])
     
     useEffect( () => {
         // setParents(inplay)
     }, [])
-
-        const checkredux = async () => {
-            let straindata:(object|string|number) = await APIcall('all', null, null)
-            let randomStrain = await Random(straindata)
-            let randomparents:string = randomStrain.parents
-            reduxparents = dispatch( { type: "SET_PARENTS", payload: { parents: randomparents}})
+    
+    const checkredux = async () => {
+        let straindata:(object|string|number) = await APIcall('all', null, null)
+        let randomStrain = await Random(straindata)
+        let randomparents:string = randomStrain.parents
+        
+        let newstr = await Regex(randomparents, 'stringsplit')
+        parent1 = dispatch( { type: 'SET_PARENTS', payload: { parents: randomparents}})        
+        parent1 = dispatch( { type: 'SET_PARENTS_1', payload: { parent1: newstr[0]}})        
+        parent2 = dispatch( { type: 'SET_PARENTS_2', payload: { parent2: newstr[1]}})        
 
             let letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
             let randomletter:string = await Random(letters)            
@@ -90,19 +99,16 @@ let i = 0;
 
     return (
         // <ShadowBorder>
-        <div className={styles.div}  
-        // style= {{ backgroundColor: 'dodgerBlue', minHeight: '100vh'}}
-        >       
-            <GameContainer redux={reduxparents}/>
-            
-            <h1
-            style ={{ color: 'white'}}
-            > {redux === true ? reduxparents : 'not redux parents'} </h1>
-            <p> {trigger || 'random text'} </p>
-            <button onClick={checkredux}></button>            
 
+        // <div className={styles.div}  
+        // style= {{ backgroundColor: 'dodgerBlue', minHeight: '100vh'}}
+        // >       
+        <Container className={styles.div}>
+            <GameContainer redux={reduxparents} parent1={parent1} parent2={parent2}/>
+            <button onClick={checkredux}></button>            
+        </Container>
             
-        </div>        
+        // </div>        
     )   
 }
 
