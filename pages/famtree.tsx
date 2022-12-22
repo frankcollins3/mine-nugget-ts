@@ -83,7 +83,7 @@ let i = 0;
         let randomStrain = await Random(straindata)
         let randomparents:string = randomStrain.parents
         
-        let newstr = await Regex(randomparents, 'stringsplit')
+        let newstr = await Regex(reduxparents, 'stringsplit')
         parent1 = dispatch( { type: 'SET_PARENTS', payload: { parents: randomparents}})        
         parent1 = dispatch( { type: 'SET_PARENTS_1', payload: { parent1: newstr[0]}})        
         parent2 = dispatch( { type: 'SET_PARENTS_2', payload: { parent2: newstr[1]}})        
@@ -104,8 +104,8 @@ let i = 0;
         // style= {{ backgroundColor: 'dodgerBlue', minHeight: '100vh'}}
         // >       
         <Container className={styles.div}>
-            <GameContainer redux={reduxparents} parent1={parent1} parent2={parent2}/>
-            <button onClick={checkredux}></button>            
+            <GameContainer checkredux={checkredux} redux={reduxparents} parent1={parent1} parent2={parent2}/>
+            {/* <button onClick={checkredux}></button>             */}
         </Container>
             
         // </div>        
