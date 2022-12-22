@@ -12,6 +12,7 @@ import Container from 'react-bootstrap/Container'
 import Family from 'components/FamilyTreeContainer1'
 import Family2 from 'components/FamilyTreeContainer2'
 import GameCounter from 'components/GameCounter'
+import GameChild from 'components/GameChild'
 
 // * redux
 import {PLAYING_GAME, NOT_PLAYING_GAME} from 'redux/actions/gameActions'
@@ -35,20 +36,19 @@ export default  function GameContainer (props) {
     let parent1 = reduxresult.gameReducer.parent1
     let parent2 = reduxresult.gameReducer.parent2
     let parents:string = props.redux   
+    let checkredux = props.checkredux
     
     const statechange = async () => {
         console.log("state change function")
         let newstr = await Regex(reduxresult.gameReducer.parents, 'stringsplit')
         parent1 = dispatch( { type: 'SET_PARENTS_1', payload: { parent1: newstr[0]}})        
         parent2 = dispatch( { type: 'SET_PARENTS_2', payload: { parent2: newstr[1]}})        
+    }   
         
         // reduxparents = dispatch( { type: "SET_PARENTS", payload: { parents: randomparents}})
         
-    }   
 
-    const checkredux = async () => {
-        // reduxparents = dispatch( { type: "SET_PARENTS", payload: { parents: randomparents}}
-    }
+    
 
 
     return (
@@ -65,6 +65,9 @@ export default  function GameContainer (props) {
         <Family/>
         </div>
         
+        <div className="Column">
+        <GameChild/>
+        </div>
         
 
         <Container className={styles.Row}>
@@ -75,11 +78,12 @@ export default  function GameContainer (props) {
             <h3 className="ParentContText"
             > {parent1 || ''}</h3>
             <img
+            onMouseEnter={checkredux}
             style={{ height: '50px', width: '50px'}}
             src="img/gold.png"/>         
             </Container>
 
-            <Container
+            {/* <Container
             style= {{ border: '5px solid papayawhip', boxShadow: 'none'}}
              className={styles.ColumnParent}>
             <GameCounter/>  
@@ -89,7 +93,7 @@ export default  function GameContainer (props) {
                  letterSpacing: '0.5em'
 
             }}> Family Tree </h2>     
-            </Container>
+            </Container> */}
 
             <Container             
             className={styles.ColumnParent}>
@@ -101,12 +105,14 @@ export default  function GameContainer (props) {
             style={{ height: '50px', width: '50px'}}
             src="img/gold.png"/>         
             </Container>
-            
-            
-            {/* </div> */}
-        </Container>
 
-        {/* <Family2/> */}
+        </Container>
+            
+            
+            
+            
+
+        
 
         <div 
         className={styles.Row2}>
