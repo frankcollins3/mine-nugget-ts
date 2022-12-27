@@ -8,109 +8,55 @@ import CSS from 'utility/CSStool'
 import AttrTool from 'utility/JqAttr'
 import Siblings from 'utility/JqSiblings'
 import Random from 'utility/Randomizer'
+import { Draggable, Droppable } from 'react-drag-and-drop'
 
 export default function GameChild () {
     
-    // const dragStart = async (event) => {
-    //     let tgt = $(event.target)           
-    //     let siblings:any = await Siblings(tgt)
-    //     CSS(siblings, 'opacity', '0.1')
-    //     AttrTool(siblings, 'draggable', 'false')            
-    //     let pallette = ['orange', 'dodgerblueblue', 'limegreen', 'hotpink', 'indigo,', 'olive']
-    //     let randomColor = await Random(pallette)
-    // }
+    const handleDragStart = async () => {
+        console.log('hello!')
 
-    const handleDragStart = (ev) => {
-        let elem = ev.target
-        if (elem.src.includes('/img/coin.png')) {
-
-            // ev.dataTransfer.setData('text/plain', 'HEY HOW ARE YOU!')            
-            // myData.text = obj.textContent?obj.textContent:obj.alt?obj.alt:''; date = JSON.stringify(myData)       
-            // obj.setAttribute('data-ts', myData.timestamp);
-        }
     }
 
-    const handleDrop = (evt) => {
-        console.log("handleDrop!")
-        let dropzone = evt.target
-        
-        if (dropzone.src.includes('img/mine.png')) {
-            evt.preventDefault()
-            console.log(`DROP: ${evt.dataTransfer}`)
-            console.log('our drop zone includes the mine.png')
-            
-            let transferData = evt.dataTransfer.getData('text/plain')
-            console.log('transferData')
-            console.log(transferData)
-
-        } else {
-            console.log("src !== 'img/mine.png")
-            return
-        }
-    }
-        
-    
-    const dragEnd = async (event) => {
-        let tgt = $(event.target)           
-        let siblings:any = await Siblings(tgt)
-        CSS(tgt, 'opacity', '0.1')
-            console.log('event')
-            console.log(event)                
-        AttrTool(siblings, 'draggable', 'true')  
-        setTimeout( () => CSS(siblings, 'opacity', '1.0'), 1000)          
-        AttrTool(tgt, 'draggable', 'false')            
+    const handleDrop = () => {
+        console.log("okay were dropping")
     }
 
-            
-
-    const allowDrop = (ev) => {        
-        ev.preventDefault()
-    }
-
-    function drop(ev) {
-        console.log("we are dropping!")        
-        console.log('ev and dataTransfer')        
-        console.log(ev)
-        console.log(ev.dataTransfer)
-        ev.preventDefault();
-        var data = ev.dataTransfer.getData("text");
-        ev.target.appendChild(document.getElementById(data));
-      }
 
     return (
         <>
         <div className="Column">
         <div className={styles.GameChild}>
 
+            <Draggable type="coin" data="sourog">
+            
             <img
             onDragStart={handleDragStart}
-            className={styles.coin} src="img/coin.png"
-            draggable="true"        
+            className={styles.coin} src="img/coin.png" 
             />
+            </Draggable>
 
             <img 
-                 className={styles.coin} src="img/coin.png"         
-                 draggable="true"      
+                 className={styles.coin} src="img/coin.png"
                  />
 
             {/* <div className="Column">                 */}
 
             <img 
-                className={styles.coin} src="img/coin.png"      
-                draggable="true"      
+                className={styles.coin} src="img/coin.png" 
                 />            
 
             <img
-                className={styles.coin} src="img/coin.png"                
-                draggable="true"      
+                className={styles.coin} src="img/coin.png" 
                 />            
         </div>  
 
+            <Droppable types={['coin']} onDrop={() => console.log("hey we are dropping so hard")}>
             <img            
             draggable="true" 
             onDrop={handleDrop}
             style={{ borderRadius: '50%', border: '2px solid papayawhip', boxShadow: '10px 10px 10px papayawhip'}}            
             className={styles.mine} src="img/mine.png"/>
+            </Droppable>
 
         {/* <img style={{ border: '5px solid papayawhip', transform: `scale(0.2)` }} src="/img/mine.png"/> */}
         </div>
