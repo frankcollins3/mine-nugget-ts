@@ -22,7 +22,10 @@ export default function GameChild () {
         if (parents) {
             console.log('if parents')
             console.log(parents[0].attributes)
+            let dragParent = parents[0]
+            AttrTool(dragParent, 'type', 'notcoin')
             let familytype = parents[0].attributes
+
             console.log('familytype')
             console.log(familytype)
         }
