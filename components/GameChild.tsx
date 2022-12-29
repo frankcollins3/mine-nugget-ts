@@ -15,6 +15,9 @@ import Family from 'utility/familyJS'
 export default function GameChild () {
 
     const [coin1, setCoin1] = useState(false)
+    const [coin2, setCoin2] = useState(false)
+    const [coin3, setCoin3] = useState(false)
+    const [coin4, setCoin4] = useState(false)
     
     const handleDragStart = async (event) => {
         console.log('hello!')
@@ -23,12 +26,11 @@ export default function GameChild () {
         // $(target).css('border', '10px solid pink')
         let parents = await Family(target, 'parents')                
         if (parents) {
-            console.log('if parents')
-            console.log(parents[0].attributes)
+            
             let dragParent = parents[0]
             let familytype = parents[0].attributes
             if (familytype[0].textContent === 'notcoin') {
-                      console.log("hey the type is notcoin")
+
             } else {
                 console.log("hey the type is coin")
                 setCoin1(true)
@@ -61,25 +63,41 @@ export default function GameChild () {
 
             <Draggable type={coin1 === false ? "coin" : "notcoin"} data="sourog">     
             <img
+            id="coin1"
             draggable="true"
             onDragStart={handleDragStart}         
             className={styles.coin} src="img/coin.png" 
             />
             </Draggable>
 
-            <img 
-                 className={styles.coin} src="img/coin.png"
-                 />
-
-            {/* <div className="Column">                 */}
-
-            <img 
-                className={styles.coin} src="img/coin.png" 
-                />            
-
+            <Draggable type={coin2 === false ? "coin" : "notcoin"} data="sourog">     
             <img
-                className={styles.coin} src="img/coin.png" 
-                />            
+            id="coin2"
+            draggable="true"
+            onDragStart={handleDragStart}         
+            className={styles.coin} src="img/coin.png" 
+            />
+            </Draggable>
+            
+            <Draggable type={coin3 === false ? "coin" : "notcoin"} data="sourog">     
+            <img
+            id="coin3"
+            draggable="true"
+            onDragStart={handleDragStart}         
+            className={styles.coin} src="img/coin.png" 
+            />
+            </Draggable>
+
+            <Draggable type={coin4 === false ? "coin" : "notcoin"} data="sourog">     
+            <img
+            id="coin4"
+            draggable="true"
+            onDragStart={handleDragStart}         
+            className={styles.coin} src="img/coin.png" 
+            />
+            </Draggable>
+
+     
         </div>  
 
             <Droppable types={['coin']} onDrop={handleDrop}>
