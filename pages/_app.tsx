@@ -8,16 +8,27 @@ import '../styles/globals.css'
   import Axios from 'axios';
   import ERROR from 'utility/CatchBlockErr'
   import Link from 'next/link'
-
-  import {Provider} from 'react-redux';
-  import withRedux from "next-redux-wrapper";
-  import store from '../redux/store';
-
   import StateStore from 'hooks/store'
+
+
   // import StateStore from 'components/store'
+
+  import store from 'redux/store'
+  import {Provider} from 'react-redux';
+
+
+  
+
+
+
+  
+
   
   
- function App({ Component, pageProps, context }: AppProps) {
+ export default function App({ Component, pageProps, context }: AppProps) {
+    // const {store, props} = wrapper.useWrappedStore()
+    
+    // const {  pageProps } = wrapper.useWrappedStore(rest);
     
 // * index.tsx 
   //  const [ pokemon, setPokemon ] = useState('')
@@ -25,6 +36,22 @@ import '../styles/globals.css'
    const [savedStrains, setSavedStrains] = useState('')
    const [users, setUsers] = useState([])
    const [dbStrains, setDbStrains] = useState([])
+
+   const [contextParents, setContextParents] = useState('')
+   const [contextParents1, setContextParents1] = useState('')
+   const [contextParents2, setContextParents2] = useState('')
+   const [isInPlay, setIsInPlay] = useState(false)
+   const [winStreak, setWinStreak] = useState(0)
+   const [guessCount, setGuessCount] = useState(0)
+   
+   const contextparentarray = [contextParents, setContextParents]
+   const contextparent1array = [contextParents1, setContextParents1]
+   const contextparent2array = [contextParents2, setContextParents2]
+   const inplayarray = [isInPlay, setIsInPlay]
+   const winstreakarray = [winStreak, setWinStreak]
+   const guessarray = [guessCount, setGuessCount]
+
+
 //  * strain.tsx global state
  const [clickedStrain, setClickedStrain] = useState()
  const [bgToggle, setBgToggle] = useState('new')
@@ -44,6 +71,8 @@ import '../styles/globals.css'
  const [allStrains, setAllStrains] = useState([])
  const [error, setError] = useState()
  const [errAcknowledge, setErrAcknowledge] = useState('')
+
+
   // const [theme, setTheme] = useState(themes.dark)      this is for context in the example.
   
   const [state, setState] = useState()
@@ -56,7 +85,14 @@ import '../styles/globals.css'
       users: users,
       setUsers: setUsers,
       dbStrains: dbStrains,
-      setDbStrains: setDbStrains
+      setDbStrains: setDbStrains,
+
+      inplay2: inplayarray,
+      contextparents: contextparentarray,
+      contextparents1: contextparent1array,
+      contextparents2: contextparent2array,
+      winstreak: winstreakarray,
+      wrongguess: guessarray, 
     }
   
     let strainObj = {
@@ -110,15 +146,16 @@ import '../styles/globals.css'
         </Head>
 
       
-      <button onClick={testError}>
+      {/* <button onClick={testError}>
         ERROR TEST 
       </button>
-      <p> {error || 'no error'} </p>
+      <p> {error || 'no error'} </p> */}
+
 
       
       {/* <Context.Provider>         */}
-      <Provider store={store}>
       <StateStore>
+      <Provider store={store}>
       <Component {...pageProps}
       globalstate={stateArray}// homebody={initialstate}
       error={error} setError={setError}
@@ -138,10 +175,10 @@ import '../styles/globals.css'
       keyState={keyState} setKeyState={setKeyState}
       valueState={valueState} setValueState={setValueState}
       fetchLock={fetchLock} setFetchLock={setFetchLock}
-      
+
       />
-      </StateStore>      
       </Provider>
+      </StateStore>      
       {/* </Context.Provider> */}
     
     </>
@@ -149,6 +186,7 @@ import '../styles/globals.css'
     )
 
   }
-const makeStore = () => store;
+const makeStore = () => wrapper;
 //withRedux wrapper that passes the store to the App Component
-export default withRedux(makeStore)(App);
+// export default withRedux(makeStore)(App);
+// export default withRedux(makeStore)(App);
