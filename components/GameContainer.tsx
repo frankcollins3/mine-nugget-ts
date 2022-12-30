@@ -28,8 +28,8 @@ import Regex from 'utility/MasterRegex'
 
 
 export default  function GameContainer (props) {
-    console.log('props from the GameContainer!!!!')
-    console.log(props)
+    // console.log('props from the GameContainer!!!!')
+    // console.log(props)
     const [cactusHover, setCactusHover] = useState(false)
 
     const dispatch = useDispatch()
@@ -42,34 +42,29 @@ export default  function GameContainer (props) {
     let parent2 = props.parent2
 
     let playing = reduxresult.gameReducer.inplay
-    console.log('playing')
-    console.log(playing)
+
 
     let parents:string = props.redux   
     let checkredux = props.checkredux
     
     const statechange = async () => {
-        console.log("state change function")
+        // console.log("state change function")
         let newstr = await Regex(reduxresult.gameReducer.parents, 'stringsplit')
         
         if (playing === 'true') {
-            console.log('if playing === true is true')
             // parent1 = dispatch( { type: 'SET_PARENTS_1', payload: { parent1: newstr[0]}})        
             // parent2 = dispatch( { type: 'SET_PARENTS_2', payload: { parent2: newstr[1]}})        
             playing = dispatch( { type: "PLAYING_GAME", payload: { game: 'play'}})
         } else {
-            console.log("playing is not equals to true")
         }
+    }    
             
 
-    }   
 
     const HoverOnCactus = async () => {
-        console.log("Hover On Cactus function")
-        playing = dispatch( { type: 'PLAYING_GAME'})
+        checkredux()
+        // playing = dispatch( { type: 'PLAYING_GAME'})
         await setCactusHover(true) // 'await' has no effect on the type of this expression.
-        console.log('reduxresult / useSelector(state => state')
-        console.log(reduxresult)
     }
         
         // reduxparents = dispatch( { type: "SET_PARENTS", payload: { parents: randomparents}})
@@ -77,12 +72,11 @@ export default  function GameContainer (props) {
     return (
         <>
             <ShadowBorder>
-                {/* // {cactusHover === false  */}
-
-                {/* {playing === false || cactusHover === false
+               {cactusHover === false 
+                //  {playing === false || cactusHover === false
                 ?
                 <div className="Column">                
-                <img onMouseEnter={HoverOnCactus}                
+                <img onClick={HoverOnCactus}                
                 src="/img/cactus.png"/>
 
                 <h3
@@ -90,7 +84,9 @@ export default  function GameContainer (props) {
                  style={{color:'white'}}> hover on the parents to reveal the gold</h3>
                 <h3 style={{color:'white'}}> hover to reveal the options </h3>
                 </div>
-                : */}
+                : 
+            
+                // }
 
                 <div>
                 <div 
@@ -101,7 +97,7 @@ export default  function GameContainer (props) {
                 </div>
                 
                 <div className="Column">
-                <GameChild/>
+                <GameChild cactusHover={cactusHover} setCactusHover={setCactusHover}/>
                 </div>
                 
         
@@ -117,6 +113,15 @@ export default  function GameContainer (props) {
                     style={{ height: '50px', width: '50px'}}
                     src="img/gold.png"/>                                           
                     </Container>
+
+                    
+
+                    {/* <div 
+                    style={{ border: 'transparent', boxShadow: 'transparent'}}
+                    className="Column">
+                        <img src="img/gameoff.png"/>
+                        <img src="img/gameon.png"/>
+                    </div> */}
                     
                     <Container             
                     className={styles.ColumnParent}>
@@ -139,9 +144,10 @@ export default  function GameContainer (props) {
                 </div>
                 </div>
                 
-                {/* }     */}
+                }    
 
             </ShadowBorder>
+            
         {/* <button onClick={statechange}></button> */}
         </>
     )
