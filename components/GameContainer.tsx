@@ -17,8 +17,6 @@ import GameCounter from 'components/GameCounter'
 import GameChild from 'components/GameChild'
 
 // * redux
-import {PLAYING_GAME, NOT_PLAYING_GAME} from 'redux/actions/gameActions'
-import { playingGame, notPlayingGame } from 'redux/actions/gameActions'
 import wrapper from '../redux/store';
 import store from 'redux/store'
 import { useDispatch } from "react-redux";
@@ -37,31 +35,62 @@ export default  function GameContainer (props) {
     const dispatch = useDispatch()
     let reduxresult:any = useSelector(state => state)
     
-    let parent1 = reduxresult.gameReducer.parent1
-    let parent2 = reduxresult.gameReducer.parent2
+    // let parent1 = reduxresult.gameReducer.parent1
+    // let parent2 = reduxresult.gameReducer.parent2
+
+    let parent1 = props.parent1
+    let parent2 = props.parent2
+
+    let playing = reduxresult.gameReducer.inplay
+    console.log('playing')
+    console.log(playing)
+
     let parents:string = props.redux   
     let checkredux = props.checkredux
     
     const statechange = async () => {
         console.log("state change function")
         let newstr = await Regex(reduxresult.gameReducer.parents, 'stringsplit')
-        parent1 = dispatch( { type: 'SET_PARENTS_1', payload: { parent1: newstr[0]}})        
-        parent2 = dispatch( { type: 'SET_PARENTS_2', payload: { parent2: newstr[1]}})        
+        
+        if (playing === 'true') {
+            console.log('if playing === true is true')
+            // parent1 = dispatch( { type: 'SET_PARENTS_1', payload: { parent1: newstr[0]}})        
+            // parent2 = dispatch( { type: 'SET_PARENTS_2', payload: { parent2: newstr[1]}})        
+            playing = dispatch( { type: "PLAYING_GAME", payload: { game: 'play'}})
+        } else {
+            console.log("playing is not equals to true")
+        }
+            
+
     }   
+
+    const HoverOnCactus = async () => {
+        console.log("Hover On Cactus function")
+        playing = dispatch( { type: 'PLAYING_GAME'})
+        await setCactusHover(true) // 'await' has no effect on the type of this expression.
+        console.log('reduxresult / useSelector(state => state')
+        console.log(reduxresult)
+    }
         
         // reduxparents = dispatch( { type: "SET_PARENTS", payload: { parents: randomparents}})
         
-
-    
-
-
     return (
         <>
             <ShadowBorder>
-                {cactusHover === false 
+                {/* // {cactusHover === false  */}
+
+                {/* {playing === false || cactusHover === false
                 ?
-                <img onMouseEnter={()=> setCactusHover(true)} src="/img/cactus.png"/>
-                :
+                <div className="Column">                
+                <img onMouseEnter={HoverOnCactus}                
+                src="/img/cactus.png"/>
+
+                <h3
+                 onMouseEnter={ () => console.log(`reduxresult.playing ${playing}`)}
+                 style={{color:'white'}}> hover on the parents to reveal the gold</h3>
+                <h3 style={{color:'white'}}> hover to reveal the options </h3>
+                </div>
+                : */}
 
                 <div>
                 <div 
@@ -86,9 +115,9 @@ export default  function GameContainer (props) {
                     <img
                     onMouseEnter={checkredux}
                     style={{ height: '50px', width: '50px'}}
-                    src="img/gold.png"/>         
+                    src="img/gold.png"/>                                           
                     </Container>
-        
+                    
                     <Container             
                     className={styles.ColumnParent}>
                     <ParentWatch parents={parents}/>
@@ -97,7 +126,7 @@ export default  function GameContainer (props) {
                     > {parent2 || ''}</h3>
                     <img
                     style={{ height: '50px', width: '50px'}}
-                    src="img/gold.png"/>         
+                    src="img/gold.png"/>                                                               
                     </Container>
         
                 </Container>
@@ -110,10 +139,10 @@ export default  function GameContainer (props) {
                 </div>
                 </div>
                 
-                }
+                {/* }     */}
 
             </ShadowBorder>
-        <button onClick={statechange}></button>
+        {/* <button onClick={statechange}></button> */}
         </>
     )
 }
