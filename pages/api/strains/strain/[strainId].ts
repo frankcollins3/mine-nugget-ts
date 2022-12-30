@@ -3,6 +3,7 @@ import APIcall from 'utility/APIcall'
 import { PrismaClient } from '@prisma/client';
 import Regex from 'utility/MasterRegex'
 import StringInt from 'utility/StringInt'
+import Random from 'utility/Randomizer'
 let prisma = new PrismaClient()
 let i = 0;
 
@@ -14,6 +15,9 @@ export default async function (req:any, res:any) {              // res:string do
     // let reqStr = req.query
     let twostringkeys = req.query.strainId
     let dbstrain = await prisma.strains.findMany()
+    let backupstrain:(object|string) = await Random(dbstrain)
+    console.log('backupstrain')
+    console.log(backupstrain)
 
     if (twostringkeys.includes('no')) {        
         let reqstr = await Regex(twostringkeys, 'numreturn')            
@@ -37,13 +41,14 @@ export default async function (req:any, res:any) {              // res:string do
                     let index = dbstrain[i]
                     let strainid = index.strainId    
                     let parsedint = await StringInt(twostringkeys, null)                
-                    // let parsedint = await StringInt(twostringkeys, 'parseInt')                
-
                     console.log('parsedint')
                     console.log(parsedint)
-
-                    if (index.strainId === parsedint) {                    
-                        return res.json (index)
+                    if (index.strainId === parsedint) {       
+                        console.log('index')             
+                        console.log(index)             
+                        return await res.json (index)
+                    } else {
+                        return await res.json (backupstrain)
                     }
                 }
                 i++
