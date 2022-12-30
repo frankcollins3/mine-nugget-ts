@@ -40,15 +40,16 @@ export default async function (req:any, res:any) {              // res:string do
                 if (dbstrain[i]) {                    
                     let index = dbstrain[i]
                     let strainid = index.strainId    
-                    let parsedint = await StringInt(twostringkeys, null)                
-                    console.log('parsedint')
-                    console.log(parsedint)
-                    if (index.strainId === parsedint) {       
-                        console.log('index')             
-                        console.log(index)             
-                        return await res.json (index)
-                    } else {
-                        return await res.json (backupstrain)
+                    let parsedint = await StringInt(twostringkeys, null)                                    
+                    try {
+                        if (index.strainId === parsedint) {                                   
+                            return await res.json (index)
+                        } else {
+                            return await res.json (backupstrain)
+                        }
+                    } 
+                    catch (err) {
+                        location.href = '/error'
                     }
                 }
                 i++
