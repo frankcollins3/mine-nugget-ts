@@ -15,6 +15,10 @@ import { Draggable, Droppable } from 'react-drag-and-drop'
 import Family from 'utility/familyJS'
 import { propTypes } from 'react-bootstrap/esm/Image'
 
+// * redux 
+import store from 'redux/store'
+import { useDispatch, useSelector } from "react-redux";
+
 export default function GameChild (props) {
 
     const [coin1, setCoin1] = useState(false)
@@ -22,6 +26,12 @@ export default function GameChild (props) {
     const [coin3, setCoin3] = useState(false)
     const [coin4, setCoin4] = useState(false)
     const [yesNumber, setYesNumber] = useState(0)
+
+    let reduxstore:any = useSelector(state => state)
+    let rootparents:string = reduxstore.gameReducer.parents
+
+    console.log('reduxstore')
+    console.log(reduxstore)
 
     // let i:number = 0
     let numbers:number[] = [1, 2, 3, 4]
@@ -45,6 +55,8 @@ export default function GameChild (props) {
         
         if (parents) {            
             let dragParent = parents[0]
+            console.log('dragParent')
+            console.log(dragParent)
             let familytype = parents[0].attributes
             let coinid = await Regex(targetid, 'numreturn')
             let coinint:number = parseInt(coinid)
@@ -58,6 +70,10 @@ export default function GameChild (props) {
                 if (targetid === 'coin1') {
                     await setCoin1(true)    
                     if (coinint === yesNumber) {
+                        let rightparents = await ReturnRight(rootparents)
+                        console.log('rightparents')
+                        console.log(rightparents)
+
                         console.log(` YES coinid ${coinid} ${typeof coinid} yesNumber ${yesNumber} ${typeof yesNumber}`)
                     } else {
                         console.log(` NO!!! coinid ${coinid} ${typeof coinid} yesNumber ${yesNumber} ${typeof yesNumber}`)
