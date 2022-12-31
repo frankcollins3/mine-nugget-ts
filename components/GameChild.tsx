@@ -47,6 +47,7 @@ export default function GameChild (props) {
             let dragParent = parents[0]
             let familytype = parents[0].attributes
             let coinid = await Regex(targetid, 'numreturn')
+            let coinint:number = parseInt(coinid)
             console.log('coinid')
             console.log(coinid)
             if (familytype[0].textContent === 'notcoin') {
@@ -55,14 +56,39 @@ export default function GameChild (props) {
                 console.log("hey the type is coin")
 
                 if (targetid === 'coin1') {
-                    await setCoin1(true)       
+                    await setCoin1(true)    
+                    if (coinint === yesNumber) {
+                        console.log(` YES coinid ${coinid} ${typeof coinid} yesNumber ${yesNumber} ${typeof yesNumber}`)
+                    } else {
+                        console.log(` NO!!! coinid ${coinid} ${typeof coinid} yesNumber ${yesNumber} ${typeof yesNumber}`)
+                    }
                     // ReturnRight()             
                 }
-
-
-                if (targetid === 'coin2') setCoin2(true)
-                if (targetid === 'coin3') setCoin3(true)
-                if (targetid === 'coin4') setCoin4(true)
+                
+                if (targetid === 'coin2') {
+                    setCoin2(true)
+                    if (coinint === yesNumber) {
+                        console.log(` YES coinid ${coinid} ${typeof coinid} yesNumber ${yesNumber} ${typeof yesNumber}`)
+                    } else {
+                        console.log(` NO!!! coinid ${coinid} ${typeof coinid} yesNumber ${yesNumber} ${typeof yesNumber}`)
+                    }
+                }
+                if (targetid === 'coin3') {
+                    setCoin3(true)
+                    if (coinint === yesNumber) {
+                        console.log(` YES coinid ${coinid} ${typeof coinid} yesNumber ${yesNumber} ${typeof yesNumber}`)
+                    } else {
+                        console.log(` NO!!! coinid ${coinid} ${typeof coinid} yesNumber ${yesNumber} ${typeof yesNumber}`)
+                    }
+                }
+                if (targetid === 'coin4') {
+                    setCoin4(true)
+                    if (coinint === yesNumber) {
+                        console.log(` YES coinid ${coinid} ${typeof coinid} yesNumber ${yesNumber} ${typeof yesNumber}`)
+                    } else {
+                        console.log(` NO!!! coinid ${coinid} ${typeof coinid} yesNumber ${yesNumber} ${typeof yesNumber}`)
+                    }
+                }
                 
                 await AttrTool(dragParent, 'type', 'notcoin')
                 await AttrTool(dragParent, 'data', '')                
