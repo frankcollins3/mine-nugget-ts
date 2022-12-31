@@ -8,6 +8,7 @@ import CSS from 'utility/CSStool'
 import AttrTool from 'utility/JqAttr'
 import Siblings from 'utility/JqSiblings'
 import Random from 'utility/Randomizer'
+import Regex from 'utility/MasterRegex'
 import ReturnRight from 'utility/ReturnRight'
 import { Draggable, Droppable } from 'react-drag-and-drop'
 
@@ -45,6 +46,9 @@ export default function GameChild (props) {
         if (parents) {            
             let dragParent = parents[0]
             let familytype = parents[0].attributes
+            let coinid = await Regex(targetid, 'numreturn')
+            console.log('coinid')
+            console.log(coinid)
             if (familytype[0].textContent === 'notcoin') {
 
             } else {
