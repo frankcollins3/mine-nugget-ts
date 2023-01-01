@@ -33,6 +33,7 @@ let game = gamestate.gameReducer
 import GameContainer from 'components/GameContainer'
 import Container from 'react-bootstrap/Container'
 import Family from 'components/FamilyTreeContainer1'
+import { addSyntheticLeadingComment } from 'typescript';
 
 
 store.dispatch( { type: "PLAYING_GAME!"})
@@ -82,15 +83,23 @@ let i = 0;
     let parent2state = gameprops.contextparents2[0]
     let setParent2state = gameprops.contextparents2[1]
 
-    useEffect( () => {
-        (async() => {
+    // useEffect( () => {
+        const addToState = async () => {
             let straindata:(object|string|number) = await APIcall('all', null, null)
             let randomStrain = await Random(straindata)
+            console.log('randomStrain')
+            console.log(randomStrain)
             let randomparents:string = randomStrain.parents
+
+            console.log('randomparents')
+            console.log(randomparents)
+
             setParents(randomparents)
-            parent1 = dispatch( { type: 'SET_PARENTS', payload: { parents: parents}})        
-        })()
-    })
+            parent1 = dispatch( { type: 'SET_PARENTS', payload: { parents: randomparents}})        
+        }
+    //     addToState()
+
+    // }, [])
 
     const checkredux = async () => {
             // * pass cactusHoverState up a level and see if img onMouseEnter={parent1 '' to reset container}
@@ -106,7 +115,9 @@ let i = 0;
                     if (isInPlay.length < 3) {
                         // await setParent1state('yoo')
                         // await setParent2state('yeah sure')
-                        let newstr = await Regex(reduxparents, 'stringsplit')
+                        let newstr = await Regex(parents, 'stringsplit')
+                        console.log('newstr')
+                        console.log(newstr)
                         await setParent1state(newstr[0])
                         await setParent2state(newstr[1])
                         setTimeout( () => {
@@ -145,8 +156,9 @@ let i = 0;
         className={styles.div}>
             {/* <button onClick={changeit}/>
             <button onClick={checkit}/> */}
-            <GameContainer    
+            <GameContainer                
             game={gameprops}
+            addToState={addToState}
             style={{ minHeight: '80vh', minWidth: '80vw'}} 
             checkredux={checkredux} redux={reduxparents} parent1={parent1state} parent2={parent2state}
             />
