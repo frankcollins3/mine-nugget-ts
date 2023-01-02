@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import { TypedUseSelectorHook, useSelector } from 'react-redux'
 import {Provider} from 'react-redux';
 import withRedux from "next-redux-wrapper";
-import {useEffect, useState} from 'react'
+import {useEffect, useState, useContext, createContext} from 'react'
 import Axios from 'axios'
 
 // * utility functions
@@ -44,125 +44,90 @@ store.getState()
 
 
 let i = 0;
- function FamilyTree (props) {
-    console.log('props in family tree!')
-    console.log(props)
+ function FamilyTree (props, context) {
+    // console.log('props in family tree!')
+    // console.log(props)
 
-    
+    // could also use context but in the name of time:
+    const [gameOn, setGameOn] = useState(false)
     const [parents, setParents] = useState('')
-    const [strains, setStrains] = useState('')
-    const [trigger, setTrigger] = useState(0)
-    const [redux, setRedux] = useState(false)
-    const [int, setInt] = useState('')
+    const [parent1, setParent1] = useState('')
+    const [parent2, setParent2] = useState('')
+    const [winStreak, setWinStreak] = useState(0)
+    const [wrongGuess, setWrongGuess] = useState(0)
 
-    let counter = props.counter
-    let inplay = props.inplay
-    let serverdata = props.serverdata
-    let gameprops = props.globalstate[0]
+    const gamearr = [gameOn, setGameOn]
+    const parentsarr = [parents, setParents]
+    const parent1arr = [parent1, setParent1]
+    const parent2arr = [parent2, setParent2]
+    const winStreakarr = [winStreak, setWinStreak]
+    const wrongGuessarr = [wrongGuess, setWrongGuess]
     
-    const dispatch = useDispatch()
-    let result:any = useSelector(state => state)
+    let gamestateobj = {
+        gameOn: gamearr, 
+        parents: parentsarr,
+        parent1: parent1arr,
+        parent2: parent2arr,
+        winStreak: winStreakarr,
+        wrongGuess: wrongGuessarr,
+    }
     
-    let localstore = result.gameReducer
-    let reduxparents = result.gameReducer.parents
-    
-    // * meet the parents
-    let isInPlay = gameprops.inplay2[0]
-    let setIsInPlay = gameprops.inplay2[1]
+    const GameStateContext = createContext(gamestateobj)
+    // const gamestatecontext = createContext({})
 
-    console.log('isInPlay')
-    console.log(`isInplay ${isInPlay} type: ${typeof isInPlay}`)
-    
-    // * meet the parents
-    let parent1 = result.gameReducer.parent1
-    let parent2 = localstore.parent2
-    
-    let parent1state = gameprops.contextparents1[0]
-    let setParent1state = gameprops.contextparents1[1]
-
-    let parent2state = gameprops.contextparents2[0]
-    let setParent2state = gameprops.contextparents2[1]
+    const addState = async () => {
+        console.log("hey were adding state")
+        let straindata:(object|string|number) = await APIcall('all', null, null)
+        let randomStrain = await Random(straindata)        
+        console.log('randomStrain')
+        console.log(randomStrain)
+    }
 
     // useEffect( () => {
-        const addToState = async () => {
-            let straindata:(object|string|number) = await APIcall('all', null, null)
-            let randomStrain = await Random(straindata)
-            console.log('randomStrain')
-            console.log(randomStrain)
-            let randomparents:string = randomStrain.parents
+    //     const addToState = async () => {
+    //         let straindata:(object|string|number) = await APIcall('all', null, null)
+    //         let randomStrain = await Random(straindata)
+    //         console.log('straindata')
+    //         console.log(straindata)
+    //         console.log('randomStrain')
+    //         console.log(randomStrain)            
+    //     }
+    //     addToState()
+    // }, [])
 
-            console.log('randomparents')
-            console.log(randomparents)
-
-            setParents(randomparents)
-            parent1 = dispatch( { type: 'SET_PARENTS', payload: { parents: randomparents}})        
-        }
+    // useEffect( () => {
+        // const addToState = async () => {
+        //     let straindata:(object|string|number) = await APIcall('all', null, null)
+        //     let randomStrain = await Random(straindata)
+        //     console.log('randomStrain')
+        //     console.log(randomStrain)
+        //     let randomparents:string = randomStrain.parents
+        //     console.log('randomparents from addToState /famtree')
+        //     console.log(randomparents)
+        // }
+        // parent1 = dispatch( { type: 'SET_PARENTS', payload: { parents: randomparents}})                    
     //     addToState()
 
     // }, [])
 
-    const checkredux = async () => {
-            // * pass cactusHoverState up a level and see if img onMouseEnter={parent1 '' to reset container}
-            console.log('parent1state')
-            console.log(parent1state)
-            console.log(parent1state.length)
-
-                
-
-                // parent1 = dispatch( { type: 'SET_PARENTS_1', payload: { parent1: newstr[0]}})                        
-                // parent2 = dispatch( { type: 'SET_PARENTS_2', payload: { parent2: newstr[1]}})                        
-
-                    if (isInPlay.length < 3) {
-                        // await setParent1state('yoo')
-                        // await setParent2state('yeah sure')
-                        let newstr = await Regex(parents, 'stringsplit')
-                        console.log('newstr')
-                        console.log(newstr)
-                        await setParent1state(newstr[0])
-                        await setParent2state(newstr[1])
-                        setTimeout( () => {
-                            setIsInPlay('sure')
-                        }, 1000)
-                    }
-                    // await setIsInPlay('key')
-
-                    
-                    // await setIsInPlay(true)
- 
-                // inplay = dispatch( { type: 'PLAYING_GAME', payload: { game: 'play'}})                                        
-                //     let letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
-                //     let randomletter:string = await Random(letters)            
-                //     setTrigger(trigger + 1)
-                //     await setRedux(true)
-            // } 
-        } 
-
-        const changeit = () => {
-            setIsInPlay('state change')
-        }
-        
-        const checkit = () => {
-            console.log('check it')
-            console.log('isInPlay')
-            console.log(isInPlay)
-        }
-
-        
+    
 
         
     return (
-        // <ShadowBorder>        
+        // <ShadowBorder>          
         <Container 
+        onClick={addState}
         className={styles.div}>
             {/* <button onClick={changeit}/>
             <button onClick={checkit}/> */}
-            <GameContainer                
-            game={gameprops}
-            addToState={addToState}
+            
+            <GameStateContext.Provider value={gamestateobj}>
+            <GameContainer                            
             style={{ minHeight: '80vh', minWidth: '80vw'}} 
-            checkredux={checkredux} redux={reduxparents} parent1={parent1state} parent2={parent2state}
             />
-        </Container>                
+            </GameStateContext.Provider>
+            
+        </Container>                           
     )   
 }
 
