@@ -15,15 +15,9 @@ import '../styles/globals.css'
 
   import store from 'redux/store'
   import {Provider} from 'react-redux';
+  import { GameProvider } from 'Contexts/game'
 
 
-  
-
-
-
-  
-
-  
   
  export default function App({ Component, pageProps, context }: AppProps) {
     // const {store, props} = wrapper.useWrappedStore()
@@ -40,7 +34,7 @@ import '../styles/globals.css'
    const [contextParents, setContextParents] = useState('')
    const [contextParents1, setContextParents1] = useState('')
    const [contextParents2, setContextParents2] = useState('')
-   const [isInPlay, setIsInPlay] = useState(false)
+   const [isInPlay, setIsInPlay] = useState('')
    const [winStreak, setWinStreak] = useState(0)
    const [guessCount, setGuessCount] = useState(0)
    
@@ -95,7 +89,7 @@ import '../styles/globals.css'
       wrongguess: guessarray, 
     }
   
-    let strainObj = {
+    let strainObj = {      
       clickedStrain: clickedStrain,
       setClickedStrain: setClickedStrain,
       bgToggle: bgToggle,
@@ -154,6 +148,8 @@ import '../styles/globals.css'
 
       
       {/* <Context.Provider>         */}
+      <GameProvider>
+
       <StateStore>
       <Provider store={store}>
       <Component {...pageProps}
@@ -175,10 +171,11 @@ import '../styles/globals.css'
       keyState={keyState} setKeyState={setKeyState}
       valueState={valueState} setValueState={setValueState}
       fetchLock={fetchLock} setFetchLock={setFetchLock}
-
+      
       />
       </Provider>
       </StateStore>      
+      </GameProvider>
       {/* </Context.Provider> */}
     
     </>
@@ -190,3 +187,4 @@ const makeStore = () => wrapper;
 //withRedux wrapper that passes the store to the App Component
 // export default withRedux(makeStore)(App);
 // export default withRedux(makeStore)(App);
+  
