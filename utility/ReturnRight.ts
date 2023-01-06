@@ -29,7 +29,7 @@
         
         const returnvalue = async () => {
             await loopandpush()
-            return parentarray
+            return parentarray[0]
         }
         return returnvalue()
     }
