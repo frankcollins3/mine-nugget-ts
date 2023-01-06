@@ -1,4 +1,5 @@
- import React from 'react';
+
+import React from 'react';
 import {connect} from 'react-redux';
 import { TypedUseSelectorHook, useSelector } from 'react-redux'
 import {Provider} from 'react-redux';
@@ -26,14 +27,28 @@ import store from 'redux/store'
 import { useDispatch } from "react-redux";
 import customReduxSelector from 'redux/reduxselector'
 
+// * Context
+// let GameContext = createContext({})
+// import useGame from 'Contexts/GameContext'
+import { useGame } from 'Contexts/game'
+// import { useAuth } from "../context/AuthContext";
+
+
+// import { useAuth } from "../context/AuthContext";
+// const { user, login, logout } = useAuth();
+
+
+
+
+
 let gamestate = store.getState()
 let game = gamestate.gameReducer
 
-// * Components that Comprise the Page
+// * components that build this pages UI
 import GameContainer from 'components/GameContainer'
 import Container from 'react-bootstrap/Container'
 import Family from 'components/FamilyTreeContainer1'
-import { addSyntheticLeadingComment } from 'typescript';
+import { isConstructorDeclaration } from 'typescript';
 
 
 store.dispatch( { type: "PLAYING_GAME!"})
@@ -45,69 +60,74 @@ store.getState()
 
 let i = 0;
  function FamilyTree (props, context) {
+    // const { gameOn, playing, notPlaying } = useGame
+    const { gameOn, playing, notplaying } = useGame()
+    
+    console.log('gameOn')
+    console.log(gameOn)
+    console.log('playing')
+    console.log(playing)
+
+    console.log('not playing')
+    console.log(notplaying)
+    
+
     // console.log('props in family tree!')
     // console.log(props)
 
     // could also use context but in the name of time:
-    const [gameOn, setGameOn] = useState(false)
+    // const [gameOn, setGameOn] = useState(false)
     const [parents, setParents] = useState('')
     const [parent1, setParent1] = useState('')
     const [parent2, setParent2] = useState('')
     const [winStreak, setWinStreak] = useState(0)
     const [wrongGuess, setWrongGuess] = useState(0)
 
-    const gamearr = [gameOn, setGameOn]
+    // const gamearr = [gameOn, setGameOn]
     const parentsarr = [parents, setParents]
     const parent1arr = [parent1, setParent1]
     const parent2arr = [parent2, setParent2]
     const winStreakarr = [winStreak, setWinStreak]
     const wrongGuessarr = [wrongGuess, setWrongGuess]
     
-    let gamestateobj = {
-        gameOn: gamearr, 
-        parents: parentsarr,
-        parent1: parent1arr,
-        parent2: parent2arr,
-        winStreak: winStreakarr,
-        wrongGuess: wrongGuessarr,
-    }
+    // let gamestateobj = {
+    //     gameOn: gamearr, 
+    //     parents: parentsarr,
+    //     parent1: parent1arr,
+    //     parent2: parent2arr,
+    //     winStreak: winStreakarr,
+    //     wrongGuess: wrongGuessarr,
+    // }
     
-    const GameStateContext = createContext(gamestateobj)
+    // const GameStateContext = createContext( {
+
+
+
+
+    // const GameStateContext = createContext({gamestateobj})
     // const gamestatecontext = createContext({})
 
+
+
+
     const addState = async () => {
-        console.log("hey were adding state")
+        // console.log("hey were adding state")
         let straindata:(object|string|number) = await APIcall('all', null, null)
         let randomStrain = await Random(straindata)        
-        console.log('randomStrain')
-        console.log(randomStrain)
+        // console.log('randomStrain')
+        // console.log(randomStrain)
     }
 
-    // useEffect( () => {
-    //     const addToState = async () => {
-    //         let straindata:(object|string|number) = await APIcall('all', null, null)
-    //         let randomStrain = await Random(straindata)
-    //         console.log('straindata')
-    //         console.log(straindata)
-    //         console.log('randomStrain')
-    //         console.log(randomStrain)            
-    //     }
-    //     addToState()
-    // }, [])
+    
 
     // useEffect( () => {
         // const addToState = async () => {
         //     let straindata:(object|string|number) = await APIcall('all', null, null)
         //     let randomStrain = await Random(straindata)
-        //     console.log('randomStrain')
-        //     console.log(randomStrain)
         //     let randomparents:string = randomStrain.parents
-        //     console.log('randomparents from addToState /famtree')
-        //     console.log(randomparents)
         // }
         // parent1 = dispatch( { type: 'SET_PARENTS', payload: { parents: randomparents}})                    
     //     addToState()
-
     // }, [])
 
     
@@ -118,14 +138,14 @@ let i = 0;
         <Container 
         onClick={addState}
         className={styles.div}>
-            {/* <button onClick={changeit}/>
-            <button onClick={checkit}/> */}
-            
-            <GameStateContext.Provider value={gamestateobj}>
-            <GameContainer                            
-            style={{ minHeight: '80vh', minWidth: '80vw'}} 
-            />
-            </GameStateContext.Provider>
+
+
+            <GameContainer/>
+            <h1 style={ { color: 'white'}}> {gameOn} </h1>
+            <button onClick={playing}></button>
+            <button onClick={notplaying}></button>
+            {/* </GameContext.Provider> */}
+                        
             
         </Container>                           
     )   
