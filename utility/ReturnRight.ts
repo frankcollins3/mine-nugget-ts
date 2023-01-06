@@ -1,7 +1,7 @@
     import APIcall from 'utility/APIcall'
     export default async function ReturnRight (parents:string) {
         let allstrain = await APIcall('all', null, null)  // let allstrain:(object|string) = await APIcall('all', null, null) 
-        console.log('parents')
+        console.log('parents in the ReturnRight')
         console.log(parents)
     
         let parentarray:(string|object)[] = []
@@ -16,7 +16,7 @@
                     console.log(`strainparents: ${strain.parents} parents: ${parents}`)
                     console.log(strain)
                     // return strain
-                    parentarray.push(strain)
+                    parentarray.push(strain.strain)
                 } else {
                     console.log('nope')
                     // return
