@@ -112,7 +112,8 @@ export function GameProvider({ children }: Props) {
     const winstreakincrement = async () => setWinStreak(winStreak + 1)
     const guesswrongincrement = async () => setWrongGuess(wrongGuess + 1)
 
-    const fillbucket = async (strain:any) => {setDontuse( [ {...dontuse}, strain])}
+    const fillbucket = async (strain:any) => {setDontuse([...dontuse, strain])}
+    // const fillbucket = async (strain:any) => {setDontuse(['wow cool'])}
     const emptybucket = async () => setDontuse([])
 
     
