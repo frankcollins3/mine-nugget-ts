@@ -51,20 +51,17 @@ export default  function GameContainer (props) {
 
     const HoverOnCactus = async () => {        
         // playing = dispatch( { type: 'PLAYING_GAME'})
-        await setCactusHover(true) // 'await' has no effect on the type of this expression.
-        const parentSet = async () => {
-            await meetTheParents()            
-            playing()
-        }
-        const childset = async () => {
-            parent1state()
-            parent2state()
-        }
-        const doubleup = async () => {
-            await parentSet()
-            await childset()
-        }
+        await meetTheParents()        
+        // setTimeout( () => {
+            setCactusHover(true)
+        // }, 2000) 
+    }
 
+    const goldbarhover1 = async () => {
+        parent1state()
+    }
+    const goldbarhover2 = async () => {
+        parent2state()
     }
         
         // reduxparents = dispatch( { type: "SET_PARENTS", payload: { parents: randomparents}})
@@ -76,7 +73,8 @@ export default  function GameContainer (props) {
                   {/* {playing === false || cactusHover === false */}
                  {cactusHover === false 
                 ?
-                <div className="Column">                
+                <div                 
+                className="Column">                
                 <img onClick={HoverOnCactus}                
                 src="/img/cactus.png"/>
 
@@ -95,7 +93,7 @@ export default  function GameContainer (props) {
                         await setTimeout(async  () => {
                             // await checkredux()
                         }, 2000)
-                        playing()                        
+                                                
                     } else {
                         console.log("hey its already false")
                     }
@@ -123,8 +121,9 @@ export default  function GameContainer (props) {
                     <img
                     // onClick={checkredux}
                     style={{ height: '50px', width: '50px'}}
+                    onMouseEnter={goldbarhover1}
                     src="img/gold.png"/>
-                    <h1> { parent1 || '' }</h1>                                          
+                    <h1> { parent1 || 'hey' }</h1>                                          
                     </Container>
 
                     
@@ -141,9 +140,10 @@ export default  function GameContainer (props) {
                     <ParentWatch />
                     
                     <img
+                    onMouseEnter={goldbarhover2}
                     style={{ height: '50px', width: '50px'}}
                     src="img/gold.png"/>                                                               
-                    <h1> { parent2 || '' }</h1>                                          
+                    <h1> { parent2 || 'hey' }</h1>                                          
                     </Container>
         
                 </Container>
