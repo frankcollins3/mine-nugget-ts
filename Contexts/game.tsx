@@ -27,13 +27,13 @@ const gameDefaults: gameContextType = {
     playing: () => {},
     notplaying: () => {},
 
-    parents: 'no parents yet',
+    parents: '',
     meetTheParents: () => {},
 
-    parent1: 'no parent2 yet',
+    parent1: '',
     parent1state: () => {},
 
-    parent2: 'no parent2 yet',
+    parent2: '',
     parent2state: () => {}
 
 
@@ -52,9 +52,9 @@ type Props = {
 export function GameProvider({ children }: Props) {
     const [user, setUser] = useState<string>('no user');
     const [gameOn, setGameOn] = useState<string>('not playing');
-    const [parents, setParents] = useState<string>('no parents yet')
-    const [parent1, setParent1] = useState<string>('no parent1 yet')
-    const [parent2, setParent2] = useState<string>('no parent2 yet')
+    const [parents, setParents] = useState<string>('')
+    const [parent1, setParent1] = useState<string>('')
+    const [parent2, setParent2] = useState<string>('')
 
     const playing = () => {
         setGameOn('playing')
