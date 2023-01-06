@@ -51,7 +51,8 @@ export default  function GameContainer (props) {
 
     const HoverOnCactus = async () => {        
         // playing = dispatch( { type: 'PLAYING_GAME'})
-        await meetTheParents()        
+        await meetTheParents()
+        playing()        
         // setTimeout( () => {
             setCactusHover(true)
         // }, 2000) 
@@ -99,12 +100,17 @@ export default  function GameContainer (props) {
                     }
                 }}
                 >
+                {gameOn === 'playing' 
+                ?
                 <div 
                 className={styles.Row2}>
                 <Family/>
                 <Family/>
                 <Family/>
                 </div>
+                : 
+                ''
+                }
                 
                 <div className="Column">
                 <GameChild
@@ -147,13 +153,17 @@ export default  function GameContainer (props) {
                     </Container>
         
                 </Container>
-                    
+                
+                {gameOn === 'playing' ? 
                 <div 
                 className={styles.Row2}>
                 <Family/>
                 <Family/>
                 <Family/>
                 </div>
+                :
+                ''
+                }
                 </div>
                 
                 }    
