@@ -23,6 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 // * context
 import { useGame } from 'Contexts/game'
+import { setTextRange } from 'typescript'
 
 
 export default function GameChild (props) {
@@ -73,19 +74,16 @@ export default function GameChild (props) {
     
     const handleDragStart = async (event) => {
         let target = event.target        
-        let targetid = event.target.id
+        let targetid = target.id
         // $(target).css('border', '10px solid pink')        
         let familyparents = await Family(target, 'parents')                
         
         if (familyparents) {            
-            let dragParent = familyparents[0]
-            console.log('dragParent')
-            console.log(dragParent)
+            let dragParent = familyparents[0]            
             let familytype = dragParent.attributes
             let coinid = await Regex(targetid, 'numreturn')
             let coinint:number = parseInt(coinid)
-            console.log('coinid')
-            console.log(coinid)
+            
             if (familytype[0].textContent === 'notcoin') {
 
             } else {
@@ -94,87 +92,69 @@ export default function GameChild (props) {
                 if (targetid === 'coin1') {
                     console.log('parents coin1')
                     console.log(parents)
-                    let newparents = await ReturnRight(parents)                                            
-                    setGuessText(newparents)
-                    
-                    // setGuessText(newparents)
-                    console.log(`newparents ${newparents} typeof newparents ${typeof newparents}`)
-
-                    await setCoin1(true)    
+                    setCoin1(true)
+                    // let newparents = await ReturnRight(parents)                                            
+                    // setGuessText(newparents)                    
                     if (coinint === yesNumber) {                        
-                        
+                        let newparents = await ReturnRight(parents)                                            
+                        setGuessText(newparents)                        
                     } else {
-                        let wrongStrain = await ReturnWrong(parents, dontuse)
-                        await setGuessText('')
-                        setGuessText(`wrong! ${wrongStrain}`)
-                        fillbucket(wrongStrain)                                                
-                        console.log('wrongStrain')
-                        console.log(`wrongStrain ${wrongStrain}`)
-                        console.log(`NO!!! coinid ${coinid} ${typeof coinid} yesNumber ${yesNumber} ${typeof yesNumber}`)                        
+                        console.log(`dontuse ${dontuse}`)
+                        let wrongStrain = await ReturnWrong(parents, dontuse)                        
+                        if (label1.length < 2) { setLabel1(wrongStrain) }     
+                        fillbucket(wrongStrain)
+                        // fillbucket('coin1')    
+
+                        // await AttrTool(dragParent, 'type', 'notcoin')
+                        // await AttrTool(dragParent, 'data', '')                
+                        // await CSS(target, 'opacity', '0.1')                            
+                        
+                        
                     }
                     // ReturnRight()             
                 }
                 
-                if (targetid === 'coin2') {
-                    console.log('parents coin2 ')
-                    console.log(parents)
-                    setCoin2(true)
-                                        
+                if (targetid === 'coin2') {                    
+                    setCoin2(true)                                        
                     if (coinint === yesNumber) {
                         let newparents = await ReturnRight(parents)                                            
                         setGuessText(newparents)                        
-                        // let newparents = await ReturnRight(parents)                                                
                     } else {
-                        let wrongStrain = await ReturnWrong(parents, dontuse)
-                        await setGuessText('')
-                        setGuessText(`wrong! ${wrongStrain}`)
-                        fillbucket(wrongStrain)                                                
-                        console.log('wrongStrain')
-                        console.log(`wrongStrain ${wrongStrain}`)
-                        console.log(`NO!!! coinid ${coinid} ${typeof coinid} yesNumber ${yesNumber} ${typeof yesNumber}`)
+                        console.log(`dontuse ${dontuse}`)
+                        let wrongStrain = await ReturnWrong(parents, dontuse)                        
+                        if (label2.length < 2) { setLabel2(wrongStrain) }     
+                        fillbucket(wrongStrain)                        
                     }
                 }
                 if (targetid === 'coin3') {
-                    setCoin3(true)
-                    console.log('parents for coin3')
-                    console.log(parents)
-                    let newparents = await ReturnRight(parents)                                            
-                    console.log(`newparents ${newparents} typeof newparents ${typeof newparents}`)
-
+                    setCoin3(true)                    
+                    let newparents = await ReturnRight(parents)                                                                
                     if (coinint === yesNumber) {
                         let newparents = await ReturnRight(parents)                                            
                         setGuessText(newparents)                        
                     } else {
-                        let wrongStrain = await ReturnWrong(parents, dontuse)
-                        await setGuessText('')
-                        setGuessText(`wrong! ${wrongStrain}`)
-                        fillbucket(wrongStrain)                                                
-                        console.log('wrongStrain')
-                        console.log(`wrongStrain ${wrongStrain}`)
-                        console.log(`NO!!! coinid ${coinid} ${typeof coinid} yesNumber ${yesNumber} ${typeof yesNumber}`)
+                        console.log(`dontuse ${dontuse}`)
+                        let wrongStrain = await ReturnWrong(parents, dontuse)                        
+                        if (label3.length < 2) { setLabel3(wrongStrain) }     
+                        fillbucket(wrongStrain)
                     }
                 }
                 if (targetid === 'coin4') {
                     let newparents = await ReturnRight(parents)                                            
                     setGuessText(newparents)                                            
                     setCoin4(true)
-                    console.log(`newparents ${newparents} typeof newparents ${typeof newparents}`)
+                    
                     if (coinint === yesNumber) {
                         
                     } else {
-                        let wrongStrain = await ReturnWrong(parents, dontuse)
-                        await setGuessText('')
-                        setGuessText(`wrong! ${wrongStrain}`)
-                        fillbucket(wrongStrain)                                                
-                        console.log('wrongStrain')
-                        console.log(`wrongStrain ${wrongStrain}`)
-                        console.log(`NO!!! coinid ${coinid} ${typeof coinid} yesNumber ${yesNumber} ${typeof yesNumber}`)
+                        console.log(`dontuse ${dontuse}`)
+                        let wrongStrain = await ReturnWrong(parents, dontuse)                        
+                        if (label4.length < 2) { setLabel4(wrongStrain) }     
+                        fillbucket(wrongStrain)
                     }
                 }
                 
-                await AttrTool(dragParent, 'type', 'notcoin')
-                await AttrTool(dragParent, 'data', '')                
-                await CSS(target, 'opacity', '0.1')                            
+                
             }            
         }
     }
@@ -184,7 +164,7 @@ export default function GameChild (props) {
     }
 
     const handleDrop = async (event) => {        
-
+        console.log("we are firing the drop function!")
     }
 
     const mineclick = async () => {        
@@ -203,7 +183,8 @@ export default function GameChild (props) {
             <img
             id="coin1"
             draggable="true"
-            onDragStart={handleDragStart}         
+            onMouseEnter={handleDragStart}         
+            // onDragStart={handleDragStart}         
             className={styles.coin} src="img/coin.png" 
             />
             </Draggable>
@@ -216,7 +197,8 @@ export default function GameChild (props) {
             <img
             id="coin2"
             draggable="true"
-            onDragStart={handleDragStart}         
+            onMouseEnter={handleDragStart}         
+            // onDragStart={handleDragStart}         
             className={styles.coin} src="img/coin.png" 
             />
             <h1 style={{ color: 'white'}}></h1>
@@ -229,7 +211,8 @@ export default function GameChild (props) {
             <img
             id="coin3"
             draggable="true"
-            onDragStart={handleDragStart}         
+            onMouseEnter={handleDragStart}         
+            // onDragStart={handleDragStart}         
             className={styles.coin} src="img/coin.png" 
             />
             </Draggable>
@@ -241,7 +224,8 @@ export default function GameChild (props) {
             <img
             id="coin4"
             draggable="true"
-            onDragStart={handleDragStart}         
+            onMouseEnter={handleDragStart}         
+            // onDragStart={handleDragStart}         
             className={styles.coin} src="img/coin.png" 
             />
             </Draggable>
