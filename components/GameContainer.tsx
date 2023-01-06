@@ -1,7 +1,7 @@
 // * dependencies
 // import {connect} from 'react-redux';
 import { TypedUseSelectorHook, useSelector, connect } from 'react-redux'
-import { useState, useEffect} from 'react'
+import { useState, useEffect, useContext} from 'react'
 
 // * CSS
 import styles from 'styles/game/sass/FamilyTree.module.scss'
@@ -23,72 +23,84 @@ import { useDispatch } from "react-redux";
 import customReduxSelector from 'redux/reduxselector'
 
 // * utility functions
+import APIcall from 'utility/APIcall'
 import Regex from 'utility/MasterRegex'
+
+// * Context
+import { useGame } from 'Contexts/game'
+
+
 
 
 
 export default  function GameContainer (props) {
-    // console.log('props from the GameContainer!!!!')
-    // console.log(props)
+    console.log('props from the GameContainer!!!!')
+    console.log(props)
+    
     const [cactusHover, setCactusHover] = useState(false)
+    // const [gameOn, setGameOn] = useState(false)
 
-    const dispatch = useDispatch()
-    let reduxresult:any = useSelector(state => state)
+    const {
+        gameOn, playing, notplaying,
+         parents, meetTheParents, 
+         parent1, parent1state, parent2, parent2state 
+         } = useGame()
+
     
-    // let parent1 = reduxresult.gameReducer.parent1
-    // let parent2 = reduxresult.gameReducer.parent2
-
-    let parent1 = props.parent1
-    let parent2 = props.parent2
-
-    let playing = reduxresult.gameReducer.inplay
-
-
-    let parents:string = props.redux   
-    let checkredux = props.checkredux
     
-    const statechange = async () => {
-        // console.log("state change function")
-        let newstr = await Regex(reduxresult.gameReducer.parents, 'stringsplit')
-        
-        if (playing === 'true') {
-            // parent1 = dispatch( { type: 'SET_PARENTS_1', payload: { parent1: newstr[0]}})        
-            // parent2 = dispatch( { type: 'SET_PARENTS_2', payload: { parent2: newstr[1]}})        
-            playing = dispatch( { type: "PLAYING_GAME", payload: { game: 'play'}})
-        } else {
-        }
-    }    
-            
 
-
-    const HoverOnCactus = async () => {
-        checkredux()
+    const HoverOnCactus = async () => {        
         // playing = dispatch( { type: 'PLAYING_GAME'})
         await setCactusHover(true) // 'await' has no effect on the type of this expression.
+        const parentSet = async () => {
+            await meetTheParents()            
+            playing()
+        }
+        const childset = async () => {
+            parent1state()
+            parent2state()
+        }
+        const doubleup = async () => {
+            await parentSet()
+            await childset()
+        }
+
     }
         
         // reduxparents = dispatch( { type: "SET_PARENTS", payload: { parents: randomparents}})
         
     return (
         <>
+            
             <ShadowBorder>
-               {cactusHover === false 
-                //  {playing === false || cactusHover === false
+                  {/* {playing === false || cactusHover === false */}
+                 {cactusHover === false 
                 ?
                 <div className="Column">                
                 <img onClick={HoverOnCactus}                
                 src="/img/cactus.png"/>
 
-                <h3
-                 onMouseEnter={ () => console.log(`reduxresult.playing ${playing}`)}
+                <h3             
                  style={{color:'white'}}> hover on the parents to reveal the gold</h3>
-                <h3 style={{color:'white'}}> hover to reveal the options </h3>
+                <h3 style={{color:'white'}}> hover to reveal the options </h3> 
                 </div>
                 : 
             
-                // }
-
-                <div>
+                <div
+                onMouseEnter={async() => {
+                    if (gameOn === 'not playing') {
+                        console.log("W E      A R E     O V E R     H E R E      W I T H     T H E     S T A T E !!!!")
+                        // await addToState()
+                        // setTimeout(checkredux, 2000)
+                        await setTimeout(async  () => {
+                            // await checkredux()
+                        }, 2000)
+                        playing()                        
+                    } else {
+                        console.log("hey its already false")
+                    }
+                }}
+                >
                 <div 
                 className={styles.Row2}>
                 <Family/>
@@ -97,21 +109,22 @@ export default  function GameContainer (props) {
                 </div>
                 
                 <div className="Column">
-                <GameChild cactusHover={cactusHover} setCactusHover={setCactusHover}/>
+                <GameChild
+                 cactusHover={cactusHover} setCactusHover={setCactusHover}/>
                 </div>
                 
         
                 <Container className={styles.Row}>
         
                     <Container className={styles.ColumnParent}>
-                    <ParentRing parents={parents}/>
+                    <ParentRing />
                 
-                    <h3 className="ParentContText"
-                    > {parent1 || ''} </h3>
+                    
                     <img
-                    onMouseEnter={checkredux}
+                    // onClick={checkredux}
                     style={{ height: '50px', width: '50px'}}
-                    src="img/gold.png"/>                                           
+                    src="img/gold.png"/>
+                    <h1> { parent1 || '' }</h1>                                          
                     </Container>
 
                     
@@ -119,19 +132,18 @@ export default  function GameContainer (props) {
                     {/* <div 
                     style={{ border: 'transparent', boxShadow: 'transparent'}}
                     className="Column">
-                        <img src="img/gameoff.png"/>
-                        <img src="img/gameon.png"/>
-                    </div> */}
+                    <img src="img/gameoff.png"/>
+                    <img src="img/gameon.png"/>
+                </div> */}
                     
                     <Container             
                     className={styles.ColumnParent}>
-                    <ParentWatch parents={parents}/>
-                    {/* <h1> {parents || ''}</h1> */}
-                    <h3 className="ParentContText"
-                    > {parent2 || ''}</h3>
+                    <ParentWatch />
+                    
                     <img
                     style={{ height: '50px', width: '50px'}}
                     src="img/gold.png"/>                                                               
+                    <h1> { parent2 || '' }</h1>                                          
                     </Container>
         
                 </Container>
@@ -147,8 +159,8 @@ export default  function GameContainer (props) {
                 }    
 
             </ShadowBorder>
-            
-        {/* <button onClick={statechange}></button> */}
+ 
+ 
         </>
     )
 }
