@@ -16,6 +16,19 @@ type gameContextType = {
 
     parent2: string;
     parent2state: () => void;
+
+    winStreak: number;
+    winstreakincrement: () => void;
+
+    wrongGuess: number;
+    guesswrongincrement: () => void;
+
+    dontuse: [];
+    // dontuse: string[];
+    fillbucket: (strain) => void;
+    emptybucket: () => void;
+
+    // * no need for guess .... because parents is the right guess already
 };
 
 //     gameOn: gameOn, setGameOn: setGameOn, parents: parents, setParents: setParents,
@@ -34,9 +47,17 @@ const gameDefaults: gameContextType = {
     parent1state: () => {},
 
     parent2: '',
-    parent2state: () => {}
+    parent2state: () => {},
 
+    winStreak: 0,
+    winstreakincrement: () => {},
+    
+    wrongGuess: 0,
+    guesswrongincrement: () => {},    
 
+    dontuse: [],
+    fillbucket: () => {},
+    emptybucket: () => {}
 };
 
 const GameContext = createContext<gameContextType>(gameDefaults);
@@ -55,7 +76,11 @@ export function GameProvider({ children }: Props) {
     const [parents, setParents] = useState<string>('')
     const [parent1, setParent1] = useState<string>('')
     const [parent2, setParent2] = useState<string>('')
-
+    const [winStreak, setWinStreak] = useState<number>(0)
+    const [wrongGuess, setWrongGuess] = useState<number>(0)
+    const [dontuse, setDontuse] = useState<[]>([])
+    // const [dontuse, setDontuse] = useState<string[]>([])
+    
     const playing = () => {
         setGameOn('playing')
     }
@@ -83,8 +108,16 @@ export function GameProvider({ children }: Props) {
         console.log("we are firing parent2state function")        
         let splitstring:string = await Regex(parents, 'stringsplit')
         setParent2(splitstring[1])
-        
     }
+
+    const winstreakincrement = async () => setWinStreak(winStreak + 1)
+    const guesswrongincrement = async () => setWrongGuess(wrongGuess + 1)
+
+    const fillbucket = async (strain:any|never) => {setDontuse( [ {...dontuse}, strain])}
+    const emptybucket = async () => setDontuse([])
+
+    
+        
 
     const value = {
         gameOn, 
@@ -97,7 +130,17 @@ export function GameProvider({ children }: Props) {
         parent1,
         parent1state,
         parent2, 
-        parent2state
+        parent2state,
+
+        winStreak,
+        winstreakincrement,
+
+        wrongGuess,
+        guesswrongincrement,
+
+        dontuse,
+        fillbucket,
+        emptybucket,
     };
 
     return (
