@@ -24,8 +24,41 @@ export default async function ReturnWrong (parents:string, dontuse:string|string
                     if (dontuse.includes(strain.strain)) {
                         let newstrain = await Random(strains)
                         let name:string = newstrain.strain
-                        stringbucket.push(name)
-                    } else { stringbucket.push(strain.strain) }                                                 
+                        if (strain.strain === 'pineapple express') {
+                            stringbucket.push('pineapple') 
+                        }
+                        else if (strain.strain === 'wedding cake') {
+                            stringbucket.push('wed cake')
+                        }
+                        else if (strain.strain === 'GorillaGlue#4') {
+                            stringbucket.push('GG#4')
+                        }
+                        else if (strain.strain === 'Do-Si-Dos') {
+                            stringbucket.push('DoSiDos')
+                        }
+                        else if (strain.strain === 'White Widow') {
+                            stringbucket.push('Wh.Widow')
+                        }                        
+                        else { stringbucket.push(name)}
+                        
+                    } else { 
+                        if (strain.strain === 'pineapple express') {
+                            stringbucket.push('pineapple') 
+                        }
+                        else if (strain.strain === 'wedding cake') {
+                            stringbucket.push('wed cake')
+                        }
+                        else if (strain.strain === 'GorillaGlue#4') {
+                            stringbucket.push('GG#4')
+                        }
+                        else if (strain.strain === 'Do-Si-Dos') {
+                            stringbucket.push('DoSiDos')
+                        }
+                        else if (strain.strain === 'White Widow') {
+                            stringbucket.push('Wh.Widow')
+                        }
+                         else { stringbucket.push(strain.strain)}
+                    }                                                 
                 }
             }) 
         }
