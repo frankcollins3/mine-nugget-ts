@@ -1,6 +1,7 @@
 import { createContext, useContext, ReactNode, useState } from "react";
 import APIcall from 'utility/APIcall'
 import Random from 'utility/Randomizer'
+import Regex from 'utility/MasterRegex'
 
 type gameContextType = {
     gameOn: string;
@@ -9,6 +10,12 @@ type gameContextType = {
 
     parents: string;
     meetTheParents: () => void;
+
+    parent1: string;
+    parent1state: () => void;
+
+    parent2: string;
+    parent2state: () => void;
 };
 
 //     gameOn: gameOn, setGameOn: setGameOn, parents: parents, setParents: setParents,
@@ -21,7 +28,15 @@ const gameDefaults: gameContextType = {
     notplaying: () => {},
 
     parents: 'no parents yet',
-    meetTheParents: () => {}
+    meetTheParents: () => {},
+
+    parent1: 'no parent2 yet',
+    parent1state: () => {},
+
+    parent2: 'no parent2 yet',
+    parent2state: () => {}
+
+
 };
 
 const GameContext = createContext<gameContextType>(gameDefaults);
@@ -38,6 +53,8 @@ export function GameProvider({ children }: Props) {
     const [user, setUser] = useState<string>('no user');
     const [gameOn, setGameOn] = useState<string>('not playing');
     const [parents, setParents] = useState<string>('no parents yet')
+    const [parent1, setParent1] = useState<string>('no parent1 yet')
+    const [parent2, setParent2] = useState<string>('no parent2 yet')
 
     const playing = () => {
         setGameOn('playing')
@@ -53,22 +70,34 @@ export function GameProvider({ children }: Props) {
         let randomstrain:any = await Random(strains)
         // let randomstrain:(object|string) = await Random(strains)
         let parents = randomstrain.parents
-        
-        console.log('randomstrain')
-        console.log(randomstrain)
-        
-        console.log('parents')
-        console.log(parents)
+        setParents(parents)    
+    }
+
+    const parent1state = async () => {
+        let splitstring:string = await Regex(parents, 'stringsplit')
+        setParent1(splitstring[0])
         
     }
     
+    const parent2state = async () => {
+        console.log("we are firing parent2state function")        
+        let splitstring:string = await Regex(parents, 'stringsplit')
+        setParent2(splitstring[1])
+        
+    }
+
     const value = {
         gameOn, 
         playing,
         notplaying,
 
         parents,
-        meetTheParents
+        meetTheParents,
+
+        parent1,
+        parent1state,
+        parent2, 
+        parent2state
     };
 
     return (
