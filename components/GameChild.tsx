@@ -32,6 +32,12 @@ export default function GameChild (props) {
     const [coin2, setCoin2] = useState(false)
     const [coin3, setCoin3] = useState(false)
     const [coin4, setCoin4] = useState(false)
+
+    const [label1, setLabel1] = useState('')
+    const [label2, setLabel2] = useState('')
+    const [label3, setLabel3] = useState('')
+    const [label4, setLabel4] = useState('')
+
     const [yesNumber, setYesNumber] = useState(0)
     const [guessText, setGuessText] = useState('')
 
@@ -192,6 +198,7 @@ export default function GameChild (props) {
         <div className={styles.GameChild}>
 
             {/* <Draggable type={"coin"} data="sourog">      */}
+            <div className="Column">                
             <Draggable type={coin1 === false ? "coin" : "notcoin"} data="sourog">     
             <img
             id="coin1"
@@ -200,7 +207,11 @@ export default function GameChild (props) {
             className={styles.coin} src="img/coin.png" 
             />
             </Draggable>
+            <p> {label1 || 'label1'} </p>
+            </div>
+            {/* <p> hey </p> */}
 
+            <div className="Column">                
             <Draggable type={coin2 === false ? "coin" : "notcoin"} data="sourog">     
             <img
             id="coin2"
@@ -210,7 +221,10 @@ export default function GameChild (props) {
             />
             <h1 style={{ color: 'white'}}></h1>
             </Draggable>
+            <p> {label2 || 'label2'} </p>
+            </div>
             
+            <div className="Column">                
             <Draggable type={coin3 === false ? "coin" : "notcoin"} data="sourog">     
             <img
             id="coin3"
@@ -219,7 +233,10 @@ export default function GameChild (props) {
             className={styles.coin} src="img/coin.png" 
             />
             </Draggable>
+            <p> {label3 || 'label3'} </p>
+            </div>
 
+            <div className="Column">
             <Draggable type={coin4 === false ? "coin" : "notcoin"} data="sourog">     
             <img
             id="coin4"
@@ -228,6 +245,8 @@ export default function GameChild (props) {
             className={styles.coin} src="img/coin.png" 
             />
             </Draggable>
+            <p> {label4 || 'label4'} </p>
+            </div>
      
         </div>  
 
