@@ -11,6 +11,7 @@ import Random from 'utility/Randomizer'
 import Regex from 'utility/MasterRegex'
 import Endpoint from 'utility/StrainEndpoint'
 import ReturnRight from 'utility/ReturnRight'
+import ReturnWrong from 'utility/ReturnWrong'
 import { Draggable, Droppable } from 'react-drag-and-drop'
 
 import Family from 'utility/familyJS'
@@ -39,7 +40,8 @@ export default function GameChild (props) {
     const {
         gameOn, playing, notplaying,
          parents, meetTheParents, 
-         parent1, parent1state, parent2, parent2state 
+         parent1, parent1state, parent2, parent2state,
+         dontuse, fillbucket, emptybucket
          } = useGame()
 // * these context variables are working facilitate guessing with the coins.
 // * the coins will need labels with: [ReturnRight() && ReturnWrong] depending on if coin matches up.
@@ -96,7 +98,13 @@ export default function GameChild (props) {
                     if (coinint === yesNumber) {                        
                         
                     } else {
-                        console.log(`NO!!! coinid ${coinid} ${typeof coinid} yesNumber ${yesNumber} ${typeof yesNumber}`)
+                        let wrongStrain = await ReturnWrong(parents, dontuse)
+                        await setGuessText('')
+                        setGuessText(`wrong! ${wrongStrain}`)
+                        fillbucket(wrongStrain)                                                
+                        console.log('wrongStrain')
+                        console.log(`wrongStrain ${wrongStrain}`)
+                        console.log(`NO!!! coinid ${coinid} ${typeof coinid} yesNumber ${yesNumber} ${typeof yesNumber}`)                        
                     }
                     // ReturnRight()             
                 }
@@ -111,7 +119,13 @@ export default function GameChild (props) {
                         setGuessText(newparents)                        
                         // let newparents = await ReturnRight(parents)                                                
                     } else {
-                        console.log(` NO!!! coinid ${coinid} ${typeof coinid} yesNumber ${yesNumber} ${typeof yesNumber}`)
+                        let wrongStrain = await ReturnWrong(parents, dontuse)
+                        await setGuessText('')
+                        setGuessText(`wrong! ${wrongStrain}`)
+                        fillbucket(wrongStrain)                                                
+                        console.log('wrongStrain')
+                        console.log(`wrongStrain ${wrongStrain}`)
+                        console.log(`NO!!! coinid ${coinid} ${typeof coinid} yesNumber ${yesNumber} ${typeof yesNumber}`)
                     }
                 }
                 if (targetid === 'coin3') {
@@ -125,7 +139,13 @@ export default function GameChild (props) {
                         let newparents = await ReturnRight(parents)                                            
                         setGuessText(newparents)                        
                     } else {
-                        console.log(` NO!!! coinid ${coinid} ${typeof coinid} yesNumber ${yesNumber} ${typeof yesNumber}`)
+                        let wrongStrain = await ReturnWrong(parents, dontuse)
+                        await setGuessText('')
+                        setGuessText(`wrong! ${wrongStrain}`)
+                        fillbucket(wrongStrain)                                                
+                        console.log('wrongStrain')
+                        console.log(`wrongStrain ${wrongStrain}`)
+                        console.log(`NO!!! coinid ${coinid} ${typeof coinid} yesNumber ${yesNumber} ${typeof yesNumber}`)
                     }
                 }
                 if (targetid === 'coin4') {
@@ -136,6 +156,12 @@ export default function GameChild (props) {
                     if (coinint === yesNumber) {
                         
                     } else {
+                        let wrongStrain = await ReturnWrong(parents, dontuse)
+                        await setGuessText('')
+                        setGuessText(`wrong! ${wrongStrain}`)
+                        fillbucket(wrongStrain)                                                
+                        console.log('wrongStrain')
+                        console.log(`wrongStrain ${wrongStrain}`)
                         console.log(`NO!!! coinid ${coinid} ${typeof coinid} yesNumber ${yesNumber} ${typeof yesNumber}`)
                     }
                 }
