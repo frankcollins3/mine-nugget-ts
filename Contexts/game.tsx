@@ -23,8 +23,7 @@ type gameContextType = {
     wrongGuess: number;
     guesswrongincrement: () => void;
 
-    dontuse: [];
-    // dontuse: string[];
+    dontuse: string[] | string;
     fillbucket: (strain) => void;
     emptybucket: () => void;
 
@@ -78,7 +77,7 @@ export function GameProvider({ children }: Props) {
     const [parent2, setParent2] = useState<string>('')
     const [winStreak, setWinStreak] = useState<number>(0)
     const [wrongGuess, setWrongGuess] = useState<number>(0)
-    const [dontuse, setDontuse] = useState<[]>([])
+    const [dontuse, setDontuse] = useState<string[]>([])
     // const [dontuse, setDontuse] = useState<string[]>([])
     
     const playing = () => {
@@ -113,7 +112,7 @@ export function GameProvider({ children }: Props) {
     const winstreakincrement = async () => setWinStreak(winStreak + 1)
     const guesswrongincrement = async () => setWrongGuess(wrongGuess + 1)
 
-    const fillbucket = async (strain:any|never) => {setDontuse( [ {...dontuse}, strain])}
+    const fillbucket = async (strain:any) => {setDontuse( [ {...dontuse}, strain])}
     const emptybucket = async () => setDontuse([])
 
     
