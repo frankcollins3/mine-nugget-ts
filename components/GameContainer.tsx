@@ -2,6 +2,7 @@
 // import {connect} from 'react-redux';
 import { TypedUseSelectorHook, useSelector, connect } from 'react-redux'
 import { useState, useEffect, useContext} from 'react'
+import $ from 'jquery'
 
 // * CSS
 import styles from 'styles/game/sass/FamilyTree.module.scss'
@@ -25,6 +26,7 @@ import customReduxSelector from 'redux/reduxselector'
 // * utility functions
 import APIcall from 'utility/APIcall'
 import Regex from 'utility/MasterRegex'
+import AttrTool from 'utility/JqAttr'
 
 // * Context
 import { useGame } from 'Contexts/game'
@@ -36,17 +38,33 @@ import { useGame } from 'Contexts/game'
 export default  function GameContainer (props) {
     console.log('props from the GameContainer!!!!')
     console.log(props)
+
     
     const [cactusHover, setCactusHover] = useState(false)
     // const [gameOn, setGameOn] = useState(false)
-
+    
     const {
         gameOn, playing, notplaying,
          parents, meetTheParents, 
-         parent1, parent1state, parent2, parent2state 
+         parent1, parent1state, parent2, parent2state,
+         dontuse, fillbucket, emptybucket,
+         winStreak, winstreakincrement, wrongGuess, guesswrongincrement
          } = useGame()
-
     
+    
+    useEffect( () => {
+        // Game Child and GameContainer linked here.s
+        console.log('useEffect firing off in GameContainer!')
+        console.log('wrongGuess')
+        console.log(wrongGuess)
+        AttrTool($('#gold1'), 'src', '/img/dynamite.png')
+    }, [wrongGuess] )
+    
+    useEffect( () => {
+        console.log('winStreak useEffect GameContainer!')
+        AttrTool($('#gold1'), 'src', '/img/ring.png')
+        AttrTool($('#gold2'), 'src', '/img/ring.png')        
+    }, [winStreak])
     
 
     const HoverOnCactus = async () => {        
@@ -88,15 +106,16 @@ export default  function GameContainer (props) {
                 <div
                 onMouseEnter={async() => {
                     if (gameOn === 'not playing') {
-                        console.log("W E      A R E     O V E R     H E R E      W I T H     T H E     S T A T E !!!!")
+                        // console.log("W E      A R E     O V E R     H E R E      W I T H     T H E     S T A T E !!!!")
                         // await addToState()
                         // setTimeout(checkredux, 2000)
-                        await setTimeout(async  () => {
-                            // await checkredux()
-                        }, 2000)
+                        // await checkredux()
+                        
+                        // await setTimeout(async  () => {
+                        // }, 2000)
                                                 
                     } else {
-                        console.log("hey its already false")
+                        // console.log("hey its already false")
                     }
                 }}
                 >
@@ -114,6 +133,7 @@ export default  function GameContainer (props) {
                 
                 <div className="Column">
                 <GameChild
+                 gold1={$('#gold1')} gold2={$('#gold2')}
                  cactusHover={cactusHover} setCactusHover={setCactusHover}/>
                 </div>
                 
@@ -125,11 +145,12 @@ export default  function GameContainer (props) {
                 
                     
                     <img
+                    id="gold1"
                     // onClick={checkredux}
                     style={{ height: '50px', width: '50px'}}
                     onMouseEnter={goldbarhover1}
                     src="img/gold.png"/>
-                    <h1> { parent1 || 'hey' }</h1>                                          
+                    <h1> { parent1 || '' }</h1>                                          
                     </Container>
 
                     
@@ -146,10 +167,11 @@ export default  function GameContainer (props) {
                     <ParentWatch />
                     
                     <img
+                    id="gold1"
                     onMouseEnter={goldbarhover2}
                     style={{ height: '50px', width: '50px'}}
                     src="img/gold.png"/>                                                               
-                    <h1> { parent2 || 'hey' }</h1>                                          
+                    <h1> { parent2 || '' }</h1>                                          
                     </Container>
         
                 </Container>
