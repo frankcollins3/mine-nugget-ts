@@ -14,6 +14,7 @@ import ReturnRight from 'utility/ReturnRight'
 import ReturnWrong from 'utility/ReturnWrong'
 import { Draggable, Droppable } from 'react-drag-and-drop'
 
+import Children from 'utility/jqChildren'
 import Family from 'utility/familyJS'
 import { propTypes } from 'react-bootstrap/esm/Image'
 
@@ -149,10 +150,30 @@ export default function GameChild (props) {
         let coin:string = event.coin
         if (coin === 'coin1') {
             console.log('weve got coin1. great')
-                let newparents = await ReturnRight(parents)                                            
-                setLabel1(newparents)      
-                setGuessText(newparents) 
-                setGuessYet(true)                 
+                // let newparents = await ReturnRight(parents)                                            
+                // setLabel1(newparents)      
+                // setGuessText(newparents) 
+                
+
+                type objectStr = object | string;
+                
+
+                let kids = await Children($('#coin1'))                
+                console.log('kids')
+                console.log(kids)
+                // let kids = $('#coin1').children()
+                let sibs = $('#coin1').siblings()
+                console.log('sibs')
+                console.log(sibs)
+
+                // let kids = await Children<objectStr>($(`#${coin}`), 'children')
+                
+
+
+            
+                            
+                setGuessYet(true)       
+                setCoin1(true)          
         }
 
         if (coin === 'coin1') {
@@ -201,7 +222,9 @@ export default function GameChild (props) {
             className={styles.coin} src="img/coin.png" 
             />
             </Draggable>
-            <p> {label1 || ''} </p>
+            <p
+            className="label1"
+            > {label1 || ''} </p>
             </div>
             {/* <p> hey </p> */}
 
@@ -216,7 +239,9 @@ export default function GameChild (props) {
             />
             <h1 style={{ color: 'white'}}></h1>
             </Draggable>
-            <p> {label2 || ''} </p>
+            <p
+            className="label2"
+            > {label2 || ''} </p>
             </div>
             
             <div className="Column">                
@@ -229,7 +254,9 @@ export default function GameChild (props) {
             className={styles.coin} src="img/coin.png" 
             />
             </Draggable>
-            <p> {label3 || ''} </p>
+            <p
+            className="label3"
+            > {label3 || ''} </p>
             </div>
 
             <div className="Column">
@@ -242,7 +269,9 @@ export default function GameChild (props) {
             className={styles.coin} src="img/coin.png" 
             />
             </Draggable>
-            <p> {label4 || ''} </p>
+            <p
+            className="label4"
+            > {label4 || ''} </p>
             </div>
      
         </div>  
