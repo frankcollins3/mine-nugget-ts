@@ -12,11 +12,14 @@ import Regex from 'utility/MasterRegex'
 import Endpoint from 'utility/StrainEndpoint'
 import ReturnRight from 'utility/ReturnRight'
 import ReturnWrong from 'utility/ReturnWrong'
-import { Draggable, Droppable } from 'react-drag-and-drop'
-
 import Children from 'utility/jqChildren'
 import Family from 'utility/familyJS'
+import Animate from 'utility/jqAnimate'
+import { Draggable, Droppable } from 'react-drag-and-drop'
+
+
 import { propTypes } from 'react-bootstrap/esm/Image'
+
 
 // * redux 
 import store from 'redux/store'
@@ -91,7 +94,7 @@ export default function GameChild (props) {
             if (familytype[0].textContent === 'notcoin') {
 
             } else {                
-                if (targetid === 'coin1') {                    
+                if (targetid === 'coin1') {                
                     // setCoin1(true)
                     // setGuessText(newparents)                    
                     if (coinint === yesNumber) {                                                
@@ -107,7 +110,7 @@ export default function GameChild (props) {
                 }
                 
                 if (targetid === 'coin2') {                    
-                    setCoin2(true)                                        
+                    // setCoin2(true)                                        
                     if (coinint === yesNumber) {
                         // let newparents = await ReturnRight(parents)                                            
                         setLabel2(newparents)     
@@ -148,19 +151,63 @@ export default function GameChild (props) {
         console.log("we are firing the drop function!")        
         console.log(event)
         let coin:string = event.coin
-        if (coin === 'coin1' || coin === 'coin2' || coin === 'coin3' || coin === 'coin4') {
-            console.log('weve got coin1. great')
-                type numstring = object | string;                
-                // let idint = await Regex(coin, 'numreturn')                
-                let idint:string|number = await Regex(coin, 'numreturn')                
-                const coinlabel = $(`.label${idint}`)
-                let labeltext:string = coinlabel[0].innerText
-                console.log('coinlabel')
-                console.log(coinlabel)
+        let idint:string|number = await Regex(coin, 'numreturn')                
+        let coinelem = $(`#coin${idint}`)
+        const coinlabel = $(`.label${idint}`)
+        
+        if (coin === 'coin1') {
+            type numstring = object | string;                
+            // let idint = await Regex(coin, 'numreturn')                
+            let labeltext:string = coinlabel[0].innerText
+        // if (coin === 'coin1' || coin === 'coin2' || coin === 'coin3' || coin === 'coin4') {            
+            setGuessYet(true)       
+            setCoin1(true)                                     
+            
+            Animate($(`#coin${idint}`), 'opacity', '0.1', 250)
+            setTimeout( () => setGuessText(labeltext), 1000)                
+            }        
+
+        if (coin === 'coin2') {
+            type numstring = object | string;                
+            // let idint = await Regex(coin, 'numreturn')                
+            let idint:string|number = await Regex(coin, 'numreturn')                
+            const coinlabel = $(`.label${idint}`)
+            let labeltext:string = coinlabel[0].innerText
+        // if (coin === 'coin2' || coin === 'coin2' || coin === 'coin3' || coin === 'coin4') {            
                 setGuessText(labeltext)
                 setGuessYet(true)       
-                setCoin1(true)                                     
-        }        
+                setCoin2(true)    
+                setTimeout( () => {
+                    CSS($(`#coin${idint}`), 'opacity', '0.1')                
+                }, 1000)                                 
+            }        
+ 
+            if (coin === 'coin3') {
+                type numstring = object | string;                
+        // let idint = await Regex(coin, 'numreturn')                
+        let idint:string|number = await Regex(coin, 'numreturn')                        
+        const coinlabel = $(`.label${idint}`)
+        let labeltext:string = coinlabel[0].innerText
+                // setTimeout( () => setGuessText(labeltext), 500)
+                
+                setGuessYet(true)       
+                setCoin3(true)       
+                setTimeout( () => {
+                    // CSS($(`#coin${idint}`), 'opacity', '0.1')                
+
+                }, 1000)                              
+            }
+            if (coin === 'coin4') {
+                type numstring = object | string;                
+        // let idint = await Regex(coin, 'numreturn')                
+        let idint:string|number = await Regex(coin, 'numreturn')                
+        const coinlabel = $(`.label${idint}`)
+        let labeltext:string = coinlabel[0].innerText
+                setGuessText(labeltext)
+                setGuessYet(true)       
+                setCoin4(true)   
+                                                  
+            }
     }
 
     const mineclick = async () => {        
@@ -199,7 +246,6 @@ export default function GameChild (props) {
             // onDragStart={handleDragStart}         
             className={styles.coin} src="img/coin.png" 
             />
-            <h1 style={{ color: 'white'}}></h1>
             </Draggable>
             <p
             className="label2"
