@@ -10,12 +10,15 @@ type gameContextType = {
 
     parents: string;
     meetTheParents: () => void;
+    clearparents: () => void;
 
     parent1: string;
     parent1state: () => void;
-
+    clearparent1: () => void;
+    
     parent2: string;
     parent2state: () => void;
+    clearparent2: () => void;
 
     winStreak: number;
     winstreakincrement: () => void;
@@ -48,12 +51,15 @@ const gameDefaults: gameContextType = {
 
     parents: '',
     meetTheParents: () => {},
+    clearparents: () => {},
 
     parent1: '',
     parent1state: () => {},
-
+    clearparent1: () => {},
+    
     parent2: '',
     parent2state: () => {},
+    clearparent2: () => {},
 
     winStreak: 0,
     winstreakincrement: () => {},
@@ -111,17 +117,20 @@ export function GameProvider({ children }: Props) {
         setParents(parents)    
     }
 
+    const clearparents = () => setParents('')
+
     const parent1state = async () => {
         let splitstring:string = await Regex(parents, 'stringsplit')
-        setParent1(splitstring[0])
-        
+        setParent1(splitstring[0])        
     }
+    const clearparent1 = () => setParent1('')
     
     const parent2state = async () => {
         console.log("we are firing parent2state function")        
         let splitstring:string = await Regex(parents, 'stringsplit')
         setParent2(splitstring[1])
     }
+    const clearparent2 = () => setParent1('')
 
     const winstreakincrement = async () => setWinStreak(winStreak + 1)
     // const winstreakclear = async () => setWinStreak(0)
@@ -149,12 +158,15 @@ export function GameProvider({ children }: Props) {
 
         parents,
         meetTheParents,
+        clearparents,
 
         parent1,
         parent1state,
+        clearparent1,
         parent2, 
         parent2state,
-
+        clearparent2,
+        
         winStreak,
         winstreakincrement,
 
