@@ -12,6 +12,9 @@ a {
 
 * {
   box-sizing: border-box;
+  text-align: center;
+  /* padding: 0;
+  margin: 0 auto; */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -42,11 +45,38 @@ a {
   flex-direction: column;
 }
 
-.goldFinger {
+.goldenone {
   color: 'white';
   text-shadow: '35px 25px 55px white';
   box-shadow: '35px 25px 55px orange';
   /* font-weight: 'bold'; */
+}
+
+.RingWatch {
+  min-height: 20vh;
+  min-width: 12vw;  
+  box-shadow: 10px 10px 10px rgb(247, 208, 32);    
+  border: 3px solid rgb(247, 208, 36);    
+  padding-top: 200px;
+}
+
+.GameCounter {
+  min-height: 20vh;
+  min-width: 12vw;  
+  /* box-shadow: 10px 10px 10px rgb(247, 208, 32);    
+  border: 3px solid rgb(247, 208, 36);     */
+  padding-top: 200px;
+}
+
+.ParentContText {
+  margin-top: 1em;
+}
+
+.Fake-Border{
+  height: 90vh;
+  width: 90vw;
+  border: 40px solid papayawhip;
+  background-size: 3%;
 }
 
 /* .PickMineCont {
@@ -82,3 +112,12 @@ li {
   background: papayawhip;
   border-radius: 10px;
   }
+
+
+  span {
+    letter-spacing: '1.25';
+    font-family: 'Lemon-Milk';
+    /* transform: scale(2.0);             */
+    font-size: 35px;
+    text-shadow: 10px 10px 10px rgb(247, 208, 32);    
+}
