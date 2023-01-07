@@ -163,8 +163,22 @@ export default function GameChild (props) {
             setGuessYet(true)       
             setCoin1(true)                                     
             
+            let rightparents = await ReturnRight(parents)
             Animate($(`#coin${idint}`), 'opacity', '0.1', 250)
             setTimeout( () => setGuessText(labeltext), 1000)                
+            setTimeout( () => {
+                Animate($('span'), 'opacity', '0.1', 600)
+                setTimeout( () => setGuessText(''), 2000)
+                setTimeout( () => setGuessYet(false), 3000)                                 
+
+                if (labeltext === rightparents) {                    
+                    CSS($('h6'), 'color', 'rgb(247, 208, 32)')
+                    setGuessText('You Win!!!')
+                } else {
+                    CSS($('h6'), 'color', 'red')
+                    setGuessText('Wrong!')
+                }
+            }, 2000)
             }        
 
         if (coin === 'coin2') {
@@ -177,9 +191,24 @@ export default function GameChild (props) {
                 setGuessText(labeltext)
                 setGuessYet(true)       
                 setCoin2(true)    
-                setTimeout( () => {
-                    CSS($(`#coin${idint}`), 'opacity', '0.1')                
-                }, 1000)                                 
+
+                let rightparents = await ReturnRight(parents)
+            Animate($(`#coin${idint}`), 'opacity', '0.1', 250)
+            setTimeout( () => setGuessText(labeltext), 1000)                
+            setTimeout( () => {
+                Animate($('span'), 'opacity', '0.1', 600)
+                setTimeout( () => setGuessText(''), 2000)
+                setTimeout( () => setGuessYet(false), 3000)                                 
+
+                if (labeltext === rightparents) { 
+                    CSS($('h6'), 'color', 'rgb(247, 208, 32)')
+                    setGuessText('You Win!!!')                   
+                } else {
+                    CSS($('h6'), 'color', 'red')
+                    setGuessText('Wrong!')
+                }
+            }, 2000)
+               
             }        
  
             if (coin === 'coin3') {
@@ -192,10 +221,24 @@ export default function GameChild (props) {
                 
                 setGuessYet(true)       
                 setCoin3(true)       
-                setTimeout( () => {
-                    // CSS($(`#coin${idint}`), 'opacity', '0.1')                
 
-                }, 1000)                              
+                let rightparents = await ReturnRight(parents)
+                Animate($(`#coin${idint}`), 'opacity', '0.1', 250)
+                setTimeout( () => setGuessText(labeltext), 1000)                
+                setTimeout( () => {
+                    Animate($('span'), 'opacity', '0.1', 600)
+                    setTimeout( () => setGuessText(''), 2000)
+                    setTimeout( () => setGuessYet(false), 3000)                                 
+    
+                    if (labeltext === rightparents) { 
+                        CSS($('h6'), 'color', 'rgb(247, 208, 32)')
+                        setGuessText('You Win!!!')                   
+                    } else {
+                        CSS($('h6'), 'color', 'red')
+                        setGuessText('Wrong!')
+                    }
+                }, 2000)
+                                        
             }
             if (coin === 'coin4') {
                 type numstring = object | string;                
@@ -205,7 +248,24 @@ export default function GameChild (props) {
         let labeltext:string = coinlabel[0].innerText
                 setGuessText(labeltext)
                 setGuessYet(true)       
-                setCoin4(true)   
+                setCoin4(true)  
+                
+                let rightparents = await ReturnRight(parents)
+                Animate($(`#coin${idint}`), 'opacity', '0.1', 250)
+                setTimeout( () => setGuessText(labeltext), 1000)                
+                setTimeout( () => {
+                    Animate($('span'), 'opacity', '0.1', 600)
+                    setTimeout( () => setGuessText(''), 2000)
+                    setTimeout( () => setGuessYet(false), 3000)                                 
+    
+                    if (labeltext === rightparents) { 
+                        CSS($('h6'), 'color', 'rgb(247, 208, 32)')
+                        setGuessText('You Win!!!')                   
+                    } else {
+                        CSS($('h6'), 'color', 'red')
+                        setGuessText('Wrong!')
+                    }
+                }, 2000)
                                                   
             }
     }
