@@ -69,13 +69,6 @@ export default function GameChild (props) {
         // * jquery
         let mine = $('#mine')
         
-
-
-    
-    
-
-
-
     useEffect( () => {
         (async() => {
             let randomnumber:number = await Random(numbers)
@@ -406,6 +399,7 @@ export default function GameChild (props) {
 
             
             
+            <div className="Row">
 
             <Droppable types={['coin']} onDrop={handleDrop}>
             <img     
@@ -419,6 +413,11 @@ export default function GameChild (props) {
             style={{ borderRadius: '50%', border: '2px solid papayawhip', boxShadow: '10px 10px 10px papayawhip'}}            
             className={styles.mine} src="img/mine.png"/>
             </Droppable>
+
+            <img 
+            className={styles.goldbars}
+            src="/img/gold-bars.png"/>
+            </div>
             <p
              className="wintext"
              style={{ marginTop: '1em', color: 'transparent'}}> 
