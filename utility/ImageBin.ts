@@ -25,28 +25,45 @@ export default async function Images (img:string|string[]) {
         goldbars, gold, helmet, mine, goldpick, pickaxe, ring, shovel, trophy, watch
     ]
 
-    if (img === 'barrel') return barrel
-    if (img === 'barrels') return barrels
-    if (img === 'barrier') return barrier
-    if (img === 'cactus') return cactus
-    if (img === 'cart') return cart
-    if (img === 'coin') return coin
-    if (img === 'cone_hat') return cone_hat
-    if (img === 'desert') return desert
-    if (img === 'dynamite') return dynamite
-    if (img === 'firetag') return firetag
-    if (img === 'gold-bars') return goldbars
-    if (img === 'gold') return gold
-    if (img === 'helmet') return helmet
-    if (img === 'mine') return mine
-    if (img === 'goldpick') return goldpick
-    if (img === 'pickaxe') return pickaxe
-    if (img === 'ring') return ring
-    if (img === 'shovel') return shovel
-    if (img === 'trophy') return trophy
-    if (img === 'watch') return watch
+    let multiarray:string[] = []
 
-    if (img === 'all') return castmembers
+    if (typeof img === 'string') {
+
+        if (img === 'barrel') return barrel
+        if (img === 'barrels') return barrels
+        if (img === 'barrier') return barrier
+        if (img === 'cactus') return cactus
+        if (img === 'cart') return cart
+        if (img === 'coin') return coin
+        if (img === 'cone_hat') return cone_hat
+        if (img === 'desert') return desert
+        if (img === 'dynamite') return dynamite
+        if (img === 'firetag') return firetag
+        if (img === 'gold-bars') return goldbars
+        if (img === 'gold') return gold
+        if (img === 'helmet') return helmet
+        if (img === 'mine') return mine
+        if (img === 'goldpick') return goldpick
+        if (img === 'pickaxe') return pickaxe
+        if (img === 'ring') return ring
+        if (img === 'shovel') return shovel
+        if (img === 'trophy') return trophy
+        if (img === 'watch') return watch
+    
+        if (img === 'all') return castmembers
+    }
+
+    if (typeof img === 'object') {
+        img.forEach( (png:string) => {
+            if (castmembers.includes(png)) {
+                multiarray.push(png)
+            }
+        })
+        return multiarray
+    }
+
+
+    
     
     
 
