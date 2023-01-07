@@ -23,6 +23,13 @@ type gameContextType = {
     wrongGuess: number;
     guesswrongincrement: () => void;
 
+    trophy: boolean;
+    addTrophy: () => void;
+    clearTrophy: () => void;
+
+
+    lose: () => void;
+
     dontuse: string[] | string;
     fillbucket: (strain) => void;
     emptybucket: () => void;
@@ -54,6 +61,12 @@ const gameDefaults: gameContextType = {
     wrongGuess: 0,
     guesswrongincrement: () => {},    
 
+    trophy: false,
+    addTrophy: () => {},
+    clearTrophy: () => {},
+
+    lose: () => {},
+
     dontuse: [],
     fillbucket: () => {},
     emptybucket: () => {}
@@ -78,6 +91,7 @@ export function GameProvider({ children }: Props) {
     const [winStreak, setWinStreak] = useState<number>(0)
     const [wrongGuess, setWrongGuess] = useState<number>(0)
     const [dontuse, setDontuse] = useState<string[]>([])
+    const [trophy, setTrophy] = useState<boolean>(false)
     // const [dontuse, setDontuse] = useState<string[]>([])
     
     const playing = () => {
@@ -110,7 +124,16 @@ export function GameProvider({ children }: Props) {
     }
 
     const winstreakincrement = async () => setWinStreak(winStreak + 1)
+    // const winstreakclear = async () => setWinStreak(0)
     const guesswrongincrement = async () => setWrongGuess(wrongGuess + 1)
+
+    const addTrophy = async () => setTrophy(true)
+    const clearTrophy = async () => setTrophy(false)
+
+    const lose = async () => {
+        setWinStreak(0)
+        setWrongGuess(0)
+    }
 
     const fillbucket = async (strain:any) => {setDontuse([...dontuse, strain])}
     // const fillbucket = async (strain:any) => {setDontuse(['wow cool'])}
@@ -137,6 +160,12 @@ export function GameProvider({ children }: Props) {
 
         wrongGuess,
         guesswrongincrement,
+
+        trophy,
+        addTrophy,
+        clearTrophy,
+
+        lose,
 
         dontuse,
         fillbucket,
