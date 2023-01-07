@@ -148,54 +148,19 @@ export default function GameChild (props) {
         console.log("we are firing the drop function!")        
         console.log(event)
         let coin:string = event.coin
-        if (coin === 'coin1') {
+        if (coin === 'coin1' || coin === 'coin2' || coin === 'coin3' || coin === 'coin4') {
             console.log('weve got coin1. great')
-                // let newparents = await ReturnRight(parents)                                            
-                // setLabel1(newparents)      
-                // setGuessText(newparents)             
-                type objectStr = object | string;
-                
-                let idint = await Regex(coin, 'numreturn')
-                console.log('idint')
-                console.log(idint)
-
+                type numstring = object | string;                
+                // let idint = await Regex(coin, 'numreturn')                
+                let idint:string|number = await Regex(coin, 'numreturn')                
                 const coinlabel = $(`.label${idint}`)
+                let labeltext:string = coinlabel[0].innerText
                 console.log('coinlabel')
                 console.log(coinlabel)
-
-                // let kids = await Children<objectStr>($(`#${coin}`), 'children')
-                
-
-
-            
-                            
+                setGuessText(labeltext)
                 setGuessYet(true)       
-                setCoin1(true)          
-        }
-
-        if (coin === 'coin1') {
-            console.log('weve got coin1. great')
-                let newparents = await ReturnRight(parents)  
-
-                console.log($('#coin1'))                                          
-                let jqcoin = $('#coin1')
-                console.log('jqcoin')
-                console.log(jqcoin)
-
-                let kids = $('#coin1').children()
-                console.log('kids')
-                console.log(kids)
-
-                let coinchild = await Family(jqcoin, 'children')
-                // let coinchild = await Family(jqcoin, 'children')
-                // console.log('coinchild')
-                // console.log(coinchild)
-                // let childrenofthecoin
-
-                setLabel1(newparents)      
-                setGuessText(newparents) 
-                setGuessYet(true)                 
-        }
+                setCoin1(true)                                     
+        }        
     }
 
     const mineclick = async () => {        
