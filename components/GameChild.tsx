@@ -152,19 +152,16 @@ export default function GameChild (props) {
             console.log('weve got coin1. great')
                 // let newparents = await ReturnRight(parents)                                            
                 // setLabel1(newparents)      
-                // setGuessText(newparents) 
-                
-
+                // setGuessText(newparents)             
                 type objectStr = object | string;
                 
+                let idint = await Regex(coin, 'numreturn')
+                console.log('idint')
+                console.log(idint)
 
-                let kids = await Children($('#coin1'))                
-                console.log('kids')
-                console.log(kids)
-                // let kids = $('#coin1').children()
-                let sibs = $('#coin1').siblings()
-                console.log('sibs')
-                console.log(sibs)
+                const coinlabel = $(`.label${idint}`)
+                console.log('coinlabel')
+                console.log(coinlabel)
 
                 // let kids = await Children<objectStr>($(`#${coin}`), 'children')
                 
