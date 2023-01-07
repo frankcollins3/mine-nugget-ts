@@ -412,10 +412,22 @@ export default function GameChild (props) {
             id="mine"       
             draggable="true" 
             onClick={mineclick}
+            onMouseEnter={() => CSS($('.wintext'), 'color', 'white')}
+            // onMouseEnter={() => winStreak > 0 ? CSS($('.wintext'), 'color', 'white') : nofunction}
+            onMouseLeave={() => winStreak > 0 ? CSS($('.wintext'), 'color', 'transparent') : nofunction}
             // onDrop={handleDrop}
             style={{ borderRadius: '50%', border: '2px solid papayawhip', boxShadow: '10px 10px 10px papayawhip'}}            
             className={styles.mine} src="img/mine.png"/>
             </Droppable>
+            <p
+             className="wintext"
+             style={{ marginTop: '1em', color: 'transparent'}}> 
+
+             {winStreak === 1 ? `#${winStreak} ` : 
+                winStreak > 1 ? `${winStreak} streak!` :
+                winStreak > 5 ? `Golden Streaker ${winStreak}` : ''
+             }
+              </p> 
 
             {/* <button 
             style={{ 
