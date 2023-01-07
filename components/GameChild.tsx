@@ -32,6 +32,9 @@ import { setTextRange } from 'typescript'
 
 export default function GameChild (props) {
 
+    console.log('props in the gameChild!')
+    let gold1 = props.gold1
+    let gold2 = props.gold2
 
     const [coin1, setCoin1] = useState(false)
     const [coin2, setCoin2] = useState(false)
@@ -53,20 +56,23 @@ export default function GameChild (props) {
         gameOn, playing, notplaying,
          parents, meetTheParents, 
          parent1, parent1state, parent2, parent2state,
-         dontuse, fillbucket, emptybucket
+         dontuse, fillbucket, emptybucket,
+         winStreak, winstreakincrement, wrongGuess, guesswrongincrement
          } = useGame()
 // * these context variables are working facilitate guessing with the coins.
 // * the coins will need labels with: [ReturnRight() && ReturnWrong] depending on if coin matches up.
 // * import { useGame } from 'Contexts/game'
+        let reduxstore:any = useSelector(state => state)
+        let numbers:number[] = [1, 2, 3, 4]
 
+        // * jquery
+        let mine = $('#mine')
+        
 
-    let reduxstore:any = useSelector(state => state)
 
     
-    // let parents:string = props.rootparents
-    // let rootparents = parents
+    
 
-    let numbers:number[] = [1, 2, 3, 4]
 
 
     useEffect( () => {
@@ -78,6 +84,9 @@ export default function GameChild (props) {
     }, [])
     
     const handleDragStart = async (event) => {
+        console.log('props.gold1')
+        console.log(props.gold1)        
+    
         let target = event.target        
         let targetid = target.id
         // $(target).css('border', '10px solid pink')        
@@ -174,7 +183,15 @@ export default function GameChild (props) {
                 if (labeltext === rightparents) {                    
                     CSS($('h6'), 'color', 'rgb(247, 208, 32)')
                     setGuessText('You Win!!!')
+                    AttrTool(mine, 'src', '/img/trophy.png')
+                    setCoin1(true)
+                    setCoin2(true)
+                    setCoin3(true)
+                    setCoin4(true)
+                    // CSS(mine, 'text-transform', 'scale(2.0)')
+
                 } else {
+                    guesswrongincrement()
                     CSS($('h6'), 'color', 'red')
                     setGuessText('Wrong!')
                 }
@@ -202,8 +219,14 @@ export default function GameChild (props) {
 
                 if (labeltext === rightparents) { 
                     CSS($('h6'), 'color', 'rgb(247, 208, 32)')
-                    setGuessText('You Win!!!')                   
+                    setGuessText('You Win!!!')
+                    AttrTool(mine, 'src', '/img/trophy.png')
+                    setCoin1(true)
+                    setCoin2(true)
+                    setCoin3(true)
+                    setCoin4(true)                
                 } else {
+                    guesswrongincrement()
                     CSS($('h6'), 'color', 'red')
                     setGuessText('Wrong!')
                 }
@@ -232,8 +255,14 @@ export default function GameChild (props) {
     
                     if (labeltext === rightparents) { 
                         CSS($('h6'), 'color', 'rgb(247, 208, 32)')
-                        setGuessText('You Win!!!')                   
+                        setGuessText('You Win!!!')
+                        AttrTool(mine, 'src', '/img/trophy.png')
+                        setCoin1(true)
+                        setCoin2(true)
+                        setCoin3(true)
+                        setCoin4(true)                  
                     } else {
+                        guesswrongincrement()
                         CSS($('h6'), 'color', 'red')
                         setGuessText('Wrong!')
                     }
@@ -259,9 +288,17 @@ export default function GameChild (props) {
                     setTimeout( () => setGuessYet(false), 3000)                                 
     
                     if (labeltext === rightparents) { 
+                        winstreakincrement()
+                                         
                         CSS($('h6'), 'color', 'rgb(247, 208, 32)')
-                        setGuessText('You Win!!!')                   
+                        setGuessText('You Win!!!')
+                        AttrTool(mine, 'src', '/img/trophy.png')
+                        setCoin1(true)
+                        setCoin2(true)
+                        setCoin3(true)
+                        setCoin4(true)
                     } else {
+                        guesswrongincrement()
                         CSS($('h6'), 'color', 'red')
                         setGuessText('Wrong!')
                     }
@@ -357,7 +394,8 @@ export default function GameChild (props) {
             
 
             <Droppable types={['coin']} onDrop={handleDrop}>
-            <img            
+            <img     
+            id="mine"       
             draggable="true" 
             onClick={mineclick}
             // onDrop={handleDrop}
