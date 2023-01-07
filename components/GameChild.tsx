@@ -93,7 +93,7 @@ export default function GameChild (props) {
                 if (targetid === 'coin1') {
                     console.log('parents coin1')
                     console.log(parents)
-                    setCoin1(true)
+                    // setCoin1(true)
                     // let newparents = await ReturnRight(parents)                                            
                     // setGuessText(newparents)                    
                     if (coinint === yesNumber) {                        
@@ -158,8 +158,7 @@ export default function GameChild (props) {
                         fillbucket(wrongStrain)
                     }
                 }
-                
-                
+                                
             }            
         }
     }
@@ -186,7 +185,7 @@ export default function GameChild (props) {
 
             {/* <Draggable type={"coin"} data="sourog">      */}
             <div className="Column">                
-            <Draggable type={coin1 === false ? "coin" : "notcoin"} data="sourog">     
+            <Draggable type={coin1 === false ? "coin" : "notcoin"} data="coin1">     
             <img
             id="coin1"
             draggable="true"
@@ -200,7 +199,7 @@ export default function GameChild (props) {
             {/* <p> hey </p> */}
 
             <div className="Column">                
-            <Draggable type={coin2 === false ? "coin" : "notcoin"} data="sourog">     
+            <Draggable type={coin2 === false ? "coin" : "notcoin"} data="coin2">     
             <img
             id="coin2"
             draggable="true"
@@ -214,7 +213,7 @@ export default function GameChild (props) {
             </div>
             
             <div className="Column">                
-            <Draggable type={coin3 === false ? "coin" : "notcoin"} data="sourog">     
+            <Draggable type={coin3 === false ? "coin" : "notcoin"} data="coin3">     
             <img
             id="coin3"
             draggable="true"
@@ -227,7 +226,7 @@ export default function GameChild (props) {
             </div>
 
             <div className="Column">
-            <Draggable type={coin4 === false ? "coin" : "notcoin"} data="sourog">     
+            <Draggable type={coin4 === false ? "coin" : "notcoin"} data="coin4">     
             <img
             id="coin4"
             draggable="true"
