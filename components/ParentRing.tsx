@@ -3,10 +3,12 @@ import { useEffect, useState } from 'react'
 import { useGame } from 'Contexts/game'
 import $ from 'jquery'
 import AttrTool from 'utility/JqAttr'
+import CSS from 'utility/CSStool'
 import Images from 'utility/ImageBin'
 
 export default function ParentRing (props) {
-    const [images, setImages] = useState<string[]>([])
+    const [imgbucket, setImgbucket] = useState([])
+    const [gameimg, setGameimg] = useState('')    
 
     const {
         // gameOn, playing, notplaying,
@@ -21,35 +23,38 @@ export default function ParentRing (props) {
 
     useEffect( () => {
         (async() => {
-        //  let images = await Images()
-        })()
-    }, [])
+        let allimages = await Images('all')
+        // setImgbucket(allimages)
+                
+        let gold = await Images('gold')            
+        setGameimg(gold)
+    })()
+}, [])
 
+    //  let imagebucket:string|any[] = [goldbarimg, ringimg, watchimg]
     // let goldimg = Images('gold')
-    console.log('goldimg')
-    console.log(goldimg)
+    
     
     // AttrTool(ring, 'src', goldimg)
 
     useEffect( () => {
         // AttrTool(ring, 'src', 'gold.png')        
-
+        
+        // AttrTool(ring, 'src', '/public/img/gold.png')
+        CSS(ring, 'background-image', `url('${img}')`)
+        // $(ring).css('border', '10px solid hotpink')
+        // AttrTool(ring, 'src', currimg)
     }, [winStreak])
 
     return (
+        <>
         <Container
         className="RingWatch"
         id="Ring"
-        style={{ backgroundImage: `url('img/ring.png')`}}
-        // style={{ backgroundImage: `url('img/ring.png')`, backgroundSize: '3%'}}
-        
+        style={{ backgroundImage: `url('img/ring.png')`}}        
         >            
-        {/* <div */}
-        {/* // style={{ backgroundImage: `url('img/ring.png')`}} */}
-        {/* className="RingWatch"> */}
-            {/* <p> {props.parents || 'nothing'} </p> */}
-            
-        {/* </div> */}
         </Container>
+        <button onClick={() => console.log("hey") }></button>
+        </>
     )
 }
