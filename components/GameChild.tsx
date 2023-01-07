@@ -57,7 +57,8 @@ export default function GameChild (props) {
          parents, meetTheParents, 
          parent1, parent1state, parent2, parent2state,
          dontuse, fillbucket, emptybucket,
-         winStreak, winstreakincrement, wrongGuess, guesswrongincrement
+         winStreak, winstreakincrement, wrongGuess, guesswrongincrement,
+         clearparent1, clearparent2, clearparents
          } = useGame()
 // * these context variables are working facilitate guessing with the coins.
 // * the coins will need labels with: [ReturnRight() && ReturnWrong] depending on if coin matches up.
@@ -194,6 +195,8 @@ export default function GameChild (props) {
                     guesswrongincrement()
                     CSS($('h6'), 'color', 'red')
                     setGuessText('Wrong!')
+                    setTimeout( () => notplaying(), 1000)
+                    setTimeout( () => playing(), 2000)
                 }
             }, 2000)
             }        
@@ -229,6 +232,8 @@ export default function GameChild (props) {
                     guesswrongincrement()
                     CSS($('h6'), 'color', 'red')
                     setGuessText('Wrong!')
+                    setTimeout( () => notplaying(), 1000)
+                    setTimeout( () => playing(), 2000)
                 }
             }, 2000)
                
@@ -265,6 +270,8 @@ export default function GameChild (props) {
                         guesswrongincrement()
                         CSS($('h6'), 'color', 'red')
                         setGuessText('Wrong!')
+                        setTimeout( () => notplaying(), 1000)
+                        setTimeout( () => playing(), 2000)
                     }
                 }, 2000)
                                         
@@ -301,15 +308,22 @@ export default function GameChild (props) {
                         guesswrongincrement()
                         CSS($('h6'), 'color', 'red')
                         setGuessText('Wrong!')
+                        setTimeout( () => notplaying(), 1000)
+                        setTimeout( () => playing(), 2000)
                     }
                 }, 2000)
                                                   
             }
     }
 
-    const mineclick = async () => {        
+    const mineclick = async () => {  
+        clearparents()
+        clearparent1()
+        clearparent2()
         props.setCactusHover(false)
     }
+
+    const nofunction = () => {}
 
 
     return (
@@ -323,7 +337,7 @@ export default function GameChild (props) {
             <img
             id="coin1"
             draggable="true"
-            onMouseEnter={handleDragStart}         
+            onMouseEnter={parent1.length > 2 ? handleDragStart : nofunction }         
             // onDragStart={handleDragStart}         
             className={styles.coin} src="img/coin.png" 
             />
@@ -339,7 +353,7 @@ export default function GameChild (props) {
             <img
             id="coin2"
             draggable="true"
-            onMouseEnter={handleDragStart}         
+            onMouseEnter={parent1.length > 2 ? handleDragStart : nofunction }         
             // onDragStart={handleDragStart}         
             className={styles.coin} src="img/coin.png" 
             />
@@ -354,7 +368,7 @@ export default function GameChild (props) {
             <img
             id="coin3"
             draggable="true"
-            onMouseEnter={handleDragStart}         
+            onMouseEnter={parent1.length > 2 ? handleDragStart : nofunction }         
             // onDragStart={handleDragStart}         
             className={styles.coin} src="img/coin.png" 
             />
@@ -369,7 +383,7 @@ export default function GameChild (props) {
             <img
             id="coin4"
             draggable="true"
-            onMouseEnter={handleDragStart}         
+            onMouseEnter={parent1.length > 2 ? handleDragStart : nofunction }         
             // onDragStart={handleDragStart}         
             className={styles.coin} src="img/coin.png" 
             />
