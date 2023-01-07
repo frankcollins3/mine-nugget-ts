@@ -49,7 +49,8 @@ export default function GameChild (props) {
     const [yesNumber, setYesNumber] = useState(0)
     const [guessText, setGuessText] = useState('')
     const [guessYet, setGuessYet] = useState(false)
-
+    const [hideGold, setHideGold] = useState(false)
+    
     const[hoverCoin, setHoverCoin] = useState('')
 
     const {
@@ -150,9 +151,9 @@ export default function GameChild (props) {
 
     }
 
-    const handleDrop = async (event) => {        
-        console.log("we are firing the drop function!")        
-        console.log(event)
+    const handleDrop = async (event) => {   
+        
+        
         let coin:string = event.coin
         let idint:string|number = await Regex(coin, 'numreturn')                
         let coinelem = $(`#coin${idint}`)
@@ -174,10 +175,12 @@ export default function GameChild (props) {
                 setTimeout( () => setGuessText(''), 2000)
                 setTimeout( () => setGuessYet(false), 3000)                                 
 
-                if (labeltext === rightparents) {                    
+                if (labeltext === rightparents) {     
+                    setHideGold(false)                    
                     CSS($('h6'), 'color', 'rgb(247, 208, 32)')
                     setGuessText('You Win!!!')
                     AttrTool(mine, 'src', '/img/trophy.png')
+                    winstreakincrement()
                     setCoin1(true)
                     setCoin2(true)
                     setCoin3(true)
@@ -331,7 +334,7 @@ export default function GameChild (props) {
             id="coin1"
             draggable="true"
             onMouseEnter={parent1.length > 2 ? handleDragStart : nofunction }         
-            // onDragStart={handleDragStart}         
+            onDragStart={() => setHideGold(true)}         
             className={styles.coin} src="img/coin.png" 
             />
             </Draggable>
@@ -347,7 +350,7 @@ export default function GameChild (props) {
             id="coin2"
             draggable="true"
             onMouseEnter={parent1.length > 2 ? handleDragStart : nofunction }         
-            // onDragStart={handleDragStart}         
+            onDragStart={() => setHideGold(true)}         
             className={styles.coin} src="img/coin.png" 
             />
             </Draggable>
@@ -362,7 +365,7 @@ export default function GameChild (props) {
             id="coin3"
             draggable="true"
             onMouseEnter={parent1.length > 2 ? handleDragStart : nofunction }         
-            // onDragStart={handleDragStart}         
+            onDragStart={() => setHideGold(true)}         
             className={styles.coin} src="img/coin.png" 
             />
             </Draggable>
@@ -377,7 +380,7 @@ export default function GameChild (props) {
             id="coin4"
             draggable="true"
             onMouseEnter={parent1.length > 2 ? handleDragStart : nofunction }         
-            // onDragStart={handleDragStart}         
+            onDragStart={() => setHideGold(true)}         
             className={styles.coin} src="img/coin.png" 
             />
             </Draggable>
@@ -416,6 +419,7 @@ export default function GameChild (props) {
 
             <img 
             className={styles.goldbars}
+            style={{ display: winStreak > 0 && hideGold === false ?  'inline' : 'none' }}            
             src="/img/gold-bars.png"/>
             </div>
             <p
@@ -424,7 +428,7 @@ export default function GameChild (props) {
 
              {winStreak === 1 ? `#${winStreak} ` : 
                 winStreak > 1 ? `${winStreak} streak!` :
-                winStreak > 5 ? `Golden Streaker ${winStreak}` : ''
+                winStreak > 5 ? `Golden Streaker ${winStreak}` : 'no wins yet'
              }
               </p> 
 
