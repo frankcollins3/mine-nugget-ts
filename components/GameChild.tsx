@@ -41,6 +41,7 @@ export default function GameChild (props) {
 
     const [yesNumber, setYesNumber] = useState(0)
     const [guessText, setGuessText] = useState('')
+    const [guessYet, setGuessYet] = useState(false)
 
     const[hoverCoin, setHoverCoin] = useState('')
 
@@ -97,7 +98,8 @@ export default function GameChild (props) {
                     // setGuessText(newparents)                    
                     if (coinint === yesNumber) {                        
                         let newparents = await ReturnRight(parents)                                            
-                        setGuessText(newparents)                        
+                        setLabel1(newparents)      
+                setGuessText(newparents)                  
                     } else {
                         console.log(`dontuse ${dontuse}`)
                         let wrongStrain = await ReturnWrong(parents, dontuse)                        
@@ -118,7 +120,8 @@ export default function GameChild (props) {
                     setCoin2(true)                                        
                     if (coinint === yesNumber) {
                         let newparents = await ReturnRight(parents)                                            
-                        setGuessText(newparents)                        
+                        setLabel2(newparents)     
+                        setGuessText(newparents)                   
                     } else {
                         console.log(`dontuse ${dontuse}`)
                         let wrongStrain = await ReturnWrong(parents, dontuse)                        
@@ -131,7 +134,8 @@ export default function GameChild (props) {
                     let newparents = await ReturnRight(parents)                                                                
                     if (coinint === yesNumber) {
                         let newparents = await ReturnRight(parents)                                            
-                        setGuessText(newparents)                        
+                        setLabel3(newparents)  
+                        setGuessText(newparents)                      
                     } else {
                         console.log(`dontuse ${dontuse}`)
                         let wrongStrain = await ReturnWrong(parents, dontuse)                        
@@ -141,6 +145,7 @@ export default function GameChild (props) {
                 }
                 if (targetid === 'coin4') {
                     let newparents = await ReturnRight(parents)                                            
+                    setLabel4(newparents)                                            
                     setGuessText(newparents)                                            
                     setCoin4(true)
                     
@@ -165,6 +170,8 @@ export default function GameChild (props) {
 
     const handleDrop = async (event) => {        
         console.log("we are firing the drop function!")
+        console.log('event')
+        console.log(event)
     }
 
     const mineclick = async () => {        
@@ -234,9 +241,14 @@ export default function GameChild (props) {
      
         </div>  
 
+            { guessYet 
+            ?
             <h6
-            style={ { color: 'papayawhip', letterSpacing: '0.75em'} }        
-            > you picked {guessText}  </h6>
+            style={ { color: 'papayawhip', letterSpacing: '0.25em'} }        
+            > you picked <span> { guessText } </span>  </h6>
+            :
+            ''
+            }
 
             
             
