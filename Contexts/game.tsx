@@ -170,6 +170,10 @@ export function GameProvider({ children }: Props) {
             console.log("hey were in the string part of the statement")
             if (parentid === '1') setParent1(statetext)
             if (parentid === '2') setParent2(statetext)
+            if (parentid === 'both') {
+                setParent1(statetext)
+                setParent2(statetext)
+            }
         }
         return
     }    
