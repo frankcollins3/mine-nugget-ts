@@ -69,6 +69,8 @@ export default function GameChild (props) {
     
     const[hoverCoin, setHoverCoin] = useState('')
 
+    const [streakBackup, setStreakBackup] = useState(0)
+
     const {
         gameOn, playing, notplaying,
          parents, meetTheParents, 
@@ -77,9 +79,7 @@ export default function GameChild (props) {
          winStreak, winstreakincrement, wrongGuess, guesswrongincrement,
          clearparent1, clearparent2, clearparents, EitherParents
          } = useGame()
-// * these context variables are working facilitate guessing with the coins.
-// * the coins will need labels with: [ReturnRight() && ReturnWrong] depending on if coin matches up.
-// * import { useGame } from 'Contexts/game'
+
         let reduxstore:any = useSelector(state => state)
         let numbers:number[] = [1, 2, 3, 4]
 
