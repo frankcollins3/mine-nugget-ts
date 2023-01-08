@@ -96,7 +96,7 @@ export default  function GameContainer (props) {
         <>            
             <ShadowBorder>
                   {/* {playing === false || cactusHover === false */}
-                  {winStreak > 1 ?
+                  {winStreak > 1 && cactusHover === false ? 
                   <div 
                   className={styles.Row2}>
                   <Family/>
