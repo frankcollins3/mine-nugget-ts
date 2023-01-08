@@ -75,7 +75,7 @@ export default function GameChild (props) {
          parent1, parent1state, parent2, parent2state,
          dontuse, fillbucket, emptybucket,
          winStreak, winstreakincrement, wrongGuess, guesswrongincrement,
-         clearparent1, clearparent2, clearparents, EitherParents, setParent1, setParent2
+         clearparent1, clearparent2, clearparents, EitherParents
          } = useGame()
 // * these context variables are working facilitate guessing with the coins.
 // * the coins will need labels with: [ReturnRight() && ReturnWrong] depending on if coin matches up.
@@ -94,14 +94,12 @@ export default function GameChild (props) {
         })()
 
     }, [])
+
+
     
-    const handleDragStart = async (event) => {
-        console.log('props.gold1')
-        console.log(props.gold1)        
-    
+    const handleDragStart = async (event) => {        
         let target = event.target        
-        let targetid = target.id
-        // $(target).css('border', '10px solid pink')        
+        let targetid = target.id        
         let familyparents = await Family(target, 'parents')                
         
         if (familyparents) {            
@@ -110,71 +108,83 @@ export default function GameChild (props) {
             let coinid = await Regex(targetid, 'numreturn')
             let coinint:number = parseInt(coinid)
             let newparents = await ReturnRight(parents) 
-            let wrongStrain = await ReturnWrong(parents, dontuse)                                                                   
+            let wrongStrain = await ReturnWrong(parents, dontuse)   
+            
+            const coincheck = (number:string) => {  
+                if (number === 'coin1') {
+                    if (coinint === yesNumber) {
+                        setLabel1(newparents)
+                    } else {
+                        if (label1.length < 2) setLabel1(wrongStrain)
+                    }
+                }
+                if (number === 'coin2') {
+                    if (coinint === yesNumber) {
+                        setLabel2(newparents)
+                    } else {
+                        if (label2.length < 2) setLabel2(wrongStrain)
+                    }
+                }
+                if (number === 'coin3') {
+                    if (coinint === yesNumber) {
+                        setLabel3(newparents)
+                    } else {
+                        if (label3.length < 2) setLabel3(wrongStrain)
+                    }
+                }
+                if (number === 'coin4') {
+                    if (coinint === yesNumber) {
+                        setLabel4(newparents)
+                    } else {
+                        if (label4.length < 2) setLabel4(wrongStrain)
+                    }
+                }
+        }
             
             if (familytype[0].textContent === 'notcoin') {
 
             } else {                
-                if (targetid === 'coin1') {                
-                    // setCoin1(true)
-                    // setGuessText(newparents)                    
-                    if (coinint === yesNumber) {                                                
-                        // let newparents = await ReturnRight(parents)                                            
-                        setLabel1(newparents)
-                    } else {                                                
-                        if (label1.length < 2) { setLabel1(wrongStrain) }     
-                        fillbucket(wrongStrain)                        
-                        // await AttrTool(dragParent, 'type', 'notcoin')
-                        // await AttrTool(dragParent, 'data', '')                
-                        // await CSS(target, 'opacity', '0.1')                                                                            
-                    }                     
-                }
-                
-                if (targetid === 'coin2') {                    
-                    // setCoin2(true)                                        
-                    if (coinint === yesNumber) {
-                        // let newparents = await ReturnRight(parents)                                            
-                        setLabel2(newparents)     
-                        // setGuessText(newparents)                   
-                    } else {                                                
-                        if (label2.length < 2) { setLabel2(wrongStrain) }     
-                        fillbucket(wrongStrain)                        
-                    }
-                }
-                if (targetid === 'coin3') {
-                    // setCoin3(true)                                    
-                    if (coinint === yesNumber) {                        
-                        setLabel3(newparents)                          
-                    } else {                                                
-                        if (label3.length < 2) { setLabel3(wrongStrain) }     
-                        fillbucket(wrongStrain)
-                    }
-                }
-                if (targetid === 'coin4') {                                    
-                    // setCoin4(true)                    
-                    if (coinint === yesNumber) {                        
-                        setLabel4(newparents)                                            
-                    } else {                                                
-                        if (label4.length < 2) { setLabel4(wrongStrain) }     
-                        fillbucket(wrongStrain)
-                    }
-                }
-                                
+                // if (targetid === 'coin1') {                                    
+                //     if (coinint === yesNumber) {                                                                        
+                //         setLabel1(newparents)
+                //     } else {                                                
+                //         if (label1.length < 2) { setLabel1(wrongStrain) }     
+                //         fillbucket(wrongStrain)                                                
+                //     }                     
+                // }
+                if (targetid === 'coin1') coincheck('coin1')
+                if (targetid === 'coin2') coincheck('coin2')
+                if (targetid === 'coin3') coincheck('coin3')
+                if (targetid === 'coin4') coincheck('coin4')  
             }            
         }
     }
 
-    const nativeDrop = async (event) => {        
-
+    const rightparentsfunc = () => {
+                    setHideGold(false)                    
+                    notplaying()                    
+                    CSS($('h6'), 'color', 'rgb(247, 208, 32)')                    
+                    EitherParents('1', 'You!')
+                    EitherParents('2', 'Win!')                    
+                    AttrTool(mine, 'src', '/img/trophy.png')
+                    winstreakincrement()                    
+                    setAllCoins('true')
     }
+
+    const wrongparentsfunc = () => {
+        guesswrongincrement()
+                    CSS($('h6'), 'color', 'red')
+                    setGuessText('Wrong!')
+                    
+                    setTimeout( () => notplaying(), 1000)
+                    setTimeout( () => playing(), 2000)
+    }
+
 
     const handleDrop = async (event) => {   
         
        
         if (gameOn === 'playing') {
-
-        
-        
         let coin:string = event.coin
         let idint:string|number = await Regex(coin, 'numreturn')                
         let coinelem = $(`#coin${idint}`)
@@ -197,23 +207,19 @@ export default function GameChild (props) {
                 setTimeout( () => setGuessYet(false), 3000)                                 
 
                 if (labeltext === rightparents) {   
-                    setHideGold(false)                    
-                    notplaying()                    
-                    CSS($('h6'), 'color', 'rgb(247, 208, 32)')                    
-                    EitherParents('1', 'You!')
-                    EitherParents('2', 'Win!')                    
-                    AttrTool(mine, 'src', '/img/trophy.png')
-                    winstreakincrement()                    
-                    setAllCoins('true')
+                    rightparentsfunc()
+                    // setHideGold(false)                    
+                    // notplaying()                    
+                    // CSS($('h6'), 'color', 'rgb(247, 208, 32)')                    
+                    // EitherParents('1', 'You!')
+                    // EitherParents('2', 'Win!')                    
+                    // AttrTool(mine, 'src', '/img/trophy.png')
+                    // winstreakincrement()                    
+                    // setAllCoins('true')
 
 
                 } else {
-                    guesswrongincrement()
-                    CSS($('h6'), 'color', 'red')
-                    setGuessText('Wrong!')
                     
-                    setTimeout( () => notplaying(), 1000)
-                    setTimeout( () => playing(), 2000)
                 }
             }, 2000)
             }        
