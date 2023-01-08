@@ -157,7 +157,9 @@ export default function GameChild (props) {
                     EitherParents('1', 'You!')
                     EitherParents('2', 'Win!')                    
                     AttrTool(mine, 'src', '/img/trophy.png')
+                    setStreakBackup(streakBackup + 1)
                     winstreakincrement()                    
+                    // winstreakincrement()                    
                     setAllCoins('true')
     }
 
@@ -317,10 +319,14 @@ export default function GameChild (props) {
              className="wintext"
              style={{ marginTop: '1em', color: 'transparent'}}> 
 
-             {winStreak === 1 ? `#${winStreak} ` : 
+             {streakBackup || winStreak === 1 ? `#${streakBackup || winStreak} ` : 
+                streakBackup || winStreak > 1 ? `${streakBackup || winStreak} streak!` :
+                streakBackup || winStreak > 5 ? `Golden Streaker ${streakBackup || winStreak}` : ''
+             }
+             {/* {winStreak === 1 ? `#${winStreak} ` : 
                 winStreak > 1 ? `${winStreak} streak!` :
                 winStreak > 5 ? `Golden Streaker ${winStreak}` : ''
-             }
+             } */}
               </p>       
         </div>
 
