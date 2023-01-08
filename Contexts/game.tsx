@@ -15,10 +15,12 @@ type gameContextType = {
     parent1: string;
     parent1state: () => void;
     clearparent1: () => void;
+    // setParent1: () => void;
     
     parent2: string;
     parent2state: () => void;
     clearparent2: () => void;
+    // setParent2: () => void;
 
     winStreak: number;
     winstreakincrement: () => void;
@@ -36,6 +38,8 @@ type gameContextType = {
     dontuse: string[] | string;
     fillbucket: (strain) => void;
     emptybucket: () => void;
+
+    EitherParents: (parentid:string, statetext:string) => void;
 
     // * no need for guess .... because parents is the right guess already
 };
@@ -56,10 +60,12 @@ const gameDefaults: gameContextType = {
     parent1: '',
     parent1state: () => {},
     clearparent1: () => {},
+    // setParent1: () => {},
     
     parent2: '',
     parent2state: () => {},
     clearparent2: () => {},
+    // setParent2: () => {},
 
     winStreak: 0,
     winstreakincrement: () => {},
@@ -75,7 +81,9 @@ const gameDefaults: gameContextType = {
 
     dontuse: [],
     fillbucket: () => {},
-    emptybucket: () => {}
+    emptybucket: () => {},
+
+    EitherParents: (parentid:string, statetext:string) => {}
 };
 
 const GameContext = createContext<gameContextType>(gameDefaults);
@@ -154,7 +162,15 @@ export function GameProvider({ children }: Props) {
     // const fillbucket = async (strain:any) => {setDontuse(['wow cool'])}
     const emptybucket = async () => setDontuse([])
 
-    
+    const EitherParents = async (parentid:string, statetext:string) => {
+    // const EitherParents = async (parent:string|number, state:string) => {
+    //  was going to parse number with regex no need just wont accept a number
+        if (typeof parent === 'string') {            
+            if (parentid === '1') setParent1(statetext)
+            if (parentid === '2') setParent2(statetext)
+        }
+        return
+    }    
         
 
     const value = {
@@ -190,6 +206,7 @@ export function GameProvider({ children }: Props) {
         dontuse,
         fillbucket,
         emptybucket,
+        EitherParents
     };
 
     return (
