@@ -172,8 +172,9 @@ export default function GameChild (props) {
         setGuessText('Wrong!')        
         setTimeout( () => notplaying(), 1000)
         setTimeout( () => playing(), 2000)
-        EitherParents('1', '')
-        EitherParents('2', '')
+        // EitherParents('1', '')
+        // EitherParents('2', '')
+        if (wrongGuess === 2) EitherParents('both', '')
     }
 
 
