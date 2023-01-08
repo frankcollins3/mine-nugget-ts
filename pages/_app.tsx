@@ -9,6 +9,7 @@ import '../styles/globals.css'
   import ERROR from 'utility/CatchBlockErr'
   import Link from 'next/link'
   import StateStore from 'hooks/store'
+  import { ThemeProvider, ColorModeProvider } from "@chakra-ui/react"
 
 
   // import StateStore from 'components/store'
@@ -19,7 +20,7 @@ import '../styles/globals.css'
 
 
   
- export default function App({ Component, pageProps, context }: AppProps) {
+ export default function App({ Component, pageProps, context, children }: AppProps) {
     // const {store, props} = wrapper.useWrappedStore()
     
     // const {  pageProps } = wrapper.useWrappedStore(rest);
@@ -152,7 +153,12 @@ import '../styles/globals.css'
 
       <StateStore>
       <Provider store={store}>
-      <Component {...pageProps}
+
+        <ThemeProvider>
+          <ColorModeProvider>{children}</ColorModeProvider>
+          </ThemeProvider>
+      <Component
+       {...pageProps}
       globalstate={stateArray}// homebody={initialstate}
       error={error} setError={setError}
       currentStrain={currentStrain} setCurrentStrain={setCurrentStrain}
@@ -170,8 +176,7 @@ import '../styles/globals.css'
       strainSave={strainSave} setStrainSave={setStrainSave}
       keyState={keyState} setKeyState={setKeyState}
       valueState={valueState} setValueState={setValueState}
-      fetchLock={fetchLock} setFetchLock={setFetchLock}
-      
+      fetchLock={fetchLock} setFetchLock={setFetchLock}      
       />
       </Provider>
       </StateStore>      
