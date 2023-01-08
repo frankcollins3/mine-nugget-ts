@@ -60,8 +60,8 @@ export default  function GameContainer (props) {
         if (wrongGuess === 2) {
             AttrTool($('#gold2'), 'src', '/img/dynamite.png')               
             notplaying()
-            EitherParents('1', 'YOU')
-            EitherParents('2', 'LOSE')
+            EitherParents('1', 'Y O U')
+            EitherParents('2', 'L O S E')
             clearwinstreak()
             clearguesswrong()
         }
@@ -96,8 +96,20 @@ export default  function GameContainer (props) {
         <>            
             <ShadowBorder>
                   {/* {playing === false || cactusHover === false */}
+                  {winStreak > 1 ?
+                  <div 
+                  className={styles.Row2}>
+                  <Family/>
+                  <Family/>
+                  <Family/>
+                  </div>
+                  :
+                  ''
+                  }
                  {cactusHover === false 
                 ?
+                
+                
                 <div                 
                 className="Column">                
                 <img onClick={HoverOnCactus}                
@@ -107,8 +119,20 @@ export default  function GameContainer (props) {
                  style={{
                         color:'wheat', letterSpacing: '1.1em', boxShadow: '20px 30px 40px limegreen'
                         }}> F a m i l y  <br/>T r e e   </h1>
-                {/* <h3 style={{color:'papayawhip'}}> Drag The Coin into the Mine to Play! </h3>  */}
+                
+                {winStreak > 1 ?
+                    <div 
+                    className={styles.Row2}>
+                    <Family/>
+                    <Family/>
+                    <Family/>
+                    </div>
+                    :
+                    ''
+                    }
                 </div>
+
+
                 : 
             
                 <div
