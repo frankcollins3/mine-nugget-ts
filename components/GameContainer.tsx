@@ -46,34 +46,43 @@ export default  function GameContainer (props) {
     const {
         gameOn, playing, notplaying,
          parents, meetTheParents, 
-         parent1, parent1state, parent2, parent2state,
+         parent1, parent1state, parent2, parent2state, clearparent1, clearparent2,
          dontuse, fillbucket, emptybucket,
-         winStreak, winstreakincrement, wrongGuess, guesswrongincrement
+         winStreak, winstreakincrement, wrongGuess, guesswrongincrement,
+          trophy, addTrophy, EitherParents, clearwinstreak, clearguesswrong
          } = useGame()
     
-    
+     
     useEffect( () => {
         // Game Child and GameContainer linked here.s
-        console.log('useEffect firing off in GameContainer!')
-        console.log('wrongGuess')
-        console.log(wrongGuess)
-        AttrTool($('#gold1'), 'src', '/img/dynamite.png')
+        console.log('useEffect firing off in GameContainer!')        
+        if (wrongGuess === 1) AttrTool($('#gold1'), 'src', '/img/dynamite.png')
+        if (wrongGuess === 2) {
+            AttrTool($('#gold2'), 'src', '/img/dynamite.png')               
+            notplaying()
+            EitherParents('1', 'YOU')
+            EitherParents('2', 'LOSE')
+            clearwinstreak()
+            clearguesswrong()
+        }
     }, [wrongGuess] )
-    
-    useEffect( () => {
-        console.log('winStreak useEffect GameContainer!')
-        AttrTool($('#gold1'), 'src', '/img/ring.png')
-        AttrTool($('#gold2'), 'src', '/img/ring.png')        
-    }, [winStreak])
-    
 
-    const HoverOnCactus = async () => {        
-        // playing = dispatch( { type: 'PLAYING_GAME'})
-        await meetTheParents()
-        playing()        
-        // setTimeout( () => {
-            setCactusHover(true)
-        // }, 2000) 
+    useEffect( () => {
+        // console.log("winstreak useEffect!!")
+        // if (wrongGuess === 1) AttrTool($('#gold1'), 'src', '/img/dynamite.png')
+        if (wrongGuess === 2) {
+            AttrTool($('#gold1'), 'src', '/img/ring.png')               
+            AttrTool($('#gold2'), 'src', '/img/watch.png')               
+            notplaying()
+        }
+    }, [winStreak])
+        
+    
+    
+    const HoverOnCactus = async () => {                
+        await meetTheParents('strain')
+        playing()                
+        setCactusHover(true)        
     }
 
     const goldbarhover1 = async () => {
@@ -82,12 +91,9 @@ export default  function GameContainer (props) {
     const goldbarhover2 = async () => {
         parent2state()
     }
-        
-        // reduxparents = dispatch( { type: "SET_PARENTS", payload: { parents: randomparents}})
-        
+
     return (
-        <>
-            
+        <>            
             <ShadowBorder>
                   {/* {playing === false || cactusHover === false */}
                  {cactusHover === false 
@@ -97,25 +103,18 @@ export default  function GameContainer (props) {
                 <img onClick={HoverOnCactus}                
                 src="/img/cactus.png"/>
 
-                <h3             
-                 style={{color:'white'}}> hover on the parents to reveal the gold</h3>
-                <h3 style={{color:'white'}}> hover to reveal the options </h3> 
+                <h1             
+                 style={{
+                        color:'wheat', letterSpacing: '1.1em', boxShadow: '20px 30px 40px limegreen'
+                        }}> F a m i l y  <br/>T r e e   </h1>
+                {/* <h3 style={{color:'papayawhip'}}> Drag The Coin into the Mine to Play! </h3>  */}
                 </div>
                 : 
             
                 <div
                 onMouseEnter={async() => {
                     if (gameOn === 'not playing') {
-                        // console.log("W E      A R E     O V E R     H E R E      W I T H     T H E     S T A T E !!!!")
-                        // await addToState()
-                        // setTimeout(checkredux, 2000)
-                        // await checkredux()
-                        
-                        // await setTimeout(async  () => {
-                        // }, 2000)
-                                                
                     } else {
-                        // console.log("hey its already false")
                     }
                 }}
                 >
@@ -133,7 +132,7 @@ export default  function GameContainer (props) {
                 
                 <div className="Column">
                 <GameChild
-                 gold1={$('#gold1')} gold2={$('#gold2')}
+                 gold1={$('#gold1')} gold2={$('#gold2')} 
                  cactusHover={cactusHover} setCactusHover={setCactusHover}/>
                 </div>
                 
@@ -145,29 +144,19 @@ export default  function GameContainer (props) {
                 
                     
                     <img
-                    id="gold1"
-                    // onClick={checkredux}
+                    id="gold1"                    
                     style={{ height: '50px', width: '50px'}}
                     onMouseEnter={goldbarhover1}
                     src="img/gold.png"/>
                     <h1> { parent1 || '' }</h1>                                          
                     </Container>
-
-                    
-
-                    {/* <div 
-                    style={{ border: 'transparent', boxShadow: 'transparent'}}
-                    className="Column">
-                    <img src="img/gameoff.png"/>
-                    <img src="img/gameon.png"/>
-                </div> */}
-                    
+                        
                     <Container             
                     className={styles.ColumnParent}>
                     <ParentWatch />
                     
                     <img
-                    id="gold1"
+                    id="gold2"
                     onMouseEnter={goldbarhover2}
                     style={{ height: '50px', width: '50px'}}
                     src="img/gold.png"/>                                                               
