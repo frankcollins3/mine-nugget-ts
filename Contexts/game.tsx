@@ -163,9 +163,11 @@ export function GameProvider({ children }: Props) {
     const emptybucket = async () => setDontuse([])
 
     const EitherParents = async (parentid:string, statetext:string) => {
+        console.log('here goes the EitherParents function')
     // const EitherParents = async (parent:string|number, state:string) => {
     //  was going to parse number with regex no need just wont accept a number
-        if (typeof parent === 'string') {            
+        if (typeof parentid === 'string') {            
+            console.log("hey were in the string part of the statement")
             if (parentid === '1') setParent1(statetext)
             if (parentid === '2') setParent2(statetext)
         }
