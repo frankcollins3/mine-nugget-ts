@@ -108,17 +108,14 @@ export function GameProvider({ children }: Props) {
         setGameOn('not playing')
     }
 
-    const meetTheParents = async (parentparam:string|null|any) => {
-        // setParents("oh nice")
+    const meetTheParents = async (parentparam:string|null|any) => {        
         if (parentparam === 'strain') {
             console.log("if block reached")
             let strains:(object|string) = await APIcall('all', null, null)
-            let randomstrain:any = await Random(strains)
-            // let randomstrain:(object|string) = await Random(strains)
+            let randomstrain:any = await Random(strains)            
             let parents = randomstrain.parents
             setParents(parents)    
-        } else {
-            console.log("else block context function meetTheParents")
+        } else {            
             setParents(parentparam)
         }
     }
@@ -175,6 +172,8 @@ export function GameProvider({ children }: Props) {
         parent2, 
         parent2state,
         clearparent2,
+        setParent1,
+        setParent2,
         
         winStreak,
         winstreakincrement,
