@@ -9,7 +9,7 @@ type gameContextType = {
     notplaying: () => void;
 
     parents: string;
-    meetTheParents: () => void;
+    meetTheParents: (parentparam:string|null) => void;
     clearparents: () => void;
 
     parent1: string;
@@ -50,7 +50,7 @@ const gameDefaults: gameContextType = {
     notplaying: () => {},
 
     parents: '',
-    meetTheParents: () => {},
+    meetTheParents: (parentparam) => {},
     clearparents: () => {},
 
     parent1: '',
@@ -108,13 +108,19 @@ export function GameProvider({ children }: Props) {
         setGameOn('not playing')
     }
 
-    const meetTheParents = async () => {
+    const meetTheParents = async (parentparam:string|null|any) => {
         // setParents("oh nice")
-        let strains:(object|string) = await APIcall('all', null, null)
-        let randomstrain:any = await Random(strains)
-        // let randomstrain:(object|string) = await Random(strains)
-        let parents = randomstrain.parents
-        setParents(parents)    
+        if (parentparam === 'strain') {
+            console.log("if block reached")
+            let strains:(object|string) = await APIcall('all', null, null)
+            let randomstrain:any = await Random(strains)
+            // let randomstrain:(object|string) = await Random(strains)
+            let parents = randomstrain.parents
+            setParents(parents)    
+        } else {
+            console.log("else block context function meetTheParents")
+            setParents(parentparam)
+        }
     }
 
     const clearparents = () => setParents('')
@@ -130,9 +136,12 @@ export function GameProvider({ children }: Props) {
         let splitstring:string = await Regex(parents, 'stringsplit')
         setParent2(splitstring[1])
     }
-    const clearparent2 = () => setParent1('')
+    const clearparent2 = () => setParent2('')
 
-    const winstreakincrement = async () => setWinStreak(winStreak + 1)
+    const winstreakincrement = async () => {
+        console.log("in the winstreak argument")
+        setWinStreak(winStreak + 1)
+    }
     // const winstreakclear = async () => setWinStreak(0)
     const guesswrongincrement = async () => setWrongGuess(wrongGuess + 1)
 
