@@ -24,9 +24,11 @@ type gameContextType = {
 
     winStreak: number;
     winstreakincrement: () => void;
-
+    clearwinstreak: () => void;
+    
     wrongGuess: number;
     guesswrongincrement: () => void;
+    clearguesswrong: () => void;
 
     trophy: boolean;
     addTrophy: () => void;
@@ -69,9 +71,11 @@ const gameDefaults: gameContextType = {
 
     winStreak: 0,
     winstreakincrement: () => {},
+    clearwinstreak: () => {},
     
     wrongGuess: 0,
     guesswrongincrement: () => {},    
+    clearguesswrong: () => {},
 
     trophy: false,
     addTrophy: () => {},
@@ -147,8 +151,10 @@ export function GameProvider({ children }: Props) {
         console.log("in the winstreak argument")
         setWinStreak(winStreak + 1)
     }
-    // const winstreakclear = async () => setWinStreak(0)
+    const clearwinstreak = async () => setWinStreak(0)
+    
     const guesswrongincrement = async () => setWrongGuess(wrongGuess + 1)
+    const clearguesswrong = async () => setWrongGuess(0)
 
     const addTrophy = async () => setTrophy(true)
     const clearTrophy = async () => setTrophy(false)
@@ -199,9 +205,11 @@ export function GameProvider({ children }: Props) {
         
         winStreak,
         winstreakincrement,
+        clearwinstreak,
 
         wrongGuess,
         guesswrongincrement,
+        clearguesswrong,
 
         trophy,
         addTrophy,
