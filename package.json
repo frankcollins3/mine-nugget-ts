@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.4.6",
     "@prisma/client": "^4.6.1",
     "@react-hook/resize-observer": "^1.2.6",
     "@reduxjs/toolkit": "^1.9.1",
@@ -25,7 +26,10 @@
     "prisma": "^4.6.1",
     "react": "18.2.0",
     "react-bootstrap": "^2.6.0",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "18.2.0",
+    "react-drag-and-drop": "^3.0.0",
     "react-jquery-plugin": "^1.1.7",
     "react-redux": "^8.0.5",
     "redux": "^4.2.0",
