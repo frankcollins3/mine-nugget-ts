@@ -95,8 +95,6 @@ export default function GameChild (props) {
 
     }, [])
 
-
-    
     const handleDragStart = async (event) => {        
         let target = event.target        
         let targetid = target.id        
@@ -144,14 +142,6 @@ export default function GameChild (props) {
             if (familytype[0].textContent === 'notcoin') {
 
             } else {                
-                // if (targetid === 'coin1') {                                    
-                //     if (coinint === yesNumber) {                                                                        
-                //         setLabel1(newparents)
-                //     } else {                                                
-                //         if (label1.length < 2) { setLabel1(wrongStrain) }     
-                //         fillbucket(wrongStrain)                                                
-                //     }                     
-                // }
                 if (targetid === 'coin1') coincheck('coin1')
                 if (targetid === 'coin2') coincheck('coin2')
                 if (targetid === 'coin3') coincheck('coin3')
@@ -173,31 +163,27 @@ export default function GameChild (props) {
 
     const wrongparentsfunc = () => {
         guesswrongincrement()
-                    CSS($('h6'), 'color', 'red')
-                    setGuessText('Wrong!')
-                    
-                    setTimeout( () => notplaying(), 1000)
-                    setTimeout( () => playing(), 2000)
+        CSS($('h6'), 'color', 'red')
+        setGuessText('Wrong!')        
+        setTimeout( () => notplaying(), 1000)
+        setTimeout( () => playing(), 2000)
     }
 
 
-    const handleDrop = async (event) => {   
-        
-       
+    const handleDrop = async (event) => {          
         if (gameOn === 'playing') {
         let coin:string = event.coin
         let idint:string|number = await Regex(coin, 'numreturn')                
         let coinelem = $(`#coin${idint}`)
         const coinlabel = $(`.label${idint}`)
-        
-        if (coin === 'coin1') {            
-            type numstring = object | string;                
-            // let idint = await Regex(coin, 'numreturn')                
-            let labeltext:string = coinlabel[0].innerText
-        // if (coin === 'coin1' || coin === 'coin2' || coin === 'coin3' || coin === 'coin4') {            
+                        
+            type numstring = object | string;                                            
+            let labeltext:string = coinlabel[0].innerText        
             setGuessYet(true)       
-            setCoin1(true)                                     
-            
+            if (coin === 'coin1') setCoin1(true)                                     
+            if (coin === 'coin2') setCoin2(true)                                     
+            if (coin === 'coin3') setCoin3(true)                                     
+            if (coin === 'coin4') setCoin4(true)                                     
             let rightparents = await ReturnRight(parents)
             Animate($(`#coin${idint}`), 'opacity', '0.1', 250)
             setTimeout( () => setGuessText(labeltext), 1000)                
@@ -207,143 +193,11 @@ export default function GameChild (props) {
                 setTimeout( () => setGuessYet(false), 3000)                                 
 
                 if (labeltext === rightparents) {   
-                    rightparentsfunc()
-                    // setHideGold(false)                    
-                    // notplaying()                    
-                    // CSS($('h6'), 'color', 'rgb(247, 208, 32)')                    
-                    // EitherParents('1', 'You!')
-                    // EitherParents('2', 'Win!')                    
-                    // AttrTool(mine, 'src', '/img/trophy.png')
-                    // winstreakincrement()                    
-                    // setAllCoins('true')
-
-
+                    rightparentsfunc()                
                 } else {
-                    
+                    wrongparentsfunc()
                 }
-            }, 2000)
-            }        
-
-        if (coin === 'coin2') {
-            type numstring = object | string;                
-            // let idint = await Regex(coin, 'numreturn')                
-            let idint:string|number = await Regex(coin, 'numreturn')                
-            const coinlabel = $(`.label${idint}`)
-            let labeltext:string = coinlabel[0].innerText    
-                setGuessText(labeltext)
-                setGuessYet(true)       
-                setCoin2(true)    
-                
-                let rightparents = await ReturnRight(parents)
-            Animate($(`#coin${idint}`), 'opacity', '0.1', 250)
-            setTimeout( () => setGuessText(labeltext), 1000)                
-            setTimeout( () => {
-                Animate($('span'), 'opacity', '0.1', 600)
-                setTimeout( () => setGuessText(''), 2000)
-                setTimeout( () => setGuessYet(false), 3000)                                 
-
-                if (labeltext === rightparents) { 
-                    CSS($('h6'), 'color', 'rgb(247, 208, 32)')
-                    AttrTool(mine, 'src', '/img/trophy.png')
-
-                    EitherParents('1', 'You!')
-                    EitherParents('2', 'Win!')
-                    setHideGold(false)
-                    setAllCoins('true')
-                } else {
-                    guesswrongincrement()
-                    CSS($('h6'), 'color', 'red')
-                    setGuessText('Wrong!')
-                    setTimeout( () => notplaying(), 1000)
-                    setTimeout( () => playing(), 2000)
-                }
-            }, 2000)
-               
-            }        
- 
-            if (coin === 'coin3') {
-                type numstring = object | string;                
-        // let idint = await Regex(coin, 'numreturn')                
-        let idint:string|number = await Regex(coin, 'numreturn')                        
-        const coinlabel = $(`.label${idint}`)
-        let labeltext:string = coinlabel[0].innerText                
-                setGuessYet(true)       
-                setCoin3(true)       
-                let rightparents = await ReturnRight(parents)
-                Animate($(`#coin${idint}`), 'opacity', '0.1', 250)
-                setTimeout( () => setGuessText(labeltext), 1000)                
-                setTimeout( () => {
-                    Animate($('span'), 'opacity', '0.1', 600)
-                    setTimeout( () => setGuessText(''), 2000)
-                    setTimeout( () => setGuessYet(false), 3000)                                 
-    
-                    if (labeltext === rightparents) { 
-                        CSS($('h6'), 'color', 'rgb(247, 208, 32)')                        
-                        AttrTool(mine, 'src', '/img/trophy.png')
-
-                        EitherParents('1', 'You!')
-                        EitherParents('2', 'Win!')
-                        setHideGold(false)                        
-                        setAllCoins('true')
-                    } else {
-                        guesswrongincrement()
-                        CSS($('h6'), 'color', 'red')
-                        setGuessText('Wrong!')
-                        setTimeout( () => notplaying(), 1000)
-                        setTimeout( () => playing(), 2000)
-                    }
-                }, 2000)
-                                        
-            }
-            if (coin === 'coin4') {
-                type numstring = object | string;                
-        // let idint = await Regex(coin, 'numreturn')                
-        let idint:string|number = await Regex(coin, 'numreturn')                
-        const coinlabel = $(`.label${idint}`)
-        let labeltext:string = coinlabel[0].innerText
-                setGuessText(labeltext)
-                setGuessYet(true)       
-                setCoin4(true)                  
-                
-                let rightparents = await ReturnRight(parents)
-                Animate($(`#coin${idint}`), 'opacity', '0.1', 250)
-                setTimeout( () => setGuessText(labeltext), 1000)                
-                setTimeout( () => {
-                    Animate($('span'), 'opacity', '0.1', 600)
-                    setTimeout( () => setGuessText(''), 2000)
-                    setTimeout( () => setGuessYet(false), 3000)                                 
-    
-                    if (labeltext === rightparents) { 
-                        winstreakincrement()
-                                         
-                        CSS($('h6'), 'color', 'rgb(247, 208, 32)')
-                        setGuessText('You Win!!!')
-                        AttrTool(mine, 'src', '/img/trophy.png')
-                        setHideGold(false)
-
-                        EitherParents('1', 'You!')
-                        EitherParents('2', 'Win!')
-                        // setParent1('You')
-                        // setParent2('Win!')
-                        // suitcase.hide()
-
-                        // setCoin1(true)
-                        // setCoin2(true)
-                        // setCoin3(true)
-                        // setCoin4(true)
-                        setAllCoins('true')
-                    } else {
-                        guesswrongincrement()
-                        CSS($('h6'), 'color', 'red')
-                        setGuessText('Wrong!')
-                        setTimeout( () => notplaying(), 1000)
-                        setTimeout( () => playing(), 2000)
-                    }
-                }, 2000)
-                } else {
-                    console.log("there is no game right now")
-                }
-                                                              
+            }, 2000)                                                                           
             }
     }
 
