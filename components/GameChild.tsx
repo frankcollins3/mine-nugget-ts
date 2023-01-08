@@ -59,7 +59,7 @@ export default function GameChild (props) {
          parent1, parent1state, parent2, parent2state,
          dontuse, fillbucket, emptybucket,
          winStreak, winstreakincrement, wrongGuess, guesswrongincrement,
-         clearparent1, clearparent2, clearparents
+         clearparent1, clearparent2, clearparents, setParent1, setParent2
          } = useGame()
 // * these context variables are working facilitate guessing with the coins.
 // * the coins will need labels with: [ReturnRight() && ReturnWrong] depending on if coin matches up.
@@ -153,13 +153,17 @@ export default function GameChild (props) {
 
     const handleDrop = async (event) => {   
         
+       
+        if (gameOn === 'playing') {
+
+        
         
         let coin:string = event.coin
         let idint:string|number = await Regex(coin, 'numreturn')                
         let coinelem = $(`#coin${idint}`)
         const coinlabel = $(`.label${idint}`)
         
-        if (coin === 'coin1') {
+        if (coin === 'coin1') {            
             type numstring = object | string;                
             // let idint = await Regex(coin, 'numreturn')                
             let labeltext:string = coinlabel[0].innerText
@@ -175,10 +179,15 @@ export default function GameChild (props) {
                 setTimeout( () => setGuessText(''), 2000)
                 setTimeout( () => setGuessYet(false), 3000)                                 
 
-                if (labeltext === rightparents) {     
+                if (labeltext === rightparents) {   
+                    notplaying()
+                    clearparent1()
+                    clearparent2()
                     setHideGold(false)                    
                     CSS($('h6'), 'color', 'rgb(247, 208, 32)')
-                    setGuessText('You Win!!!')
+                    setParent1('You')
+                    setParent2('Win!')
+                    
                     AttrTool(mine, 'src', '/img/trophy.png')
                     winstreakincrement()
                     setCoin1(true)
@@ -191,6 +200,7 @@ export default function GameChild (props) {
                     guesswrongincrement()
                     CSS($('h6'), 'color', 'red')
                     setGuessText('Wrong!')
+                    
                     setTimeout( () => notplaying(), 1000)
                     setTimeout( () => playing(), 2000)
                 }
@@ -218,8 +228,13 @@ export default function GameChild (props) {
 
                 if (labeltext === rightparents) { 
                     CSS($('h6'), 'color', 'rgb(247, 208, 32)')
-                    setGuessText('You Win!!!')
+                    // setGuessText('You Win!!!')
+
                     AttrTool(mine, 'src', '/img/trophy.png')
+                    setParent1('You')
+                    setParent2('Win!')
+                    // meetTheParents('You, Win!!')
+
                     setCoin1(true)
                     setCoin2(true)
                     setCoin3(true)
@@ -256,8 +271,12 @@ export default function GameChild (props) {
     
                     if (labeltext === rightparents) { 
                         CSS($('h6'), 'color', 'rgb(247, 208, 32)')
-                        setGuessText('You Win!!!')
+                        // setGuessText('You Win!!!')
                         AttrTool(mine, 'src', '/img/trophy.png')
+
+                        setParent1('You')
+                        setParent2('Win!')
+
                         setCoin1(true)
                         setCoin2(true)
                         setCoin3(true)
@@ -296,6 +315,10 @@ export default function GameChild (props) {
                         CSS($('h6'), 'color', 'rgb(247, 208, 32)')
                         setGuessText('You Win!!!')
                         AttrTool(mine, 'src', '/img/trophy.png')
+
+                        setParent1('You')
+                        setParent2('Win!')
+
                         setCoin1(true)
                         setCoin2(true)
                         setCoin3(true)
@@ -308,7 +331,10 @@ export default function GameChild (props) {
                         setTimeout( () => playing(), 2000)
                     }
                 }, 2000)
-                                                  
+                } else {
+                    console.log("there is no game right now")
+                }
+                                                              
             }
     }
 
@@ -395,7 +421,8 @@ export default function GameChild (props) {
             ?
             <h6
             style={ { color: 'papayawhip', letterSpacing: '0.25em'} }        
-            > you picked <span> { guessText } </span>  </h6>
+            > you picked <span> { gameOn === 'playing' ? guessText : '' } </span>  </h6>
+            // > you picked <span> { guessText } </span>  </h6>
             :
             ''
             }
@@ -428,7 +455,7 @@ export default function GameChild (props) {
 
              {winStreak === 1 ? `#${winStreak} ` : 
                 winStreak > 1 ? `${winStreak} streak!` :
-                winStreak > 5 ? `Golden Streaker ${winStreak}` : 'no wins yet'
+                winStreak > 5 ? `Golden Streaker ${winStreak}` : ''
              }
               </p> 
 
