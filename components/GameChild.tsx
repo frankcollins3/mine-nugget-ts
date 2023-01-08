@@ -41,6 +41,22 @@ export default function GameChild (props) {
     const [coin3, setCoin3] = useState(false)
     const [coin4, setCoin4] = useState(false)
 
+    const setAllCoins = (set:string) => {
+        if (set === 'true') {
+            setCoin1(true)
+            setCoin2(true)
+            setCoin3(true)
+            setCoin4(true)
+        } else if (set === 'false') {
+            setCoin1(false)
+            setCoin2(false)
+            setCoin3(false)
+            setCoin4(false)
+
+        }
+
+    }
+
     const [label1, setLabel1] = useState('')
     const [label2, setLabel2] = useState('')
     const [label3, setLabel3] = useState('')
@@ -59,7 +75,7 @@ export default function GameChild (props) {
          parent1, parent1state, parent2, parent2state,
          dontuse, fillbucket, emptybucket,
          winStreak, winstreakincrement, wrongGuess, guesswrongincrement,
-         clearparent1, clearparent2, clearparents, setParent1, setParent2
+         clearparent1, clearparent2, clearparents, EitherParents, setParent1, setParent2
          } = useGame()
 // * these context variables are working facilitate guessing with the coins.
 // * the coins will need labels with: [ReturnRight() && ReturnWrong] depending on if coin matches up.
@@ -69,6 +85,7 @@ export default function GameChild (props) {
 
         // * jquery
         let mine = $('#mine')
+        let suitcase = $('#SuitCase')
         
     useEffect( () => {
         (async() => {
@@ -180,21 +197,15 @@ export default function GameChild (props) {
                 setTimeout( () => setGuessYet(false), 3000)                                 
 
                 if (labeltext === rightparents) {   
-                    notplaying()
-                    clearparent1()
-                    clearparent2()
                     setHideGold(false)                    
-                    CSS($('h6'), 'color', 'rgb(247, 208, 32)')
-                    setParent1('You')
-                    setParent2('Win!')
-                    
+                    notplaying()                    
+                    CSS($('h6'), 'color', 'rgb(247, 208, 32)')                    
+                    EitherParents('1', 'You!')
+                    EitherParents('2', 'Win!')                    
                     AttrTool(mine, 'src', '/img/trophy.png')
-                    winstreakincrement()
-                    setCoin1(true)
-                    setCoin2(true)
-                    setCoin3(true)
-                    setCoin4(true)
-                    // CSS(mine, 'text-transform', 'scale(2.0)')
+                    winstreakincrement()                    
+                    setAllCoins('true')
+
 
                 } else {
                     guesswrongincrement()
@@ -212,12 +223,11 @@ export default function GameChild (props) {
             // let idint = await Regex(coin, 'numreturn')                
             let idint:string|number = await Regex(coin, 'numreturn')                
             const coinlabel = $(`.label${idint}`)
-            let labeltext:string = coinlabel[0].innerText
-        // if (coin === 'coin2' || coin === 'coin2' || coin === 'coin3' || coin === 'coin4') {            
+            let labeltext:string = coinlabel[0].innerText    
                 setGuessText(labeltext)
                 setGuessYet(true)       
                 setCoin2(true)    
-
+                
                 let rightparents = await ReturnRight(parents)
             Animate($(`#coin${idint}`), 'opacity', '0.1', 250)
             setTimeout( () => setGuessText(labeltext), 1000)                
@@ -228,17 +238,12 @@ export default function GameChild (props) {
 
                 if (labeltext === rightparents) { 
                     CSS($('h6'), 'color', 'rgb(247, 208, 32)')
-                    // setGuessText('You Win!!!')
-
                     AttrTool(mine, 'src', '/img/trophy.png')
-                    setParent1('You')
-                    setParent2('Win!')
-                    // meetTheParents('You, Win!!')
 
-                    setCoin1(true)
-                    setCoin2(true)
-                    setCoin3(true)
-                    setCoin4(true)                
+                    EitherParents('1', 'You!')
+                    EitherParents('2', 'Win!')
+                    setHideGold(false)
+                    setAllCoins('true')
                 } else {
                     guesswrongincrement()
                     CSS($('h6'), 'color', 'red')
@@ -255,12 +260,9 @@ export default function GameChild (props) {
         // let idint = await Regex(coin, 'numreturn')                
         let idint:string|number = await Regex(coin, 'numreturn')                        
         const coinlabel = $(`.label${idint}`)
-        let labeltext:string = coinlabel[0].innerText
-                // setTimeout( () => setGuessText(labeltext), 500)
-                
+        let labeltext:string = coinlabel[0].innerText                
                 setGuessYet(true)       
                 setCoin3(true)       
-
                 let rightparents = await ReturnRight(parents)
                 Animate($(`#coin${idint}`), 'opacity', '0.1', 250)
                 setTimeout( () => setGuessText(labeltext), 1000)                
@@ -270,17 +272,13 @@ export default function GameChild (props) {
                     setTimeout( () => setGuessYet(false), 3000)                                 
     
                     if (labeltext === rightparents) { 
-                        CSS($('h6'), 'color', 'rgb(247, 208, 32)')
-                        // setGuessText('You Win!!!')
+                        CSS($('h6'), 'color', 'rgb(247, 208, 32)')                        
                         AttrTool(mine, 'src', '/img/trophy.png')
 
-                        setParent1('You')
-                        setParent2('Win!')
-
-                        setCoin1(true)
-                        setCoin2(true)
-                        setCoin3(true)
-                        setCoin4(true)                  
+                        EitherParents('1', 'You!')
+                        EitherParents('2', 'Win!')
+                        setHideGold(false)                        
+                        setAllCoins('true')
                     } else {
                         guesswrongincrement()
                         CSS($('h6'), 'color', 'red')
@@ -299,7 +297,7 @@ export default function GameChild (props) {
         let labeltext:string = coinlabel[0].innerText
                 setGuessText(labeltext)
                 setGuessYet(true)       
-                setCoin4(true)  
+                setCoin4(true)                  
                 
                 let rightparents = await ReturnRight(parents)
                 Animate($(`#coin${idint}`), 'opacity', '0.1', 250)
@@ -315,14 +313,19 @@ export default function GameChild (props) {
                         CSS($('h6'), 'color', 'rgb(247, 208, 32)')
                         setGuessText('You Win!!!')
                         AttrTool(mine, 'src', '/img/trophy.png')
+                        setHideGold(false)
 
-                        setParent1('You')
-                        setParent2('Win!')
+                        EitherParents('1', 'You!')
+                        EitherParents('2', 'Win!')
+                        // setParent1('You')
+                        // setParent2('Win!')
+                        // suitcase.hide()
 
-                        setCoin1(true)
-                        setCoin2(true)
-                        setCoin3(true)
-                        setCoin4(true)
+                        // setCoin1(true)
+                        // setCoin2(true)
+                        // setCoin3(true)
+                        // setCoin4(true)
+                        setAllCoins('true')
                     } else {
                         guesswrongincrement()
                         CSS($('h6'), 'color', 'red')
@@ -338,7 +341,7 @@ export default function GameChild (props) {
             }
     }
 
-    const mineclick = async () => {  
+    const mineclick = async () => {          
         clearparents()
         clearparent1()
         clearparent2()
@@ -445,6 +448,7 @@ export default function GameChild (props) {
             </Droppable>
 
             <img 
+            id="SuitCase"
             className={styles.goldbars}
             style={{ display: winStreak > 0 && hideGold === false ?  'inline' : 'none' }}            
             src="/img/gold-bars.png"/>
@@ -457,21 +461,7 @@ export default function GameChild (props) {
                 winStreak > 1 ? `${winStreak} streak!` :
                 winStreak > 5 ? `Golden Streaker ${winStreak}` : ''
              }
-              </p> 
-
-            {/* <button 
-            style={{ 
-            borderRadius: '50%', backgroundColor: 'limegreen',
-             height: '50px', width: '50px'
-            }}
-            onClick={() => console.log(parents)}></button> */}
-
-            
-
-            
-
-
-        {/* <img style={{ border: '5px solid papayawhip', transform: `scale(0.2)` }} src="/img/mine.png"/> */}
+              </p>       
         </div>
 
         </>
