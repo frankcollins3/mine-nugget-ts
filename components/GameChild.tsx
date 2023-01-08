@@ -157,7 +157,10 @@ export default function GameChild (props) {
                     EitherParents('1', 'You!')
                     EitherParents('2', 'Win!')                    
                     AttrTool(mine, 'src', '/img/trophy.png')
+                    AttrTool(gold1, 'src', '/img/ring.png')
+                    AttrTool(gold2, 'src', '/img/watch.png')
                     setStreakBackup(streakBackup + 1)
+
                     winstreakincrement()                    
                     // winstreakincrement()                    
                     setAllCoins('true')
