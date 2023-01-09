@@ -24,8 +24,8 @@ import Display from 'styles/StrainDisplay'
 
                     
 export default  function Strain ( props:any, context ) {   
-    console.log('props')
-    console.log(props)
+    // console.log('props')
+    // console.log(props)
     let explicitprops = props
     
 
@@ -44,13 +44,13 @@ export default  function Strain ( props:any, context ) {
     const textClasses:string = [styles.FontSizeTest, styles.BorderTest].join(" ");
     
     const access = async (context:any) => {             
-      let ajaxstraindata = await DataCall('axios', `${url}/api/strains/allStrain`, null) // /pages/api/getAllStrains      
-      let url:string = await ReturnUrl(context);  
-      console.log('url')
-      console.log(url)
+    let ajaxstraindata = await DataCall('axios', `${url}/api/strains/allStrain`, null) // /pages/api/getAllStrains      
+    let url:string = await ReturnUrl(context);  
+      // console.log('url')
+      // console.log(url)
       // let ajaxstraindata = await AjaxCall(`${url}/api/getAllStrain`, null, null) // /pages/api/getAllStrains        
   }
-
+    
     const returnUrl = async (context:any) => { 
       let url:string = await ReturnUrl(context)      
       return url
@@ -76,6 +76,9 @@ export default  function Strain ( props:any, context ) {
                 url={props.url} setUrl={props.setUrl}
                 allStrains={props.allStrains} setAllStrains={props.setAllStrains}
                 currentStrain={props.currentStrain} setCurrentStrain={props.setCurrentStrain}            
+                // keyState={props.keyState} setKeyState={props.setKeyState}
+                // valueState={props.valueState} setValueState={props.setValueState}
+                // fetchLock={props.fetchLock} setFetchLock={props.setFetchLock}
                 />
 
               {/* { props.strainSave === false      this made it take an extra 30 minutes
@@ -107,16 +110,17 @@ export default  function Strain ( props:any, context ) {
               ''
             }
                 </div>
-            {props.strainSave === false 
-              ?
-              ''
-              :
+                
+             {props.strainSave === false 
+                ? 
+                ''
+                :
               <PickMines
               url={returnUrl}
               global={explicitprops}
               let contextprops={context}
               />
-              }
+             }
                  
           </Container>
             
