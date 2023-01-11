@@ -2,10 +2,20 @@ import Page from 'styles/findmine/components/Searchpage'
 import styles from 'styles/findmine/sass/FindMine.module.scss'
 import Helmet from 'components/Helmet'
 import Magnify from 'components/Magnify'
-
+import { useState, useEffect } from 'react'
+import $ from 'jquery'
 // components/Helmet.tsx
 
 function FindMine () {
+    console.log($('body'))
+    console.log(typeof $('body'))
+    // let pageparents:object = $('body').parents()
+    // let pageparents:object = $('body').parents()
+
+    useEffect( () => {
+        // pageparents.css('overflow', 'hidden')
+    }, [])
+
     return (
         <Page>
         <div className={styles.row}>
