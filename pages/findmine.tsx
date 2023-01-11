@@ -17,51 +17,47 @@ function FindMine () {
   
     var sparkle = "";
     var numsparkles = 500;
-    var night = $('.constellation')[0]
-    var widthWindow = window.innerWidth;
-    var heightWindow = window.innerHeight;
-  
-    for (var i = 0; i < numsparkles; i++) {
-      sparkle += "<span class='sparkle " + style[getRandomArbitrary(0, 4)] + " " + opacity[getRandomArbitrary(0, 6)] + " "
-      + tam[getRandomArbitrary(0, 5)] + "' style='animation-delay: ." +getRandomArbitrary(0, 9)+ "s; left: "
-      + getRandomArbitrary(0, widthWindow) + "px; top: " + getRandomArbitrary(0, heightWindow) + "px;'></span>";
-    }
-  
-    night.innerHTML = sparkle;
-
-    console.log($('body'))
-    console.log(typeof $('body'))
-    // let pageparents:object = $('body').parents()
-    // let pageparents:object = $('body').parents()
-
+         
     useEffect( () => {
+        var night = $('.constellation')[0]
         // pageparents.css('overflow', 'hidden')
+        night.innerHTML = sparkle;
+        var widthWindow = window.innerHeight
+        var heightWindow = window.innerWidth;
+        for (var i = 0; i < numsparkles; i++) {
+          sparkle += "<span class='sparkle " + style[getRandomArbitrary(0, 4)] + " " + opacity[getRandomArbitrary(0, 6)] + " "
+          + tam[getRandomArbitrary(0, 5)] + "' style='animation-delay: ." +getRandomArbitrary(0, 9)+ "s; left: "
+          + getRandomArbitrary(0, widthWindow) + "px; top: " + getRandomArbitrary(0, heightWindow) + "px;'></span>";
+        }
     }, [])
 
     return (
         <Page>
-            <div className="night">
-            
+                        <div className="night">
 		<div className="constellation">
+        </div>
+        </div>
 
-        <div className={styles.row}>
 
+        <div className={styles.row}>        
         <Helmet/>
         <Magnify/>
-
         </div>
-        
-        {/* <h1 style={{ color: 'papayawhip', fontFamily: 'papyrus' }}> Find Mine </h1> */}'
+
         <div className="Row">
             <h1 className={styles.h1}> Find </h1>
             <img src="/img/mine.png"/>
-            <h1 className={styles.h1}> Mine </h1>
-            
+            <h1 className={styles.h1}> Mine </h1>         
+        </div>
+        
+        {/* <h1 style={{ color: 'papayawhip', fontFamily: 'papyrus' }}> Find Mine </h1> */}'
+
+
+            <div className="night">
+		<div className="constellation">
+        </div>
         </div>
 
-        </div>
-
-        </div>
 
         </Page>
     )
