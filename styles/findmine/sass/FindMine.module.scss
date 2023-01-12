@@ -1,5 +1,66 @@
 .div {
-    height: 30em;
-    width: 20%;
-    border: 5px solid rgba(255, 166, 0, 0.85);    
+    // transform: scale(2.33);
+    height: 15em;
+    width: 11%;
+    border: 9px solid rgba(255, 166, 0, 0.85); 
+            
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: blanchedalmond;
+    border-radius: 50%;
+    // margin-left: 20em;    
+    
+    .helmet {
+        height: 10em;
+        width: 10em;
+        // margin: 0 500px;
+    }
+    
+    .barrier {        
+        height: 50px;
+        // height: 20px;
+        // *  height: 30px; this becomes half its height upon some behavior because it turns the face into a smile
+        width: 5em;
+        // margin: 0 500px;   
+    }
+}
+
+.row {
+    min-height: 60vh;
+    min-width: 100vw;    
+    // margin: 0 500px;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;  
+}
+
+.Magnify {
+    // transform: scale(2.33);
+    // height: 15em;
+    // width: 11%;
+
+    height: 20em;
+    width: 20em;
+    background-image: url('/img/Magnify.png');
+    // height: 300px;
+    // width: 300px;
+    // margin-right: 20em;
+}
+
+.Magnify2 {
+    height: 300px;
+    width: 300px;
+    background-image: url('/img/Magnify.png');    
+}
+
+.h1 {
+    font-size: 35px;
+    letter-spacing: 1.25em;
+    font-family: Lemon-Milk;
+    // font-family: papyrus;
+    color: papayawhip
 }
