@@ -14,7 +14,7 @@ const initState = {
     parent2: '',
     winstreak: 0,
     wrongguess: 0,  
-    magnifyhover: false  
+    magnifyhover: 'no'  
 }
     
 const gameReducer = (state=initState, action) => {
@@ -81,11 +81,11 @@ const gameReducer = (state=initState, action) => {
         return state
     }    
     if (action.type === 'MAGNIFY_ON') {
-        state.magnifyhover = true
+        state.magnifyhover = 'yes'
         return state
     }
     if (action.type === 'MAGNIFY_OFF') {
-        state.magnifyhover = false
+        state.magnifyhover = 'no'
         return state
     }
     else return state
