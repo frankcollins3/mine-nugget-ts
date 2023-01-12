@@ -43,12 +43,12 @@ type gameContextType = {
 
     EitherParents: (parentid:string, statetext:string) => void;
 
-    // * no need for guess .... because parents is the right guess already
-};
+    // * end of game state above. Below is the data.strain.search() page
 
-//     gameOn: gameOn, setGameOn: setGameOn, parents: parents, setParents: setParents,
-    //     parent1: parent1, setParent1: setParent1, parent2: parent2, setParent2: setParent2,
-    //     winStreak: winStreak, setWinStreak: setWinStreak, wrongGuess: wrongGuess, setWrongGuess: setWrongGuess
+    searchHover: string;
+    hoverOnSearch: () => void;
+    
+};
 
 const gameDefaults: gameContextType = {
     gameOn: 'not playing',
@@ -87,7 +87,10 @@ const gameDefaults: gameContextType = {
     fillbucket: () => {},
     emptybucket: () => {},
 
-    EitherParents: (parentid:string, statetext:string) => {}
+    EitherParents: (parentid:string, statetext:string) => {},
+
+    searchHover: 'no search',
+    hoverOnSearch: () => {},
 };
 
 const GameContext = createContext<gameContextType>(gameDefaults);
@@ -111,6 +114,8 @@ export function GameProvider({ children }: Props) {
     const [dontuse, setDontuse] = useState<string[]>([])
     const [trophy, setTrophy] = useState<boolean>(false)
     // const [dontuse, setDontuse] = useState<string[]>([])
+
+    const [searchHover, setSearchHover] = useState<string>('no search')
     
     const playing = () => {
         setGameOn('playing')
@@ -183,6 +188,10 @@ export function GameProvider({ children }: Props) {
         }
         return
     }    
+
+        const hoverOnSearch = async () => {
+            setSearchHover('searched!')
+        }
         
 
     const value = {
@@ -220,7 +229,11 @@ export function GameProvider({ children }: Props) {
         dontuse,
         fillbucket,
         emptybucket,
-        EitherParents
+        EitherParents,
+
+        // * end of game state above. Below is the data.strain.search() page
+        searchHover,
+        hoverOnSearch,
     };
 
     return (
