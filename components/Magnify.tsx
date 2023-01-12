@@ -9,8 +9,11 @@ import customReduxSelector from 'redux/reduxselector'
 import {connect} from 'react-redux';
 import { TypedUseSelectorHook, useSelector } from 'react-redux'
 import {Provider} from 'react-redux';
+import { PassThrough } from 'stream'
 
 let reduxstore = store.getState()
+let magnifyhover = reduxstore.magnifyhover
+let hoverstring:string = magnifyhover.toString()
 
 export default function Magnify () {
     let style = ["style1", "style3", "style4"];
@@ -20,24 +23,17 @@ export default function Magnify () {
     const [hover, setHover] = useState(false)
     const [reduxBucket, setReduxBucket] = useState([])
 
+    // * redux
+    let dispatch = useDispatch()
+
     useEffect( () => {
         console.log('reduxstore from the useEffect')
         let gameReducer = reduxstore.gameReducer
         console.log(reduxstore.gameReducer)
         setReduxBucket(gameReducer)
+        
     }, [])
 
-    
-
-        // let reduxstate = useSelector(state => state)
-        // console.log(reduxstate)
-
-    
-    
-    
-
-
-  
     function getRandomArbitrary(min, max) {
       return Math.floor(Math.random() * (max - min)) + min;
     }
@@ -47,11 +43,7 @@ export default function Magnify () {
          
     useEffect( () => {
         let night = $('.constellation')[0]
-        // pageparents.css('overflow', 'hidden')
         
-        // let height:number = parseInt($('#Cont').width().toFixed())
-        // let width:number = parseInt($('#Cont').width().toFixed())
-
         night.innerHTML = sparkle;
         let widthWindow = 150;
         let heightWindow = 150;
@@ -62,9 +54,14 @@ export default function Magnify () {
         }
     }, [])
 
-    const stateHandler = () => {
-        console.log('reduxBucket from the hover function')
-        console.log(reduxBucket)
+    const stateHandler = () => {        
+        let newstore = store.getState()
+        let reducer = newstore.gameReducer
+        let magnifyhover = reducer.magnifyhover
+        dispatch( { type: 'MAGNIFY_ON'} )
+        console.log('magnifyhover')
+        console.log(magnifyhover)
+
     }
 
     return (
@@ -72,8 +69,8 @@ export default function Magnify () {
         <div id="Cont" onMouseEnter={stateHandler} onMouseLeave={() => setHover(false)}
         // <div id="Cont" onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
          className={styles.MagnifyCont}>                          
-            <div style={{ display: hover === true ? 'none' : 'flex'}} className="night">
-                <div  style={{ display: hover === true ? 'none' : 'flex'}}  className="constellation">
+            <div style={{ display: hoverstring === 'true' ? 'none' : 'flex'}} className="night">
+                <div style={{ display: hoverstring === 'true' ? 'none' : 'flex'}}  className="constellation">
                 </div>
             </div>
         </div>
