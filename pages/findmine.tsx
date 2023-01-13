@@ -6,15 +6,19 @@ import { useState, useEffect } from 'react'
 import $ from 'jquery'
 import Container from 'react-bootstrap/Container'
 import {useGame} from 'Contexts/game'
+import GET from 'utility/GETdataJS'
 
 // * utility
 import ReturnUrl from 'utility/ReturnUrl'
 
 export default function FindMine (props) {
-    console.log('props from FindMine')
+    console.log('props')
     console.log(props)
-    console.log('props.data')
-    console.log(props.data)
+    let serverdata = props.data
+    let newurl = props.urlbuild
+    console.log('newurl')
+    console.log(newurl)
+
 
 
     const { gameOn, playing, searchHover, hoverOnSearch  } = useGame()
@@ -44,6 +48,16 @@ export default function FindMine (props) {
             }, 250)
         }
         textExit()
+
+        const check = async () => {
+            console.log(props.url)
+            let pokeapi = `https://pokeapi.co/api/v2/pokemon`
+            let data = await GET(newurl)
+            // let data = await GET(serverdata)
+            console.log('data from get')
+            console.log(data)
+        } 
+        check()
         // }).complete( (elem) => $(elem).hide() )
     }, [])
 
@@ -73,12 +87,15 @@ export default function FindMine (props) {
 
 export async function getServerSideProps(context:any) {              
     let url:any = await ReturnUrl(context);    
+    let urlbuild = `${url}/api/strains/strain`
     // let pokeurl = `https://pokeapi.co/api/v2/pokemon/`    
     let predata = await fetch(new URL(`${url}/api/strains/strain`))            
-    let data = await predata.json()        
+    let data = await predata.json()   
+
+    
   return {
   props: {
-      data    
+      data, urlbuild
     }
   };
   }
