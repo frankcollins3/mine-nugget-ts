@@ -7,21 +7,53 @@ import $ from 'jquery'
 import Container from 'react-bootstrap/Container'
 import {useGame} from 'Contexts/game'
 import GET from 'utility/GETdataJS'
+import {useUrl} from 'Contexts/Url'
+// import {UrlProvider} from 'Contexts/Url'
 
 // * utility
 import ReturnUrl from 'utility/ReturnUrl'
 
-export default function FindMine (props) {
-    console.log('props')
-    console.log(props)
-    let serverdata = props.data
-    let newurl = props.urlbuild
-    console.log('newurl')
-    console.log(newurl)
+export default function FindMine (props, context) {    
+    let serverdata = props.data 
 
-
-
+    const { allStrain } = useUrl()  //obj destructuring
     const { gameOn, playing, searchHover, hoverOnSearch  } = useGame()
+    const slashindexbucket = new Array() || []
+
+    let host:string = props.url
+    let newurl = host += allStrain 
+
+    let workingurl = props.urlbuild
+    console.log('workingurl')
+    console.log(workingurl)
+    
+    let slashcounter = 0
+
+    const loopAndPush = async () => {
+        for (const char in workingurl) {            
+            if (workingurl[char] === '/') {
+                slashcounter++
+                if (slashcounter === 3) {
+                    slashindexbucket.push(char)
+                }
+            }
+        }
+    }   
+    const valuecheck = async () => {
+        let preslashindex = workingurl.slice(0, slashindexbucket)
+        // let preslashindex = workingurl.slice(0, workingurl.indexOf('/'))        
+    }
+
+    const bothAtOnce = async () => {
+        await loopAndPush()
+        await valuecheck()
+    }
+    bothAtOnce()
+
+    
+    
+    // let newurl = host += allStrain ||props.urlbuild
+    
     // const {gameOn, playing, searchHover } = useGame()
     
 
@@ -52,12 +84,20 @@ export default function FindMine (props) {
         const check = async () => {
             console.log(props.url)
             let pokeapi = `https://pokeapi.co/api/v2/pokemon`
-            let data = await GET(newurl)
-            // let data = await GET(serverdata)
-            console.log('data from get')
-            console.log(data)
+            // let data = await GET(allStrain)
+            // let data = await GET('http://localhost:3000/pages/api/strains/strain')
+            let data = await GET(workingurl)
+            // console.log('data from get')
+            // console.log(data)
+
+            console.log(`newurl ${newurl} allStrain ${allStrain} `)
+
         } 
+
         check()
+
+
+
         // }).complete( (elem) => $(elem).hide() )
     }, [])
 
@@ -95,7 +135,7 @@ export async function getServerSideProps(context:any) {
     
   return {
   props: {
-      data, urlbuild
+      data, urlbuild, url
     }
   };
   }
