@@ -1,34 +1,36 @@
 import Axios from 'axios'
 import $ from 'jquery'
-import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript'
 import Regex from 'utility/MasterRegex'
 
 export default async function GET (url, data) {
+    
     class GETclass {
-        constructor(url) {
+        constructor(url) {               
             this.url = url
-            this.data = data
+        }      
+        // method getters
+        get getgetter() {            
+            console.log("over here in the getgetter")
+            return this.axiosGet()
         }
-
-        get getgetter() { 
-            console.log('in the getGetter')
-            return this.axiosGet() 
-        }
-        // get getgetter() { return this.axiosGet() }
-
-        async axiosGet() {
-            console.log('data')
-            console.log(data)
-            let strainfetch = Axios.get(url)
-            console.log('strainfetch')
+        
+        
+        // methods 
+        async axiosGet() {                   
+            let strainfetch = await Axios.get(url)
+            console.log('strainfetch in the axiosget() method')
             console.log(strainfetch)
-        }
+            return strainfetch
+        }  
+}  
 
-        if (url) {
-            const getCall = await new GETclass(url).getgetter
-            console.log('getCall')
-            console.log(getCall)
-        }
-
+        if (url) {    
+            console.log("atleast were in the url")        
+            const es6get = await new GETclass(url).getgetter
+            console.log('es6get')
+            console.log(es6get)
+            return es6get
+                                             
     }
 }
+
