@@ -4,63 +4,76 @@ import Helmet from 'components/Helmet'
 import Magnify from 'components/Magnify'
 import { useState, useEffect } from 'react'
 import $ from 'jquery'
-// components/Helmet.tsx
+import Container from 'react-bootstrap/Container'
+import {useGame} from 'Contexts/game'
+// import {useGame} from 'Contexts/find'
 
-function FindMine () {
-    var style = ["style1", "style3", "style4"];
-    var tam = ["tam1", "tam1", "tam1", "tam2", "tam3"];
-    var opacity = ["opacity1", "opacity1", "opacity1", "opacity2", "opacity2", "opacity3"];
-  
-    function getRandomArbitrary(min, max) {
-      return Math.floor(Math.random() * (max - min)) + min;
-    }
-  
-    var sparkle = "";
-    var numsparkles = 500;
-         
+// import {UseSearch} from 'Contexts/FINDMINE'
+
+export default function FindMine () {
+    const { gameOn, playing, searchHover, hoverOnSearch  } = useGame()
+    // const {gameOn, playing, searchHover } = useGame()
+    
+
     useEffect( () => {
-        var night = $('.constellation')[0]
-        // pageparents.css('overflow', 'hidden')
-        night.innerHTML = sparkle;
-        var widthWindow = window.innerHeight
-        var heightWindow = window.innerWidth;
-        for (var i = 0; i < numsparkles; i++) {
-          sparkle += "<span class='sparkle " + style[getRandomArbitrary(0, 4)] + " " + opacity[getRandomArbitrary(0, 6)] + " "
-          + tam[getRandomArbitrary(0, 5)] + "' style='animation-delay: ." +getRandomArbitrary(0, 9)+ "s; left: "
-          + getRandomArbitrary(0, widthWindow) + "px; top: " + getRandomArbitrary(0, heightWindow) + "px;'></span>";
+        const textEdit = () => {        // i would put turn this abstract expression into a modular reusable function but it won't be reused again.
+            $('.HoverHintHeader')
+            .animate({
+                opacity: 0.9
+            }, 450)
+            .animate({
+                opacity: 0.7
+            }, 450)
+            .animate({
+                opacity: 0.5
+            }, 450)
+            .animate({
+                opacity: 0.3
+            }, 400)
+            .animate({
+                opacity: 0.1
+            }, 450)
+            .animate({
+                opacity: 0.0
+            }, 250)
         }
+        // }).complete( (elem) => $(elem).hide() )
     }, [])
 
+    const checkit = () => {        
+        console.log('gameOn')
+        console.log(gameOn)
+        playing()
+        hoverOnSearch()
+    }
+
     return (
-        <Page>
-                        <div className="night">
-		<div className="constellation">
-        </div>
-        </div>
 
-
-        <div className={styles.row}>        
+        
+        <Page>       
+        <Container className={styles.row}>        
         <Helmet/>
+        {/* <Helmet/> */}
+        
+        <div className="Column">
         <Magnify/>
+            <h6 className="HoverHintHeader"
+             style={{ color: 'papayawhip'}}> Hover on the Magnifying Glass <br/> Press a letter to search  </h6>
         </div>
+        
+        </Container>
 
-        <div className="Row">
+        {/* <div className="Row">
             <h1 className={styles.h1}> Find </h1>
             <img src="/img/mine.png"/>
             <h1 className={styles.h1}> Mine </h1>         
-        </div>
+        </div> */}
         
         {/* <h1 style={{ color: 'papayawhip', fontFamily: 'papyrus' }}> Find Mine </h1> */}'
-
-
-            <div className="night">
-		<div className="constellation">
-        </div>
-        </div>
-
-
         </Page>
     )
+
 }
-export default FindMine
+
+
 
