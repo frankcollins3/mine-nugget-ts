@@ -1,32 +1,35 @@
-import { createContext, useContext, ReactNode, useState } from "react";
+import Axios from 'axios'
+import $ from 'jquery'
+import Regex from 'utility/MasterRegex'
 
-    type urlTypes = {
-        allStrain: string;
-    }
+export default async function GET (url, data) {
     
-    const urlDefaults: urlTypes = {
-        allStrain: 'pages/api/strains/strain' 
-    }
-
-const UrlContext = createContext<urlTypes>(urlDefaults);
-
-export function useUrl() {
-    return useContext(UrlContext);
-}
-
-
-export default function UrlProvider( { children } ) {
-        const [allStrain, setAllStrain] = useState<string>('pages/api/strains/strain')
-        
-        const exportvalues = {
-            allStrain
+    class GETclass {
+        constructor(url) {               
+            this.url = url
+        }      
+        // method getters
+        get getgetter() {            
+            console.log("over here in the getgetter")
+            return this.axiosGet()
         }
+        
+        
+        // methods 
+        async axiosGet() {                   
+            let strainfetch = await Axios.get(url)
+            console.log('strainfetch in the axiosget() method')
+            console.log(strainfetch)
+            return strainfetch
+        }  
+}  
 
-    return (
-        <>
-            <UrlContext.Provider value={exportvalues}>
-                {children}
-            </UrlContext.Provider>
-        </>
-    );
+        if (url) {    
+            console.log("atleast were in the url")        
+            const es6get = await new GETclass(url).getgetter
+            console.log('es6get')
+            console.log(es6get)
+            return es6get                                             
+    }
 }
+
