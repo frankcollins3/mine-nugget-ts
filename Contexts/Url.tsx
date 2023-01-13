@@ -1,10 +1,5 @@
 import { createContext, useContext, ReactNode, useState } from "react";
 
-
-export default function UrlProvider( { children }, context ) {
-    console.log('context in the URLProvider')
-    console.log(context)
-
     type urlTypes = {
         allStrain: string;
     }
@@ -13,13 +8,25 @@ export default function UrlProvider( { children }, context ) {
         allStrain: 'pages/api/strains/strain' 
     }
 
-    const [urlStrain, setUrlStrain] = useState<string>('pages/api/strains/strain')
+const UrlContext = createContext<urlTypes>(urlDefaults);
 
-    const exportvalues = {
+export function useUrl() {
+    return useContext(UrlContext);
+}
 
-    }
+
+export default function UrlProvider( { children } ) {
+        const [allStrain, setAllStrain] = useState<string>('pages/api/strains/strain')
+        
+        const exportvalues = {
+            allStrain
+        }
 
     return (
-        <h1> hey </h1> 
-    )
+        <>
+            <UrlContext.Provider value={exportvalues}>
+                {children}
+            </UrlContext.Provider>
+        </>
+    );
 }
