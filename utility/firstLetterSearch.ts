@@ -2,6 +2,7 @@ import APIcall from 'utility/APIcall'
 
 
 export default function FirstLetter (char:string) {
+    let lowerchar:string = char.toLowerCase()
     let namebucket:string[] = []
 
     if (char) {
@@ -11,8 +12,9 @@ export default function FirstLetter (char:string) {
             // allstrains.forEach( (strain:(string|object)) => {
                 let strainName:string = strain.strain
                 let firstLetter = strainName.slice(0, 1)
+                let lowerLetter:string = firstLetter.toLowerCase()
                 console.log(firstLetter)
-                if (firstLetter === char) {
+                if (lowerLetter === lowerchar) {
                     console.log(`firstLetter ${firstLetter} char ${char}`)
                     namebucket.push(strainName)
                 }
