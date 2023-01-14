@@ -1,35 +1,43 @@
-import Axios from 'axios'
-import $ from 'jquery'
-import Regex from 'utility/MasterRegex'
+import { createContext, useContext, ReactNode, useState } from "react";
 
-export default async function GET (url, data) {
-    
-    class GETclass {
-        constructor(url) {               
-            this.url = url
-        }      
-        // method getters
-        get getgetter() {            
-            console.log("over here in the getgetter")
-            return this.axiosGet()
-        }
-        
-        
-        // methods 
-        async axiosGet() {                   
-            let strainfetch = await Axios.get(url)
-            console.log('strainfetch in the axiosget() method')
-            console.log(strainfetch)
-            return strainfetch
-        }  
-}  
-
-        if (url) {    
-            console.log("atleast were in the url")        
-            const es6get = await new GETclass(url).getgetter
-            console.log('es6get')
-            console.log(es6get)
-            return es6get                                             
+    type urlTypes = {
+        allStrain: string;
+        userStrainPost: string;
+        getSpecifiedString: string;
     }
+    
+    const urlDefaults: urlTypes = {
+        allStrain: '/api/strains/strain',
+        userStrainPost: '/api/strains/userstrainpost',
+        getSpecifiedString: '/api/strains/getSpecifiedStrain'
+    }
+
+const UrlContext = createContext<urlTypes>(urlDefaults);
+
+export function useUrl() {
+    return useContext(UrlContext);
 }
 
+
+export default function UrlProvider( { children }, context ) {
+        const [allStrain, setAllStrain] = useState<string>('pages/api/strains/strain')
+        const [userStrainPost, setUserStrainPost] = useState<string>('/api/strains/userstrainpost')
+        const [getSpecifiedString, setGetSpecifiedString] = useState<string>('/api/strains/getSpecifiedStrain')
+
+    console.log(context)
+
+        const exportvalues = {
+            allStrain,
+            userStrainPost,
+            getSpecifiedString
+            // {no_set_state_exported: 'no reason to change strings'}
+        }
+
+    return (
+        <>
+            <UrlContext.Provider value={exportvalues}>
+                {children}
+            </UrlContext.Provider>
+        </>
+    );
+}
