@@ -25,12 +25,14 @@ export default async function GET (url, data) {
 }  
 
         if (url) {    
-            console.log("atleast were in the url")        
-            const es6get = await new GETclass(url).getgetter
-            console.log('es6get')
-            console.log(es6get)
-            return es6get
-                                             
+            if (url.length === 40) {
+                console.log("atleast were in the url")        
+                const es6get = await new GETclass(url).getgetter
+                console.log('es6get')
+                console.log(es6get)
+                return es6get                                             
+            }
+            
     }
 }
 
