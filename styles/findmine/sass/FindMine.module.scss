@@ -1,9 +1,9 @@
 .div {
     // transform: scale(2.33);
     height: 15em;
-    width: 11%;
+    width: 15em;
     border: 9px solid rgba(255, 166, 0, 0.85); 
-            
+
     display: flex;
     justify-content: center;
     align-items: center;
@@ -11,11 +11,12 @@
     background-color: blanchedalmond;
     border-radius: 50%;
     // margin-left: 20em;    
+    // margin: 0 5em;
     
     .helmet {
         height: 10em;
         width: 10em;
-        // margin: 0 500px;
+        // margin: 0 5em;        
     }
     
     .barrier {        
@@ -28,9 +29,10 @@
 }
 
 .row {
-    min-height: 60vh;
-    min-width: 100vw;    
+    // min-height: 60vh;
+    // min-width: 100vw;    
     // margin: 0 500px;
+    min-width: 100vw;
     
     display: flex;
     justify-content: center;
@@ -42,16 +44,23 @@
     // transform: scale(2.33);
     // height: 15em;
     // width: 11%;
-
-    height: 20em;
-    width: 20em;
+    height: 5%;
+    width: 5%;
     background-image: url('/img/Magnify.png');
     // height: 300px;
     // width: 300px;
     // margin-right: 20em;
+    margin: 0 5em;
 }
 
-.Magnify2 {
+.MagnifyCont {
+    background-image: url('/img/magnify.png');
+    height: 15em;
+    width: 15em;
+    // margin: 0 5em;
+}
+
+.Magnify2 {     // this is for the cool looking logo for the trophy room.
     height: 300px;
     width: 300px;
     background-image: url('/img/Magnify.png');    
@@ -62,5 +71,26 @@
     letter-spacing: 1.25em;
     font-family: Lemon-Milk;
     // font-family: papyrus;
-    color: papayawhip
+    color: papayawhip;
+    text-align: center;
+//     margin: 0 3em;
+}
+
+.MineImg {
+    height: 20em;
+    width: 20em;
+    // border: 2px solid papayawhip;
+    border-radius: 50%;
+    box-shadow: 18px 10px 10px papayawhip;
+}
+
+.TextParent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;    
+
+    div {
+        margin: 0 5em;  // sass makes more sense knowing this'll be all the div children
+    }
 }
