@@ -2,38 +2,22 @@ import styles from 'styles/findmine/sass/FindMine.module.scss'
 import Container from 'react-bootstrap/Container'
 import { useState, useEffect } from 'react'
 import $ from 'jquery'
+import { url } from 'node:inspector';
 
-import store from 'redux/store'
-import { useDispatch } from "react-redux";
-import customReduxSelector from 'redux/reduxselector'
-import {connect} from 'react-redux';
-import { TypedUseSelectorHook, useSelector } from 'react-redux'
-import {Provider} from 'react-redux';
-import { PassThrough } from 'stream'
+// let hoverstring:string = magnifyhover.toString()
 
-let reduxstore = store.getState()
-let magnifyhover = reduxstore.magnifyhover
-let hoverstring:string = magnifyhover.toString()
 
-export default function Magnify () {
+export default function Magnify (props) {
     let style = ["style1", "style3", "style4"];
     let tam = ["tam1", "tam1", "tam1", "tam2", "tam3"];
     let opacity = ["opacity1", "opacity1", "opacity1", "opacity2", "opacity2", "opacity3"];
+    let theme:string = props.findMineTheme
 
     const [hover, setHover] = useState(false)
     const [reduxBucket, setReduxBucket] = useState([])
 
     // * redux
-    let dispatch = useDispatch()
-
-    useEffect( () => {
-        console.log('reduxstore from the useEffect')
-        let gameReducer = reduxstore.gameReducer
-        console.log(reduxstore.gameReducer)
-        setReduxBucket(gameReducer)
-        
-    }, [])
-
+    
     function getRandomArbitrary(min, max) {
       return Math.floor(Math.random() * (max - min)) + min;
     }
@@ -54,30 +38,26 @@ export default function Magnify () {
         }
     }, [])
 
-    const stateHandler = () => {        
-        let newstore = store.getState()
-        let reducer = newstore.gameReducer
-        let magnifyhover = reducer.magnifyhover
-        dispatch( { type: 'MAGNIFY_ON'} )
-        console.log('magnifyhover')
-        console.log(magnifyhover)
-
-    }
 
     return (
         <>        
-        <div id="Cont" onMouseEnter={stateHandler} onMouseLeave={() => setHover(false)}
+        <div 
+        style={{ 
+            backgroundImage: theme === 'cone' ? `url('/img/magnify.png')` : `url('/img/magnify2.png')`,
+            transform: theme === 'cone' ? 'scale(1.00)' : 'scale(1.15)'
+        }}
+        id="Cont" onMouseLeave={() => console.log("we just left")}
         // <div id="Cont" onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
-         className={styles.MagnifyCont}>                          
-            <div style={{ display: hoverstring === 'true' ? 'none' : 'flex'}} className="night">
-                <div style={{ display: hoverstring === 'true' ? 'none' : 'flex'}}  className="constellation">
+         className={styles.MagnifyCont}>  
+             
+            <div  className="night">
+                <div className="constellation">
                 </div>
             </div>
         </div>
-            
-        
-        {/* </Container> */}
-        {/* </div>             */}
-        </>        
+    </>       
     )
 }
+
+
+
