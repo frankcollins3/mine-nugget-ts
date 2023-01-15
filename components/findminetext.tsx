@@ -22,29 +22,23 @@ import { relative } from 'node:path/win32'
             console.log(randomNumber)
             // .css('color', 'blue')
 
-            // $(`#word${randomNumber}`)
-            // .css('color', 'blue')
-            // .animate({
-            //     position: `relative`
-            // })
-            
             setTimeout( () => {
-                // let textid = $(`#word${randomNumber}`)
-                // textid
                 $(`#word${randomNumber}`)
+                .css('color', themecolor)
                 .animate({
-                    marginTop: '-30px'
+                    marginTop: '-20px',
+                    // color: 'green'
                 }, 1000)
-                .animate({                    
-                    color: 'orange'
-                    // color: themecolor
-                    // color: {theme === 'cone' ? `rgba(255, 166, 0, 0.85)` : 'blue'}
+                
+                setTimeout( () => {
+                    $(`#word${randomNumber}`)
+                    .css('color', 'papayawhip')
+                    .animate({
+                        marginTop: '0px',
+                    }, 1000)
+                    setClockTick(randomNumber)
                 }, 2000)
-                .animate({                    
-                    color: `papayawhip`
-                }, 1000)            
-                setClockTick(randomNumber)
-            }, 4000)
+            }, 3000)                    
         }, [clockTick])
 
         return (
