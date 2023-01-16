@@ -43,10 +43,16 @@ type gameContextType = {
 
     EitherParents: (parentid:string, statetext:string) => void;
 
-    // * end of game state above. Below is the data.strain.search() page
-
+    // * end of game state above. Below is the data.strain.search() page    
     searchHover: string;
     hoverOnSearch: () => void;
+    findMineTheme: string;
+    toggleTheme: () => void;
+    searchChar: string;
+    searchCharFunc: (term:string) => void;
+
+
+    // * end of  above. Below is the data.strain.search() page
     
 };
 
@@ -88,9 +94,16 @@ const gameDefaults: gameContextType = {
     emptybucket: () => {},
 
     EitherParents: (parentid:string, statetext:string) => {},
-
+// * end of game state up top
     searchHover: 'no search',
     hoverOnSearch: () => {},
+
+    findMineTheme: 'cone',
+    toggleTheme: () => {},
+    searchChar: '',
+    searchCharFunc: () => {}
+
+// * end of FindMine state up top
 };
 
 const GameContext = createContext<gameContextType>(gameDefaults);
@@ -116,6 +129,8 @@ export function GameProvider({ children }: Props) {
     // const [dontuse, setDontuse] = useState<string[]>([])
 
     const [searchHover, setSearchHover] = useState<string>('no search')
+    const [findMineTheme, setFindMineTheme] = useState<string>('cone')
+    const [searchChar, setSearchChar] = useState<string>('')
     
     const playing = () => {
         setGameOn('playing')
@@ -192,6 +207,14 @@ export function GameProvider({ children }: Props) {
         const hoverOnSearch = async () => {
             setSearchHover('searched!')
         }
+
+        const toggleTheme = () => {
+            console.log('were firing the toggleTheme function from context /game.tsx ')
+            if (findMineTheme === 'cone') setFindMineTheme('barrier')
+            if (findMineTheme === 'barrier') setFindMineTheme('cone')
+        }
+
+        const searchCharFunc = (term:string) => setSearchChar(term)
         
 
     const value = {
@@ -234,6 +257,13 @@ export function GameProvider({ children }: Props) {
         // * end of game state above. Below is the data.strain.search() page
         searchHover,
         hoverOnSearch,
+
+        findMineTheme,
+        toggleTheme,
+        searchChar,
+        searchCharFunc
+
+        // * end of FINDMINE search page state above. Below is the data.strain.search() page
     };
 
     return (
