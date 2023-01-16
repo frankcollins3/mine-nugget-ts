@@ -1,7 +1,6 @@
     import styles from 'styles/findmine/sass/FindMine.module.scss'
     import {useEffect, useState} from 'react'
     import $ from 'jquery'
-import { relative } from 'node:path/win32'
 
     export default function FindMineText (props) {
         const randomNumbers = [1,2,3,4,5,6,7,8]
@@ -16,20 +15,16 @@ import { relative } from 'node:path/win32'
         }, [])
         
         useEffect( () => {
-            let randomNumber:string = randomNumbers[Math.floor(Math.random()*randomNumbers.length).toString()]
-            let themecolor: string = props.findMineTheme === 'cone' ? `rgba(255, 166, 0, 0.85)` : `rgb(247, 208, 32)` 
-            console.log('randomNumber 2nd useEffect')
-            console.log(randomNumber)
-            // .css('color', 'blue')
-
+            let randomNumber:string = randomNumbers[Math.floor(Math.random()*randomNumbers.length).toString()]        
+            
             setTimeout( () => {
                 $(`#word${randomNumber}`)
-                .css('color', themecolor)
+                .css('color', `rgba(255, 166, 0, 0.85)`)
                 .animate({
                     marginTop: '-20px',
                     // color: 'green'
                 }, 1000)
-                
+
                 setTimeout( () => {
                     $(`#word${randomNumber}`)
                     .css('color', 'papayawhip')
