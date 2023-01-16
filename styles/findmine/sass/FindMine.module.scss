@@ -46,7 +46,9 @@
 }
 
 .MagnifyCont:focus {
+    outline: none !important;
     border: 5px solid transparent;
+    color: transparent;
 }
 
 .Magnify2 {     // this is for the cool looking logo for the trophy room.
