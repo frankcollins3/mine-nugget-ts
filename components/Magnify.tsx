@@ -1,7 +1,11 @@
 import styles from 'styles/findmine/sass/FindMine.module.scss'
 import Container from 'react-bootstrap/Container'
 import { useState, useEffect } from 'react'
+import Regex from 'utility/MasterRegex'
+
 import $ from 'jquery'
+// var jsdom = require('jsdom');
+// $ = require('jquery')(new jsdom.JSDOM().window);
 import {useUrl} from 'Contexts/Url'
 import {useGame} from 'Contexts/game'
 // let hoverstring:string = magnifyhover.toString()
@@ -19,17 +23,22 @@ export default function Magnify (props) {
     const [hover, setHover] = useState(false)
     const [reduxBucket, setReduxBucket] = useState([])
 
-    const checkKey = (evt) => {
-        console.log("")
-        console.log(evt)
+    const checkKey = (event) => {
+        console.log("checkKey firing!")
+        console.log(event)
     }
-
-    const joinFunctions = [checkKey, hoverOnSearch].join(" ")    
-
 
 
     useEffect( () => {
+
+    })
+    
+    useEffect( () => {
         console.log("useEffect is firing lets see those keys!")
+        // checkKey()
+        $('document').on('mousemove', () => {
+            console.log("pressing a key without having to click on anything!")
+        })
 
     }, [searchHover])
 
@@ -55,17 +64,44 @@ export default function Magnify (props) {
           + getRandomArbitrary(0, widthWindow) + "px; top: " + getRandomArbitrary(0, heightWindow) + "px;'></span>";
         }
     }, [])
-      
+
+    const mouseleave = () => {
+        console.log("we just left")
+        console.log(searchHover)
+    }
+
+    const keyHandler = async (evt) => {
+        console.log('firing the keyHandler function!')
+        console.log('evt')
+        console.log(evt)
+        let precode:string = evt.code
+        let code:string = evt.code.slice
+        let numreturn = await Regex(precode, 'numreturn')
+        let regexlength:number = numreturn.length
+        if (regexlength < 1) {
+            console.log("no length no letters lived!")
+        } 
+        else if (regexlength >= 1) {
+            console.log("there is some regex length this is a number")
+        }
+
+        
+
+        // let code:string = evt.code.slice(3)
+        console.log(`i just pressed ${code}`)
+    }
+
+    
 
     return (
         <>        
-        <div 
-        // onMouseEnter={(evt) => event.target.click()}
-            // onMouseEnter={() => $('#Cont').click()}
-        onMouseEnter={hoverOnSearch}
-        tabIndex={0} onKeyDown={() => $('#Cont').click()}
+        <div         
+        tabIndex={0} onKeyDown={keyHandler}
+        // onMouseEnter={enter}
+        // onClick={(event) => $(event.target).blur()}
+        // onMouseMove={keyUpListener}
         style={{ backgroundImage: `url('/img/magnify.png')` }}
-        id="Cont" onMouseLeave={() => console.log("we just left")}
+        id="Cont" onMouseLeave={mouseleave}
         // <div id="Cont" onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
          className={styles.MagnifyCont}>  
              
