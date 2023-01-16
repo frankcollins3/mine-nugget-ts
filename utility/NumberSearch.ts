@@ -5,11 +5,9 @@ export default async function NumberSearch (num) {
     let strains = await APIcall('all', null, null)
     let number;
     let i:number = 0;
-    let strainbucket = new Array()
-    console.log('num in the utility function')
-    console.log(num)
+    let strainbucket = new Array()    
     if (typeof num === 'string') number = parseInt(num)
-    if (num > 6) number = 6
+    if (num > 6) number = 7
     // if (number === 1) {
         
     //     return strains[0]
@@ -34,20 +32,15 @@ export default async function NumberSearch (num) {
     // }    
     const loopandpush = () => {
         while (i < number) {
-            let incrementstrain = strains[i]
-            console.log('incrementstrain')
-            console.log(incrementstrain)
+            let incrementstrain = strains[i]            
             strainbucket.push(incrementstrain)
             i++
         }
     }
     const checkAndReturn = async () => {
-        console.log('strainbucket in the checkAndReturn function')
-        console.log(strainbucket)
         return strainbucket
     }
-    const bothfunctions = async () => {
-        console.log('both functions function')
+    const bothfunctions = async () => {        
         await loopandpush() 
         return checkAndReturn()
     }
