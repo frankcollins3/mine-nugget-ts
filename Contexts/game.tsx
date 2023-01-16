@@ -49,7 +49,7 @@ type gameContextType = {
     findMineTheme: string;
     toggleTheme: () => void;
     searchChar: string;
-    searchCharFunc: (term:string) => void;
+    searchCharFunc: (term) => void;
 
 
     // * end of  above. Below is the data.strain.search() page
@@ -100,8 +100,8 @@ const gameDefaults: gameContextType = {
 
     findMineTheme: 'cone',
     toggleTheme: () => {},
-    searchChar: '',
-    searchCharFunc: () => {}
+    searchChar: 'none',
+    searchCharFunc: (term) => {}
 
 // * end of FindMine state up top
 };
@@ -130,7 +130,7 @@ export function GameProvider({ children }: Props) {
 
     const [searchHover, setSearchHover] = useState<string>('no search')
     const [findMineTheme, setFindMineTheme] = useState<string>('cone')
-    const [searchChar, setSearchChar] = useState<string>('')
+    const [searchChar, setSearchChar] = useState<string>('none')
     
     const playing = () => {
         setGameOn('playing')
@@ -205,7 +205,14 @@ export function GameProvider({ children }: Props) {
     }    
 
         const hoverOnSearch = async () => {
-            setSearchHover('searched!')
+            if (searchHover === 'searching') {
+                console.log('searchHover is currently searching. changing to not searching')
+                setSearchHover('not searching')
+            }
+            else if (searchHover === 'not searching') {
+                console.log('**** NOT SEARCHING! changing to searching!! ****')
+                setSearchHover('searching!')
+            }
         }
 
         const toggleTheme = () => {
