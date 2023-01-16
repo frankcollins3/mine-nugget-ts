@@ -8,6 +8,8 @@ import $ from 'jquery'
 // $ = require('jquery')(new jsdom.JSDOM().window);
 import {useUrl} from 'Contexts/Url'
 import {useGame} from 'Contexts/game'
+import FirstLetter from 'utility/firstLetterSearch'
+
 // let hoverstring:string = magnifyhover.toString()
 
 
@@ -66,20 +68,22 @@ export default function Magnify (props) {
     }, [])
 
     const mouseleave = () => {
-        console.log("we just left")
-        console.log(searchHover)
+        
     }
 
-    const keyHandler = async (evt) => {
-        console.log('firing the keyHandler function!')
-        console.log('evt')
-        console.log(evt)
+    const keyHandler = async (evt) => {        
         let precode:string = evt.code
-        let code:string = evt.code.slice
+        let code:string = evt.code.slice(3)
+        
         let numreturn = await Regex(precode, 'numreturn')
-        let regexlength:number = numreturn.length
+        let regexlength:number = numreturn.length        
         if (regexlength < 1) {
             console.log("no length no letters lived!")
+            let searchFor:(string|object|any) = await FirstLetter(code)
+            console.log('searchFor')
+            console.log(searchFor)
+            console.log(typeof searchFor)
+
         } 
         else if (regexlength >= 1) {
             console.log("there is some regex length this is a number")
@@ -96,13 +100,9 @@ export default function Magnify (props) {
     return (
         <>        
         <div         
-        tabIndex={0} onKeyDown={keyHandler}
-        // onMouseEnter={enter}
-        // onClick={(event) => $(event.target).blur()}
-        // onMouseMove={keyUpListener}
+        tabIndex={0} onKeyDown={keyHandler}        
         style={{ backgroundImage: `url('/img/magnify.png')` }}
-        id="Cont" onMouseLeave={mouseleave}
-        // <div id="Cont" onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
+        id="Cont" onMouseLeave={mouseleave}        
          className={styles.MagnifyCont}>  
              
             <div  className="night">
