@@ -1,5 +1,4 @@
 .div {
-    // transform: scale(2.33);
     height: 15em;
     width: 15em;
     border: 9px solid rgba(255, 166, 0, 0.85); 
@@ -9,29 +8,21 @@
     align-items: center;
     flex-direction: column;
     background-color: blanchedalmond;
-    border-radius: 50%;
-    // margin-left: 20em;    
-    // margin: 0 5em;
+    border-radius: 50%;    
     
     .helmet {
         height: 10em;
         width: 10em;
-        // margin: 0 5em;        
     }
     
     .barrier {        
         height: 50px;
-        // height: 20px;
         // *  height: 30px; this becomes half its height upon some behavior because it turns the face into a smile
         width: 5em;
-        // margin: 0 500px;   
     }
 }
 
 .row {
-    // min-height: 60vh;
-    // min-width: 100vw;    
-    // margin: 0 500px;
     min-width: 100vw;
     
     display: flex;
@@ -40,24 +31,22 @@
     flex-direction: row;  
 }
 
-.Magnify {
-    // transform: scale(2.33);
-    // height: 15em;
-    // width: 11%;
+.Magnify {    
     height: 5%;
     width: 5%;
     background-image: url('/img/Magnify.png');
-    // height: 300px;
-    // width: 300px;
-    // margin-right: 20em;
     margin: 0 5em;
 }
 
 .MagnifyCont {
-    background-image: url('/img/magnify.png');
+    // background-image: url('/img/magnify.png');
     height: 15em;
     width: 15em;
     // margin: 0 5em;
+}
+
+.MagnifyCont:focus {
+    border: 5px solid transparent;
 }
 
 .Magnify2 {     // this is for the cool looking logo for the trophy room.
