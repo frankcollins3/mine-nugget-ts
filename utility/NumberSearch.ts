@@ -9,6 +9,7 @@ export default async function NumberSearch (num) {
     console.log('num in the utility function')
     console.log(num)
     if (typeof num === 'string') number = parseInt(num)
+    if (num > 6) number = 6
     // if (number === 1) {
         
     //     return strains[0]
