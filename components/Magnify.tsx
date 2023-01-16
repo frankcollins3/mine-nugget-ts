@@ -2,8 +2,8 @@ import styles from 'styles/findmine/sass/FindMine.module.scss'
 import Container from 'react-bootstrap/Container'
 import { useState, useEffect } from 'react'
 import $ from 'jquery'
-import { url } from 'node:inspector';
-
+import {useUrl} from 'Contexts/Url'
+import {useGame} from 'Contexts/game'
 // let hoverstring:string = magnifyhover.toString()
 
 
@@ -12,6 +12,9 @@ export default function Magnify (props) {
     let tam = ["tam1", "tam1", "tam1", "tam2", "tam3"];
     let opacity = ["opacity1", "opacity1", "opacity1", "opacity2", "opacity2", "opacity3"];
     let theme:string = props.findMineTheme
+
+    const { allStrain, getSpecifiedStrain, userStrainPost } = useUrl()  //obj destructuring
+    const { gameOn, playing, searchHover, hoverOnSearch, findMineTheme, toggleTheme  } = useGame()
 
     const [hover, setHover] = useState(false)
     const [reduxBucket, setReduxBucket] = useState([])
@@ -38,14 +41,17 @@ export default function Magnify (props) {
         }
     }, [])
 
+    const checkKey = () => {
+        console.log("wow what a night")
+    }
+      
 
     return (
         <>        
         <div 
-        style={{ 
-            backgroundImage: theme === 'cone' ? `url('/img/magnify.png')` : `url('/img/magnify2.png')`,
-            transform: theme === 'cone' ? 'scale(1.00)' : 'scale(1.15)'
-        }}
+        tabIndex={0} onKeyDown={() => console.log('key pressed')}
+        // onKeyUp={checkKey}
+        style={{ backgroundImage: `url('/img/magnify.png')` }}
         id="Cont" onMouseLeave={() => console.log("we just left")}
         // <div id="Cont" onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
          className={styles.MagnifyCont}>  
