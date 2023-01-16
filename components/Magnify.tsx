@@ -19,6 +19,21 @@ export default function Magnify (props) {
     const [hover, setHover] = useState(false)
     const [reduxBucket, setReduxBucket] = useState([])
 
+    const checkKey = (evt) => {
+        console.log("")
+        console.log(evt)
+    }
+
+    const joinFunctions = [checkKey, hoverOnSearch].join(" ")    
+
+
+
+    useEffect( () => {
+        console.log("useEffect is firing lets see those keys!")
+
+    }, [searchHover])
+
+
     // * redux
     
     function getRandomArbitrary(min, max) {
@@ -40,17 +55,15 @@ export default function Magnify (props) {
           + getRandomArbitrary(0, widthWindow) + "px; top: " + getRandomArbitrary(0, heightWindow) + "px;'></span>";
         }
     }, [])
-
-    const checkKey = () => {
-        console.log("wow what a night")
-    }
       
 
     return (
         <>        
         <div 
-        tabIndex={0} onKeyDown={() => console.log('key pressed')}
-        // onKeyUp={checkKey}
+        // onMouseEnter={(evt) => event.target.click()}
+            // onMouseEnter={() => $('#Cont').click()}
+        onMouseEnter={hoverOnSearch}
+        tabIndex={0} onKeyDown={() => $('#Cont').click()}
         style={{ backgroundImage: `url('/img/magnify.png')` }}
         id="Cont" onMouseLeave={() => console.log("we just left")}
         // <div id="Cont" onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
