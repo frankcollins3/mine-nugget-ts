@@ -1,53 +1,40 @@
-// @ts-nocheck
 
-import styled from 'styled-components'
-import CardStyle from 'styles/StrainDisplay'
+import Container from 'react-bootstrap/Container'
+import APIcall from 'utility/APIcall'
+import {useEffect, useState} from 'react'
+import {useGame} from 'Contexts/game'
+import Searchdisplay from 'styles/findmine/components/Searchdisplay'
 
 
-export default function StrainDisplayValue(props) {
-    console.log("hello from strain display values!")
-    let columnclass = 'Column'
-    let card = 'card' 
-    let doubleCardClass = [card, columnclass].join(' ')
-    // sister container to the original underdisplay of the rendererd strains
-    // now [Left: Object.Keys(i.e. 'strain')] && [Right: Object.Values(i.e. Do-Si-Dos)]
-    console.log('props in the strain display value')
-    console.log('props')
-    console.log(props)
 
+export default function SearchDisplay () {
+
+    const { 
+        gameOn, playing, searchHover, hoverOnSearch, 
+        findMineTheme, toggleTheme, searchChar, searchCharFunc,
+        searchBucket, fillSearchBucket
+        } = useGame()
+
+    const textenter = () => {
+        console.log('searchBucket')
+        console.log(searchBucket)
+        console.log('enter the text')
+    }
+
+    let strainmap = searchBucket.map( (mapitem) => {
+        return (
+            <p> {mapitem.strain} </p>
+        )
+    })
 
     return (
-        <>        
-        {/* <CardStyle        
-        bgToggle={props.bgToggle} setBgToggle={props.setBgToggle}
-        clickedStrain={props.clickedStrain} setClickedStrain={props.setClickedStrain}                   
-            >
-        <div className={doubleCardClass}>
-            <p
-            // className="Column"
-            style={{ backgroundColor: props.bgToggle === 'new' ? 'transparent' : 'rgb(62, 50, 32)'}}
-            style={{ color: props.bgToggle === 'color' ? 'transparent' : 'rgb(62, 50, 32)'}}
-            > {props.displayText} </p>
-        </div>
-        </CardStyle> 
-         */}
-                 <CardStyle        
-            bgToggle={props.bgToggle} setBgToggle={props.setBgToggle}
-            clickedStrain={props.clickedStrain} setClickedStrain={props.setClickedStrain}
-            // bgToggle={props.globalState[1].bgToggle} setBgToggle={props.setBgToggle}
-            // clickedStrain={props.globalState[1].clickedStrain} setClickedStrain={props.setClickedStrain}
-                >
+        <Searchdisplay>
+            <h1 onMouseEnter={textenter}> hey whaddya know </h1>
+            {strainmap}
+            {/* {searchBucket.map( (mapitem) => {
+                <p> {mapitem.strain} </p>
+            })} */}
+        </Searchdisplay>
 
-                <div 
-                className={doubleCardClass}
-                >            
-                <h2
-                style={{ backgroundColor: props.bgToggle === 'new' ? 'transparent' : 'rgb(62, 50, 32)'}}
-                 className="card-text">
-                    {props.displayText || ''}
-                 </h2>
-            </div>    
-         </CardStyle>   
-        </>
     )
 }
