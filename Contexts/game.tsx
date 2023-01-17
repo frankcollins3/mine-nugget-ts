@@ -38,7 +38,7 @@ type gameContextType = {
     lose: () => void;
 
     dontuse: string[] | string;
-    fillbucket: (strain) => void;
+    fillbucket: (strains) => void;
     emptybucket: () => void;
 
     EitherParents: (parentid:string, statetext:string) => void;
@@ -50,6 +50,9 @@ type gameContextType = {
     toggleTheme: () => void;
     searchChar: string;
     searchCharFunc: (term) => void;
+
+    searchBucket: any;
+    fillSearchBucket: (strains) => void;
 
 
     // * end of  above. Below is the data.strain.search() page
@@ -90,7 +93,7 @@ const gameDefaults: gameContextType = {
     lose: () => {},
 
     dontuse: [],
-    fillbucket: () => {},
+    fillbucket: ([]) => {},
     emptybucket: () => {},
 
     EitherParents: (parentid:string, statetext:string) => {},
@@ -101,7 +104,10 @@ const gameDefaults: gameContextType = {
     findMineTheme: 'cone',
     toggleTheme: () => {},
     searchChar: 'none',
-    searchCharFunc: (term) => {}
+    searchCharFunc: (term) => {},
+
+    searchBucket: [],
+    fillSearchBucket: (strains) => {}
 
 // * end of FindMine state up top
 };
@@ -131,6 +137,8 @@ export function GameProvider({ children }: Props) {
     const [searchHover, setSearchHover] = useState<string>('no search')
     const [findMineTheme, setFindMineTheme] = useState<string>('cone')
     const [searchChar, setSearchChar] = useState<string>('none')
+
+    const [searchBucket, setSearchBucket] = useState([])
     
     const playing = () => {
         setGameOn('playing')
@@ -222,6 +230,13 @@ export function GameProvider({ children }: Props) {
         }
 
         const searchCharFunc = (term:string) => setSearchChar(term)
+
+        const fillSearchBucket = (strains:any) => {
+            const empty = () => setSearchBucket([])
+            empty()
+            const refill = () => setSearchBucket(strains)
+            refill()
+        }
         
 
     const value = {
@@ -268,7 +283,10 @@ export function GameProvider({ children }: Props) {
         findMineTheme,
         toggleTheme,
         searchChar,
-        searchCharFunc
+        searchCharFunc,
+
+        searchBucket,
+        fillSearchBucket,
 
         // * end of FINDMINE search page state above. Below is the data.strain.search() page
     };
