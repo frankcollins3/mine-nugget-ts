@@ -10,8 +10,8 @@ import CSS from 'utility/CSStool'
 
 
 
-export default function SearchDisplay () {
 
+export default function DisplayForSearch () {
 
     const { 
         gameOn, playing, searchHover, hoverOnSearch, 
@@ -64,9 +64,7 @@ export default function SearchDisplay () {
 
     return (
             <Container>
-        <Searchdisplay>
-            {/* <h1 onMouseEnter={textenter}> hey whaddya know </h1> */}
-            
+        <Searchdisplay>                    
             <img className={styles.DisplayCaseCone} src="/img/cone.png"/>
             {strainmap}
             <img className={styles.DisplayCaseCone} src="/img/cone.png"/>            
