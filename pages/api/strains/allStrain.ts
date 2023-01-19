@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
-import APIcall from '../../../utility/APIcall'
-import Random from '../../../utility/Randomizer'
+import APIcall from 'utility/APIcall'
+import Random from 'utility/Randomizer'
 
 
 
@@ -16,9 +16,9 @@ export default async function (req:any, res:any) {
 
     
     const createStrains = async () => {
-      console.log("we are here");
+      
           if (dbstrainlist.length < 3) {
-            console.log("we are ALSO HERE!!");                
+      
             
           allstrainspost.map( (mapitem:any, index:number) => {
             let strainId:number = index + 1
@@ -26,9 +26,6 @@ export default async function (req:any, res:any) {
             let dominant:string = mapitem.dominant
             let parents:string = mapitem.parents
             let funfact:string = mapitem.funfact
-            
-            console.log('strain')
-            console.log(strain)
             
             strains.create({
               data: {
@@ -38,40 +35,26 @@ export default async function (req:any, res:any) {
                 parents: parents,
                 funfact: funfact
               }
-            }).then( (createdstrains:any) => {
-              console.log('createdstrains')
-              console.log(createdstrains)
+            }).then( (createdstrains:any) => {              
             })              
         })
     }
     }
-      createStrains()
+      createStrains()    
 
-  
-    // const updateId = async () => {      
-    // }
-
-    const checkdb = () => {
-      console.log('were in the checkdb')
-      console.log(dbstrainlist)
+    const checkdb = () => {      
     }
     checkdb()
 
 
 
   if (req.method === 'POST') {      
-      let status:string = req.status
-      console.log('status')
-      console.log(status)
-            
+      let status:string = req.status            
       let dblength = dbstrainlist.length
       if (dbstrainlist.length) {
 
-      }
-      
+      }   
     
-    // const movie = await prisma.strains.create({ data: JSON.parse(body) });
-    // res.json(movie);
   }
   try {
       res.json( { successObject: dbstrainlist, length: dbstrainlist.length})
@@ -79,13 +62,5 @@ export default async function (req:any, res:any) {
   catch (err) {
     console.log(err)
   }
-//   console.log('res.status')
-//   console.log(res.status)
-//   console.log(res.status)
-//   if (res.status(403)) {
-//     console.log('we have failure')
-//     // can also redirect to an error page.
-//   } else {
-//     res.status(200).json( { successobject: allstrainspost})
-//   }
+
 }
