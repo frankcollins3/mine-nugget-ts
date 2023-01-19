@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client';
 
 async function dbFirstLetter(req:any, res:any) {        
         let prisma = new PrismaClient()        
-        let firstLetter:string = req.body.dataname 
+        let firstLetter:string = req.body.dataname.toLowerCase()
 
         let strainbucket = new Array()
         let allstrains = await prisma.strains.findMany()        // find all strains from        
