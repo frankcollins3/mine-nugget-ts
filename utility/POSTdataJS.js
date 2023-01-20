@@ -3,10 +3,9 @@ import $ from 'jquery'
 import Regex from 'utility/MasterRegex'
 
 export default async function POST (url, data) {
-// export default async function DataCall (method, url, data) {
-// export default async function DataCall (method:string, url:string, data:(string|object|number)) {
-    console.log('url in the datacall')
-    console.log(url)
+    // * the URL is the '/api/strains.. the data is the [straindata += userdata] (just have to make data in global and )
+
+
 
     class POSTclass {
         constructor(url) {   
@@ -18,36 +17,26 @@ export default async function POST (url, data) {
             console.log("i am over here in getAjax")
             return this.xmlcall()
         }
-  
+        
         
         // methods 
         async xmlcall() {       
-            console.log('data')
-            console.log(data)
-            let id = await  Regex(data, 'numreturn')
-            console.log('id')
-            console.log(id)
-            // let strainId:number = await Regex(data, 'numReturn')
-
-            // Axios.post({
-                
-            // })
-            // const xhr = await new XMLHttpRequest();  
-            // await xhr.open('POST', url, true);                   
-            // xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            // let response = await xhr.responseText            
-            // xhr.onreadystatechange = () => { // Call a function when the state changes.                
-                // if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-                // if (xhr.status === 200) {            
-                    // return xhr.response            
-                    // }
-            // }
-            // let postobject = {url: url, data: data}
-            // xhr.send(postobject);             
-
-
-            
-            
+            let dataname = await Regex(data, 'alphareturn')         
+            console.log('dataname')       
+            console.log(dataname)       
+            let id = await Regex(data, 'numreturn')
+      
+           return  Axios.post(url, {
+                dataname: dataname,
+                id: id
+              })
+              .then(function (response) {
+                console.log(response);
+                return response
+              })
+              .catch(function (error) {
+                console.log(error);
+              });            
     }
 
 }   // ajax call ending 
