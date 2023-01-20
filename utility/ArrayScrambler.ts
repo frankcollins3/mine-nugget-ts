@@ -11,12 +11,7 @@ let dontuse = new Array()
 // let indexArray:(string|number|object)[] = []
 const populateArray = () => {
     array.forEach( (indexitem, idx:any) => {
-        // if (dontuse.includes(idx)) {
-        //     return    
-        // } else {
             indexArray.push(idx)
-        // }
-
     })
 }
 // loop thru array and push the indexes in the array so we have them for reference.
@@ -26,19 +21,20 @@ const swapindex = async () => {
     for (i; i < array.length; i++) {
         let randomIndex = await Random(indexArray)
         array[randomIndex] = array[i]
+        // kind of crazy that this works. i had to test that: let arr = [1, 2, 3, 4, 5] arr[0] = 0... arr = [0, 2, 3, 4, 5]
+        
     }
 }
 const check = () => {
-    console.log('array down here')
-    console.log(array)
     return array
 }
 const asyncwaitfunc = async () => {
     await populateArray()
     await swapindex()
     return check()
-
 }
+return asyncwaitfunc()
+
 }
 return checkArray()
 
