@@ -14,6 +14,9 @@ import NumberSearch from 'utility/NumberSearch'
 import dbFirstLetter from 'pages/api/strains/dbFirstLetter'
 import GET from 'utility/GETdataJS'
 import POST from 'utility/POSTdataJS'
+import Scrambler from 'utility/ArrayScrambler'
+import IntStringCount from 'utility/IntStringCount'
+import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript'
 
 // let hoverstring:string = magnifyhover.toString()
 
@@ -88,40 +91,40 @@ const {
         // gpmcwd gorilla, pineapple, mimosa, cherry, wid & cake, dosidos
 
         let numreturn = await Regex(precode, 'numreturn')
+        let allstrains = await APIcall('all', null, null)
 
         let regexlength:number = numreturn.length        
         if (regexlength < 1) {
-            // let db = await dbFirstLetter('g') // expected 2 arguments but got 1 when you try to invoke as a callback with parameter.
-            // console.log('dbFirstLetter')
-            // console.log(dbFirstLetter)
-            let db = await $.ajax({
-                method: 'GET',
-                url: dbFirstLetter,
-                data: {
-                    code
-                }
-            }).then( (mydata) => {
-                // console.log('mydata')
-                // console.log(mydata)
-            })
-            let searchfor = await POST(dbFirstLetter, 'w')
-            console.log('searchfor')
-            console.log(searchfor)
-            
-            
+
+
             if (code === 'g' || code === 'w' || code === 'p' || code === 'm' || code === 'c' || code === 'd') {
                 let searchFor:(string|object|any) = await FirstLetter(code)
                 fillSearchBucket(searchFor)                
             } else {
-                if (code === 'aleft') return
-                let allstrains = await APIcall('all', null, null)
-                fillSearchBucket(allstrains)                
+                if (code === 'aleft') return   
+                let allStrainsScrambled = await Scrambler(allstrains) 
+                fillSearchBucket(allStrainsScrambled)                
             }
-
+            
         } 
+
         else if (regexlength >= 1) {
+
             if (parseInt(numreturn) <= 6 || parseInt(numreturn) > 6) {                
+                console.log('code down here')
+                console.log(code)
+                let newcode = await Regex(code, 'numreturn')
+
+                const specifyStringLength = await IntStringCount(newcode)
+                let stringjoin:string = specifyStringLength.join()
+                let searching = await POST(dbNumber, stringjoin)                                
+
+                let myarray = ['1', '2', '3', '4', '5']
+                // fillSearchBucket(allstrains)                
                 let myStrains = await NumberSearch(numreturn)
+
+                console.log('myStrains')
+                console.log(myStrains)
                 fillSearchBucket(myStrains)                
             }            
         }        
