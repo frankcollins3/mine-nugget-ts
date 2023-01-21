@@ -1,62 +1,27 @@
 import Random from 'utility/Randomizer'
+import APIcall from 'utility/APIcall'
 
-export default function Scrambler (array) {
-console.log('array')
-console.log(array)
+export default async function Scrambler (array) {
 
-let i:number = 0;
-let arrLen:number = array.length
-let indexArray:(string|number|object)[] = []        // need object because push won't work without it.
-let indexLen:number = indexArray.length
-let dontuse = new Array()
-let dontuseLen:number = dontuse.length
-
-const populateArray = () => {
-    array.forEach( (indexitem, idx:any) => {        
-            indexArray.push(idx)        
-    })
-}
-// loop thru array and push the indexes in the array so we have them for reference.
-
-const checkArray = async () => {
-const swapindex = async () => {
-    for (i; i < array.length; i++) {
-
-        const checkdontuse = (array) => {
-            for (i; i < array.length; i++) {
-                for (i; i < dontuseLen; i++) {
-                    if (array[i] === dontuse[i]) {
-                        continue
-                    } else {
-                        return array[i]
-                    }
-                }
-            }
+    function shuffle(array) {
+        let currentIndex = array.length,  randomIndex;
+      
+        // with elements left to shuffle.
+        while (currentIndex != 0) {
+      
+          // remaining element
+          randomIndex = Math.floor(Math.random() * currentIndex);
+          currentIndex--;
+      
+          // swap with current elem
+          [array[currentIndex], array[randomIndex]] = [
+            array[randomIndex], array[currentIndex]];
         }
-        let randomIndex = indexArray.filter(checkdontuse)        
-
-        console.log('randomIndex')
-        console.log(randomIndex)
-        // let randomIndex = indexArray.filter(async(idx) => !dontuse.includes(idx) ? )        
-        // let randomIndex = await Random(indexArray)        
-        
-        // array[randomIndex] = array[i]
-
-    }
-    
-    // kind of crazy that this works. i had to test that: let arr = [1, 2, 3, 4, 5] arr[0] = 0... arr = [0, 2, 3, 4, 5]        
-}
-const check = () => {    
-    return array
-}
-const asyncwaitfunc = async () => {
-    await populateArray()
-    await swapindex()
-    return check()
-}
-return asyncwaitfunc()
-
-}
-return checkArray()
+      
+        return array;
+      }
+      
+      let newarray = await shuffle(array);            
+      return newarray
 
 }
