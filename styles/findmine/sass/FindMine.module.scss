@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Moon+Dance&display=swap');
+
 .div {
     height: 15em;
     width: 15em;
@@ -23,12 +25,20 @@
 }
 
 .row {
-    min-width: 100vw;
-    
+    min-width: 100vw;    
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: row;  
+
+}
+
+.Grid {
+    border: 5px solid hotpink;
+    max-width: 30%;
+    display: grid;
+    gap: 5em;
+    grid-template-rows: 1fr repeat();
 }
 
 .Magnify {    
@@ -67,12 +77,45 @@
 //     margin: 0 3em;
 }
 
+.p {
+    font-family: 'Moon Dance', cursive;
+    font-size: 25px;
+    color: papayawhip;
+}
+
 .MineImg {
     height: 20em;
     width: 20em;
     // border: 2px solid papayawhip;
     border-radius: 50%;
     box-shadow: 18px 10px 10px papayawhip;
+}
+
+.MiniGoldBar {
+    // height: 2em;
+    // width: 2em;
+    height: 50px;
+    width: 50px;
+    // border: 5px solid hotpink;
+    // color: transparent;
+    // border: 1px solid gold;
+    background-image: url('/img/gold.png');    
+    background-size: 25%;
+    transform: rotate(45deg);
+    background-repeat: no-repeat;
+}
+
+// .css('color', 'transparent')
+// .css('border', '1px solid transparent')
+// .css('background-color', 'transparent')
+// .css('margin-top', '4em')
+// .css('background-image', "url('/img/gold.png')")
+// .css('background-size', 'cover')
+// .css('background-repeat', 'no-repeat')
+
+.Shovel {
+    height: 85px;
+    width: 85px;
 }
 
 .TextParent {
@@ -84,4 +127,10 @@
     div {
         margin: 0 5em;  // sass makes more sense knowing this'll be all the div children
     }
+}
+
+.DisplayCaseCone {
+    height: 3vh;
+    width: 3vw;    
+    margin: 2em 2em;
 }
