@@ -44,8 +44,10 @@ type gameContextType = {
     EitherParents: (parentid:string, statetext:string) => void;
 
     // * end of game state above. Below is the data.strain.search() page    
-    searchHover: string;
-    hoverOnSearch: () => void;
+    searchHover: boolean;
+    searchOn: () => void;
+    searchOff: () => void;
+    // hoverOnSearch: () => void;
     findMineTheme: string;
     toggleTheme: () => void;
     searchChar: string;
@@ -98,8 +100,10 @@ const gameDefaults: gameContextType = {
 
     EitherParents: (parentid:string, statetext:string) => {},
 // * end of game state up top
-    searchHover: 'no search',
-    hoverOnSearch: () => {},
+    searchHover: false,
+    
+    searchOn: () => {},
+    searchOff: () => {},
 
     findMineTheme: 'cone',
     toggleTheme: () => {},
@@ -134,7 +138,7 @@ export function GameProvider({ children }: Props) {
     const [trophy, setTrophy] = useState<boolean>(false)
     // const [dontuse, setDontuse] = useState<string[]>([])
 
-    const [searchHover, setSearchHover] = useState<string>('no search')
+    const [searchHover, setSearchHover] = useState<boolean>(false)
     const [findMineTheme, setFindMineTheme] = useState<string>('cone')
     const [searchChar, setSearchChar] = useState<string>('none')
 
@@ -212,16 +216,9 @@ export function GameProvider({ children }: Props) {
         return
     }    
 
-        const hoverOnSearch = async () => {
-            if (searchHover === 'searching') {
-                console.log('searchHover is currently searching. changing to not searching')
-                setSearchHover('not searching')
-            }
-            else if (searchHover === 'not searching') {
-                console.log('**** NOT SEARCHING! changing to searching!! ****')
-                setSearchHover('searching!')
-            }
-        }
+        const searchOn = () => setSearchHover(true)
+        const searchOff = () => setSearchHover(false)
+
 
         const toggleTheme = () => {
             console.log('were firing the toggleTheme function from context /game.tsx ')
@@ -278,7 +275,9 @@ export function GameProvider({ children }: Props) {
 
         // * end of game state above. Below is the data.strain.search() page
         searchHover,
-        hoverOnSearch,
+        // hoverOnSearch,
+        searchOn,
+        searchOff,
 
         findMineTheme,
         toggleTheme,
