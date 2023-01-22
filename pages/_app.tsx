@@ -9,15 +9,14 @@ import '../styles/globals.css'
   import ERROR from 'utility/CatchBlockErr'
   import Link from 'next/link'
   import StateStore from 'hooks/store'
+  import error from' components/error'
+
   // import { ThemeProvider, ColorModeProvider } from "@chakra-ui/react"
-  import { ChakraProvider } from '@chakra-ui/react'
-
-
-  // import StateStore from 'components/store'
-
+  // import { ChakraProvider } from '@chakra-ui/react'
   import store from 'redux/store'
   import {Provider} from 'react-redux';
   import { GameProvider } from 'Contexts/game'
+  
 
 
   
@@ -47,19 +46,18 @@ import '../styles/globals.css'
    const winstreakarray = [winStreak, setWinStreak]
    const guessarray = [guessCount, setGuessCount]
 
-
-//  * strain.tsx global state
- const [clickedStrain, setClickedStrain] = useState()
- const [bgToggle, setBgToggle] = useState('new')
- const [textState, setTextState] = useState('')
- const [displayText, setDisplayText] = useState('')
- const [styleFile, setStyleFile] = useState('')
- const [nothing, setNothing] = useState()
- const [apiLen, setApiLen] = useState(0)
- const [strainSave, setStrainSave] = useState(false)
- const [keyState, setKeyState] = useState([])
- const [valueState, setValueState] = useState([])
- const [fetchLock, setFetchLock] = useState(false)
+   //  * strain.tsx global state
+  const [clickedStrain, setClickedStrain] = useState()
+  const [bgToggle, setBgToggle] = useState('new')
+  const [textState, setTextState] = useState('')
+  const [displayText, setDisplayText] = useState('')
+  const [styleFile, setStyleFile] = useState('')
+  const [nothing, setNothing] = useState()
+  const [apiLen, setApiLen] = useState(0)
+  const [strainSave, setStrainSave] = useState(false)
+  const [keyState, setKeyState] = useState([])
+  const [valueState, setValueState] = useState([])
+  const [fetchLock, setFetchLock] = useState(false)
 
   // * error.tsx global state
  //  const [currentStrain, setCurrentStrain ] = useState('')
@@ -152,10 +150,11 @@ import '../styles/globals.css'
 
           
           
-            
-          
-
-      <ChakraProvider>        
+          {/* useContext() /contexts/game.tsx errormsg<string>('') any toggled state with valid string data entry === this renders until relief of duty from click  */}
+          {/* if (state === 'toggle') {
+            <error/>
+          } */}
+      
       <Component {...pageProps}
       globalstate={stateArray}// homebody={initialstate}
       error={error} setError={setError}
@@ -175,8 +174,8 @@ import '../styles/globals.css'
       keyState={keyState} setKeyState={setKeyState}
       valueState={valueState} setValueState={setValueState}
       fetchLock={fetchLock} setFetchLock={setFetchLock}      
-      />
-      </ChakraProvider>  
+      />      
+
 
       </Provider>
       </StateStore>      
