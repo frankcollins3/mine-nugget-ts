@@ -31,7 +31,7 @@ export default function Magnify (props) {
     const { allStrain, getSpecifiedStrain, userStrainPost, dbFirstLetter, dbNumber } = useUrl()  //obj destructuring
 
 const { 
-    gameOn, playing, searchHover, hoverOnSearch, 
+    gameOn, playing, searchHover, searchOn, searchOff,
     findMineTheme, toggleTheme, searchChar, searchCharFunc,
     searchBucket, fillSearchBucket
     } = useGame()
@@ -86,57 +86,85 @@ const {
     }
 
     const keyHandler = async (evt) => {        
-        let precode:string = evt.code
-        let code:string = evt.code.slice(3).toLowerCase()        
-        // gpmcwd gorilla, pineapple, mimosa, cherry, wid & cake, dosidos
+        if (searchHover) {
 
-        let numreturn = await Regex(precode, 'numreturn')
-        let allstrains = await APIcall('all', null, null)
+            let precode:string = evt.code
+            let code:string = evt.code.slice(3).toLowerCase()        
+            // gpmcwd gorilla, pineapple, mimosa, cherry, wid & cake, dosidos
+    
+            let numreturn = await Regex(precode, 'numreturn')
+            let allstrains = await APIcall('all', null, null)
+    
+            let regexlength:number = numreturn.length        
+            if (regexlength < 1) {
+    
+    
+                if (code === 'g' || code === 'w' || code === 'p' || code === 'm' || code === 'c' || code === 'd') {
+                    let searchFor:(string|object|any) = await FirstLetter(code)
+                    fillSearchBucket(searchFor)                
+                } else {
+                    if (code === 'aleft') return   
+                    let allStrainsScrambled = await Scrambler(allstrains) 
+                    fillSearchBucket(allStrainsScrambled)                
+                }
+                
+            } 
+            else if (regexlength >= 1) {
+    
+                if (parseInt(numreturn) <= 6 || parseInt(numreturn) > 6) {                
+                    console.log('code down here')
+                    console.log(code)
+                    let newcode = await Regex(code, 'numreturn')
+    
+                    const specifyStringLength = await IntStringCount(newcode)
+                    let stringjoin:string = specifyStringLength.join()
+                    let searching = await POST(dbNumber, stringjoin)                                
+    
+                    let myarray = ['1', '2', '3', '4', '5']
+                    // fillSearchBucket(allstrains)                
+                    let myStrains = await NumberSearch(numreturn)
+    
+                    console.log('myStrains')
+                    console.log(myStrains)
+                    fillSearchBucket(myStrains)                
+                }            
+            }        
 
-        let regexlength:number = numreturn.length        
-        if (regexlength < 1) {
-
-
-            if (code === 'g' || code === 'w' || code === 'p' || code === 'm' || code === 'c' || code === 'd') {
-                let searchFor:(string|object|any) = await FirstLetter(code)
-                fillSearchBucket(searchFor)                
-            } else {
-                if (code === 'aleft') return   
-                let allStrainsScrambled = await Scrambler(allstrains) 
-                fillSearchBucket(allStrainsScrambled)                
-            }
-            
-        } 
-
-        else if (regexlength >= 1) {
-
-            if (parseInt(numreturn) <= 6 || parseInt(numreturn) > 6) {                
-                console.log('code down here')
-                console.log(code)
-                let newcode = await Regex(code, 'numreturn')
-
-                const specifyStringLength = await IntStringCount(newcode)
-                let stringjoin:string = specifyStringLength.join()
-                let searching = await POST(dbNumber, stringjoin)                                
-
-                let myarray = ['1', '2', '3', '4', '5']
-                // fillSearchBucket(allstrains)                
-                let myStrains = await NumberSearch(numreturn)
-
-                console.log('myStrains')
-                console.log(myStrains)
-                fillSearchBucket(myStrains)                
-            }            
-        }        
+        }
     }
+
+    const nothing = () => { 
+        console.log("nothing function is firing");
+     }
+
+    const searchOnFunc = () => {
+        console.log('searchHover searchOn! function. current state.')
+        console.log(searchHover)
+        searchOn()
+        console.log('searchHover ... searchOn() just fired..')
+        console.log(searchHover)
+    }
+
+    const searchOffFunc = () => {
+        console.log('searchHover in the searchOff function. current state.')
+        console.log(searchHover)
+        searchOff()
+        console.log('searchHover.. searchoff just fired.')
+        console.log(searchHover)
+    }
+
 
     return (
         <>        
         <div         
-        tabIndex={0} onKeyDown={keyHandler}        
+        onKeyDown={searchHover === true ? keyHandler : nothing}        
+        tabIndex={0} 
         style={{ backgroundImage: `url('/img/magnify.png')` }}
-        id="Cont" onMouseLeave={mouseleave}        
-         className={styles.MagnifyCont}>  
+        id="Cont"        
+        onMouseLeave={searchOffFunc}
+        onClick={searchOnFunc}
+        className={styles.MagnifyCont}
+        >  
              
             <div  className="night">
                 <div className="constellation">
