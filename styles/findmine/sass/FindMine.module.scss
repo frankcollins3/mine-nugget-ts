@@ -1,9 +1,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Moon+Dance&display=swap');
 
+// * variables
+$coneOrange: rgba(255, 166, 0, 0.85);
+
+@mixin hover-active {
+    &:hover {
+      .no-touch & {
+        @content;
+      }
+    }
+    &:active {
+      .touch & {
+        @content;
+      }
+    }
+  }
+
 .div {
     height: 15em;
     width: 15em;
     border: 9px solid rgba(255, 166, 0, 0.85); 
+    // border: 9px solid rgba(255, 166, 0, 0.85); 
 
     display: flex;
     justify-content: center;
@@ -103,6 +120,7 @@
     background-size: 25%;
     transform: rotate(45deg);
     background-repeat: no-repeat;
+    // transform: scale(2.0);
 }
 
 // .css('color', 'transparent')
@@ -134,3 +152,36 @@
     width: 3vw;    
     margin: 2em 2em;
 }
+
+// * selected search page:
+#SelectedSearchBox {
+    padding: 1.25em;
+    width: 50%;
+    border: 9px solid $coneOrange; 
+
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+
+
+    button  {       // love sass for quickness there won't be any other buttons that can reach this code. can save on HTML className={} code never thought of that.
+        margin: 0 3em;
+        background-color: peachpuff;
+        font-family: 'Moon Dance', cursive;
+        color: blanchedalmond;
+        
+        @include hover-active {
+            color: black;
+        }
+    }
+
+    
+    
+}
+    
+    // .allOrMine:hover {
+    //     // color: 9px solid rgba(255, 166, 0, 0.85);         
+    //     border: 5px solid hotpink;
+    // }
+
+// * 
