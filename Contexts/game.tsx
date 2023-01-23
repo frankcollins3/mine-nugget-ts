@@ -55,7 +55,8 @@ type gameContextType = {
 
     searchBucket: any;
     fillSearchBucket: (strains) => void;
-
+    selectedSearch: string;
+    searchSelector: (search:string) => void; 
 
     // * end of  above. Below is the data.strain.search() page
     
@@ -111,7 +112,9 @@ const gameDefaults: gameContextType = {
     searchCharFunc: (term) => {},
 
     searchBucket: [],
-    fillSearchBucket: (strains) => {}
+    fillSearchBucket: (strains) => {},
+    selectedSearch: '',
+    searchSelector: (search:string) => {}
 
 // * end of FindMine state up top
 };
@@ -143,6 +146,7 @@ export function GameProvider({ children }: Props) {
     const [searchChar, setSearchChar] = useState<string>('none')
 
     const [searchBucket, setSearchBucket] = useState([])
+    const [selectedSearch, setSelectedSearch] = useState<string>('')
     
     const playing = () => {
         setGameOn('playing')
@@ -234,6 +238,11 @@ export function GameProvider({ children }: Props) {
             const refill = () => setSearchBucket(strains)
             refill()
         }
+
+        const searchSelector = (search:string) => {
+            setSelectedSearch('') // checking if this is necessary.            
+            setSelectedSearch(search)
+        }
         
 
     const value = {
@@ -286,7 +295,8 @@ export function GameProvider({ children }: Props) {
 
         searchBucket,
         fillSearchBucket,
-
+        selectedSearch,
+        searchSelector,
         // * end of FINDMINE search page state above. Below is the data.strain.search() page
     };
 
