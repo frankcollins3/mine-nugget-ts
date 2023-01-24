@@ -2,19 +2,47 @@
 
 // * variables
 $coneOrange: rgba(255, 166, 0, 0.85);
+$bold: bold;
 
-@mixin hover-active {
-    &:hover {
-      .no-touch & {
-        @content;
-      }
-    }
-    &:active {
-      .touch & {
-        @content;
-      }
-    }
-  }
+
+    @mixin bg-color($color) {
+        background-color: $color;
+           @at-root {
+            // .allOrMine {
+            //     border: 5px solid hotpink;
+            // }
+            .allOrMine:hover {
+                // color: blue;
+                border: 5px solid hotpink;
+                // border: 9px solid darken($coneOrange, 80%);
+            }
+            //   #{&} {
+            //      &:hover {
+            //         color: black;
+            //         color: darken($color, 60%);
+            //         border: 5px solid hotpink;
+            //         background-color: darken($color, 10%);
+            //      }
+                 
+            //   }
+           }
+        }
+       
+
+// @mixin hover-active {
+//         color: blue;
+//         &:hover {
+//             .no-touch & {
+//                 @content;
+//             }
+//         }
+//         &:active {
+//         color: white;
+//         .touch & {
+//             @content;
+//       }
+//     }
+//   }
 
 .div {
     height: 15em;
@@ -155,7 +183,7 @@ $coneOrange: rgba(255, 166, 0, 0.85);
 
 // * selected search page:
 #SelectedSearchBox {
-    padding: 1.25em;
+    padding: 0.75em;
     width: 50%;
     border: 9px solid $coneOrange; 
 
@@ -164,19 +192,13 @@ $coneOrange: rgba(255, 166, 0, 0.85);
     flex-direction: column;
 
 
-    button  {       // love sass for quickness there won't be any other buttons that can reach this code. can save on HTML className={} code never thought of that.
+    .allOrMine  {       // love sass for quickness there won't be any other buttons that can reach this code. can save on HTML className={} code never thought of that.
         margin: 0 3em;
         background-color: peachpuff;
         font-family: 'Moon Dance', cursive;
         color: blanchedalmond;
-        
-        @include hover-active {
-            color: black;
-        }
+        @include bg-color($coneOrange);
     }
-
-    
-    
 }
     
     // .allOrMine:hover {
