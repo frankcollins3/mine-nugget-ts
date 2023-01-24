@@ -3,30 +3,17 @@
 // * variables
 $coneOrange: rgba(255, 166, 0, 0.85);
 $bold: bold;
+$dance: 'Moon Dance';
 
 
-    @mixin bg-color($color) {
-        background-color: $color;
-           @at-root {
-            // .allOrMine {
-            //     border: 5px solid hotpink;
-            // }
-            .allOrMine:hover {
-                // color: blue;
-                border: 5px solid hotpink;
-                // border: 9px solid darken($coneOrange, 80%);
-            }
-            //   #{&} {
-            //      &:hover {
-            //         color: black;
-            //         color: darken($color, 60%);
-            //         border: 5px solid hotpink;
-            //         background-color: darken($color, 10%);
-            //      }
-                 
-            //   }
-           }
-        }
+    // @mixin bg-color($color) {
+    //     background-color: $color;
+    //        @at-root {
+    //         .allOrMine:hover {
+    //             border: 5px solid hotpink;
+    //         }
+    //        }
+    //     }
        
 
 // @mixin hover-active {
@@ -123,7 +110,7 @@ $bold: bold;
 }
 
 .p {
-    font-family: 'Moon Dance', cursive;
+    font-family: $dance, cursive;
     font-size: 25px;
     color: papayawhip;
 }
@@ -190,16 +177,19 @@ $bold: bold;
     display: flex;
     justify-content: center;
     flex-direction: column;
-
-
-    .allOrMine  {       // love sass for quickness there won't be any other buttons that can reach this code. can save on HTML className={} code never thought of that.
-        margin: 0 3em;
-        background-color: peachpuff;
-        font-family: 'Moon Dance', cursive;
-        color: blanchedalmond;
-        @include bg-color($coneOrange);
-    }
 }
+
+.allOrMine  {       // love sass for quickness there won't be any other buttons that can reach this code. can save on HTML className={} code never thought of that.
+    margin: 0 3em;
+    background-color: $coneOrange;
+    font-family: 'Moon Dance', cursive;
+    color: blanchedalmond;        
+    // @include bg-color($coneOrange); 
+}
+
+    
+    
+    
     
     // .allOrMine:hover {
     //     // color: 9px solid rgba(255, 166, 0, 0.85);         
