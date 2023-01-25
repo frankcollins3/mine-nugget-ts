@@ -10,9 +10,8 @@
         const [clockTick, setClockTick] = useState('')
 
         const { 
-            gameOn, playing, searchHover, searchOn, searchOff,
-            findMineTheme, toggleTheme, searchChar, searchCharFunc,
-            searchBucket, fillSearchBucket, searchType, searchTypeClick,
+             searchHover, searchOn, searchOff, searchChar, searchCharFunc,
+            searchBucket, fillSearchBucket, searchType, searchTypeClick, selectedSearch, searchSelector
             } = useGame()
         
         useEffect( () => {
@@ -20,6 +19,10 @@
                 setClockTick('1')
             }, 2000)
         }, [])
+
+        const shoveltest = () => {
+            console.log('shovel')
+        }
         
         useEffect( () => {
             let randomNumber:string = randomNumbers[Math.floor(Math.random()*randomNumbers.length).toString()]        
@@ -67,6 +70,17 @@
             </div>
 
 
+            {selectedSearch.length > 1 ?
+            // <SelectedSearch/>
+            <div className={styles.TextParent}>
+            <img style={{ margin: '0 2em'}} onMouseEnter={shoveltest} className={styles.Shovel} src="/img/shovel.png"/>
+            <img style={{ margin: '0 2em'}} onMouseEnter={shoveltest} className={styles.Shovel} src="/img/mine.png"/>
+            </div>
+            :
+            <p> </p>
+        } 
+
+
             <div className="Column">
             <div className={styles.TextParent}>
             <p id="word5" className={styles.h1}> M </p>
@@ -74,8 +88,7 @@
             <p id="word7" className={styles.h1}> n </p>
             <p id="word8" className={styles.h1}> e </p>
             </div>
-            <button onClick={allormine} className={styles.allOrMine}>Mine</button>
-            <p> {searchType || 'no search type'}</p>
+            <button onClick={allormine} className={styles.allOrMine}>Mine</button>            
             </div>
 
             </div>
