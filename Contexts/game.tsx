@@ -57,7 +57,9 @@ type gameContextType = {
     fillSearchBucket: (strains) => void;
     selectedSearch: string;
     searchSelector: (search:string) => void; 
-
+    searchType: string;
+    searchTypeClick: (type:string) => void; // retrieved from jQ event object by clicking the button with 'all' or 'mine'kam
+    
     // * end of  above. Below is the data.strain.search() page
     
 };
@@ -114,7 +116,9 @@ const gameDefaults: gameContextType = {
     searchBucket: [],
     fillSearchBucket: (strains) => {},
     selectedSearch: '',
-    searchSelector: (search:string) => {}
+    searchSelector: (search:string) => {},
+    searchType: '',
+    searchTypeClick: () => {},
 
 // * end of FindMine state up top
 };
@@ -147,6 +151,7 @@ export function GameProvider({ children }: Props) {
 
     const [searchBucket, setSearchBucket] = useState([])
     const [selectedSearch, setSelectedSearch] = useState<string>('')
+    const [searchType, setSearchType] = useState<string>('')
     
     const playing = () => {
         setGameOn('playing')
@@ -240,8 +245,12 @@ export function GameProvider({ children }: Props) {
         }
 
         const searchSelector = (search:string) => {
-            setSelectedSearch('') // checking if this is necessary.            
+            setSelectedSearch('') // checking if this is            
             setSelectedSearch(search)
+        }
+
+        const searchTypeClick = (type:string) => {
+            setSearchType(type);
         }
         
 
@@ -297,6 +306,8 @@ export function GameProvider({ children }: Props) {
         fillSearchBucket,
         selectedSearch,
         searchSelector,
+        searchType,
+        searchTypeClick
         // * end of FINDMINE search page state above. Below is the data.strain.search() page
     };
 
