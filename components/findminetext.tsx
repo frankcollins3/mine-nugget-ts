@@ -1,12 +1,19 @@
     import styles from 'styles/findmine/sass/FindMine.module.scss'
     import {useEffect, useState} from 'react'
     import $ from 'jquery'
+    import {useGame} from 'Contexts/game'
 
     export default function FindMineText (props) {
         const randomNumbers = [1,2,3,4,5,6,7,8]
         let theme = props.findMineTheme
         // let theme:string = props.findMineTheme
         const [clockTick, setClockTick] = useState('')
+
+        const { 
+            gameOn, playing, searchHover, searchOn, searchOff,
+            findMineTheme, toggleTheme, searchChar, searchCharFunc,
+            searchBucket, fillSearchBucket
+            } = useGame()
         
         useEffect( () => {
             setTimeout( () => {
@@ -36,22 +43,42 @@
             }, 3000)                    
         }, [clockTick])
 
+        const dothat = () => {
+            console.log('done')
+        }
+
         return (
             <>
+            <div className="Column">
+
             <div className={styles.TextParent}>
+
+            <div className="Column">
             <div className={styles.TextParent}>
             <p id="word1" className={styles.h1}> F </p>
             <p id="word2" className={styles.h1}> i </p>
             <p id="word3" className={styles.h1}> n </p>
             <p id="word4" className={styles.h1}> d </p>
             </div>
+            <button onClick={dothat} className={styles.allOrMine}>All</button>
+            </div>
+
+
+            <div className="Column">
             <div className={styles.TextParent}>
             <p id="word5" className={styles.h1}> M </p>
             <p id="word6" className={styles.h1}> i </p>
             <p id="word7" className={styles.h1}> n </p>
             <p id="word8" className={styles.h1}> e </p>
             </div>
+            <button onClick={dothat} className={styles.allOrMine}>Mine</button>
             </div>
+
+            </div>
+
+            </div>  
+
+
             </>
         )
     }
