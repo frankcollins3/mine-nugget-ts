@@ -12,7 +12,7 @@
         const { 
             gameOn, playing, searchHover, searchOn, searchOff,
             findMineTheme, toggleTheme, searchChar, searchCharFunc,
-            searchBucket, fillSearchBucket
+            searchBucket, fillSearchBucket, searchType, searchTypeClick,
             } = useGame()
         
         useEffect( () => {
@@ -43,8 +43,11 @@
             }, 3000)                    
         }, [clockTick])
 
-        const dothat = () => {
-            console.log('done')
+        const allormine = async (event) => {
+            let btnText:string = event.target.outerText
+            console.log('btnText')
+            console.log(btnText)
+            await searchTypeClick(btnText)
         }
 
         return (
@@ -60,7 +63,7 @@
             <p id="word3" className={styles.h1}> n </p>
             <p id="word4" className={styles.h1}> d </p>
             </div>
-            <button onClick={dothat} className={styles.allOrMine}>All</button>
+            <button onClick={allormine} className={styles.allOrMine}>All</button>
             </div>
 
 
@@ -71,7 +74,8 @@
             <p id="word7" className={styles.h1}> n </p>
             <p id="word8" className={styles.h1}> e </p>
             </div>
-            <button onClick={dothat} className={styles.allOrMine}>Mine</button>
+            <button onClick={allormine} className={styles.allOrMine}>Mine</button>
+            <p> {searchType || 'no search type'}</p>
             </div>
 
             </div>
