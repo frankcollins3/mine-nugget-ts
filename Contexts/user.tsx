@@ -1,8 +1,56 @@
 import React, { createContext, useContext, ReactNode, useState } from "react";
+// im guessing this is where passport would/will be used.
+// export const UserContext = React.createContext<UserTypes>(UserDefaults)
 
 interface UserTypes {
     username: string,
-    // i thought of an idea midway through the app:
+    password: string,   
+    email: string,
+    age: number, 
+    strains: string|number[]    // strains UsersOnStrains[]
+}
+
+interface UserContext {
+    users: UserTypes[],    
+    setUsers: React.Dispatch<React.SetStateAction<UserTypes[]>>
+}
+
+type Props = {
+    children: ReactNode;
+};
+
+const UserDefaults: UserTypes = {
+    username: 'myusername',
+    password: 'mypassword',
+    email: '',
+    age: 0,
+    strains: [],
+}
+
+export const UserContext = React.createContext<UserContext>({
+    users: [{username: 'myusername', password: 'mypassword', email: 'fwc3rd@gmail.com', age: 30, strains: []  }],
+    setUsers: () => {}
+})
+
+export function useUser() {
+    return useContext(UserContext)
+}
+
+
+export const UserContextProvider: React.FC<{}> = (props, children) => {
+    const [users, setUsers] = React.useState<UserTypes[]>([{username: '', password: '', email: '', age: 0, strains: []  }])
+
+    return (
+        <UserContext.Provider value={{users, setUsers}}>
+            {children}
+        </UserContext.Provider>
+    )
+}
+
+
+
+
+// i thought of an idea midway through the app:
     // if you get a 3 win streak on the guessing game (Family Tree) -> {where data.parents is provided and you can guess data.name} data.parents is shown nowhere else in the app
     
     // also woke up to the idea of doing the initial database load by having a pickaxe.img footer on Home.tsx ... 
@@ -15,47 +63,3 @@ interface UserTypes {
     // of course the navbar that says the username will also be checking for this characters and will remove theme so the navbar doesn't say trophyroom 
     
     // WHY? the database will be able to track which users are admitted into the [hall of game] without a new data.column entered into the postgres database user table. 
-
-    password: string,   // im guessing this is where passport would/will be used.
-    email: string,
-    age: number, 
-    strains: string|number[]    // strains UsersOnStrains[]
-}
-
-interface UserContext {
-    users: UserTypes[],    
-    setUsers: React.Dispatch<React.SetStateAction<UserTypes[]>>
-}
-
-const UserDefaults: UserTypes = {
-    username: '',
-    password: '',
-    email: '',
-    age: 0,
-    strains: [],
-}
-
-export const UserContext = React.createContext<UserTypes>(UserDefaults)
-
-
-// model users {
-//     id        Int      @id @default(autoincrement())
-//     username  String?  @db.VarChar(255)
-//     password  String?  @db.VarChar(255)
-//     age       Int?
-//     email     String?  @db.VarChar(255)
-//     strains   UsersOnStrains[]  
-//   }
-
-// model strains {
-//     id        Int      @id @default(autoincrement())
-//     strainId  Int?
-//     strain    String?  @db.VarChar(255)
-//     dominant  String?  @db.VarChar(255)
-//     funfact   String?  @db.VarChar(255)
-//     parents   String?  @db.VarChar(255)
-//     effects   effects[]
-//     mines     mines[]
-//     digs      digs []
-//     users     UsersOnStrains[]  
-//   }
