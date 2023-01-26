@@ -1,18 +1,20 @@
 import React, { createContext, useContext, ReactNode, useState } from "react";
-// im guessing this is where passport would/will be used.
-// export const UserContext = React.createContext<UserTypes>(UserDefaults)
+import POST from 'utility/POSTdataJS'
+import {useUrl} from 'Contexts/Url'
+const {userStrains} = useUrl()
 
 interface UserTypes {
     username: string,
     password: string,   
     email: string,
     age: number, 
-    strains: string|number[]    // strains UsersOnStrains[]
+    strains: string|number[]    
+    userSetter: () => void;
 }
 
 interface UserContext {
     users: UserTypes[],    
-    setUsers: React.Dispatch<React.SetStateAction<UserTypes[]>>
+    setUsers: React.Dispatch<React.SetStateAction<UserTypes[]>>    
 }
 
 type Props = {
@@ -25,20 +27,33 @@ const UserDefaults: UserTypes = {
     email: '',
     age: 0,
     strains: [],
+    userSetter: () => {}
 }
 
 export const UserContext = React.createContext<UserContext>({
-    users: [{username: 'myusername', password: 'mypassword', email: 'fwc3rd@gmail.com', age: 30, strains: []  }],
-    setUsers: () => {}
+    users: [{
+                username: 'myusername', password: 'mypassword', 
+                email: 'fwc3rd@gmail.com', age: 30, strains: [], userSetter: ()  => {}
+            }],
+    setUsers: () => {},
+    // userSetter: () => {},
 })
 
 export function useUser() {
     return useContext(UserContext)
 }
 
+const userSetter = async (username:string, password:string, email:string, age:number) => {
+    console.log("firing the userSetter functionality.")
+    let userdataobj={username: username, password: password, email: email, age: age}
+    let mydata = await POST(userStrains, userdataobj)
+    console.log('mydata')
+    console.log(mydata)
+}
+
 
 export const UserContextProvider: React.FC<{}> = (props, children) => {
-    const [users, setUsers] = React.useState<UserTypes[]>([{username: '', password: '', email: '', age: 0, strains: []  }])
+    const [users, setUsers] = React.useState<UserTypes[]>([{username: '', password: '', email: '', age: 0, strains: [], userSetter: () => {}  }])
 
     return (
         <UserContext.Provider value={{users, setUsers}}>
