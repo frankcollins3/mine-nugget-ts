@@ -6,7 +6,7 @@ import { createContext, useContext, ReactNode, useState } from "react";
         getSpecifiedStrain: string;
         dbFirstLetter: string;
         dbNumber: string;
-        userStrains: string;
+        userStrains: string;        
     }
     
     const urlDefaults: urlTypes = {
@@ -15,8 +15,7 @@ import { createContext, useContext, ReactNode, useState } from "react";
         getSpecifiedStrain: '/api/strains/getSpecifiedStrain',
         dbFirstLetter: '/api/strains/dbFirstLetter',
         dbNumber: '/api/strains/dbNumber',
-        userStrains: '/api/strains/userstrainpost'
-        // pages/api/strains/userstrainpost.ts
+        userStrains: '/api/strains/postuserstrains',        
     }
 
 const UrlContext = createContext<urlTypes>(urlDefaults);
@@ -32,7 +31,8 @@ export default function UrlProvider( { children }, context ) {
         const [getSpecifiedStrain, setGetSpecifiedString] = useState<string>('/api/strains/getSpecifiedStrain')
         const [dbFirstLetter, setDbFirstLetter] = useState<string>('/api/strains/dbFirstLetter')
         const [dbNumber, setDbNumber] = useState<string>('/api/strains/dbFirstLetter')
-        const [userStrains, setUserStrains] = useState<string>('/api/strains/userstrainpost.ts')
+        const [userStrains, setUserStrains] = useState<string>('/api/strains/postuserstrains')
+        // const [userStrains, setUserStrains] = useState<string>('/api/strains/userstrainpost')
 
     console.log(context)
 
@@ -42,8 +42,7 @@ export default function UrlProvider( { children }, context ) {
             getSpecifiedStrain,
             dbFirstLetter,
             dbNumber,
-            userStrains
-            // {no_set_state_exported: 'no reason to change strings'}
+            userStrains            
         }
 
     return (
