@@ -1,7 +1,7 @@
 import React, { createContext, useContext, ReactNode, useState } from "react";
 import POST from 'utility/POSTdataJS'
 import {useUrl} from 'Contexts/Url'
-const {userStrains} = useUrl()
+
 
 interface UserTypes {
     username: string,
