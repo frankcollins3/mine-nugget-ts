@@ -16,7 +16,9 @@ import GET from 'utility/GETdataJS'
 import POST from 'utility/POSTdataJS'
 import Scrambler from 'utility/ArrayScrambler'
 import IntStringCount from 'utility/IntStringCount'
-import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript'
+
+// * components
+import AllMine from 'components/AllMineBtnStrip'
 
 // let hoverstring:string = magnifyhover.toString()
 
@@ -44,21 +46,8 @@ const {
         console.log(event)
     }
 
-
-    useEffect( () => {
-
-    })
     
-    useEffect( () => {
-        console.log("useEffect is firing lets see those keys!")
-        // checkKey()
-        $('document').on('mousemove', () => {
-            console.log("pressing a key without having to click on anything!")
-        })
-
-    }, [searchHover])
-
-
+    
     // * redux
     
     function getRandomArbitrary(min, max) {
@@ -111,9 +100,7 @@ const {
             } 
             else if (regexlength >= 1) {
     
-                if (parseInt(numreturn) <= 6 || parseInt(numreturn) > 6) {                
-                    console.log('code down here')
-                    console.log(code)
+                if (parseInt(numreturn) <= 6 || parseInt(numreturn) > 6) {                                    
                     let newcode = await Regex(code, 'numreturn')
     
                     const specifyStringLength = await IntStringCount(newcode)
@@ -137,25 +124,23 @@ const {
         console.log("nothing function is firing");
      }
 
-    const searchOnFunc = () => {
-        console.log('searchHover searchOn! function. current state.')
-        console.log(searchHover)
-        searchOn()
-        console.log('searchHover ... searchOn() just fired..')
-        console.log(searchHover)
+    const searchOnFunc = () => {        
+        searchOn()        
     }
 
-    const searchOffFunc = () => {
-        console.log('searchHover in the searchOff function. current state.')
-        console.log(searchHover)
-        searchOff()
-        console.log('searchHover.. searchoff just fired.')
-        console.log(searchHover)
+    const searchOffFunc = () => {        
+        searchOff()        
+    }
+
+    const something = () => {
+        console.log("something function!")
     }
 
 
     return (
-        <>        
+        <Container className="Column">
+
+
         <div         
         onKeyDown={searchHover === true ? keyHandler : nothing}        
         tabIndex={0} 
@@ -166,12 +151,14 @@ const {
         className={styles.MagnifyCont}
         >  
              
-            <div  className="night">
+            <div className="night">
                 <div className="constellation">
                 </div>
             </div>
         </div>
-    </>       
+
+        {/* <AllMine/> */}  
+        </Container>
     )
 }
 
