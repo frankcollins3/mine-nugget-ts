@@ -1,0 +1,19 @@
+.flex {
+    display: flex;
+}
+
+// * column Flex Classes
+.centerYcenterXcolumn {    
+    justify-content: center;    // this is the Y-axis for column.
+    align-items: center;        // could see this as redundant to type over and over. the alternative could be to have {direcion: row || column} class 
+    flex-direction: column;
+}
+// * column Flex Classes
+
+// ? row Flex Classes 
+.centerYcenterXrow {
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+// ? row Flex Classes 
