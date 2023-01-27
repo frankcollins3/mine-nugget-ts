@@ -7,7 +7,8 @@ import $ from 'jquery'
 import {useGame} from 'Contexts/game'
 import Siblings from 'utility/JqSiblings'
 import AttrTool from 'utility/JqAttr'
-import { createNoSubstitutionTemplateLiteral } from 'typescript'
+import Container from 'react-bootstrap/Container'
+import { scaleFadeConfig } from '@chakra-ui/react'
 // import {useUser} from 'Contexts/usercontext'
 
 
@@ -19,9 +20,8 @@ export default function InOut (props) {
     // const {userName, password, email, age, strains, quickcheck} = useUser()
 
     const [goldClick, setGoldClick] = useState('')
-
     
-
+    
 
     // const {username, password, age, email} = useUser()
     
@@ -59,53 +59,118 @@ export default function InOut (props) {
         setTimeout( () => {
             // $('#UsernameInput').css('border', '5px solid hotpink')
             AttrTool($('#UsernameInput'), 'value', 'username')
-            AttrTool($('#PasswordInput'), 'value', 'password')
-        
+            AttrTool($('#PasswordInput'), 'value', 'password')        
         }, 1000)
 
         if (siblingText === 'Signup') {
             setGoldClick('signup')
+            setTimeout( () => AttrTool($('#AgeInput'), 'value', 'age'), 1000)
+            setTimeout( () => AttrTool($('#EmailInput'), 'value', 'email'), 1000)
         }
+        else if (siblingText === 'Login') {
+            setGoldClick('login')
+        }
+        if (siblingText === '' || siblingText === undefined || siblingText === null) {
+            setGoldClick('')            
+        }
+    }
+    
+    const semisubmit = () => {
+        $('input').each( (index, elem) => {        
+            // let value:string = elem.value   // surprised this didn't provide the jqelem[0] object upon .log() because its a jq .each func()
+            let jqelem = $(elem)
 
+            console.log('jqelem')
+            console.log(jqelem)
+
+            // let value:string = jqelem[0].value // no.
+            let value = jqelem[0].attributes[1].nodeValue
+            // let value:string = jqelem[0].attributes[1].nodeValue
+            console.log('value')
+            console.log(value)
+            
+        })
+        
     }
     
     return (                            
         <Page>
-            <div style={{ maxWidth: '50vw'}} className={centerYbetweenXrow}>      
+            <img 
+            onClick={goldClickFunc}
+            className={sty.GoldBar} 
+            style={{ 
+                display: goldClick === 'signup' || goldClick === 'login' ? 'flex' : 'none',
+                transform: 'scale(0.25)',
+                  }} 
+            src="/img/gold.png"/>
+            <Container style={{  maxWidth: '100vw'}} className={centerYbetweenXrow}>      
 
-            <div className={centerYcenterXcolumn}>
-            <img className={sty.GoldBar} src="/img/gold.png"/>
+            <Container
+            style={{ display: goldClick === 'signup' || goldClick === 'login' ? 'none' : 'flex' }}
+            // style={{ display: goldClick === 'signup' || goldClick === 'login' ? 'none' : 'flex' }}
+            className={centerYcenterXcolumn}>
+            <img onClick={goldClickFunc} className={sty.GoldBar} src="/img/gold.png"/>
             <p className={sty.UserText}> Login</p>
-            </div>
-
-            { goldClick === 'signup' 
-            ?
-            <div className={centerYcenterXcolumn} id={sty.LoginDiv}>
-
+            </Container>
+        
+            { goldClick === 'login' 
+                ?
+            <Container className={centerYcenterXcolumn} id={sty.LoginDiv}>
+            
             <input  id="UsernameInput" onChange={changehandler} />
             <input  id="PasswordInput" onChange={changehandler} />
-            {/* <input value={'username'} className={sty.Signup} id={sty.UsernameInput} onChange={changehandler} />
-            <input value={'password'} className={sty.Signup} id={sty.PasswordInput} onChange={changehandler} /> */}
+        
 
-            <div className={sty.MiniGoldBar}></div>
-            {/* <input className={sty.MiniGoldBar} type="submit"/> */}
-            </div>
+            </Container>
             :
             <div></div>
             }
 
-            <div className={centerYcenterXcolumn}>
+
+            { goldClick === 'signup' 
+                ?
+            <Container className={centerYcenterXcolumn} id={sty.LoginDiv}>
+
+            <input  id="UsernameInput" onChange={changehandler} />
+            <input  id="PasswordInput" onChange={changehandler} />
+            <input  id="AgeInput" onChange={changehandler} />
+            <input  id="EmailInput" onChange={changehandler} />
+        
+            {/* <div onClick={semisubmit} className={sty.MiniGoldBar}></div> */}
+            
+            </Container>
+            :
+            <div></div>
+            }
+
+
+            <Container 
+            style={{ display: goldClick === 'signup' || goldClick === 'login' ? 'none' : 'flex' }}
+            className={centerYcenterXcolumn}>
             <img onClick={goldClickFunc} className={sty.GoldBar} src="/img/gold.png"/>
             <p className={sty.UserText}> Signup</p>
-            </div>
+            </Container>
 
-            </div>
-            <div className={sty.endYcenterXcolumn} id={sty.HelmetCont}>
+            </Container>
+
+                { goldClick === 'login' || goldClick === 'signup'
+                    ?
+                    <div
+                    // onMouseEnter={semisubmit}
+                     onClick={semisubmit}
+                    className={sty.MiniGoldBar}></div>
+                    :
+                    <div></div>
+                }
+            
+
+
+            <Container className={sty.endYcenterXcolumn} id={sty.HelmetCont}>
                 <Helmet/>
                 {/* <button onClick={check}></button>
                 <p> {username} </p>
                 <p> {gameOn} </p> */}
-            </div>
+            </Container>
         </Page>
         
         )
