@@ -1,6 +1,9 @@
+
 .flex {
     display: flex;
+
 }
+
 
 // * column Flex Classes
 .centerYcenterXcolumn {    
@@ -8,12 +11,71 @@
     align-items: center;        // could see this as redundant to type over and over. the alternative could be to have {direcion: row || column} class 
     flex-direction: column;
 }
+.endYcenterXcolumn {
+    justify-content: flex-end;
+    align-items: center;
+    flex-direction: column;
+}
 // * column Flex Classes
+
 
 // ? row Flex Classes 
 .centerYcenterXrow {
     justify-content: center;
     align-items: center;
-    flex-direction: column;
+    flex-direction: row;
+}
+.centerYbetweenXrow {
+    // display: flex;
+    width: 100%;
+    // border: 5px solid hotpink;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
 }
 // ? row Flex Classes 
+
+
+// * element styling (non-layout)
+.GoldBar {
+    height: 10em;
+    width: 10em;
+}
+
+.UserText {
+    font-family: 'Lemon Milk';
+    // font-family: 'Moon Dance';
+    font-size: 22px; 
+    font-weight: bold;
+    color: papayawhip;
+}
+
+.MiniGoldBar {    
+    height: 50px;
+    width: 50px;
+    background-image: url('/img/gold.png');    
+    background-size: 25%;
+    transform: rotate(45deg);
+    background-repeat: no-repeat;    
+    margin-top: 1.5em;
+    cursor: pointer;    
+}
+
+#LoginDiv {
+    // border: 5px solid hotpink;
+}
+
+#LoginDiv:focus-within {
+    color: orange;
+    border: 5px solid hotpink;
+}
+
+#Signup {
+    background: transparent;
+    // border: 5px solid orange;
+}
+#Signup:focus {
+    
+}
+
+// * elements 
