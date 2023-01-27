@@ -298,5 +298,17 @@ body {
   border: 3px solid ivory;
 }
 
+input[type="checkbox"] {
+  border: 5px solid olive;
+}
+
+input[type="text"] {
+  border: 5px solid olive;
+}
+
+/* .blueborder {
+  border: 5px solid blue;
+} */
+
 
 /* signup page backup global CSS */
