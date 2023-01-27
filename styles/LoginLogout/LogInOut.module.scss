@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@1,100&display=swap');
 
 .flex {
     display: flex;
@@ -18,17 +19,13 @@
 }
 // * column Flex Classes
 
-
 // ? row Flex Classes 
 .centerYcenterXrow {
     justify-content: center;
     align-items: center;
     flex-direction: row;
 }
-.centerYbetweenXrow {
-    // display: flex;
-    width: 100%;
-    // border: 5px solid hotpink;
+.centerYbetweenXrow {    
     justify-content: space-between;
     align-items: center;
     flex-direction: row;
@@ -37,14 +34,16 @@
 
 
 // * element styling (non-layout)
+#HelmetCont {
+    margin-top: 1.5em;
+}
 .GoldBar {
     height: 10em;
     width: 10em;
 }
 
 .UserText {
-    font-family: 'Lemon Milk';
-    // font-family: 'Moon Dance';
+    font-family: 'Lemon Milk';    
     font-size: 22px; 
     font-weight: bold;
     color: papayawhip;
@@ -62,20 +61,41 @@
 }
 
 #LoginDiv {
-    // border: 5px solid hotpink;
+    background-image: url('/img/mirror.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 30em;
+    width: 30em;    
 }
 
-#LoginDiv:focus-within {
-    color: orange;
-    border: 5px solid hotpink;
-}
-
-#Signup {
-    background: transparent;
-    // border: 5px solid orange;
-}
-#Signup:focus {
-    
-}
 
 // * elements 
+
+// ? components
+// * * * * * * * * SignupConstraints
+#ConstraintGrid {
+    height: 10em;
+    width: 25em;
+    border: 4px solid rgb(247, 208, 32); 
+    background-color: papayawhip;
+    padding: 0.25em;
+    display: grid;
+    grid-template-areas:
+    "a b b b"
+    "a b b b"
+    "a b b b";
+}
+
+#ConstraintA {
+    border: 4px solid hotpink;
+    grid-area: a;
+}
+
+#ConstraintB {
+    border: 4px solid blue;
+    grid-area: b;
+}
+
+// * * * * * * * *
+
+// ? components
