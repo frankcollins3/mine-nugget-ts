@@ -260,21 +260,21 @@ body {
 .blue { border: 5px solid blue;}
 /* signup page backup global CSS */
 
+#UsernameInput { margin-top: 2.25em;}
 
-
-#PasswordInput {
+#PasswordInput, #AgeInput, #EmailInput {
   margin-top: 0.75em;
 }
 
-#UsernameInput, #PasswordInput {
+#UsernameInput, #PasswordInput, #AgeInput, #EmailInput {
   background: transparent;
   border: 5px solid orange;
   border: 2px solid papayawhip;
   color: #353935;
-  min-width: 12vw;
+  min-width: 11vw;
 }
 
-#UsernameInput:focus, #PasswordInput:focus {
+#UsernameInput:focus, #PasswordInput:focus, #AgeInput:focus, #EmailInput:focus {
   color: papayawhip;
   background-color: papayawhip;
   outline: ivory;
