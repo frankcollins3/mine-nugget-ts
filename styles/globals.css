@@ -27,16 +27,6 @@ a {
   }
 }
 
-.card-text { 
-  /* background-color: transparent; */
-  /* background-color: rgb(62, 50, 32); */
-  /* background-color: blue; */
- } 
-
-/* .card {          
-  border-radius: 50%;
-} */
-
 .Column {
   /* border: 5px solid orange; */
   display: flex;
@@ -141,6 +131,7 @@ li {
 }
 
 html,
+
 body {
   background-color: rgb(62, 50, 32);
   font-family:'Press Start 2P';
@@ -155,23 +146,22 @@ body {
 .night {
   width: 100%;
   height: 100%;
+  
   position: absolute;
   overflow: hidden;
-
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-
 }
 
-.constellation {
+.constellation {  
   background-attachment: scroll;
   position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
+  left: 35px;
+  top: 35px;
+  /* min-height: 100vh; */
+  /* min-width: 100vh; */
   animation: rotate 600s infinite linear;
 }
 
@@ -260,6 +250,38 @@ body {
 }
 
 
+/* transform */
+.doublesize { transform: scale(2.0);}
+.halfpint { transform: scale(0.5);}
+.quartersize { transform: scale(0.25);}
+/* transform */
 
-/*  */
+.redborder { border: 5px solid red;}
+.blue { border: 5px solid blue;}
+/* signup page backup global CSS */
 
+
+
+#PasswordInput {
+  margin-top: 0.75em;
+}
+
+#UsernameInput, #PasswordInput {
+  background: transparent;
+  border: 5px solid orange;
+  border: 2px solid papayawhip;
+  color: #353935;
+  min-width: 12vw;
+}
+
+#UsernameInput:focus, #PasswordInput:focus {
+  color: papayawhip;
+  background-color: papayawhip;
+  outline: ivory;
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: bold;
+  letter-spacing: 0.125em;
+  border: 3px solid ivory;
+}
+
+/* signup page backup global CSS */
