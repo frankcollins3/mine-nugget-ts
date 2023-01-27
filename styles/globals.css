@@ -260,10 +260,10 @@ body {
 .blue { border: 5px solid blue;}
 /* signup page backup global CSS */
 
-#UsernameInput { margin-top: 2.25em;}
+#UsernameInput { margin-top: 0.6em;}
 
 #PasswordInput, #AgeInput, #EmailInput {
-  margin-top: 0.75em;
+  margin-top: 0.45em;
 }
 
 #UsernameInput, #PasswordInput, #AgeInput, #EmailInput {
@@ -274,7 +274,9 @@ body {
   min-width: 11vw;
 }
 
-#UsernameInput:focus, #PasswordInput:focus, #AgeInput:focus, #EmailInput:focus {
+#UsernameInput:is(:focus) {
+/* #UsernameInput,#PasswordInput,#AgeInput,#EmailInput(:focus) { */
+/* #UsernameInput:is,PasswordInput:is,#AgeInput:is,#EmailInput:is(:focus) { */
   color: papayawhip;
   background-color: papayawhip;
   outline: ivory;
@@ -283,5 +285,18 @@ body {
   letter-spacing: 0.125em;
   border: 3px solid ivory;
 }
+
+
+#PasswordInput:focus, #AgeInput:focus, #EmailInput:focus {
+/* #UsernameInput:focus, #PasswordInput:focus, #AgeInput:focus, #EmailInput:focus { */
+  color: papayawhip;
+  background-color: papayawhip;
+  outline: ivory;
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: bold;
+  letter-spacing: 0.125em;
+  border: 3px solid ivory;
+}
+
 
 /* signup page backup global CSS */
