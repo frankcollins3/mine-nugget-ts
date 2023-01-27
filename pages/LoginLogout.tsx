@@ -1,122 +1,208 @@
-@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@1,100&display=swap');
+import Helmet from 'components/Helmet'
+import {useEffect, useState} from 'react'
+import $ from 'jquery'
+import Container from 'react-bootstrap/Container'
 
-.flex {
-    display: flex;
+//* CSS  */
+import styles from 'styles/LoginLogout/LogInOut.module.scss'
+import Page from 'styles/LoginLogout/styledcomponents/Page'
 
-}
+// * state / context
+import {useGame} from 'Contexts/game'
 
+// * utility 
+import ReturnUrl from 'utility/ReturnUrl'
+import Siblings from 'utility/JqSiblings'
+import AttrTool from 'utility/JqAttr'
 
-// * column Flex Classes
-.centerYcenterXcolumn {    
-    justify-content: center;    // this is the Y-axis for column.
-    align-items: center;        // could see this as redundant to type over and over. the alternative could be to have {direcion: row || column} class 
-    flex-direction: column;
-}
-.endYcenterXcolumn {
-    justify-content: flex-end;
-    align-items: center;
-    flex-direction: column;
-}
-// * column Flex Classes
+import SignupConstraints from 'components/SignupConstraints'
 
 
-// ? row Flex Classes 
-.centerYcenterXrow {
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
-}
-.centerYbetweenXrow {
-    // display: flex;    
-    // border: 5px solid hotpink;
-    justify-content: space-between;
-    align-items: center;
-    flex-direction: row;
-}
-// ? row Flex Classes 
-
-
-// * element styling (non-layout)
-#HelmetCont {
-    margin-top: 1.5em;
-}
-.GoldBar {
-    height: 10em;
-    width: 10em;
-}
-
-.UserText {
-    font-family: 'Lemon Milk';
-    // font-family: 'Moon Dance';
-    font-size: 22px; 
-    font-weight: bold;
-    color: papayawhip;
-}
-
-.MiniGoldBar {    
-    height: 50px;
-    width: 50px;
-    background-image: url('/img/gold.png');    
-    background-size: 25%;
-    transform: rotate(45deg);
-    background-repeat: no-repeat;    
-    margin-top: 1.5em;
-    cursor: pointer;    
-}
-
-#LoginDiv {
-    // border: 5px solid hotpink;
-    background-image: url('/img/mirror.png');
-    background-size: cover;
-    background-repeat: no-repeat;
-    height: 30em;
-    width: 30em;
+export default function InOut (props) {
     
-}
+    const {username, password, 
+        email, age, strains, 
+        playing, gameOn} = useGame()
+    // const {userName, password, email, age, strains, quickcheck} = useUser()
 
-// #LoginDiv:focus-within {
-//     color: orange;
-//     border: 5px solid hotpink;
-//     .nonpretty()
-// }
-
-// .Signup {
-//     background: transparent;
-//     // border: 5px solid orange;
-//     border: 2px solid papayawhip;
-//     color: #353935;
-//     min-width: 12vw;
-// }
-
-// .Signup:focus {
-//     color: papayawhip;
-//     background-color: papayawhip;
-//     outline: ivory;
-//     font-family: 'Josefin Sans', sans-serif;
-//     font-weight: bold;
-//     letter-spacing: 0.125em;
-//     border: 3px solid ivory;
-// }
-
-// * elements 
-
-
-// ? components
-// * * * * * * * * SignupConstraints
-#ConstraintGrid {
-    height: 20em;
-    width: 20em;
+    const [goldClick, setGoldClick] = useState('')
     
-    // border: 40px solid solid papayawhip;
-    // background-color: ivory;
-    // height: 200px;
-    // width: 400px;
     
-    border: 4px solid #9B111E;
-    background-color: #D4E1EC;
+
+    // const {username, password, age, email} = useUser()
     
-}
+    let URLclient = props.localhost
 
-// * * * * * * * *
+    let sty = styles        // sty:object
+    let centerYbetweenXrow = [sty.centerYbetweenXrow, sty.flex].join(" ")
+    let centerYcenterXcolumn  = [sty.centerYcenterXcolumn, sty.flex].join(" ")
+    let rowandborder = [sty.centerYbetweenXrow, sty.blueborder].join(" ")
 
-// ? components
+    let UsernameInputDouble = [sty.UsernameInput, "SignupUsername"].join(" ")
+    
+
+    const check = async () => {
+        console.log("were just checking")
+        playing()
+    }
+
+    const changehandler = (event) => {
+        let target = $(event.target)
+        
+        // AttrTool(target, 'value', '');
+        // AttrTool()
+    }
+
+    const goldClickFunc = async (event) => {
+        console.log(event)
+        let siblings:any = await Siblings(event.target)
+        let siblingText:string = siblings[0].outerText
+
+        console.log($('#UserNameInput'))
+
+        // $('#UsernameInput').css('border', '5px solid hotpink')
+
+        setTimeout( () => {
+            // $('#UsernameInput').css('border', '5px solid hotpink')
+            AttrTool($('#UsernameInput'), 'value', 'username')
+            AttrTool($('#PasswordInput'), 'value', 'password')        
+        }, 1000)
+
+        if (siblingText === 'Signup') {
+            setGoldClick('signup')
+            setTimeout( () => AttrTool($('#AgeInput'), 'value', 'age'), 1000)
+            setTimeout( () => AttrTool($('#EmailInput'), 'value', 'email'), 1000)
+        }
+        else if (siblingText === 'Login') {
+            setGoldClick('login')
+        }
+        if (siblingText === '' || siblingText === undefined || siblingText === null) {
+            setGoldClick('')            
+        }
+    }
+    
+    const semisubmit = () => {
+        $('input').each( (index, elem:any) => {                    
+            let jqelem = $(elem)            
+            let value = jqelem[0].attributes[1].nodeValue            
+            console.log('jqelem')
+            console.log(jqelem)
+            
+            console.log('value')
+            console.log(value)
+
+            console.log('elem.value')
+            console.log(elem.value)
+            
+            if (value === 'age' || value === 'username' || value === 'email' || value === 'age') {
+
+            }
+            
+        })
+        
+    }
+    
+    return (                            
+        <Page>
+            <img 
+            onClick={goldClickFunc}
+            className={sty.GoldBar} 
+            style={{ 
+                display: goldClick === 'signup' || goldClick === 'login' ? 'flex' : 'none',
+                transform: 'scale(0.25)',
+                  }} 
+            src="/img/gold.png"/>
+            <Container style={{  maxWidth: '100vw'}} className={centerYbetweenXrow}>      
+
+            <Container
+            style={{ display: goldClick === 'signup' || goldClick === 'login' ? 'none' : 'flex' }}
+            // style={{ display: goldClick === 'signup' || goldClick === 'login' ? 'none' : 'flex' }}
+            className={centerYcenterXcolumn}>
+            <img onClick={goldClickFunc} className={sty.GoldBar} src="/img/gold.png"/>
+            <p className={sty.UserText}> Login</p>
+            </Container>
+        
+            { goldClick === 'login' 
+                ?
+            <Container className={centerYcenterXcolumn} id={sty.LoginDiv}>
+            
+            <input  id="UsernameInput" onChange={changehandler} />
+            <input  id="PasswordInput" onChange={changehandler} />
+        
+
+            </Container>
+            :
+            <div></div>
+            }
+
+
+            { goldClick === 'signup' 
+                ?
+            <Container className={centerYcenterXcolumn} id={sty.LoginDiv}>
+
+            <input  id="UsernameInput" onChange={changehandler} />
+            <input  id="PasswordInput" onChange={changehandler} />
+            <input  id="AgeInput" onChange={changehandler} />
+            <input  id="EmailInput" onChange={changehandler} />
+        
+            {/* <div onClick={semisubmit} className={sty.MiniGoldBar}></div> */}
+            
+            </Container>
+            :
+            <div></div>
+            }
+
+
+            <Container 
+            style={{ display: goldClick === 'signup' || goldClick === 'login' ? 'none' : 'flex' }}
+            className={centerYcenterXcolumn}>
+            <img onClick={goldClickFunc} className={sty.GoldBar} src="/img/gold.png"/>
+            <p className={sty.UserText}> Signup</p>
+            </Container>
+
+            </Container>
+
+                { goldClick === 'login' || goldClick === 'signup'
+                    ?
+                    <div
+                    // onMouseEnter={semisubmit}
+                     onClick={semisubmit}
+                    className={sty.MiniGoldBar}></div>
+                    :
+                    <div></div>
+                }
+            
+            {goldClick === 'signup' 
+                ?
+            <SignupConstraints/>
+                :
+                <div></div>
+            }
+
+            <Container className={sty.endYcenterXcolumn} id={sty.HelmetCont}>
+                <Helmet/>
+                {/* <button onClick={check}></button>
+                <p> {username} </p>
+                <p> {gameOn} </p> */}
+            </Container>
+        </Page>
+        
+        )
+    }
+
+    export async function getServerSideProps (context) {
+        let url:any = await ReturnUrl(context);
+        let localhost:string = url
+        let predata = await fetch(new URL(`${url}/api/strains/strain`))            
+        let propurl = await predata.json()        
+                
+        return {
+            props: {
+                localhost                
+            }
+        }
+    }
+
+    // * this page will have state that when given a number it uses ternary rendering to render difference custom footers.
+    // * one page ninja input. swap login or logout by state.
+    // * {we dig you: shovel} {youre pure gold: goldbar} {gold to be mine mine to be gold: mine with border, viva oro: cactus}
