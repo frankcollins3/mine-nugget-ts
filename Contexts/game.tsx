@@ -59,8 +59,17 @@ type gameContextType = {
     searchSelector: (search:string) => void; 
     searchType: string;
     searchTypeClick: (type:string) => void; // retrieved from jQ event object by clicking the button with 'all' or 'mine'kam
-    
     // * end of  above. Below is the data.strain.search() page
+
+    // ? user related global state
+    username: string;
+    password: string;
+    email: string;
+    age: number;
+    strains: string|number[]
+
+    // ? user related global state
+    
     
 };
 
@@ -121,6 +130,14 @@ const gameDefaults: gameContextType = {
     searchTypeClick: () => {},
 
 // * end of FindMine state up top
+
+    // ?
+    username: 'test',
+    password: 'password',
+    email: 'me@memail.com',
+    age: 30,
+    strains: [],
+    // ?
 };
 
 const GameContext = createContext<gameContextType>(gameDefaults);
@@ -152,6 +169,15 @@ export function GameProvider({ children }: Props) {
     const [searchBucket, setSearchBucket] = useState([])
     const [selectedSearch, setSelectedSearch] = useState<string>('')
     const [searchType, setSearchType] = useState<string>('')
+    
+    // ? userstate
+    const [username, setUsername] = useState<string>('test')
+    const [password, setPassword] = useState<string>('password')
+    const [email, setEmail] = useState<string>('me@memail.com')
+    const [age, setAge] = useState<number>(30)
+    const [strains, setStrains] = useState<string|number[]>([])
+
+    // ?
     
     const playing = () => {
         setGameOn('playing')
@@ -307,7 +333,13 @@ export function GameProvider({ children }: Props) {
         selectedSearch,
         searchSelector,
         searchType,
-        searchTypeClick
+        searchTypeClick,
+
+        username,
+        password,
+        email,
+        age,
+        strains
         // * end of FINDMINE search page state above. Below is the data.strain.search() page
     };
 
@@ -319,3 +351,6 @@ export function GameProvider({ children }: Props) {
         </>
     );
 }
+
+
+
