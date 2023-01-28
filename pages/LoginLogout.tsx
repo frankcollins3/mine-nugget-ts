@@ -21,9 +21,24 @@ import SignupConstraints from 'components/SignupConstraints'
 
 export default function InOut (props) {
     
-    const {username, password, 
-        email, age, strains, 
-        playing, gameOn, url, urlSetter} = useGame()
+    const { username, password, email, age, strains, 
+        playing, gameOn, url, urlSetter, 
+        checked, choosechecked, usernamestr, passwordstr, emailstr, agestr, pwstrchange, emailstrchange, agestrchange, userstrchange
+    } = useGame()
+
+    const userobject = new Map([
+        ['username', ''],
+        ['password', ''],
+        ['email', ''],
+        ['age', ''],
+      ]);
+
+    // const myMap = new Map([
+    //     [1, 'one'],
+    //     [2, 'two'],
+    //     [3, 'three'],
+    //   ]);
+
     // const {userName, password, email, age, strains, quickcheck} = useUser()
 
     const [goldClick, setGoldClick] = useState('')
@@ -59,28 +74,22 @@ export default function InOut (props) {
 
     const check = async () => {
         console.log("were just checking")
-        playing()
+        playing()        
         // urlSetter(path)
     }
 
     const changehandler = (event) => {
-        let target = $(event.target)
-        
-        // AttrTool(target, 'value', '');
-        // AttrTool()
+        let target = $(event.target)                
     }
 
-    const goldClickFunc = async (event) => {
-        console.log(event)
+
+    const goldClickFunc = async (event) => {        
         let siblings:any = await Siblings(event.target)
         let siblingText:string = siblings[0].outerText
 
         console.log($('#UserNameInput'))
 
-        // $('#UsernameInput').css('border', '5px solid hotpink')
-
         setTimeout( () => {
-            // $('#UsernameInput').css('border', '5px solid hotpink')
             AttrTool($('#UsernameInput'), 'value', 'username')
             AttrTool($('#PasswordInput'), 'value', 'password')        
         }, 1000)
@@ -97,23 +106,42 @@ export default function InOut (props) {
             setGoldClick('')            
         }
     }
+
+    // choosechecked('im choosing checked!')
+        // userstrchange('hey watsup')
+        // pwstrchange('nice new password')
+        // emailstrchange('@gmail.com')
+        // agestrchange('happy birthday')
+    // * nugget click function
     
     const semisubmit = () => {
+        console.log("hey lets see the deal")
+
         $('input').each( (index, elem:any) => {                    
-            let jqelem = $(elem)            
-            let value = jqelem[0].attributes[1].nodeValue            
-            console.log('jqelem')
-            console.log(jqelem)
-            
-            console.log('value')
-            console.log(value)
+            let jqelem = $(elem)[0]         
+            // let jqelem = $(elem)         
+            // let value = jqelem[0].attributes[1].nodeValue            
+            let value:any = jqelem.value
 
-            console.log('elem.value')
-            console.log(elem.value)
-            
-            if (value === 'age' || value === 'username' || value === 'email' || value === 'age') {
 
-            }            
+            
+            // if (checked === 'username') {
+            //     console.log('checked === username')
+            //     userstrchange(checked)
+            // }
+
+            // console.log('jqelem')
+            // console.log(jqelem)
+            
+            // console.log('value')
+            // console.log(value)
+
+            // console.log('elem.value')
+            // console.log(elem.value)
+            
+            // if (value === 'age' || value === 'username' || value === 'email' || value === 'age') {
+
+            // }            
         })
         
     }
@@ -187,6 +215,12 @@ export default function InOut (props) {
                     :
                     <div></div>
                 }
+
+                {/* <p style={{ color: 'moccasin', fontWeight: 'bold', fontSize: '30px'}}> {checked} </p> */}
+                 {/* <p style={{ color: 'moccasin', fontWeight: 'bold', fontSize: '30px'}}> {usernamestr} </p> */}
+                 {/* <p style={{ color: 'moccasin', fontWeight: 'bold', fontSize: '30px'}}> {agestr} </p>
+                 <p style={{ color: 'moccasin', fontWeight: 'bold', fontSize: '30px'}}> {emailstr} </p>
+                 <p style={{ color: 'moccasin', fontWeight: 'bold', fontSize: '30px'}}> {passwordstr} </p> */}
             
             {goldClick === 'signup' 
                 ?
@@ -202,9 +236,9 @@ export default function InOut (props) {
             <Container className={sty.endYcenterXcolumn} id={sty.HelmetCont}>
                 <Helmet/>
                  <button onClick={check}></button>                 
-                 <p> {url} </p>
-                
+                 {/* <button onClick={usernamestr}></button>                  */}
 
+            
             </Container>
         </Page>
         
