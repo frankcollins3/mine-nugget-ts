@@ -11,7 +11,7 @@ import CSS from 'utility/CSStool'
 export default function SignupConstraints(props) {
     
     
-        const [checked, setChecked] = useState('')
+        const [checked, setChecked] = useState('not checked')
 
         let sty = styles
         let classtag = 'tag'
@@ -48,7 +48,9 @@ export default function SignupConstraints(props) {
             setChecked('')
         }
 
-        const btnclick3 = () => {        
+        const btnclick3 = () => {  
+            console.log(checked)    
+              
         }
 
         const checkboxclick = async (event) => {
@@ -58,6 +60,8 @@ export default function SignupConstraints(props) {
             let usercheck:string = cb1[0].checked
             let passcheck:string = cb2[0].checked
             let emailcheck:string = cb3[0].checked
+
+        
 
             console.log('usercheck')
             console.log(usercheck)
@@ -71,32 +75,148 @@ export default function SignupConstraints(props) {
             let boxsibling:any = await Siblings(target)
 
             let checktext:any = boxsibling[0].innerText
+            let tag = $('.tag')
+            console.log('checked')
+            console.log(checked)
+            
             console.log('checktext')
             console.log(checktext)
-
-            setChecked(checktext || 'true')
-
-            target.removeClass($(boxcont))
-            target.addClass("redborder")
-
-            let tag = $('.tag')
-        
-            // $('.tag').css('border', '5px solid green')
-            $('.tag').css('pointer-events', 'none')
-            $('.tag').css('cursor', 'not-allowed')
-
             
+            if (checked === 'not checked' && checktext === 'username') {
+                console.log("checked === not checked checktext === username")
+                    setChecked('username')
+                    $('#boxcont2').css('position', 'static')
+                    $('#boxcont3').css('position', 'static')
+                    $('#boxcont2').css('pointer-events', 'none')
+                    $('#boxcont3').css('pointer-events', 'none')
+                }
 
-            setTimeout( () => {
-                $(target[0]).css('pointer-events', 'auto')
-            }, 2000)
+            if (checked === 'not checked' && checktext === 'password') {
+                console.log("checked === not checked checktext === password")
+                    setChecked('password')
+                    $('#boxcont1').css('position', 'static')
+                    $('#boxcont3').css('position', 'static')
+                    $('#boxcont1').css('pointer-events', 'none')
+                    $('#boxcont3').css('pointer-events', 'none')
+                }
 
-            // tag.children().css('pointer-events', 'none')
+            if (checked === 'not checked' && checktext === 'email') {
+                console.log("checked === not checked checktext === password")
+                    setChecked('email')
+                    $('#boxcont1').css('position', 'static')
+                    $('#boxcont2').css('position', 'static')
+                    $('#boxcont1').css('pointer-events', 'none')
+                    $('#boxcont2').css('pointer-events', 'none')
+                }
+   
 
-            // $(sty.checkboxcontainer).css('border', '5px solid green')
+            if (checked === 'username') {
+                    console.log("checked === username and we are clicking again!")
+                const blankvalue = () => {
+                    $('#boxcont2').css('pointer-events', '')
+                    $('#boxcont3').css('pointer-events', '')
+                }
+                const resetToNone = () => {
+                    $('#boxcont2').css('position', 'relative')
+                    $('#boxcont3').css('position', 'relative')
+                    $('#boxcont2').css('pointer-events', 'auto')
+                    $('#boxcont3').css('pointer-events', 'auto')
+                }
+                const doublefunctions = async () => {
+                    setChecked('not checked')
+                    await blankvalue()
+                    await resetToNone()
+                }
+                doublefunctions()                
+            }
+
+            if (checked === 'password') {
+                    console.log("checked === username and we are clicking again!")
+                const blankvalue = () => {
+                    $('#boxcont1').css('pointer-events', '')
+                    $('#boxcont3').css('pointer-events', '')
+                }
+                const resetToNone = () => {
+                    $('#boxcont1').css('position', 'relative')
+                    $('#boxcont3').css('position', 'relative')
+                    $('#boxcont1').css('pointer-events', 'auto')
+                    $('#boxcont3').css('pointer-events', 'auto')
+                }
+                const doublefunctions = async () => {
+                    setChecked('not checked')
+                    await blankvalue()
+                    await resetToNone()
+                }
+                doublefunctions()                
+            }
+
+            if (checked === 'email') {
+                    console.log("checked === username and we are clicking again!")
+                const blankvalue = () => {
+                    $('#boxcont1').css('pointer-events', '')
+                    $('#boxcont2').css('pointer-events', '')
+                }
+                const resetToNone = () => {
+                    $('#boxcont1').css('position', 'relative')
+                    $('#boxcont2').css('position', 'relative')
+                    $('#boxcont1').css('pointer-events', 'auto')
+                    $('#boxcont2').css('pointer-events', 'auto')
+                }
+                const doublefunctions = async () => {
+                    setChecked('not checked')
+                    await blankvalue()
+                    await resetToNone()
+                }
+                doublefunctions()                
+            }
 
 
 
+            // if (checked === 'not checked') {
+            //     console.log("checked is ''  empty string")
+                
+            //     if (checktext === 'username') {
+            //         console.log("checktext === username run the functions!")
+            //         setChecked('usercheck')                    
+            //         $('#boxcont2').css('position', 'static')
+            //         $('#boxcont3').css('position', 'static')
+            //         $('#boxcont2').css('pointer-events', 'none')
+            //         $('#boxcont3').css('pointer-events', 'none')
+            //     }
+            //     if (checktext === 'password') {
+            //         setChecked('passcheck')                    
+            //     }
+            //     if (checktext === 'email') {
+            //         setChecked('emailcheck')                    
+            //     }
+            // } else {
+
+            //     console.log('checked is a populated string')
+            
+            //     $(event.target).css("border", '5px solid hotpink')
+            //     $('#boxcont2').css('position', 'relative')
+            //     $('#boxcont3').css('position', 'relative')
+            //     $('#boxcont2').css('pointer-events', 'auto')
+            //     $('#boxcont3').css('pointer-events', 'auto')
+                
+                
+            //     if (usercheck === 'true') {
+            //         setChecked('not checked')
+            //     }
+            //     if (passcheck === 'true') {
+            //         console.log("yeah usercheck is true")
+            //         setChecked('not checked')
+            //     }
+            //     if (emailcheck === 'true') {
+            //         console.log("yeah usercheck is true")
+            //         setChecked('not checked')
+            //     }
+            // }
+
+            // setTimeout( () => {
+            //     $(target[0]).css('position', 'relative')
+            //     $(target[0]).css('pointer-events', 'auto')
+            // }, 2000)
         }
             
             
@@ -108,19 +228,19 @@ export default function SignupConstraints(props) {
 
                 <div id={sty.ConstraintA} className="DivParent Row">
 
-            <div className={boxcont}>            
+            <div className={boxcont} id="boxcont1">            
                 <input 
                 style={{ pointerEvents: checked.length > 1 ? 'none' : 'all'}}
                 onClick={checkboxclick}  type="checkbox" id="cb1"/>
                 <label htmlFor="cb1">username</label>
             </div>
-            <div className={boxcont}>
+            <div className={boxcont} id="boxcont2">
                 <input
                 style={{ pointerEvents: checked.length > 1 ? 'none' : 'all'}}
                  onClick={checkboxclick} type="checkbox" id="cb2"/>
                 <label htmlFor="cb2">password</label>
             </div>
-            <div className={boxcont}>
+            <div className={boxcont} id="boxcont3">
                 <input
                 style={{ pointerEvents: checked.length > 1 ? 'none' : 'all'}}
                  onClick={checkboxclick} type="checkbox" id="cb3"/>
@@ -129,10 +249,7 @@ export default function SignupConstraints(props) {
                  </div>
                 <div id={sty.ConstraintB}>
                  </div>
-                 <button
-                  style={{ backgroundColor: 'blue', width: '80px'}} onClick={btnclick}></button>
-                 <button style={{ backgroundColor: 'red', width: '80px'}} onClick={btnclick2}></button>
-                 <button style={{ backgroundColor: 'yellow', width: '80px'}} onClick={btnclick3}></button>
+                 
             </Container>
         )
     }
