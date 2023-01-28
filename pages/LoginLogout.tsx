@@ -2,6 +2,7 @@ import Helmet from 'components/Helmet'
 import {useEffect, useState} from 'react'
 import $ from 'jquery'
 import Container from 'react-bootstrap/Container'
+import {useRouter} from 'next/router'
 
 //* CSS  */
 import styles from 'styles/LoginLogout/LogInOut.module.scss'
@@ -22,15 +23,30 @@ export default function InOut (props) {
     
     const {username, password, 
         email, age, strains, 
-        playing, gameOn} = useGame()
+        playing, gameOn, url, urlSetter} = useGame()
     // const {userName, password, email, age, strains, quickcheck} = useUser()
 
     const [goldClick, setGoldClick] = useState('')
     
+    let router = useRouter()
+    let path = router.asPath
+
+    useEffect( () => {
+        urlSetter(path)        
+    }, [])
+
+    // let path:any = router.asPath
+
+    console.log('router')
+    console.log('path')
+    console.log(path)
+    
+    let pathProps = {
+        pathprop: path
+    }
     
 
-    // const {username, password, age, email} = useUser()
-    
+        
     let URLclient = props.localhost
 
     let sty = styles        // sty:object
@@ -44,6 +60,7 @@ export default function InOut (props) {
     const check = async () => {
         console.log("were just checking")
         playing()
+        // urlSetter(path)
     }
 
     const changehandler = (event) => {
@@ -96,8 +113,7 @@ export default function InOut (props) {
             
             if (value === 'age' || value === 'username' || value === 'email' || value === 'age') {
 
-            }
-            
+            }            
         })
         
     }
@@ -174,16 +190,21 @@ export default function InOut (props) {
             
             {goldClick === 'signup' 
                 ?
+                <Container className={sty.centerYcenterXcolumn}>
+                <h1  className={sty.BeMine}> Gold to be Mine. </h1>
             <SignupConstraints/>
+                <h1  className={sty.BeMine}> Mine to be Gold</h1>
+                </Container>
                 :
                 <div></div>
             }
 
             <Container className={sty.endYcenterXcolumn} id={sty.HelmetCont}>
                 <Helmet/>
-                {/* <button onClick={check}></button>
-                <p> {username} </p>
-                <p> {gameOn} </p> */}
+                 <button onClick={check}></button>                 
+                 <p> {url} </p>
+                
+
             </Container>
         </Page>
         
