@@ -61,6 +61,9 @@ type gameContextType = {
     searchTypeClick: (type:string) => void; // retrieved from jQ event object by clicking the button with 'all' or 'mine'kam
     // * end of  above. Below is the data.strain.search() page
 
+    url: string;
+    urlSetter: (url:string) => void;
+
     // ? user related global state
     username: string;
     password: string;
@@ -79,6 +82,8 @@ type gameContextType = {
     emailstrchange: (str:string) => void;
     agestr: string;
     agestrchange: (str:string) => void;
+
+
     //* signup constraints */
 
     // ? user related global state
@@ -142,6 +147,9 @@ const gameDefaults: gameContextType = {
     searchType: '',
     searchTypeClick: () => {},
 
+    url: '',
+    urlSetter: (url:string) => {},
+
 // * end of FindMine state up top
 
     // ?
@@ -197,6 +205,7 @@ export function GameProvider({ children }: Props) {
     const [searchBucket, setSearchBucket] = useState([])
     const [selectedSearch, setSelectedSearch] = useState<string>('')
     const [searchType, setSearchType] = useState<string>('')
+    const [url, setUrl] = useState<string>('');
     
     // ? userstate
     const [username, setUsername] = useState<string>('test')
@@ -206,7 +215,7 @@ export function GameProvider({ children }: Props) {
     const [strains, setStrains] = useState<string|number[]>([])
 
     // * 
-    const [checked, setChecked] = useState<string>('')
+    const [checked, setChecked] = useState<string>('not checked')
     const [usernamestr, setUsernamestr] = useState<string>('')
     const [passwordstr, setPasswordstr] = useState<string>('')
     const [emailstr, setEmailstr] = useState<string>('')
@@ -315,14 +324,22 @@ export function GameProvider({ children }: Props) {
             setSearchType(type);
         }
 
+        
+
         const choosechecked = (checkedBy:string) => {
             setChecked(checkedBy)
         }
 
+        const urlSetter = (url:string) => {
+            setUrl(url)
+        }
+
+        // * user functionality begins below 
+        
         const userstrchange = (str:string) => {
             setUsernamestr(str)
         }
-
+        
         const pwstrchange  = (str:string) => {
             setPasswordstr(str)
         }
@@ -333,6 +350,8 @@ export function GameProvider({ children }: Props) {
             setAgestr(str)
         }
 
+        // * user functionality ends above
+        
     const value = {
         gameOn, 
         playing,
@@ -406,6 +425,8 @@ export function GameProvider({ children }: Props) {
         emailstrchange,
         agestrchange,
         userstrchange,
+        url,
+        urlSetter
 
 
         // *
