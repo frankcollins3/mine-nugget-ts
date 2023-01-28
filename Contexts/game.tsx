@@ -66,7 +66,20 @@ type gameContextType = {
     password: string;
     email: string;
     age: number;
-    strains: string|number[]
+    strains: string|number[];
+
+    //* signup constraints */
+    checked: string;
+    choosechecked: (checkedBy:string) => void;
+    usernamestr: string;
+    userstrchange: (str:string) => void;// userstrchange: (str:string) might make this an array with join if i have trouble 
+    passwordstr: string;
+    pwstrchange: (str:string) => void;
+    emailstr: string;
+    emailstrchange: (str:string) => void;
+    agestr: string;
+    agestrchange: (str:string) => void;
+    //* signup constraints */
 
     // ? user related global state
     
@@ -137,6 +150,21 @@ const gameDefaults: gameContextType = {
     email: 'me@memail.com',
     age: 30,
     strains: [],
+
+    // * 
+    checked: 'not checked',
+    choosechecked: (checkedBy:string) => {},
+    usernamestr: '',
+    passwordstr: '',
+    emailstr: '',
+    agestr: '',
+    pwstrchange: (str:string) => {},    
+    emailstrchange: (str:string) => {},    
+    agestrchange: (str:string) => {},
+    userstrchange: (str:string) => {},
+    // userstrchange: (str:string) might make this an array with join if i have trouble     
+
+    // * 
     // ?
 };
 
@@ -177,10 +205,18 @@ export function GameProvider({ children }: Props) {
     const [age, setAge] = useState<number>(30)
     const [strains, setStrains] = useState<string|number[]>([])
 
+    // * 
+    const [checked, setChecked] = useState<string>('')
+    const [usernamestr, setUsernamestr] = useState<string>('')
+    const [passwordstr, setPasswordstr] = useState<string>('')
+    const [emailstr, setEmailstr] = useState<string>('')
+    const [agestr, setAgestr] = useState<string>('')
+    
+    // * 
     // ?
     
     const playing = () => {
-        setGameOn('playing')
+        setGameOn('playing')        
     }
 
     const notplaying = () => {
@@ -278,7 +314,24 @@ export function GameProvider({ children }: Props) {
         const searchTypeClick = (type:string) => {
             setSearchType(type);
         }
-        
+
+        const choosechecked = (checkedBy:string) => {
+            setChecked(checkedBy)
+        }
+
+        const userstrchange = (str:string) => {
+            setUsernamestr(str)
+        }
+
+        const pwstrchange  = (str:string) => {
+            setPasswordstr(str)
+        }
+        const emailstrchange  = (str:string) => {
+            setEmailstr(str)
+        }
+        const agestrchange  = (str:string) => {
+            setAgestr(str)
+        }
 
     const value = {
         gameOn, 
@@ -335,11 +388,28 @@ export function GameProvider({ children }: Props) {
         searchType,
         searchTypeClick,
 
+        // ?
         username,
         password,
         email,
         age,
-        strains
+        strains,
+
+        // *
+        checked,
+        choosechecked,
+        usernamestr,
+        passwordstr,
+        emailstr,
+        agestr,
+        pwstrchange,
+        emailstrchange,
+        agestrchange,
+        userstrchange,
+
+
+        // *
+        // ?
         // * end of FINDMINE search page state above. Below is the data.strain.search() page
     };
 
