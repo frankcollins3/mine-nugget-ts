@@ -4,6 +4,7 @@ import {useEffect, useState} from 'react'
 import $ from 'jquery'
 import Siblings from 'utility/JqSiblings'
 import CSS from 'utility/CSStool'
+import {useGame} from 'Contexts/game'
 // possible dictionary API to check for simple syllable words or too easily guessed words?
 // email API to check if its a valid email?
 // possible to make an API and to basically hash that API so that you can't read it but can consist of vulgar words that aren't accepted?
@@ -11,7 +12,17 @@ import CSS from 'utility/CSStool'
 export default function SignupConstraints(props) {
     
     
-        const [checked, setChecked] = useState('not checked')
+        // const [checked, setChecked] = useState('not checked')
+
+        const {
+                    checked, choosechecked, 
+                    usernamestr, passwordstr, emailstr, agestr,
+                    pwstrchange, emailstrchange, agestrchange, userstrchange
+              } = useGame()
+
+
+
+        
 
         let sty = styles
         let classtag = 'tag'
@@ -37,7 +48,8 @@ export default function SignupConstraints(props) {
             console.log( $('#cb1'))           
             console.log( $('#cb2'))           
             console.log( $('#cb3'))           
-            setChecked('checked')
+            choosechecked('checked')
+            // setChecked('checked') from successful local stage entry
         }
         
         const btnclick2 = () => { 
@@ -45,13 +57,17 @@ export default function SignupConstraints(props) {
             console.log( $('#cb1'))           
             console.log( $('#cb2'))           
             console.log( $('#cb3'))           
-            setChecked('')
+            choosechecked('')
         }
 
         const btnclick3 = () => {  
-            console.log(checked)    
-              
+            console.log('checked')    
+            console.log(checked) 
+            
         }
+            
+
+              
 
         const checkboxclick = async (event) => {
             let cb1:any = $('#cb1')
@@ -84,7 +100,8 @@ export default function SignupConstraints(props) {
             
             if (checked === 'not checked' && checktext === 'username') {
                 console.log("checked === not checked checktext === username")
-                    setChecked('username')
+                    choosechecked('username')
+                    // setChecked('username')
                     $('#boxcont2').css('position', 'static')
                     $('#boxcont3').css('position', 'static')
                     $('#boxcont2').css('pointer-events', 'none')
@@ -93,7 +110,8 @@ export default function SignupConstraints(props) {
 
             if (checked === 'not checked' && checktext === 'password') {
                 console.log("checked === not checked checktext === password")
-                    setChecked('password')
+                    choosechecked('password')
+                    // setChecked('password')
                     $('#boxcont1').css('position', 'static')
                     $('#boxcont3').css('position', 'static')
                     $('#boxcont1').css('pointer-events', 'none')
@@ -102,7 +120,8 @@ export default function SignupConstraints(props) {
 
             if (checked === 'not checked' && checktext === 'email') {
                 console.log("checked === not checked checktext === password")
-                    setChecked('email')
+                    choosechecked('email')
+                    // setChecked('email')
                     $('#boxcont1').css('position', 'static')
                     $('#boxcont2').css('position', 'static')
                     $('#boxcont1').css('pointer-events', 'none')
@@ -123,7 +142,8 @@ export default function SignupConstraints(props) {
                     $('#boxcont3').css('pointer-events', 'auto')
                 }
                 const doublefunctions = async () => {
-                    setChecked('not checked')
+                    choosechecked('not checked')
+                    // setChecked('not checked')
                     await blankvalue()
                     await resetToNone()
                 }
@@ -143,7 +163,8 @@ export default function SignupConstraints(props) {
                     $('#boxcont3').css('pointer-events', 'auto')
                 }
                 const doublefunctions = async () => {
-                    setChecked('not checked')
+                    choosechecked('not checked')
+                    // setChecked('not checked')
                     await blankvalue()
                     await resetToNone()
                 }
@@ -163,60 +184,14 @@ export default function SignupConstraints(props) {
                     $('#boxcont2').css('pointer-events', 'auto')
                 }
                 const doublefunctions = async () => {
-                    setChecked('not checked')
+                    choosechecked('not checked')
+                    // setChecked('not checked')
                     await blankvalue()
                     await resetToNone()
                 }
                 doublefunctions()                
             }
 
-
-
-            // if (checked === 'not checked') {
-            //     console.log("checked is ''  empty string")
-                
-            //     if (checktext === 'username') {
-            //         console.log("checktext === username run the functions!")
-            //         setChecked('usercheck')                    
-            //         $('#boxcont2').css('position', 'static')
-            //         $('#boxcont3').css('position', 'static')
-            //         $('#boxcont2').css('pointer-events', 'none')
-            //         $('#boxcont3').css('pointer-events', 'none')
-            //     }
-            //     if (checktext === 'password') {
-            //         setChecked('passcheck')                    
-            //     }
-            //     if (checktext === 'email') {
-            //         setChecked('emailcheck')                    
-            //     }
-            // } else {
-
-            //     console.log('checked is a populated string')
-            
-            //     $(event.target).css("border", '5px solid hotpink')
-            //     $('#boxcont2').css('position', 'relative')
-            //     $('#boxcont3').css('position', 'relative')
-            //     $('#boxcont2').css('pointer-events', 'auto')
-            //     $('#boxcont3').css('pointer-events', 'auto')
-                
-                
-            //     if (usercheck === 'true') {
-            //         setChecked('not checked')
-            //     }
-            //     if (passcheck === 'true') {
-            //         console.log("yeah usercheck is true")
-            //         setChecked('not checked')
-            //     }
-            //     if (emailcheck === 'true') {
-            //         console.log("yeah usercheck is true")
-            //         setChecked('not checked')
-            //     }
-            // }
-
-            // setTimeout( () => {
-            //     $(target[0]).css('position', 'relative')
-            //     $(target[0]).css('pointer-events', 'auto')
-            // }, 2000)
         }
             
             
@@ -249,6 +224,13 @@ export default function SignupConstraints(props) {
                  </div>
                 <div id={sty.ConstraintB}>
                  </div>
+
+                 <button
+                onClick={btnclick3}
+                 style={{ width: '80px', height: '80px', borderRadius: '50%', backgroundColor: 'moccasin'}
+                }>
+                    MineGold
+                </button>
                  
             </Container>
         )
