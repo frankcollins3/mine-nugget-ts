@@ -23,7 +23,8 @@ export default function InOut (props) {
     
     const { username, password, email, age, strains, 
         playing, gameOn, url, urlSetter, 
-        checked, choosechecked, usernamestr, passwordstr, emailstr, agestr, pwstrchange, emailstrchange, agestrchange, userstrchange
+        checked, choosechecked, usernamestr, passwordstr, emailstr, agestr, pwstrchange, emailstrchange, agestrchange, userstrchange,
+        currentinput, currentinputset
     } = useGame()
 
     const userobject = new Map([
@@ -32,12 +33,6 @@ export default function InOut (props) {
         ['email', ''],
         ['age', ''],
       ]);
-
-    // const myMap = new Map([
-    //     [1, 'one'],
-    //     [2, 'two'],
-    //     [3, 'three'],
-    //   ]);
 
     // const {userName, password, email, age, strains, quickcheck} = useUser()
 
@@ -50,18 +45,11 @@ export default function InOut (props) {
         urlSetter(path)        
     }, [])
 
-    // let path:any = router.asPath
-
-    console.log('router')
-    console.log('path')
-    console.log(path)
     
     let pathProps = {
         pathprop: path
     }
-    
 
-        
     let URLclient = props.localhost
 
     let sty = styles        // sty:object
@@ -78,8 +66,17 @@ export default function InOut (props) {
         // urlSetter(path)
     }
 
+    const check2 = () => {
+        console.log(userobject)
+    }
+
     const changehandler = (event) => {
-        let target = $(event.target)                
+        let target = $(event.target)    
+        let typedchar:string = event.target.value
+        console.log(event)
+        currentinputset(typedchar)
+        console.log('typedchar')
+        console.log(typedchar)            
     }
 
 
@@ -121,27 +118,7 @@ export default function InOut (props) {
             let jqelem = $(elem)[0]         
             // let jqelem = $(elem)         
             // let value = jqelem[0].attributes[1].nodeValue            
-            let value:any = jqelem.value
-
-
-            
-            // if (checked === 'username') {
-            //     console.log('checked === username')
-            //     userstrchange(checked)
-            // }
-
-            // console.log('jqelem')
-            // console.log(jqelem)
-            
-            // console.log('value')
-            // console.log(value)
-
-            // console.log('elem.value')
-            // console.log(elem.value)
-            
-            // if (value === 'age' || value === 'username' || value === 'email' || value === 'age') {
-
-            // }            
+            let value:any = jqelem.value          
         })
         
     }
@@ -179,6 +156,10 @@ export default function InOut (props) {
             <div></div>
             }
 
+            {/* <p style={{ color: 'moccasin', fontWeight: 'bold', fontSize: '30px'}}> {checked} </p> */}
+            <p style={{ color: 'moccasin', fontWeight: 'bold', fontSize: '30px'}}> {currentinput} </p>
+
+
 
             { goldClick === 'signup' 
                 ?
@@ -186,8 +167,8 @@ export default function InOut (props) {
 
             <input  id="UsernameInput" onChange={changehandler} />
             <input  id="PasswordInput" onChange={changehandler} />
-            <input  id="AgeInput" onChange={changehandler} />
             <input  id="EmailInput" onChange={changehandler} />
+            <input  id="AgeInput" onChange={changehandler} />
         
             {/* <div onClick={semisubmit} className={sty.MiniGoldBar}></div> */}
             
@@ -232,10 +213,12 @@ export default function InOut (props) {
                 :
                 <div></div>
             }
+            
 
             <Container className={sty.endYcenterXcolumn} id={sty.HelmetCont}>
                 <Helmet/>
                  <button onClick={check}></button>                 
+                 <button onClick={check2}></button>                 
                  {/* <button onClick={usernamestr}></button>                  */}
 
             
