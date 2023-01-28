@@ -36,10 +36,7 @@ import { useGame } from 'Contexts/game'
 
 
 export default  function GameContainer (props) {
-    console.log('props from the GameContainer!!!!')
-    console.log(props)
-
-    
+            
     const [cactusHover, setCactusHover] = useState(false)
     // const [gameOn, setGameOn] = useState(false)
     
@@ -169,7 +166,7 @@ export default  function GameContainer (props) {
                     
                     <img
                     id="gold1"                    
-                    style={{ height: '50px', width: '50px'}}
+                    style={{ height: '50px', width: '50px', marginTop: '0.5em'}}
                     onMouseEnter={goldbarhover1}
                     src="img/gold.png"/>
                     <h1> { parent1 || '' }</h1>                                          
@@ -182,7 +179,7 @@ export default  function GameContainer (props) {
                     <img
                     id="gold2"
                     onMouseEnter={goldbarhover2}
-                    style={{ height: '50px', width: '50px'}}
+                    style={{ height: '50px', width: '50px', marginTop: '0.5em'}}
                     src="img/gold.png"/>                                                               
                     <h1> { parent2 || '' }</h1>                                          
                     </Container>
