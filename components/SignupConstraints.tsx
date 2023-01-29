@@ -19,7 +19,7 @@ export default function SignupConstraints(props) {
 const { checked, choosechecked, usernamestr, passwordstr, 
     emailstr, agestr, pwstrchange, currentinput, currentinputset,
      emailstrchange, agestrchange, userstrchange, passworduppercase, uppercaseset, specialchar, specialcharset, numberchar, numbercharset,
-      tooeasy, tooeasyset, tooeasybucket, nocursing, nocursingset, cursingboolean, cursingbooleanset,
+      tooeasy, tooeasyset, tooeasybucket, easybucketset, nocursing, nocursingset, cursingboolean, cursingbooleanset,
       usergood, usergoodset, validemail, validemailset, oldenough, oldenoughset
       } = useGame()
 
@@ -47,6 +47,8 @@ const { checked, choosechecked, usernamestr, passwordstr,
            let actualstring = stringinput.toString()
            
            let loopsafeNoCursing = [nocursing]
+           let loopsafeezbucket:any = tooeasybucket
+           
            
            if (stringinput.length < 1) {
             uppercaseset('false')
@@ -55,13 +57,42 @@ const { checked, choosechecked, usernamestr, passwordstr,
            }
            
             if (checked === 'password') {
+                console.log('tooeasybucket in the password')
+                console.log(tooeasybucket)
+
                 let numberPattern = /\d+/g;
                 let upperCasePattern = /[A-Z\s]/g;
                 let specialPattern = /[!@#$%&*?]/g;
+                let onlyLettersPattern = /[a-zA-Z]/g;
+
+
 
                 let uppercaseRegex = actualstring.match(upperCasePattern)            
                 let regexnumber = actualstring.match(numberPattern)                        
                 let specialRegex = actualstring.match(specialPattern)
+                let onlyletters = actualstring.length > 2 ? actualstring.match(onlyLettersPattern) : ['friends', 'for', 'ever']
+                console.log('onlyletters')
+                console.log(onlyletters)
+                // let onlyletters = actualstring.match(onlyLettersPattern)
+
+                // console.log(onlyletters.join(""))
+
+                let easycount = 0
+
+                loopsafeezbucket.forEach( (easyword:string) => {
+
+                    let lettersArrayJoined = onlyletters.join("")
+                    if (lettersArrayJoined === easyword) {
+                        console.log('lettersArrayJoined')
+                        console.log(lettersArrayJoined)
+                        easycount++
+                        tooeasyset('true')
+                    } else {
+                        if (easycount === 0) {
+                            tooeasyset('false')
+                        }
+                    }
+                })
 
                 if (specialRegex) {
                     specialcharset('true')
@@ -83,16 +114,23 @@ const { checked, choosechecked, usernamestr, passwordstr,
                 
             }
 
+            if (checked === 'email') {
+                console.log("checking the email")
+                
+                console.log('actualstring')
+                console.log(actualstring)
+
+            }
                         // * i dont believe i need any state for this just a couple of regex.
             // * username if checked === 'username'
             // * 1) regex to remove @ 
             // * 2) check for currentinput.length > 8 length < 8    
+        }, [currentinput])
+            
             
 
             
-            console.log(`stringinput length ${stringinput.length}`)
             
-        }, [currentinput])
 
 
         const inputClick = (event) => {            
@@ -278,8 +316,6 @@ const { checked, choosechecked, usernamestr, passwordstr,
                         // style={{ display: passPassword.length > 2 ? "none" : "flex"}}
                         className="Row">
 
-                        
-
                      <p
                       className={sty.ConstraintText}
                       style={{ 
@@ -300,14 +336,21 @@ const { checked, choosechecked, usernamestr, passwordstr,
                           color: numberchar ? 'rgb(247, 208, 32)' : 'moccasin',
                           fontWeight: 'bold', fontSize: '15px'
                         }}> number </p>
+
+<p
+                      className={sty.ConstraintText}
+                      style={{ 
+                          color: tooeasy ? '#E01115' : 'rgb(247, 208, 32)', // 9b111E E01115
+                          fontWeight: 'bold', fontSize: '15px'
+                        }}> too-ez </p>   
                         </div>
                     
                         </div>
                         :
                         <div> </div>
+                    }
 
                         
-                    }
 
 
 
