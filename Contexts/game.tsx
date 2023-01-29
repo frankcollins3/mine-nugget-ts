@@ -85,6 +85,14 @@ type gameContextType = {
     agestr: string;
     agestrchange: (str:string) => void;
 
+    passworduppercase: boolean;
+    uppercaseset: (command:string) => void;
+    specialchar: boolean;
+    specialcharset: (command:string) => void;
+    numberchar: boolean;
+    numbercharset: (command:string) => void;
+
+
 
     //* signup constraints */
 
@@ -176,6 +184,13 @@ const gameDefaults: gameContextType = {
     userstrchange: (str:string) => {},
     // userstrchange: (str:string) might make this an array with join if i have trouble     
 
+    passworduppercase: false,
+    uppercaseset: (command:string) => {},
+    specialchar: false,
+    specialcharset: (command:string) => {},
+    numberchar: false,
+    numbercharset: (command:string) => {}
+
     // * 
     // ?
 };
@@ -226,6 +241,10 @@ export function GameProvider({ children }: Props) {
     const [passwordstr, setPasswordstr] = useState<string>('')
     const [emailstr, setEmailstr] = useState<string>('')
     const [agestr, setAgestr] = useState<string>('')
+
+    const [passworduppercase, setPassworduppercase] = useState<boolean>(false)
+    const [specialchar, setSpecialchar] = useState<boolean>(false)
+    const [numberchar, setNumberchar] = useState<boolean>(false)
     
     // * 
     // ?
@@ -360,6 +379,27 @@ export function GameProvider({ children }: Props) {
             setAgestr(str)
         }
 
+        const uppercaseset = (command:string) => {
+            if (command === 'true') {
+                setPassworduppercase(true)
+            }
+            if (command === 'false') {
+                setPassworduppercase(false)                
+            }
+        }
+
+        const specialcharset = (command:string) => {
+            if (command === 'true') setSpecialchar(true)
+            if (command === 'false') setSpecialchar(false)
+        }
+
+        const numbercharset = (command:string) => {
+            if (command === 'true') setNumberchar(true)
+            if (command === 'false') setNumberchar(false)
+        }
+
+
+
         // * user functionality ends above
         
     const value = {
@@ -440,6 +480,12 @@ export function GameProvider({ children }: Props) {
         url,
         urlSetter,
 
+        passworduppercase,
+        uppercaseset,
+        specialchar,
+        specialcharset,
+        numberchar,
+        numbercharset,
 
 
         // *
