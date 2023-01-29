@@ -14,61 +14,48 @@ export default function SignupConstraints(props) {
     
         // const [checked, setChecked] = useState('not checked')
 
-        const {
-                    checked, choosechecked, 
-                    usernamestr, passwordstr, emailstr, agestr,
-                    pwstrchange, emailstrchange, agestrchange, userstrchange
-              } = useGame()
+const { checked, choosechecked, usernamestr, passwordstr, 
+    emailstr, agestr, pwstrchange, currentinput, currentinputset,
+     emailstrchange, agestrchange, userstrchange } = useGame()
 
-
-
-        
-
-        let sty = styles
+        let sty = styles; 
         let classtag = 'tag'
         let boxcont = [sty.checkboxcontainer, 'tag'].join(" ")
-        // let boxcont = sty.checkboxcontainer
 
         useEffect( () => {
-            // console.log("heres my inputs")
-            // console.log($('input'))
-
-            // $('input')                
-        })
+            console.log('currentinput from the useEffect!')
+            console.log(currentinput)
+            console.log(typeof currentinput)
+            let stringinput:any = currentinput
+            
+            // i have a modular regex function and have an alpha or number return but no uppercase or lowercase return i could make one but it's okay as it in my opinion.
+            let inputregex = stringinput.toString().replace(/[\/A-Z]/g, '')
+            console.log('inputregex and length')
+            console.log(inputregex)
+            console.log(inputregex.length)
+            if (inputregex < stringinput) {
+                console.log('we now have an uppercase character!')
+            }
+            
+            console.log(`stringinput length ${stringinput.length}`)
+            
+        }, [currentinput])
 
 
         const inputClick = (event) => {            
-            console.log('event')
-            console.log(event)
-
-        }
-
-        const btnclick = () => {
-            console.log('cb1 - cb3 and checked')
-            console.log( $('#cb1'))           
-            console.log( $('#cb2'))           
-            console.log( $('#cb3'))           
-            choosechecked('checked')
-            // setChecked('checked') from successful local stage entry
-        }
-        
-        const btnclick2 = () => { 
-            console.log('* * * * * cb1 - cb3 * * * * *  ')
-            console.log( $('#cb1'))           
-            console.log( $('#cb2'))           
-            console.log( $('#cb3'))           
-            choosechecked('')
+            
         }
 
         const btnclick3 = () => {  
-            console.log('checked')    
-            console.log(checked) 
-            
+                        
         }
-            
 
-              
-
+        // choosechecked('im choosing checked!')
+        // userstrchange('hey watsup')
+        // pwstrchange('nice new password')
+        // emailstrchange('@gmail.com')
+        // agestrchange('happy birthday')
+        
         const checkboxclick = async (event) => {
             let cb1:any = $('#cb1')
             let cb2:any = $('#cb2')
@@ -76,9 +63,7 @@ export default function SignupConstraints(props) {
             let usercheck:string = cb1[0].checked
             let passcheck:string = cb2[0].checked
             let emailcheck:string = cb3[0].checked
-
         
-
             console.log('usercheck')
             console.log(usercheck)
             console.log('passcheck')
@@ -93,14 +78,13 @@ export default function SignupConstraints(props) {
             let checktext:any = boxsibling[0].innerText
             let tag = $('.tag')
             console.log('checked')
-            console.log(checked)
-            
+            console.log(checked)            
             console.log('checktext')
             console.log(checktext)
             
             if (checked === 'not checked' && checktext === 'username') {
                 console.log("checked === not checked checktext === username")
-                    choosechecked('username')
+                    choosechecked('username')                    
                     // setChecked('username')
                     $('#boxcont2').css('position', 'static')
                     $('#boxcont3').css('position', 'static')
@@ -110,8 +94,7 @@ export default function SignupConstraints(props) {
 
             if (checked === 'not checked' && checktext === 'password') {
                 console.log("checked === not checked checktext === password")
-                    choosechecked('password')
-                    // setChecked('password')
+                    choosechecked('password')                                       
                     $('#boxcont1').css('position', 'static')
                     $('#boxcont3').css('position', 'static')
                     $('#boxcont1').css('pointer-events', 'none')
@@ -184,8 +167,7 @@ export default function SignupConstraints(props) {
                     $('#boxcont2').css('pointer-events', 'auto')
                 }
                 const doublefunctions = async () => {
-                    choosechecked('not checked')
-                    // setChecked('not checked')
+                    choosechecked('not checked')                    
                     await blankvalue()
                     await resetToNone()
                 }
@@ -194,10 +176,6 @@ export default function SignupConstraints(props) {
 
         }
             
-            
-          
-            
-
         return (
             <Container id={sty.ConstraintGrid}>
 
@@ -222,16 +200,26 @@ export default function SignupConstraints(props) {
                 <label htmlFor="cb3">email</label>
             </div>
                  </div>
-                <div id={sty.ConstraintB}>
-                 </div>
 
-                 <button
-                onClick={btnclick3}
-                 style={{ width: '80px', height: '80px', borderRadius: '50%', backgroundColor: 'moccasin'}
-                }>
-                    MineGold
-                </button>
-                 
+                <div id={sty.ConstraintB}>
+
+                    {/* <p style={{ color: 'moccasin', fontWeight: 'bold', fontSize: '30px'}}> {currentinput} </p> */}
+
+                    {
+                        checked === 'username' 
+                        ?
+                     <p style={{ color: 'moccasin', fontWeight: 'bold', fontSize: '30px'}}> upper </p>
+
+                        :
+                        <div> </div>
+                    }
+
+
+
+                 {/* <p style={{ color: 'moccasin', fontWeight: 'bold', fontSize: '30px'}}> {agestr} </p>
+                 <p style={{ color: 'moccasin', fontWeight: 'bold', fontSize: '30px'}}> {emailstr} </p>
+                 <p style={{ color: 'moccasin', fontWeight: 'bold', fontSize: '30px'}}> {passwordstr} </p> */}
+                 </div>                 
             </Container>
         )
     }
