@@ -26,11 +26,30 @@ let seeit = process.cwd()
 
 export default function InOut (props) {
 
-console.log('seeit')
-console.log(seeit)
+// 
 
-console.log('process')
-console.log(process)
+console.log('props')
+console.log(props)
+
+let badwords = props.clientenv.DONTSAYTHAT
+let ezpre = props.clientenv.EZGUESS
+let ezjar = ezpre.split(',')
+
+console.log('badwords')
+console.log(badwords)
+console.log(typeof badwords)
+
+let swearjar = badwords.split(',')
+swearjar.forEach( (cuss) => {
+    console.log('cuss')
+    console.log(cuss)
+})
+
+let ezguess = Object.values(ezjar)
+ezguess.forEach( (ez) => {
+    console.log('ez')
+    console.log(ez)
+})
 
 // console.log('loadEnvConfig loginlogout')
 // console.log(loadEnvConfig)
@@ -244,13 +263,12 @@ console.log(process)
         let localhost:string = url
         let predata = await fetch(new URL(`${url}/api/strains/strain`))            
         let propurl = await predata.json()        
-
-        // let envVar = process
-        // let envVar = process.env
+        let clientenv = process.env
+        
                 
         return {
             props: {
-                localhost           
+                localhost, clientenv           
             }
         }
     }
