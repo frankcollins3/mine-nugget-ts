@@ -18,50 +18,35 @@ import AttrTool from 'utility/JqAttr'
 
 import SignupConstraints from 'components/SignupConstraints'
 
-// import { loadEnvConfig } from '@next/env'
-
-let seeit = process.cwd()
-
-
-
 export default function InOut (props) {
 
-// 
+    let badwords = props.clientenv.DONTSAYTHAT
+    let ezpre = props.clientenv.EZGUESS
+    let ezjar = ezpre.split(',')
 
-console.log('props')
-console.log(props)
+    let swearjar = badwords.split(',')
+    let ezguess = Object.values(ezjar)
 
-let badwords = props.clientenv.DONTSAYTHAT
-let ezpre = props.clientenv.EZGUESS
-let ezjar = ezpre.split(',')
+    const [goldClick, setGoldClick] = useState('')    
+    let router = useRouter()
+    let path = router.asPath    
+    let pathProps = {
+        pathprop: path
+    }
+    let URLclient = props.localhost
+    let sty = styles        // sty:object
+    let centerYbetweenXrow = [sty.centerYbetweenXrow, sty.flex].join(" ")
+    let centerYcenterXcolumn  = [sty.centerYcenterXcolumn, sty.flex].join(" ")
+    let rowandborder = [sty.centerYbetweenXrow, sty.blueborder].join(" ")
+    let UsernameInputDouble = [sty.UsernameInput, "SignupUsername"].join(" ")
 
-console.log('badwords')
-console.log(badwords)
-console.log(typeof badwords)
-
-let swearjar = badwords.split(',')
-swearjar.forEach( (cuss) => {
-    console.log('cuss')
-    console.log(cuss)
-})
-
-let ezguess = Object.values(ezjar)
-ezguess.forEach( (ez) => {
-    console.log('ez')
-    console.log(ez)
-})
-
-// console.log('loadEnvConfig loginlogout')
-// console.log(loadEnvConfig)
-    
-    const { username, password, email, age, strains, 
-        playing, gameOn, url, urlSetter, 
-        checked, choosechecked, usernamestr, passwordstr, emailstr, agestr, pwstrchange, emailstrchange, agestrchange, userstrchange,
-        currentinput, currentinputset
+    const {
+        checked, choosechecked, usernamestr, passwordstr, 
+        emailstr, agestr, pwstrchange, currentinput, currentinputset, url, urlSetter,
+         emailstrchange, agestrchange, userstrchange, passworduppercase, uppercaseset, specialchar, specialcharset, numberchar, numbercharset,
+          tooeasy, tooeasyset, tooeasybucket, easybucketset, nocursing, nocursingset, cursingboolean, cursingbooleanset,
+          usergood, usergoodset, validemail, validemailset, oldenough, oldenoughset, constraintshow, constraintshowset
     } = useGame()
-
-    console.log('props')
-    console.log(props)
 
     const userobject = new Map([
         ['username', ''],
@@ -69,47 +54,28 @@ ezguess.forEach( (ez) => {
         ['email', ''],
         ['age', ''],
       ]);
-    // const {userName, password, email, age, strains, quickcheck} = useUser()
-    const [goldClick, setGoldClick] = useState('')    
-        let router = useRouter()
-        let path = router.asPath    
-        let pathProps = {
-            pathprop: path
-        }
-        let URLclient = props.localhost
-        let sty = styles        // sty:object
-        let centerYbetweenXrow = [sty.centerYbetweenXrow, sty.flex].join(" ")
-        let centerYcenterXcolumn  = [sty.centerYcenterXcolumn, sty.flex].join(" ")
-        let rowandborder = [sty.centerYbetweenXrow, sty.blueborder].join(" ")
-        let UsernameInputDouble = [sty.UsernameInput, "SignupUsername"].join(" ")
-
-
     
     useEffect( () => {
-        urlSetter(path)        
+        urlSetter(path)  
+        nocursingset(swearjar)    
+        easybucketset(ezjar) 
     }, [])
 
-
-    
-
     const check = async () => {
-        console.log("were just checking")
-        playing()        
-        // urlSetter(path)
+        console.log("were just checking")        
     }
 
     const check2 = () => {
-        console.log(userobject)
+        console.log('nocursing')
+        console.log(nocursing)
     }
 
     const changehandler = (event) => {
         let target = $(event.target)    
         let typedchar:string = event.target.value
         currentinputset(typedchar)
-        // console.log(event)
-        
+        // console.log(event)        
     }
-
 
     const goldClickFunc = async (event) => {        
         let siblings:any = await Siblings(event.target)
@@ -135,16 +101,11 @@ ezguess.forEach( (ez) => {
         }
     }
 
-    // choosechecked('im choosing checked!')
-        // userstrchange('hey watsup')
-        // pwstrchange('nice new password')
-        // emailstrchange('@gmail.com')
-        // agestrchange('happy birthday')
-    // * nugget click function
+    
+    
     
     const semisubmit = () => {
-        console.log("hey lets see the deal")
-
+    
         $('input').each( (index, elem:any) => {                    
             let jqelem = $(elem)[0]         
             // let jqelem = $(elem)         
@@ -233,12 +194,32 @@ ezguess.forEach( (ez) => {
                  <p style={{ color: 'moccasin', fontWeight: 'bold', fontSize: '30px'}}> {emailstr} </p>
                  <p style={{ color: 'moccasin', fontWeight: 'bold', fontSize: '30px'}}> {passwordstr} </p> */}
             
+            {/* constraintshow,
+        constraintshowset, */}
             {goldClick === 'signup' 
                 ?
                 <Container className={sty.centerYcenterXcolumn}>
-                <h1  className={sty.BeMine}> Gold to be Mine. </h1>
-            <SignupConstraints/>
+                <img  
+                 onClick={() => constraintshowset("true")}
+                 style={{ transform: 'scale(0.25)', display: constraintshow ? "none" : ""}}
+                 src="/img/magnify.png"
+                 />
+                {
+                    constraintshow 
+                    ?                    
+                <Container className={sty.centerYcenterXcolumn}>
+                    <h1  className={sty.BeMine}> Gold to be Mine. </h1>
+                <SignupConstraints/>
+                    <img  
+                    onClick={() => constraintshowset("false")}
+                    style={{ transform: 'scale(0.125)', display: constraintshow ? "" : "none"}}
+                    src="/img/magnify.png"
+                    />
                 <h1  className={sty.BeMine}> Mine to be Gold</h1>
+                </Container>
+                :
+                <div></div>
+                }
                 </Container>
                 :
                 <div></div>
