@@ -18,45 +18,81 @@ export default function SignupConstraints(props) {
 
 const { checked, choosechecked, usernamestr, passwordstr, 
     emailstr, agestr, pwstrchange, currentinput, currentinputset,
-     emailstrchange, agestrchange, userstrchange, passworduppercase, uppercaseset, specialchar, specialcharset, numberchar, numbercharset, tooeasy, tooeasyset
-     } = useGame()
+     emailstrchange, agestrchange, userstrchange, passworduppercase, uppercaseset, specialchar, specialcharset, numberchar, numbercharset,
+      tooeasy, tooeasyset, tooeasybucket, nocursing, nocursingset, cursingboolean, cursingbooleanset,
+      usergood, usergoodset, validemail, validemailset, oldenough, oldenoughset
+      } = useGame()
+
+      // tooeasy: boolean;
+        // tooeasyset: (command:string) => void;
+        // tooeasybucket: string|number[];
+        // easybucketset: (jar:string|number[]) => void;
+        // nocursing: string|number[];
+        // nocursingset: (jar:string|number[]) => void;
+
 
     let passPassword = [passworduppercase, specialchar, numberchar]
     let passKey = passPassword.length // if password.length === 2 (toggled to boolean true for 2 instances which populate and lengthify array)
+    let loopsafeNoCursing = new Array()
 
-        let sty = styles; 
-        let classtag = 'tag'
-        let boxcont = [sty.checkboxcontainer, 'tag'].join(" ")
+    let sty = styles; 
+    let classtag = 'tag'
+    let boxcont = [sty.checkboxcontainer, 'tag'].join(" ")
 
         useEffect( () => {
             console.log('currentinput from the useEffect!')
             console.log(currentinput)
             console.log(typeof currentinput)
             let stringinput:any = currentinput
-           let actualstring = stringinput.toString() 
-           
-            
-            let inputregex = actualstring.replace(/[\/A-Z]/g, '')
-            // let inputregex = stringinput.toString().replace(/[\/A-Z]/g, '')
-            let specialregex = actualstring.replace(/[^a-zA-Z0-9 ]/g, '')
-            // let specialregex = actualstring.replace(/[\/!@#$%^&*]/g, '')
-            let regexnumber = actualstring.replace(/.+(?=[0-9])/g, '')  
+           let actualstring = stringinput.toString()
+           loopsafeNoCursing =   nocursing
 
-            console.log('inputregex and length')
-            console.log(inputregex)
-            console.log(inputregex.length)
-            if (inputregex < stringinput) {
-                console.log('we now have an uppercase character!')
-                uppercaseset('true')
+           loopsafeNoCursing.forEach( (cuss) => {
+                console.log('cuss')
+                console.log(cuss)
+           })
+           
+           
+           
+            if (checked === 'password') {
+                
+                
+
+                let inputregex = actualstring.replace(/[\/A-Z]/g, '')
+                // let inputregex = stringinput.toString().replace(/[\/A-Z]/g, '')
+                let specialregex = actualstring.replace(/[^a-zA-Z0-9 ]/g, '')
+                // let specialregex = actualstring.replace(/[\/!@#$%^&*]/g, '')
+                let regexnumber = actualstring.replace(/.+(?=[0-9])/g, '')  
+                
+                if (inputregex < stringinput) {
+                    console.log('we now have an uppercase character!')
+                    uppercaseset('true')
+                } else {
+                    uppercaseset('false')
+                }
+
+                if (specialregex < stringinput) {
+                    console.log('we now have an uppercase character!')
+                    specialcharset('true')
+                } else {
+                    specialcharset('false')
+                }
+
+                if (regexnumber < stringinput) {
+                    // if (regexnumber < stringinput) {
+                        numbercharset('true')
+                } else {
+                    numbercharset('false')
+                }
+                
             }
-            if (specialregex < stringinput) {
-                console.log('we now have an uppercase character!')
-                specialcharset('true')
-            }
-            if (regexnumber < stringinput) {
-            // if (regexnumber < stringinput) {
-                numbercharset('true')
-            }
+
+                        // * i dont believe i need any state for this just a couple of regex.
+            // * username if checked === 'username'
+            // * 1) regex to remove @ 
+            // * 2) check for currentinput.length > 8 length < 8    
+            
+
             
             console.log(`stringinput length ${stringinput.length}`)
             
