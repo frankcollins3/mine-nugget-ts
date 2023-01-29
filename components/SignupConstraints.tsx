@@ -33,11 +33,11 @@ const { checked, choosechecked, usernamestr, passwordstr,
 
     let passPassword = [passworduppercase, specialchar, numberchar]
     let passKey = passPassword.length // if password.length === 2 (toggled to boolean true for 2 instances which populate and lengthify array)
-    let loopsafeNoCursing = new Array()
-
     let sty = styles; 
     let classtag = 'tag'
     let boxcont = [sty.checkboxcontainer, 'tag'].join(" ")
+    // let specialcharstring:any = '!@#$%^&*?'
+    let specialcharbucket = ['!', '@', '#', '$', '%', '^', '&', '*', '?']
 
         useEffect( () => {
             console.log('currentinput from the useEffect!')
@@ -45,25 +45,34 @@ const { checked, choosechecked, usernamestr, passwordstr,
             console.log(typeof currentinput)
             let stringinput:any = currentinput
            let actualstring = stringinput.toString()
-           loopsafeNoCursing =   nocursing
-
-           loopsafeNoCursing.forEach( (cuss) => {
-                console.log('cuss')
-                console.log(cuss)
-           })
            
+           let loopsafeNoCursing = [nocursing]
            
+           if (stringinput.length < 1) {
+            uppercaseset('false')
+            numbercharset('false')
+            specialcharset('false')
+           }
            
             if (checked === 'password') {
+                // let inputregex = actualstring.replace(/[\/A-Z]/g, '')
+                // let specialregex = actualstring.replace(/[^a-zA-Z0-9 ]/g, '')
+                // let regexnumber = actualstring.replace(/.+(?=[0-9])/g, '')                  
                 
                 
 
                 let inputregex = actualstring.replace(/[\/A-Z]/g, '')
                 // let inputregex = stringinput.toString().replace(/[\/A-Z]/g, '')
-                let specialregex = actualstring.replace(/[^a-zA-Z0-9 ]/g, '')
-                // let specialregex = actualstring.replace(/[\/!@#$%^&*]/g, '')
-                let regexnumber = actualstring.replace(/.+(?=[0-9])/g, '')  
                 
+                // let specialregex = actualstring.replace(/[^a-zA-Z0-9 ]/g, '')
+                // let specialregex = actualstring.replace(/[\/!@#$%^&*?]/g, '')
+                let regexnumber = actualstring.replace(/.+(?=[0-9])/g, '')                  
+
+                
+                // let specialregex = actualstring.replace(/[^a-zA-Z0-9 ]/g, '')
+                // let regexnumber = actualstring.replace(/.+(?=[0-9])/g, '')  
+                
+                // my first regex: let specialregex = actualstring.replace(/[\/!@#$%^&*]/g, '')
                 if (inputregex < stringinput) {
                     console.log('we now have an uppercase character!')
                     uppercaseset('true')
@@ -71,11 +80,22 @@ const { checked, choosechecked, usernamestr, passwordstr,
                     uppercaseset('false')
                 }
 
-                if (specialregex < stringinput) {
-                    console.log('we now have an uppercase character!')
-                    specialcharset('true')
-                } else {
-                    specialcharset('false')
+                for (const char in inputregex) {     
+                    console.log('inputregex')               
+                    console.log(inputregex)               
+                    let letter:string = inputregex[char]
+                    console.log('letter')
+                    console.log(letter)
+                    if (specialcharbucket.includes(letter)) {
+                        console.log(`have our char: wholeinput ${inputregex} letter ${letter}`)
+                        specialcharset('true')
+                    } else if (!specialcharbucket.includes(letter)) {
+                        specialcharset('false')
+                    }
+                    
+                    // else {
+                    //     specialcharset('')
+                    // }
                 }
 
                 if (regexnumber < stringinput) {
