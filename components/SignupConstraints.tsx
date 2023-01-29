@@ -55,37 +55,28 @@ const { checked, choosechecked, usernamestr, passwordstr,
            }
            
             if (checked === 'password') {
-                // let inputregex = actualstring.replace(/[\/A-Z]/g, '')
-                // let specialregex = actualstring.replace(/[^a-zA-Z0-9 ]/g, '')
-                // let regexnumber = actualstring.replace(/.+(?=[0-9])/g, '')                  
-                
-                
+                let numberPattern = /\d+/g;
+                let upperCasePattern = /[A-Z\s]/g;
+                let specialPattern = /[!@#$%&*?]/g;
 
-                let inputregex = actualstring.replace(/[\/A-Z]/g, '')
-                // let inputregex = stringinput.toString().replace(/[\/A-Z]/g, '')
-                
-                // let specialregex = actualstring.replace(/[^a-zA-Z0-9 ]/g, '')
-                // let specialregex = actualstring.replace(/[\/!@#$%^&*?]/g, '')
-                let regexnumber = actualstring.replace(/.+(?=[0-9])/g, '')                  
+                let uppercaseRegex = actualstring.match(upperCasePattern)            
+                let regexnumber = actualstring.match(numberPattern)                        
+                let specialRegex = actualstring.match(specialPattern)
 
+                if (specialRegex) {
+                    specialcharset('true')
+                } else {
+                    specialcharset('false')
+                }
                 
-                // let specialregex = actualstring.replace(/[^a-zA-Z0-9 ]/g, '')
-                // let regexnumber = actualstring.replace(/.+(?=[0-9])/g, '')  
-                
-                // my first regex: let specialregex = actualstring.replace(/[\/!@#$%^&*]/g, '')
-                if (inputregex < stringinput) {
-                    console.log('we now have an uppercase character!')
+                if (uppercaseRegex) {                                    
                     uppercaseset('true')
                 } else {
                     uppercaseset('false')
                 }
 
-                console.log('regexnumber')
-                console.log(regexnumber)
-
-                if (regexnumber < stringinput || regexnumber.length) {
-                    // if (regexnumber < stringinput) {
-                        numbercharset('true')
+                if (regexnumber) {                
+                    numbercharset('true')
                 } else {
                     numbercharset('false')
                 }
