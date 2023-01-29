@@ -18,8 +18,11 @@ export default function SignupConstraints(props) {
 
 const { checked, choosechecked, usernamestr, passwordstr, 
     emailstr, agestr, pwstrchange, currentinput, currentinputset,
-     emailstrchange, agestrchange, userstrchange, passworduppercase, uppercaseset, specialchar, specialcharset
+     emailstrchange, agestrchange, userstrchange, passworduppercase, uppercaseset, specialchar, specialcharset, numberchar, numbercharset
      } = useGame()
+
+    let passPassword = [passworduppercase, specialchar, numberchar]
+    let passKey = passPassword.length // if password.length === 2 (toggled to boolean true for 2 instances which populate and lengthify array)
 
         let sty = styles; 
         let classtag = 'tag'
@@ -36,6 +39,7 @@ const { checked, choosechecked, usernamestr, passwordstr,
             let inputregex = actualstring.replace(/[\/A-Z]/g, '')
             // let inputregex = stringinput.toString().replace(/[\/A-Z]/g, '')
             let specialregex = actualstring.replace(/[\/!@#$%^&*]/g, '')
+            let regexnumber = actualstring.replace(/.+(?=[0-9])/g, '')  
 
             console.log('inputregex and length')
             console.log(inputregex)
@@ -44,10 +48,13 @@ const { checked, choosechecked, usernamestr, passwordstr,
                 console.log('we now have an uppercase character!')
                 uppercaseset('true')
             }
-
             if (specialregex < stringinput) {
                 console.log('we now have an uppercase character!')
                 specialcharset('true')
+            }
+            if (regexnumber < stringinput) {
+            // if (regexnumber < stringinput) {
+                numbercharset('true')
             }
             
             console.log(`stringinput length ${stringinput.length}`)
@@ -236,6 +243,13 @@ const { checked, choosechecked, usernamestr, passwordstr,
                         color: specialchar ? 'rgb(247, 208, 32)' : 'moccasin',
                          fontWeight: 'bold', fontSize: '15px'
                      }}> special </p>
+
+                     <p
+                      className={sty.ConstraintText}
+                      style={{ 
+                        color: numberchar ? 'rgb(247, 208, 32)' : 'moccasin',
+                         fontWeight: 'bold', fontSize: '15px'
+                     }}> number </p>
                         </div>
                         :
                         <div> </div>
