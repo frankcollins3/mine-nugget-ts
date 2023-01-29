@@ -18,8 +18,22 @@ import AttrTool from 'utility/JqAttr'
 
 import SignupConstraints from 'components/SignupConstraints'
 
+// import { loadEnvConfig } from '@next/env'
+
+let seeit = process.cwd()
+
+
 
 export default function InOut (props) {
+
+console.log('seeit')
+console.log(seeit)
+
+console.log('process')
+console.log(process)
+
+// console.log('loadEnvConfig loginlogout')
+// console.log(loadEnvConfig)
     
     const { username, password, email, age, strains, 
         playing, gameOn, url, urlSetter, 
@@ -27,37 +41,36 @@ export default function InOut (props) {
         currentinput, currentinputset
     } = useGame()
 
+    console.log('props')
+    console.log(props)
+
     const userobject = new Map([
         ['username', ''],
         ['password', ''],
         ['email', ''],
         ['age', ''],
       ]);
-
     // const {userName, password, email, age, strains, quickcheck} = useUser()
+    const [goldClick, setGoldClick] = useState('')    
+        let router = useRouter()
+        let path = router.asPath    
+        let pathProps = {
+            pathprop: path
+        }
+        let URLclient = props.localhost
+        let sty = styles        // sty:object
+        let centerYbetweenXrow = [sty.centerYbetweenXrow, sty.flex].join(" ")
+        let centerYcenterXcolumn  = [sty.centerYcenterXcolumn, sty.flex].join(" ")
+        let rowandborder = [sty.centerYbetweenXrow, sty.blueborder].join(" ")
+        let UsernameInputDouble = [sty.UsernameInput, "SignupUsername"].join(" ")
 
-    const [goldClick, setGoldClick] = useState('')
+
     
-    let router = useRouter()
-    let path = router.asPath
-
     useEffect( () => {
         urlSetter(path)        
     }, [])
 
-    
-    let pathProps = {
-        pathprop: path
-    }
 
-    let URLclient = props.localhost
-
-    let sty = styles        // sty:object
-    let centerYbetweenXrow = [sty.centerYbetweenXrow, sty.flex].join(" ")
-    let centerYcenterXcolumn  = [sty.centerYcenterXcolumn, sty.flex].join(" ")
-    let rowandborder = [sty.centerYbetweenXrow, sty.blueborder].join(" ")
-
-    let UsernameInputDouble = [sty.UsernameInput, "SignupUsername"].join(" ")
     
 
     const check = async () => {
@@ -73,10 +86,9 @@ export default function InOut (props) {
     const changehandler = (event) => {
         let target = $(event.target)    
         let typedchar:string = event.target.value
-        console.log(event)
         currentinputset(typedchar)
-        console.log('typedchar')
-        console.log(typedchar)            
+        // console.log(event)
+        
     }
 
 
@@ -157,7 +169,6 @@ export default function InOut (props) {
             }
 
             {/* <p style={{ color: 'moccasin', fontWeight: 'bold', fontSize: '30px'}}> {checked} </p> */}
-            <p style={{ color: 'moccasin', fontWeight: 'bold', fontSize: '30px'}}> {currentinput} </p>
 
 
 
@@ -233,10 +244,13 @@ export default function InOut (props) {
         let localhost:string = url
         let predata = await fetch(new URL(`${url}/api/strains/strain`))            
         let propurl = await predata.json()        
+
+        // let envVar = process
+        // let envVar = process.env
                 
         return {
             props: {
-                localhost                
+                localhost           
             }
         }
     }
