@@ -114,6 +114,9 @@ type gameContextType = {
     // ... state for age constraints
     constraintshow: boolean;
     constraintshowset: (command:string) => void;
+    goldClick: string;
+    goldClickSet: (command:string) => void;
+
 
 
 
@@ -236,6 +239,8 @@ const gameDefaults: gameContextType = {
         // ... state for age constraints
         constraintshow: false,
         constraintshowset: (command:string) => {},
+        goldClick: '',
+        goldClickSet: (command:string) => {},
 
     // * 
     // ?
@@ -305,6 +310,7 @@ export function GameProvider({ children }: Props) {
     // ... state for age constraints
     const [oldenough, setOldenough] = useState<boolean>(false)    
     const [constraintshow, setConstraintshow] = useState<boolean>(false)
+    const [goldClick, setGoldClick] = useState<string>('')
         
         // ... state for age constraints
     // * 
@@ -498,6 +504,13 @@ export function GameProvider({ children }: Props) {
             if (command === 'false') setConstraintshow(false)
         }
 
+        const goldClickSet = (command:string) => {
+            if (command === 'signup') setGoldClick('signup')
+            if (command === 'login') setGoldClick('login')
+            if (command === '') setGoldClick('')
+            // no abstraction! 
+        }
+
         // * user functionality ends above
         
     const value = {
@@ -602,6 +615,9 @@ export function GameProvider({ children }: Props) {
         oldenoughset,
         constraintshow,
         constraintshowset,
+        goldClick,
+        goldClickSet,
+        
     // ... state for age constraints
     // ... state for age constraints
 
