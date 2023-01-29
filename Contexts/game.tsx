@@ -72,7 +72,7 @@ type gameContextType = {
     strains: string|number[];
 
     //* signup constraints */
-    currentinput: string;
+    currentinput: string|number[]
     currentinputset: (letter:any) => void;
     checked: string;
     choosechecked: (checkedBy:string) => void;
@@ -162,7 +162,7 @@ const gameDefaults: gameContextType = {
     strains: [],
 
     // * 
-    currentinput: '',
+    currentinput: [],
     currentinputset: (letter:any) => {},
     checked: 'not checked',
     choosechecked: (checkedBy:string) => {},
@@ -219,7 +219,7 @@ export function GameProvider({ children }: Props) {
     const [strains, setStrains] = useState<string|number[]>([])
 
     // * 
-    const [currentinput, setCurrentinput] = useState('')
+    const [currentinput, setCurrentinput] = useState<string|number[]>([])
      // i might keep this as an array too [] that loops or joins over values for comparison. leaving untyped for adaptability
     const [checked, setChecked] = useState<string>('not checked')
     const [usernamestr, setUsernamestr] = useState<string>('')
@@ -331,7 +331,9 @@ export function GameProvider({ children }: Props) {
         }
 
         const currentinputset = (letter) => {
-            setCurrentinput(`${currentinput}${letter}` )
+            console.log('letter')
+            console.log(letter)
+            setCurrentinput(letter)            
         }
 
         const choosechecked = (checkedBy:string) => {
