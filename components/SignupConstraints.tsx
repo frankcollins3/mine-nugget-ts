@@ -228,8 +228,25 @@ const { checked, choosechecked, usernamestr, passwordstr,
                     {
                         checked === 'password' 
                         ?
+                        <div className="Column">
+                        
+                        <img 
+                        style={{ 
+                            display: passworduppercase === true && specialchar === true && numberchar === true ? "flex" : "none",
+                            height: '65px', width: '65px'
+                              }}
+                        src="/img/gold.png"
+                        />
 
-                        <div className="Row">
+                        <div 
+                        style={{ 
+                            display: passworduppercase === true && specialchar === true && numberchar === true ? "none" : "flex"
+                        }}
+                        // style={{ display: passPassword.length > 2 ? "none" : "flex"}}
+                        className="Row">
+
+                        
+
                      <p
                       className={sty.ConstraintText}
                       style={{ 
@@ -240,19 +257,23 @@ const { checked, choosechecked, usernamestr, passwordstr,
                      <p
                       className={sty.ConstraintText}
                       style={{ 
-                        color: specialchar ? 'rgb(247, 208, 32)' : 'moccasin',
-                         fontWeight: 'bold', fontSize: '15px'
-                     }}> special </p>
+                          color: specialchar ? 'rgb(247, 208, 32)' : 'moccasin',
+                          fontWeight: 'bold', fontSize: '15px'
+                        }}> special </p>
 
                      <p
                       className={sty.ConstraintText}
                       style={{ 
-                        color: numberchar ? 'rgb(247, 208, 32)' : 'moccasin',
-                         fontWeight: 'bold', fontSize: '15px'
-                     }}> number </p>
+                          color: numberchar ? 'rgb(247, 208, 32)' : 'moccasin',
+                          fontWeight: 'bold', fontSize: '15px'
+                        }}> number </p>
+                        </div>
+                    
                         </div>
                         :
                         <div> </div>
+
+                        
                     }
 
 
