@@ -2,6 +2,7 @@ import { createContext, useContext, ReactNode, useState } from "react";
 import APIcall from 'utility/APIcall'
 import Random from 'utility/Randomizer'
 import Regex from 'utility/MasterRegex'
+import { VALID_LOADERS } from "next/dist/shared/lib/image-config";
 
 type gameContextType = {
     gameOn: string;
@@ -99,6 +100,9 @@ type gameContextType = {
     cursingboolean: boolean;
     cursingbooleanset: (command:string) => void;
 
+    usergood: boolean;
+    usergoodset: (command:string) => void;
+
     // ... email state
     validemail: boolean;
     validemailset: (command:string) => void;
@@ -108,6 +112,8 @@ type gameContextType = {
     oldenough: boolean;
     oldenoughset: (command:string) => void;
     // ... state for age constraints
+    constraintshow: boolean;
+    constraintshowset: (command:string) => void;
 
 
 
@@ -216,6 +222,9 @@ const gameDefaults: gameContextType = {
     cursingboolean: false,
     cursingbooleanset: (command:string) => {},
 
+    usergood: false,
+    usergoodset: (command:string) => {},
+
         // ... email state
         validemail: false,
         validemailset: (command:string) => {},
@@ -223,8 +232,10 @@ const gameDefaults: gameContextType = {
     
         // ... state for age constraints
         oldenough: false,
-        oldenoughset: (command:string) => {}
+        oldenoughset: (command:string) => {},
         // ... state for age constraints
+        constraintshow: false,
+        constraintshowset: (command:string) => {},
 
     // * 
     // ?
@@ -285,12 +296,15 @@ export function GameProvider({ children }: Props) {
     const [nocursing, setNocursing] = useState<string|number[]>( [] )
     const [cursingboolean, setCursingboolean] = useState<boolean>(false)
 
+    const [usergood, setUsergood] = useState<boolean>(false);
+
         // ... email state
     const [validemail, setValidemail] = useState<boolean>(false)    
     // ... email state
     
     // ... state for age constraints
     const [oldenough, setOldenough] = useState<boolean>(false)    
+    const [constraintshow, setConstraintshow] = useState<boolean>(false)
         
         // ... state for age constraints
     // * 
@@ -398,8 +412,8 @@ export function GameProvider({ children }: Props) {
         }
 
         const currentinputset = (letter) => {
-            console.log('letter')
-            console.log(letter)
+            // console.log('letter')
+            // console.log(letter)
             setCurrentinput(letter)            
         }
 
@@ -464,6 +478,11 @@ export function GameProvider({ children }: Props) {
             if (command === 'false') setCursingboolean(false)
         }
 
+        const usergoodset = (command:string) => {
+            if (command === 'true') setUsergood(true)
+            if (command === 'false') setUsergood(false)
+        }
+
         const validemailset = (command:string) => {
             if (command === 'true') setValidemail(true)
             if (command === 'false') setValidemail(false)
@@ -472,6 +491,11 @@ export function GameProvider({ children }: Props) {
         const oldenoughset = (command:string) => {
             if (command === 'true') setOldenough(true)
             if (command === 'false') setOldenough(false)
+        }
+
+        const constraintshowset = (command:string) => {
+            if (command === 'true') setConstraintshow(true)
+            if (command === 'false') setConstraintshow(false)
         }
 
         // * user functionality ends above
@@ -569,11 +593,15 @@ export function GameProvider({ children }: Props) {
         cursingboolean,
         cursingbooleanset,
             // ... email state
+        usergood,
+        usergoodset,
         validemail,
         validemailset,
     // ... email state
         oldenough,
         oldenoughset,
+        constraintshow,
+        constraintshowset,
     // ... state for age constraints
     // ... state for age constraints
 
