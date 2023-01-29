@@ -16,7 +16,8 @@ export default function SignupConstraints(props) {
 
 const { checked, choosechecked, usernamestr, passwordstr, 
     emailstr, agestr, pwstrchange, currentinput, currentinputset,
-     emailstrchange, agestrchange, userstrchange } = useGame()
+     emailstrchange, agestrchange, userstrchange, passworduppercase, uppercaseset,
+     } = useGame()
 
         let sty = styles; 
         let classtag = 'tag'
@@ -35,6 +36,7 @@ const { checked, choosechecked, usernamestr, passwordstr,
             console.log(inputregex.length)
             if (inputregex < stringinput) {
                 console.log('we now have an uppercase character!')
+                uppercaseset('true')
             }
             
             console.log(`stringinput length ${stringinput.length}`)
@@ -206,9 +208,15 @@ const { checked, choosechecked, usernamestr, passwordstr,
                     {/* <p style={{ color: 'moccasin', fontWeight: 'bold', fontSize: '30px'}}> {currentinput} </p> */}
 
                     {
-                        checked === 'username' 
+                        checked === 'password' 
                         ?
-                     <p style={{ color: 'moccasin', fontWeight: 'bold', fontSize: '30px'}}> upper </p>
+                     <p style={{ 
+                        color: passworduppercase ? 'rgb(247, 208, 32)' : 'moccasin',
+                         fontWeight: 'bold', fontSize: '30px'
+                        
+                        // color: 'moccasin', fontWeight: 'bold', fontSize: '30px'
+
+                    }}> upper </p>
 
                         :
                         <div> </div>
