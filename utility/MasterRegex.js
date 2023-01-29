@@ -18,6 +18,9 @@ export default async function Regex(url, action) {      // already forgot its no
             get stringsplit() {
                 return this.splitstring()
             }
+            get nospecialchar() {
+                return this.nospecials()
+            }
             
             numberexp () {
                 // if (typeof url === 'string') {
@@ -39,6 +42,10 @@ export default async function Regex(url, action) {      // already forgot its no
                 return [ splitit[0], splitit[1] ]                
                 // let splitit:string = url.split(', ')
             }
+            nospecials() {
+                let nospec = url.replace(/[\/!@#$%^&*]/g, '')
+                return nospec
+            }
         }
         if (action !== null || action !== undefined && typeof action === 'string') {
             if (action === 'numreturn') {                
@@ -56,8 +63,11 @@ export default async function Regex(url, action) {      // already forgot its no
             }
             if (action === 'stringsplit') {
                 let getString = new Exp(url).stringsplit
-
                 return getString
+            }
+            if (action === 'specialchar') {
+                let noSpecial = new Exp(url).nospecials
+                return noSpecial
             }
         }
     }
