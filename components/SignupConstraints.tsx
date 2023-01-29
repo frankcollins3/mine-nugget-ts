@@ -2,9 +2,11 @@ import styles from 'styles/LoginLogout/LogInOut.module.scss'
 import Container from 'react-bootstrap/Container'
 import {useEffect, useState} from 'react'
 import $ from 'jquery'
+import {useGame} from 'Contexts/game'
+
+// * utility functions!
 import Siblings from 'utility/JqSiblings'
 import CSS from 'utility/CSStool'
-import {useGame} from 'Contexts/game'
 // possible dictionary API to check for simple syllable words or too easily guessed words?
 // email API to check if its a valid email?
 // possible to make an API and to basically hash that API so that you can't read it but can consist of vulgar words that aren't accepted?
@@ -16,7 +18,7 @@ export default function SignupConstraints(props) {
 
 const { checked, choosechecked, usernamestr, passwordstr, 
     emailstr, agestr, pwstrchange, currentinput, currentinputset,
-     emailstrchange, agestrchange, userstrchange, passworduppercase, uppercaseset,
+     emailstrchange, agestrchange, userstrchange, passworduppercase, uppercaseset, specialchar, specialcharset
      } = useGame()
 
         let sty = styles; 
@@ -28,15 +30,24 @@ const { checked, choosechecked, usernamestr, passwordstr,
             console.log(currentinput)
             console.log(typeof currentinput)
             let stringinput:any = currentinput
+           let actualstring = stringinput.toString() 
+           
             
-            // i have a modular regex function and have an alpha or number return but no uppercase or lowercase return i could make one but it's okay as it in my opinion.
-            let inputregex = stringinput.toString().replace(/[\/A-Z]/g, '')
+            let inputregex = actualstring.replace(/[\/A-Z]/g, '')
+            // let inputregex = stringinput.toString().replace(/[\/A-Z]/g, '')
+            let specialregex = actualstring.replace(/[\/!@#$%^&*]/g, '')
+
             console.log('inputregex and length')
             console.log(inputregex)
             console.log(inputregex.length)
             if (inputregex < stringinput) {
                 console.log('we now have an uppercase character!')
                 uppercaseset('true')
+            }
+
+            if (specialregex < stringinput) {
+                console.log('we now have an uppercase character!')
+                specialcharset('true')
             }
             
             console.log(`stringinput length ${stringinput.length}`)
@@ -210,14 +221,22 @@ const { checked, choosechecked, usernamestr, passwordstr,
                     {
                         checked === 'password' 
                         ?
-                     <p style={{ 
-                        color: passworduppercase ? 'rgb(247, 208, 32)' : 'moccasin',
-                         fontWeight: 'bold', fontSize: '30px'
-                        
-                        // color: 'moccasin', fontWeight: 'bold', fontSize: '30px'
 
-                    }}> upper </p>
+                        <div className="Row">
+                     <p
+                      className={sty.ConstraintText}
+                      style={{ 
+                          color: passworduppercase ? 'rgb(247, 208, 32)' : 'moccasin',
+                          fontWeight: 'bold', fontSize: '15px'
+                        }}> upper </p>
 
+                     <p
+                      className={sty.ConstraintText}
+                      style={{ 
+                        color: specialchar ? 'rgb(247, 208, 32)' : 'moccasin',
+                         fontWeight: 'bold', fontSize: '15px'
+                     }}> special </p>
+                        </div>
                         :
                         <div> </div>
                     }
