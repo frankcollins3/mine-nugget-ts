@@ -34,7 +34,6 @@ type gameContextType = {
     addTrophy: () => void;
     clearTrophy: () => void;
 
-
     lose: () => void;
 
     dontuse: string[] | string;
@@ -91,6 +90,24 @@ type gameContextType = {
     specialcharset: (command:string) => void;
     numberchar: boolean;
     numbercharset: (command:string) => void;
+    tooeasy: boolean;
+    tooeasyset: (command:string) => void;
+    tooeasybucket: string|number[];
+    easybucketset: (jar:string|number[]) => void;
+    nocursing: string|number[];
+    nocursingset: (jar:string|number[]) => void;
+    cursingboolean: boolean;
+    cursingbooleanset: (command:string) => void;
+
+    // ... email state
+    validemail: boolean;
+    validemailset: (command:string) => void;
+    // ... email state
+
+    // ... state for age constraints
+    oldenough: boolean;
+    oldenoughset: (command:string) => void;
+    // ... state for age constraints
 
 
 
@@ -189,7 +206,25 @@ const gameDefaults: gameContextType = {
     specialchar: false,
     specialcharset: (command:string) => {},
     numberchar: false,
-    numbercharset: (command:string) => {}
+    numbercharset: (command:string) => {},
+    tooeasy: false,
+    tooeasyset: (command:string) => {},
+    tooeasybucket: [],
+    easybucketset: (jar:string|number[]) => {},
+    nocursing: [],
+    nocursingset: (jar:string|number[]) => {},
+    cursingboolean: false,
+    cursingbooleanset: (command:string) => {},
+
+        // ... email state
+        validemail: false,
+        validemailset: (command:string) => {},
+        // ... email state
+    
+        // ... state for age constraints
+        oldenough: false,
+        oldenoughset: (command:string) => {}
+        // ... state for age constraints
 
     // * 
     // ?
@@ -233,7 +268,7 @@ export function GameProvider({ children }: Props) {
     const [age, setAge] = useState<number>(30)
     const [strains, setStrains] = useState<string|number[]>([])
 
-    // * 
+    // *  user constraints like password uppercase, special character..
     const [currentinput, setCurrentinput] = useState<string|number[]>([])
      // i might keep this as an array too [] that loops or joins over values for comparison. leaving untyped for adaptability
     const [checked, setChecked] = useState<string>('not checked')
@@ -245,8 +280,21 @@ export function GameProvider({ children }: Props) {
     const [passworduppercase, setPassworduppercase] = useState<boolean>(false)
     const [specialchar, setSpecialchar] = useState<boolean>(false)
     const [numberchar, setNumberchar] = useState<boolean>(false)
+    const [tooeasy, setTooeasy] = useState<boolean>(false)
+    const [tooeasybucket, setTooeasybucket] = useState<string|number[]>( [] )
+    const [nocursing, setNocursing] = useState<string|number[]>( [] )
+    const [cursingboolean, setCursingboolean] = useState<boolean>(false)
+
+        // ... email state
+    const [validemail, setValidemail] = useState<boolean>(false)    
+    // ... email state
     
+    // ... state for age constraints
+    const [oldenough, setOldenough] = useState<boolean>(false)    
+        
+        // ... state for age constraints
     // * 
+
     // ?
     
     const playing = () => {
@@ -398,7 +446,33 @@ export function GameProvider({ children }: Props) {
             if (command === 'false') setNumberchar(false)
         }
 
+        const tooeasyset = (command:string) => {
+            if (command === 'true') setTooeasy(true)
+            if (command === 'false') setTooeasy(false)
+        }
 
+        const nocursingset = (jar:string|number[]) => {
+            setNocursing(jar)
+        }
+
+        const easybucketset = (jar:string|number[]) => {
+            setTooeasybucket(jar)
+        }
+
+        const cursingbooleanset = (command:string) => {
+            if (command === 'true') setCursingboolean(true)
+            if (command === 'false') setCursingboolean(false)
+        }
+
+        const validemailset = (command:string) => {
+            if (command === 'true') setValidemail(true)
+            if (command === 'false') setValidemail(false)
+        }
+        
+        const oldenoughset = (command:string) => {
+            if (command === 'true') setOldenough(true)
+            if (command === 'false') setOldenough(false)
+        }
 
         // * user functionality ends above
         
@@ -486,7 +560,22 @@ export function GameProvider({ children }: Props) {
         specialcharset,
         numberchar,
         numbercharset,
-
+        tooeasy,
+        tooeasyset, 
+        tooeasybucket,
+        easybucketset,
+        nocursing,
+        nocursingset,
+        cursingboolean,
+        cursingbooleanset,
+            // ... email state
+        validemail,
+        validemailset,
+    // ... email state
+        oldenough,
+        oldenoughset,
+    // ... state for age constraints
+    // ... state for age constraints
 
         // *
         // ?
