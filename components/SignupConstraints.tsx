@@ -18,7 +18,7 @@ export default function SignupConstraints(props) {
 
 const { checked, choosechecked, usernamestr, passwordstr, 
     emailstr, agestr, pwstrchange, currentinput, currentinputset,
-     emailstrchange, agestrchange, userstrchange, passworduppercase, uppercaseset, specialchar, specialcharset, numberchar, numbercharset
+     emailstrchange, agestrchange, userstrchange, passworduppercase, uppercaseset, specialchar, specialcharset, numberchar, numbercharset, tooeasy, tooeasyset
      } = useGame()
 
     let passPassword = [passworduppercase, specialchar, numberchar]
@@ -38,7 +38,8 @@ const { checked, choosechecked, usernamestr, passwordstr,
             
             let inputregex = actualstring.replace(/[\/A-Z]/g, '')
             // let inputregex = stringinput.toString().replace(/[\/A-Z]/g, '')
-            let specialregex = actualstring.replace(/[\/!@#$%^&*]/g, '')
+            let specialregex = actualstring.replace(/[^a-zA-Z0-9 ]/g, '')
+            // let specialregex = actualstring.replace(/[\/!@#$%^&*]/g, '')
             let regexnumber = actualstring.replace(/.+(?=[0-9])/g, '')  
 
             console.log('inputregex and length')
