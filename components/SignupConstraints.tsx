@@ -42,7 +42,7 @@ const { checked, choosechecked, usernamestr, passwordstr,
         useEffect( () => {
             console.log('currentinput from the useEffect!')
             console.log(currentinput)
-            console.log(typeof currentinput)
+            // console.log(typeof currentinput)
             let stringinput:any = currentinput
            let actualstring = stringinput.toString()
            
@@ -80,25 +80,10 @@ const { checked, choosechecked, usernamestr, passwordstr,
                     uppercaseset('false')
                 }
 
-                for (const char in inputregex) {     
-                    console.log('inputregex')               
-                    console.log(inputregex)               
-                    let letter:string = inputregex[char]
-                    console.log('letter')
-                    console.log(letter)
-                    if (specialcharbucket.includes(letter)) {
-                        console.log(`have our char: wholeinput ${inputregex} letter ${letter}`)
-                        specialcharset('true')
-                    } else if (!specialcharbucket.includes(letter)) {
-                        specialcharset('false')
-                    }
-                    
-                    // else {
-                    //     specialcharset('')
-                    // }
-                }
+                console.log('regexnumber')
+                console.log(regexnumber)
 
-                if (regexnumber < stringinput) {
+                if (regexnumber < stringinput || regexnumber.length) {
                     // if (regexnumber < stringinput) {
                         numbercharset('true')
                 } else {
@@ -343,6 +328,6 @@ const { checked, choosechecked, usernamestr, passwordstr,
         )
     }
             {/* username constraints: 6-30 characters long */}
-            {/* password constraints: 1 special character, 1 uppercase letter, 7-14 characters */}
+            {/* password constraints: 1 special character, 1 uppercase 45, 7-14 characters */}
             {/* age constraints: must be atleast 16 years old!  */}
             {/* valid email constraints: must have an @ in the list. or end in .edu .com etc  */}
