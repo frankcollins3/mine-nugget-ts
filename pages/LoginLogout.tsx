@@ -17,6 +17,7 @@ import Siblings from 'utility/JqSiblings'
 import AttrTool from 'utility/JqAttr'
 
 import SignupConstraints from 'components/SignupConstraints'
+import SignupContainer from 'components/SignupContainer'
 
 export default function InOut (props) {
 
@@ -27,7 +28,7 @@ export default function InOut (props) {
     let swearjar = badwords.split(',')
     let ezguess = Object.values(ezjar)
 
-    const [goldClick, setGoldClick] = useState('')    
+    // const [goldClick, setGoldClick] = useState('')    
     let router = useRouter()
     let path = router.asPath    
     let pathProps = {
@@ -45,7 +46,8 @@ export default function InOut (props) {
         emailstr, agestr, pwstrchange, currentinput, currentinputset, url, urlSetter,
          emailstrchange, agestrchange, userstrchange, passworduppercase, uppercaseset, specialchar, specialcharset, numberchar, numbercharset,
           tooeasy, tooeasyset, tooeasybucket, easybucketset, nocursing, nocursingset, cursingboolean, cursingbooleanset,
-          usergood, usergoodset, validemail, validemailset, oldenough, oldenoughset, constraintshow, constraintshowset
+          usergood, usergoodset, validemail, validemailset, oldenough, oldenoughset, constraintshow, constraintshowset,
+          goldClick, goldClickSet,
     } = useGame()
 
     const userobject = new Map([
@@ -89,21 +91,19 @@ export default function InOut (props) {
         }, 1000)
 
         if (siblingText === 'Signup') {
-            setGoldClick('signup')
+            goldClickSet('signup')
+            // setGoldClick('signup')
             setTimeout( () => AttrTool($('#AgeInput'), 'value', 'age'), 1000)
             setTimeout( () => AttrTool($('#EmailInput'), 'value', 'email'), 1000)
         }
         else if (siblingText === 'Login') {
-            setGoldClick('login')
+            goldClickSet('login')
         }
         if (siblingText === '' || siblingText === undefined || siblingText === null) {
-            setGoldClick('')            
+            goldClickSet('')            
         }
     }
 
-    
-    
-    
     const semisubmit = () => {
     
         $('input').each( (index, elem:any) => {                    
@@ -112,11 +112,21 @@ export default function InOut (props) {
             // let value = jqelem[0].attributes[1].nodeValue            
             let value:any = jqelem.value          
         })
-        
     }
+
+    const toggleshow = () => {
+        if (constraintshow === false) {
+            constraintshowset('true')            
+        }
+        if (constraintshow === true) {
+            constraintshowset('false    ')
+        }
+    }
+        
     
     return (                            
         <Page>
+
             <img 
             onClick={goldClickFunc}
             className={sty.GoldBar} 
@@ -155,6 +165,7 @@ export default function InOut (props) {
             { goldClick === 'signup' 
                 ?
             <Container className={centerYcenterXcolumn} id={sty.LoginDiv}>
+                
 
             <input  id="UsernameInput" onChange={changehandler} />
             <input  id="PasswordInput" onChange={changehandler} />
@@ -178,44 +189,55 @@ export default function InOut (props) {
 
             </Container>
 
+            
+
+            {/* <img
+                style={{ transform: 'scale(0.075)'}}
+                src="/img/magnify.png"/> */}
+
                 { goldClick === 'login' || goldClick === 'signup'
                     ?
+                    <>
+                    <img
+                        onClick={toggleshow}
+                        style={{ height: '25px', width: '25px', display: 'grid', placeContent: 'center', marginTop: '0.5em' }}
+                         src="/img/magnify.png"/>
                     <div
                     // onMouseEnter={semisubmit}
-                     onClick={semisubmit}
-                    className={sty.MiniGoldBar}></div>
+                    onClick={semisubmit}
+                    className={sty.MiniGoldBar}
+                    ></div>                    
+                    </>
                     :
                     <div></div>
                 }
+{/* 
+            <SignupContainer/> */}
+        
 
-                {/* <p style={{ color: 'moccasin', fontWeight: 'bold', fontSize: '30px'}}> {checked} </p> */}
-                 {/* <p style={{ color: 'moccasin', fontWeight: 'bold', fontSize: '30px'}}> {usernamestr} </p> */}
-                 {/* <p style={{ color: 'moccasin', fontWeight: 'bold', fontSize: '30px'}}> {agestr} </p>
-                 <p style={{ color: 'moccasin', fontWeight: 'bold', fontSize: '30px'}}> {emailstr} </p>
-                 <p style={{ color: 'moccasin', fontWeight: 'bold', fontSize: '30px'}}> {passwordstr} </p> */}
-            
-            {/* constraintshow,
-        constraintshowset, */}
             {goldClick === 'signup' 
+            
                 ?
                 <Container className={sty.centerYcenterXcolumn}>
-                <img  
-                 onClick={() => constraintshowset("true")}
-                 style={{ transform: 'scale(0.25)', display: constraintshow ? "none" : ""}}
-                 src="/img/magnify.png"
-                 />
+
+                    
+                    
                 {
                     constraintshow 
                     ?                    
-                <Container className={sty.centerYcenterXcolumn}>
-                    <h1  className={sty.BeMine}> Gold to be Mine. </h1>
+                    <Container className={sty.centerYcenterXcolumn}>
+
+                        <div className="Row">                    
+
+                        </div>
+
+                        <h1  className={sty.BeMine}> Gold To Be Mine.</h1>
                 <SignupConstraints/>
-                    <img  
-                    onClick={() => constraintshowset("false")}
-                    style={{ transform: 'scale(0.125)', display: constraintshow ? "" : "none"}}
-                    src="/img/magnify.png"
-                    />
-                <h1  className={sty.BeMine}> Mine to be Gold</h1>
+                <div className="row">
+                <h1  className={sty.BeMine}> Mine to be Gold.</h1>
+                {/* <h1  className={sty.BeMine}> Gold To Be <span>Mine</span> to be Gold</h1> */}
+                    
+                </div>
                 </Container>
                 :
                 <div></div>
@@ -225,15 +247,11 @@ export default function InOut (props) {
                 <div></div>
             }
             
-
-            <Container className={sty.endYcenterXcolumn} id={sty.HelmetCont}>
-                <Helmet/>
-                 <button onClick={check}></button>                 
-                 <button onClick={check2}></button>                 
-                 {/* <button onClick={usernamestr}></button>                  */}
-
-            
-            </Container>
+            <Container className={sty.endYcenterXcolumn} id={sty.HelmetCont}>                                
+                <Helmet/>   
+                
+                
+                </Container>
         </Page>
         
         )
