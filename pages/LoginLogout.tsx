@@ -21,6 +21,8 @@ import POST from 'utility/POSTdataJS'
 import SignupConstraints from 'components/SignupConstraints'
 import SignupContainer from 'components/SignupContainer'
 
+let usernamearray = new Array()
+
 export default function InOut (props) {
 
     let badwords = props.clientenv.DONTSAYTHAT
@@ -43,6 +45,7 @@ export default function InOut (props) {
     let rowandborder = [sty.centerYbetweenXrow, sty.blueborder].join(" ")
     let UsernameInputDouble = [sty.UsernameInput, "SignupUsername"].join(" ")
 
+
     const { allStrain, getSpecifiedStrain, userStrainPost, getAllUsers } = useUrl()  //obj destructuring
 
     const {
@@ -52,8 +55,8 @@ export default function InOut (props) {
           tooeasy, tooeasyset, tooeasybucket, easybucketset, nocursing, nocursingset, cursingboolean, cursingbooleanset,
           usergood, usergoodset, validemail, validemailset, oldenough, oldenoughset, constraintshow, constraintshowset,
           goldClick, goldClickSet,
-          currentinput, currentinputset, 
-usernameinput, usernameinputset, passwordinput, passwordinputset, emailinput, emailinputset, ageinput, ageinputset, alluser, alluserset,
+currentinput, currentinputset, usernameinput, usernameinputset, passwordinput, passwordinputset, emailinput, emailinputset, ageinput, ageinputset, 
+        alluser, alluserset, allusername, allusernameset
     } = useGame()
 
     const userobject = new Map([
@@ -65,15 +68,44 @@ usernameinput, usernameinputset, passwordinput, passwordinputset, emailinput, em
     
     useEffect( () => {
         (async() => {
-            let predata:any = await POST(getAllUsers, 'data')
-            console.log('predata')
-            console.log(predata)
-            console.log(predata.returndata)
+            let predata:any = await POST(getAllUsers, 'data')            
             let returndata = predata.returndata
             let alldb = returndata.data.users
+
+            // let alldbusername = Object.values(alldb)
+            const loopandpush = () => {
+                alldb.forEach( (dbitem) => {
+                    usernamearray.push(dbitem.username)
+                })
+            }
+
+            const fillbucket = () => {
+                allusernameset(usernamearray)
+            }
+
+            const bothfunctions = async () => {
+                await loopandpush() 
+                await fillbucket()                
+            }
+            bothfunctions()
+            
+            
+            // console.log('alldbmap')
+            // console.log(alldbmap)            
+            // allusernameset(alldbmap)
+
+            // allusernameset(['hey', 'yeah'])
+            
+            
+            
             alluserset(alldb)            
+            // let usernameDB = await alldb.filter( (dbitem) => {dbitem.username})
+
+            // console.log('usernameDB')
+            // console.log(usernameDB)
+
         })()
-        
+
         urlSetter(path)  
         nocursingset(swearjar)    
         easybucketset(ezjar) 
@@ -94,8 +126,6 @@ usernameinput, usernameinputset, passwordinput, passwordinputset, emailinput, em
         let targetText = event.target.defaultValue
 
         if (targetText === 'username') {
-
-
             usernameinputset(typedchar)
         }
         if (targetText === 'password') {
