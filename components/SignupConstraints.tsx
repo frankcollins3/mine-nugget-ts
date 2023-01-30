@@ -20,7 +20,7 @@ const { checked, choosechecked, usernamestr, passwordstr,
     emailstr, agestr, pwstrchange, currentinput, currentinputset,
      emailstrchange, agestrchange, userstrchange, passworduppercase, uppercaseset, specialchar, specialcharset, numberchar, numbercharset,
       tooeasy, tooeasyset, tooeasybucket, easybucketset, nocursing, nocursingset, cursingboolean, cursingbooleanset,
-      usergood, usergoodset, validemail, validemailset, oldenough, oldenoughset
+      usergood, usergoodset, validemail, validemailset, oldenough, oldenoughset, constraintshow, constraintshowset,
       } = useGame()
 
       // tooeasy: boolean;
@@ -56,7 +56,7 @@ const { checked, choosechecked, usernamestr, passwordstr,
             specialcharset('false')
            }
            
-            if (checked === 'password') {
+            // if (checked === 'password') {
                 console.log('tooeasybucket in the password')
                 console.log(tooeasybucket)
 
@@ -65,17 +65,10 @@ const { checked, choosechecked, usernamestr, passwordstr,
                 let specialPattern = /[!@#$%&*?]/g;
                 let onlyLettersPattern = /[a-zA-Z]/g;
 
-
-
                 let uppercaseRegex = actualstring.match(upperCasePattern)            
                 let regexnumber = actualstring.match(numberPattern)                        
                 let specialRegex = actualstring.match(specialPattern)
                 let onlyletters = actualstring.length > 2 ? actualstring.match(onlyLettersPattern) : ['friends', 'for', 'ever']
-                console.log('onlyletters')
-                console.log(onlyletters)
-                // let onlyletters = actualstring.match(onlyLettersPattern)
-
-                // console.log(onlyletters.join(""))
 
                 let easycount = 0
 
@@ -112,27 +105,33 @@ const { checked, choosechecked, usernamestr, passwordstr,
                     numbercharset('false')
                 }
                 
-            }
+            // }
 
-            if (checked === 'email') {
+            // if (checked === 'email') {
                 console.log("checking the email")
-                
                 console.log('actualstring')
                 console.log(actualstring)
 
-            }
+                let atMatchPattern = /[\/@]/g
+
+                let atMatch = actualstring.match(atMatchPattern)
+                if (atMatch) {
+                    validemailset('true')
+                }
+                console.log('atMatch')
+                console.log(atMatch)
+
+                
+
+
+
+            // }
                         // * i dont believe i need any state for this just a couple of regex.
             // * username if checked === 'username'
             // * 1) regex to remove @ 
             // * 2) check for currentinput.length > 8 length < 8    
         }, [currentinput])
             
-            
-
-            
-            
-
-
         const inputClick = (event) => {            
             
         }
@@ -141,12 +140,6 @@ const { checked, choosechecked, usernamestr, passwordstr,
                         
         }
 
-        // choosechecked('im choosing checked!')
-        // userstrchange('hey watsup')
-        // pwstrchange('nice new password')
-        // emailstrchange('@gmail.com')
-        // agestrchange('happy birthday')
-        
         const checkboxclick = async (event) => {
             let cb1:any = $('#cb1')
             let cb2:any = $('#cb2')
@@ -155,23 +148,12 @@ const { checked, choosechecked, usernamestr, passwordstr,
             let passcheck:string = cb2[0].checked
             let emailcheck:string = cb3[0].checked
         
-            console.log('usercheck')
-            console.log(usercheck)
-            console.log('passcheck')
-            console.log(passcheck)
-            console.log('emailcheck')
-            console.log(emailcheck)
-
             let target:any = $(event.target)
             // let target:any = $(event.target)[0]
             let boxsibling:any = await Siblings(target)
 
             let checktext:any = boxsibling[0].innerText
             let tag = $('.tag')
-            console.log('checked')
-            console.log(checked)            
-            console.log('checktext')
-            console.log(checktext)
             
             if (checked === 'not checked' && checktext === 'username') {
                 console.log("checked === not checked checktext === username")
@@ -268,8 +250,9 @@ const { checked, choosechecked, usernamestr, passwordstr,
         }
             
         return (
-            <Container id={sty.ConstraintGrid}>
-
+            
+            <Container id={sty.ConstraintGrid} className="Column">
+  
                 <div id={sty.ConstraintA} className="DivParent Row">
 
             <div className={boxcont} id="boxcont1">            
@@ -290,10 +273,11 @@ const { checked, choosechecked, usernamestr, passwordstr,
                  onClick={checkboxclick} type="checkbox" id="cb3"/>
                 <label htmlFor="cb3">email</label>
             </div>
+                    
                  </div>
 
+                        
                 <div id={sty.ConstraintB}>
-
                     {/* <p style={{ color: 'moccasin', fontWeight: 'bold', fontSize: '30px'}}> {currentinput} </p> */}
 
                     {
@@ -337,17 +321,41 @@ const { checked, choosechecked, usernamestr, passwordstr,
                           fontWeight: 'bold', fontSize: '15px'
                         }}> number </p>
 
-<p
+                    <p
                       className={sty.ConstraintText}
                       style={{ 
                           color: tooeasy ? '#E01115' : 'rgb(247, 208, 32)', // 9b111E E01115
                           fontWeight: 'bold', fontSize: '15px'
                         }}> too-ez </p>   
+                        </div>                        
                         </div>
-                    
-                        </div>
+                        
                         :
                         <div> </div>
+                    }
+
+                    {
+                        checked === 'email'
+                        ?
+                        <div className="Column">                        
+                        <div 
+                        className="Row"
+                        style={{ 
+                            display: passworduppercase === true && specialchar === true && numberchar === true ? "none" : "flex"
+                        }}>
+
+                        <p
+                      className={sty.ConstraintText}
+                      style={{ 
+                          color: validemail ? 'rgb(247, 208, 32)' : 'moccasin',
+                          fontWeight: 'bold',
+                        }}> @email.com </p>
+                                            
+                        </div>
+                        </div>
+
+                        :
+                        <div></div>
                     }
 
                         
