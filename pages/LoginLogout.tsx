@@ -10,11 +10,13 @@ import Page from 'styles/LoginLogout/styledcomponents/Page'
 
 // * state / context
 import {useGame} from 'Contexts/game'
+import {useUrl} from 'Contexts/Url'
 
 // * utility 
 import ReturnUrl from 'utility/ReturnUrl'
 import Siblings from 'utility/JqSiblings'
 import AttrTool from 'utility/JqAttr'
+import POST from 'utility/POSTdataJS'
 
 import SignupConstraints from 'components/SignupConstraints'
 import SignupContainer from 'components/SignupContainer'
@@ -41,13 +43,17 @@ export default function InOut (props) {
     let rowandborder = [sty.centerYbetweenXrow, sty.blueborder].join(" ")
     let UsernameInputDouble = [sty.UsernameInput, "SignupUsername"].join(" ")
 
+    const { allStrain, getSpecifiedStrain, userStrainPost, getAllUsers  } = useUrl()  //obj destructuring
+
     const {
         checked, choosechecked, usernamestr, passwordstr, 
-        emailstr, agestr, pwstrchange, currentinput, currentinputset, url, urlSetter,
+        emailstr, agestr, pwstrchange, url, urlSetter,
          emailstrchange, agestrchange, userstrchange, passworduppercase, uppercaseset, specialchar, specialcharset, numberchar, numbercharset,
           tooeasy, tooeasyset, tooeasybucket, easybucketset, nocursing, nocursingset, cursingboolean, cursingbooleanset,
           usergood, usergoodset, validemail, validemailset, oldenough, oldenoughset, constraintshow, constraintshowset,
           goldClick, goldClickSet,
+          currentinput, currentinputset, 
+usernameinput, usernameinputset, passwordinput, passwordinputset, emailinput, emailinputset, ageinput, ageinputset
     } = useGame()
 
     const userobject = new Map([
@@ -72,10 +78,26 @@ export default function InOut (props) {
         console.log(nocursing)
     }
 
-    const changehandler = (event) => {
+    const changehandler = async (event) => {
         let target = $(event.target)    
         let typedchar:string = event.target.value
-        currentinputset(typedchar)
+        let targetText = event.target.defaultValue
+
+        if (targetText === 'username') {
+            console.log('getAllusers')
+            console.log(getAllUsers)
+            let alldb = await POST(getAllUsers, 'data')
+            console.log('alldb')
+            console.log(alldb)
+            usernameinputset(typedchar)
+        }
+        if (targetText === 'password') {
+            passwordinputset(typedchar)
+        }
+        if (targetText === 'email') {
+            emailinputset(typedchar)
+        }
+        // currentinputset(typedchar)
         // console.log(event)        
     }
 
