@@ -111,7 +111,9 @@ type gameContextType = {
 
     usergood: boolean;
     usergoodset: (command:string) => void;
-
+    userunique: boolean;
+    useruniqueset: (command:string) => void;
+    
     // ... email state
     validemail: boolean;
     validemailset: (command:string) => void;
@@ -245,6 +247,8 @@ const gameDefaults: gameContextType = {
 
     usergood: false,
     usergoodset: (command:string) => {},
+    userunique: false,
+    useruniqueset: (command:string) => {},
 
         // ... email state
         validemail: false,
@@ -327,6 +331,7 @@ export function GameProvider({ children }: Props) {
     const [cursingboolean, setCursingboolean] = useState<boolean>(false)
 
     const [usergood, setUsergood] = useState<boolean>(false);
+    const [userunique, setUserunique] = useState<boolean>(false);
 
         // ... email state
     const [validemail, setValidemail] = useState<boolean>(false)    
@@ -533,6 +538,12 @@ export function GameProvider({ children }: Props) {
             if (command === 'false') setUsergood(false)
         }
 
+        const useruniqueset = (command:string) => {
+            if (command === 'true') setUserunique(true)
+            if (command === 'false') setUserunique(false)
+        }
+
+        
         const validemailset = (command:string) => {
             if (command === 'true') setValidemail(true)
             if (command === 'false') setValidemail(false)
@@ -671,6 +682,8 @@ export function GameProvider({ children }: Props) {
         constraintshowset,
         goldClick,
         goldClickSet,
+        userunique,
+        useruniqueset,
         
     // ... state for age constraints
     // ... state for age constraints
