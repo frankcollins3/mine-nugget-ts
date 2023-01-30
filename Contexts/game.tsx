@@ -113,6 +113,8 @@ type gameContextType = {
     usergoodset: (command:string) => void;
     userunique: boolean;
     useruniqueset: (command:string) => void;
+    alluser: any[];    
+    alluserset: (userbucket:any[]) => void;
     
     // ... email state
     validemail: boolean;
@@ -249,6 +251,8 @@ const gameDefaults: gameContextType = {
     usergoodset: (command:string) => {},
     userunique: false,
     useruniqueset: (command:string) => {},
+    alluser: [],
+    alluserset: (userbucket:any[]) => {},
 
         // ... email state
         validemail: false,
@@ -341,6 +345,7 @@ export function GameProvider({ children }: Props) {
     const [oldenough, setOldenough] = useState<boolean>(false)    
     const [constraintshow, setConstraintshow] = useState<boolean>(false)
     const [goldClick, setGoldClick] = useState<string>('')
+    const [alluser, setAlluser] = useState<any[]>([])
         
         // ... state for age constraints
     // * 
@@ -538,6 +543,10 @@ export function GameProvider({ children }: Props) {
             if (command === 'false') setUsergood(false)
         }
 
+        const alluserset = (userbucket:any[]) => {
+            setAlluser(userbucket)
+        }
+
         const useruniqueset = (command:string) => {
             if (command === 'true') setUserunique(true)
             if (command === 'false') setUserunique(false)
@@ -673,6 +682,11 @@ export function GameProvider({ children }: Props) {
             // ... email state
         usergood,
         usergoodset,
+        userunique,
+        useruniqueset,
+        alluser,
+        alluserset,
+
         validemail,
         validemailset,
     // ... email state
@@ -682,8 +696,7 @@ export function GameProvider({ children }: Props) {
         constraintshowset,
         goldClick,
         goldClickSet,
-        userunique,
-        useruniqueset,
+        
         
     // ... state for age constraints
     // ... state for age constraints
