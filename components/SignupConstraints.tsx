@@ -23,7 +23,7 @@ const { checked, choosechecked, usernamestr, passwordstr,
       tooeasy, tooeasyset, tooeasybucket, easybucketset, nocursing, nocursingset, cursingboolean, cursingbooleanset,
       usergood, usergoodset, validemail, validemailset, oldenough, oldenoughset, constraintshow, constraintshowset,
 usernameinput, usernameinputset, passwordinput, passwordinputset, emailinput, emailinputset, ageinput, ageinputset, userunique, useruniqueset,
-alluser, alluserset, 
+alluser, alluserset, allusername, allusernameset
 
       } = useGame()
 
@@ -128,38 +128,25 @@ alluser, alluserset,
         }, [emailinput])
 
         useEffect( () => {
+            let usernamebucket = new Array() 
             let userinputstring:any = usernameinput.toString()
             let inputlength:number = userinputstring.length
             let onlyletters = userinputstring.length > 2 ? userinputstring.match(onlyLettersPattern).join("") : ""
             
             let loopsafeezbucket:any = tooeasybucket
 
-            console.log('userinputstring')
-            console.log(userinputstring)
-            alluser.forEach( (users:any) => {
-                console.log('users')
-                console.log(users)
-
-                let name:string = users.username
-                if (name === usernameinput) {
-                    useruniqueset('true')
-                } else {
-                    useruniqueset('false')
-                }
-
-            })
+            if (allusername.includes(userinputstring)) {
+                useruniqueset('true')
+            } else {
+                useruniqueset('false')
+            }
+    
             if (inputlength < 16 && inputlength > 8) {
                 usergoodset('true')
+            } else {
+                usergoodset('false')
             }
-            // if (name.length < 8) {
-            //     usergoodset('true')                    
-            // }
-            
-            
-            
-            
-            console.log('usernameinput')
-            console.log(usernameinput)
+
         }, [usernameinput])
             
         const inputClick = (event) => {            
@@ -377,7 +364,7 @@ alluser, alluserset,
                         <p
                       className={sty.ConstraintText}
                       style={{ 
-                          color: tooeasy ? 'rgb(247, 208, 32)' : 'moccasin',
+                        color: validemail ? 'rgb(247, 208, 32)' : 'moccasin',
                           fontWeight: 'bold',
                         }}> @email.com </p>
                                             
@@ -402,7 +389,8 @@ alluser, alluserset,
                         <p
                         className={sty.ConstraintText}
                         style={{ 
-                          color:  userunique ? '#E01115' : 'moccasin',
+                          color: userunique ? '#E01115' : usergood ? 'rgb(247, 208, 32)' : 'moccasin',
+                        //   color:  userunique ? '#E01115' : 'moccasin',
                           fontWeight: 'bold',
                         }}> unique </p>
 
