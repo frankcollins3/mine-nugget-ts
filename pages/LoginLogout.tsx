@@ -43,7 +43,7 @@ export default function InOut (props) {
     let rowandborder = [sty.centerYbetweenXrow, sty.blueborder].join(" ")
     let UsernameInputDouble = [sty.UsernameInput, "SignupUsername"].join(" ")
 
-    const { allStrain, getSpecifiedStrain, userStrainPost, getAllUsers  } = useUrl()  //obj destructuring
+    const { allStrain, getSpecifiedStrain, userStrainPost, getAllUsers } = useUrl()  //obj destructuring
 
     const {
         checked, choosechecked, usernamestr, passwordstr, 
@@ -53,7 +53,7 @@ export default function InOut (props) {
           usergood, usergoodset, validemail, validemailset, oldenough, oldenoughset, constraintshow, constraintshowset,
           goldClick, goldClickSet,
           currentinput, currentinputset, 
-usernameinput, usernameinputset, passwordinput, passwordinputset, emailinput, emailinputset, ageinput, ageinputset
+usernameinput, usernameinputset, passwordinput, passwordinputset, emailinput, emailinputset, ageinput, ageinputset, alluser, alluserset,
     } = useGame()
 
     const userobject = new Map([
@@ -64,6 +64,16 @@ usernameinput, usernameinputset, passwordinput, passwordinputset, emailinput, em
       ]);
     
     useEffect( () => {
+        (async() => {
+            let predata:any = await POST(getAllUsers, 'data')
+            console.log('predata')
+            console.log(predata)
+            console.log(predata.returndata)
+            let returndata = predata.returndata
+            let alldb = returndata.data.users
+            alluserset(alldb)            
+        })()
+        
         urlSetter(path)  
         nocursingset(swearjar)    
         easybucketset(ezjar) 
@@ -84,11 +94,8 @@ usernameinput, usernameinputset, passwordinput, passwordinputset, emailinput, em
         let targetText = event.target.defaultValue
 
         if (targetText === 'username') {
-            console.log('getAllusers')
-            console.log(getAllUsers)
-            let alldb = await POST(getAllUsers, 'data')
-            console.log('alldb')
-            console.log(alldb)
+
+
             usernameinputset(typedchar)
         }
         if (targetText === 'password') {
@@ -141,7 +148,7 @@ usernameinput, usernameinputset, passwordinput, passwordinputset, emailinput, em
             constraintshowset('true')            
         }
         if (constraintshow === true) {
-            constraintshowset('false    ')
+            constraintshowset('false')
         }
     }
         
@@ -286,10 +293,17 @@ usernameinput, usernameinputset, passwordinput, passwordinputset, emailinput, em
         let propurl = await predata.json()        
         let clientenv = process.env
         
+        
+        let preuser = await fetch(new URL(`${url}/api/user/GetAllusers`))            
+        
+        // let preuserdata = await POST(getAllUsers, 'data')
+        // let returndata = predata.returndata
+                // let alldb = returndata.data.users   
+        
                 
         return {
             props: {
-                localhost, clientenv           
+                localhost, clientenv,           
             }
         }
     }
