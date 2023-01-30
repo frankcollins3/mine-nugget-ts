@@ -2,7 +2,6 @@ import { createContext, useContext, ReactNode, useState } from "react";
 import APIcall from 'utility/APIcall'
 import Random from 'utility/Randomizer'
 import Regex from 'utility/MasterRegex'
-import { VALID_LOADERS } from "next/dist/shared/lib/image-config";
 
 type gameContextType = {
     gameOn: string;
@@ -74,6 +73,16 @@ type gameContextType = {
     //* signup constraints */
     currentinput: string|number[]
     currentinputset: (letter:any) => void;
+
+    usernameinput: string|number[];
+    usernameinputset: (letter:any) => void;
+    passwordinput: string|number[];
+    passwordinputset: (letter:any) => void;
+    emailinput: string|number[];
+    emailinputset: (letter:any) => void;
+    ageinput: string|number[];
+    ageinputset: (letter:any) => void;
+
     checked: string;
     choosechecked: (checkedBy:string) => void;
     usernamestr: string;
@@ -198,6 +207,15 @@ const gameDefaults: gameContextType = {
     // * 
     currentinput: [],
     currentinputset: (letter:any) => {},
+    usernameinput: [],
+    usernameinputset: (letter:any) => {},
+    passwordinput: [],
+    passwordinputset: (letter:any) => {},
+    emailinput: [],
+    emailinputset: (letter:any) => {},
+    ageinput: [],
+    ageinputset: (letter:any) => {},
+
     checked: 'not checked',
     choosechecked: (checkedBy:string) => {},
     usernamestr: '',
@@ -286,6 +304,13 @@ export function GameProvider({ children }: Props) {
 
     // *  user constraints like password uppercase, special character..
     const [currentinput, setCurrentinput] = useState<string|number[]>([])
+    const [usernameinput, setUsernameinput] = useState<string|number[]>([])
+    const [passwordinput, setPasswordinput] = useState<string|number[]>([])
+    const [emailinput, setEmailinput] = useState<string|number[]>([])
+    const [ageinput, setAgeinput] = useState<string|number[]>([])
+    
+
+
      // i might keep this as an array too [] that loops or joins over values for comparison. leaving untyped for adaptability
     const [checked, setChecked] = useState<string>('not checked')
     const [usernamestr, setUsernamestr] = useState<string>('')
@@ -422,6 +447,25 @@ export function GameProvider({ children }: Props) {
             // console.log(letter)
             setCurrentinput(letter)            
         }
+
+        const usernameinputset = (letter) => {
+            setUsernameinput(letter)
+        }
+
+        const passwordinputset = (letter) => {
+            setPasswordinput(letter)
+        }
+
+        const emailinputset = (letter) => {
+            setEmailinput(letter)
+        }
+
+        const ageinputset = (letter) => {
+            setAgeinput(letter)
+        }
+
+        // usernameinput: string|number[]
+    // usernameinputset: (letter:any) => void;
 
         const choosechecked = (checkedBy:string) => {
             setChecked(checkedBy)
@@ -578,6 +622,16 @@ export function GameProvider({ children }: Props) {
         // *
         currentinput,
         currentinputset,
+
+        usernameinput,
+        usernameinputset,
+        passwordinput,
+        passwordinputset,
+        emailinput,
+        emailinputset,
+        ageinput,
+        ageinputset,
+
         checked,
         choosechecked,
         usernamestr,
