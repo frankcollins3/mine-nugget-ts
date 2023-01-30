@@ -6,7 +6,9 @@ import { createContext, useContext, ReactNode, useState } from "react";
         getSpecifiedStrain: string;
         dbFirstLetter: string;
         dbNumber: string;
-        userStrains: string;        
+        userStrains: string;  
+        getAllUsers: string;
+
     }
     
     const urlDefaults: urlTypes = {
@@ -16,6 +18,7 @@ import { createContext, useContext, ReactNode, useState } from "react";
         dbFirstLetter: '/api/strains/dbFirstLetter',
         dbNumber: '/api/strains/dbNumber',
         userStrains: '/api/strains/postuserstrains',        
+        getAllUsers: '/api/user/GetAllUsers'
     }
 
 const UrlContext = createContext<urlTypes>(urlDefaults);
@@ -32,6 +35,8 @@ export default function UrlProvider( { children }, context ) {
         const [dbFirstLetter, setDbFirstLetter] = useState<string>('/api/strains/dbFirstLetter')
         const [dbNumber, setDbNumber] = useState<string>('/api/strains/dbFirstLetter')
         const [userStrains, setUserStrains] = useState<string>('/api/strains/postuserstrains')
+
+        const [getAllUsers, setGetAllUsers] = useState<string>('/api/user/GetAllUsers')
         // const [userStrains, setUserStrains] = useState<string>('/api/strains/userstrainpost')
 
     console.log(context)
@@ -42,7 +47,8 @@ export default function UrlProvider( { children }, context ) {
             getSpecifiedStrain,
             dbFirstLetter,
             dbNumber,
-            userStrains            
+            userStrains,
+            getAllUsers,                     
         }
 
     return (
