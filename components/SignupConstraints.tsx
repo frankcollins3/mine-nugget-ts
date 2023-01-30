@@ -3,33 +3,29 @@ import Container from 'react-bootstrap/Container'
 import {useEffect, useState} from 'react'
 import $ from 'jquery'
 import {useGame} from 'Contexts/game'
+import {useUrl} from 'Contexts/Url'
 
 // * utility functions!
 import Siblings from 'utility/JqSiblings'
 import CSS from 'utility/CSStool'
-// possible dictionary API to check for simple syllable words or too easily guessed words?
-// email API to check if its a valid email?
-// possible to make an API and to basically hash that API so that you can't read it but can consist of vulgar words that aren't accepted?
+import POST from 'utility/POSTdataJS'
+
+
+// * api
 
 export default function SignupConstraints(props) {
     
+    const { allStrain, getSpecifiedStrain, userStrainPost, getAllUsers, } = useUrl()  //obj destructuring
     
-        // const [checked, setChecked] = useState('not checked')
-
 const { checked, choosechecked, usernamestr, passwordstr, 
     emailstr, agestr, pwstrchange, currentinput, currentinputset,
      emailstrchange, agestrchange, userstrchange, passworduppercase, uppercaseset, specialchar, specialcharset, numberchar, numbercharset,
       tooeasy, tooeasyset, tooeasybucket, easybucketset, nocursing, nocursingset, cursingboolean, cursingbooleanset,
       usergood, usergoodset, validemail, validemailset, oldenough, oldenoughset, constraintshow, constraintshowset,
+usernameinput, usernameinputset, passwordinput, passwordinputset, emailinput, emailinputset, ageinput, ageinputset, userunique, useruniqueset,
+alluser, alluserset, 
+
       } = useGame()
-
-      // tooeasy: boolean;
-        // tooeasyset: (command:string) => void;
-        // tooeasybucket: string|number[];
-        // easybucketset: (jar:string|number[]) => void;
-        // nocursing: string|number[];
-        // nocursingset: (jar:string|number[]) => void;
-
 
     let passPassword = [passworduppercase, specialchar, numberchar]
     let passKey = passPassword.length // if password.length === 2 (toggled to boolean true for 2 instances which populate and lengthify array)
@@ -38,16 +34,25 @@ const { checked, choosechecked, usernamestr, passwordstr,
     let boxcont = [sty.checkboxcontainer, 'tag'].join(" ")
     // let specialcharstring:any = '!@#$%^&*?'
     let specialcharbucket = ['!', '@', '#', '$', '%', '^', '&', '*', '?']
+    let numberPattern = /\d+/g;
+    let upperCasePattern = /[A-Z\s]/g;
+    let specialPattern = /[!@#$%&*?]/g;
+    let onlyLettersPattern = /[a-zA-Z]/g;
+
+    // 
 
         useEffect( () => {
-            console.log('currentinput from the useEffect!')
-            console.log(currentinput)
+            console.log('passwordinput')
+            console.log(passwordinput)
             // console.log(typeof currentinput)
             let stringinput:any = currentinput
+            let passwordinputstring:any = passwordinput.toString()
+
            let actualstring = stringinput.toString()
            
            let loopsafeNoCursing = [nocursing]
            let loopsafeezbucket:any = tooeasybucket
+           
            
            
            if (stringinput.length < 1) {
@@ -60,15 +65,13 @@ const { checked, choosechecked, usernamestr, passwordstr,
                 console.log('tooeasybucket in the password')
                 console.log(tooeasybucket)
 
-                let numberPattern = /\d+/g;
-                let upperCasePattern = /[A-Z\s]/g;
-                let specialPattern = /[!@#$%&*?]/g;
-                let onlyLettersPattern = /[a-zA-Z]/g;
 
-                let uppercaseRegex = actualstring.match(upperCasePattern)            
-                let regexnumber = actualstring.match(numberPattern)                        
-                let specialRegex = actualstring.match(specialPattern)
-                let onlyletters = actualstring.length > 2 ? actualstring.match(onlyLettersPattern) : ['friends', 'for', 'ever']
+
+                let uppercaseRegex = passwordinputstring.match(upperCasePattern)            
+                let regexnumber = passwordinputstring.match(numberPattern)                        
+                // let regexnumber = actualstring.match(numberPattern)                        
+                let specialRegex = passwordinputstring.match(specialPattern)
+                let onlyletters = passwordinputstring.length > 2 ? passwordinputstring.match(onlyLettersPattern) : ['friends', 'for', 'ever']
 
                 let easycount = 0
 
@@ -76,8 +79,8 @@ const { checked, choosechecked, usernamestr, passwordstr,
 
                     let lettersArrayJoined = onlyletters.join("")
                     if (lettersArrayJoined === easyword) {
-                        console.log('lettersArrayJoined')
-                        console.log(lettersArrayJoined)
+                        // console.log('lettersArrayJoined')
+                        // console.log(lettersArrayJoined)
                         easycount++
                         tooeasyset('true')
                     } else {
@@ -105,32 +108,59 @@ const { checked, choosechecked, usernamestr, passwordstr,
                     numbercharset('false')
                 }
                 
-            // }
 
-            // if (checked === 'email') {
-                console.log("checking the email")
-                console.log('actualstring')
-                console.log(actualstring)
+        }, [passwordinput])
 
-                let atMatchPattern = /[\/@]/g
+        useEffect( () => {
+            let emailinputstring:any = emailinput.toString()
+            let atMatchPattern = /[\/@]/g
 
-                let atMatch = actualstring.match(atMatchPattern)
-                if (atMatch) {
-                    validemailset('true')
+            let atMatch = emailinputstring.match(atMatchPattern)
+            if (atMatch) {                
+                let stringAfterSlash = emailinputstring.lastIndexOf('.') ? emailinputstring.substring(emailinputstring.lastIndexOf('.')).replace(/[\/.]/g, '') : ''                
+                let validEmailLength = stringAfterSlash.length                         
+                if (validEmailLength === 3 && stringAfterSlash === 'com' || stringAfterSlash === 'net' || stringAfterSlash === 'edu') { // io is not 3
+                    validemailset('true')                    
+                } else {
+                    validemailset('false')                    
+                }                                
+            } else { return}
+        }, [emailinput])
+
+        useEffect( () => {
+            let userinputstring:any = usernameinput.toString()
+            let inputlength:number = userinputstring.length
+            let onlyletters = userinputstring.length > 2 ? userinputstring.match(onlyLettersPattern).join("") : ""
+            
+            let loopsafeezbucket:any = tooeasybucket
+
+            console.log('userinputstring')
+            console.log(userinputstring)
+            alluser.forEach( (users:any) => {
+                console.log('users')
+                console.log(users)
+
+                let name:string = users.username
+                if (name === usernameinput) {
+                    useruniqueset('true')
+                } else {
+                    useruniqueset('false')
                 }
-                console.log('atMatch')
-                console.log(atMatch)
 
-                
-
-
-
+            })
+            if (inputlength < 16 && inputlength > 8) {
+                usergoodset('true')
+            }
+            // if (name.length < 8) {
+            //     usergoodset('true')                    
             // }
-                        // * i dont believe i need any state for this just a couple of regex.
-            // * username if checked === 'username'
-            // * 1) regex to remove @ 
-            // * 2) check for currentinput.length > 8 length < 8    
-        }, [currentinput])
+            
+            
+            
+            
+            console.log('usernameinput')
+            console.log(usernameinput)
+        }, [usernameinput])
             
         const inputClick = (event) => {            
             
@@ -347,7 +377,7 @@ const { checked, choosechecked, usernamestr, passwordstr,
                         <p
                       className={sty.ConstraintText}
                       style={{ 
-                          color: validemail ? 'rgb(247, 208, 32)' : 'moccasin',
+                          color: tooeasy ? 'rgb(247, 208, 32)' : 'moccasin',
                           fontWeight: 'bold',
                         }}> @email.com </p>
                                             
@@ -356,6 +386,44 @@ const { checked, choosechecked, usernamestr, passwordstr,
 
                         :
                         <div></div>
+                    }
+
+                    {
+                        checked === 'username'
+                        ?
+                        <div className="Column">
+
+                        <div 
+                        className="Row"
+                        style={{ 
+                            display: passworduppercase === true && specialchar === true && numberchar === true ? "none" : "flex"
+                        }}>
+
+                        <p
+                        className={sty.ConstraintText}
+                        style={{ 
+                          color:  userunique ? '#E01115' : 'moccasin',
+                          fontWeight: 'bold',
+                        }}> unique </p>
+
+                        <p
+                        className={sty.ConstraintText}
+                        style={{ 
+                          color: usergood ? 'rgb(247, 208, 32)' : 'moccasin',
+                          fontWeight: 'bold',
+                        }}> username </p>
+
+                        {/* <p
+                        className={sty.ConstraintText}
+                        style={{ 
+                          color: tooeasy ? 'rgb(247, 208, 32)' : 'moccasin',
+                          fontWeight: 'bold',
+                        }}> too-ez </p> */}
+                        
+                        </div>
+                        </div>
+                            :
+                            <div></div>                            
                     }
 
                         
