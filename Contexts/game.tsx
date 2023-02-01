@@ -131,6 +131,7 @@ type gameContextType = {
     constraintshowset: (command:string) => void;
     goldClick: string;
     goldClickSet: (command:string) => void;
+    whatsWrong: (inputstate:any[]) => void;
 
 
 
@@ -271,6 +272,7 @@ const gameDefaults: gameContextType = {
         constraintshowset: (command:string) => {},
         goldClick: '',
         goldClickSet: (command:string) => {},
+        whatsWrong: (inputstate:any[]) => {},
 
     // * 
     // ?
@@ -553,7 +555,7 @@ export function GameProvider({ children }: Props) {
         }
 
         const allusernameset = (namebucket:any[]) => {
-            setAlluser(namebucket)
+            setAllusername(namebucket)
         }
 
         const useruniqueset = (command:string) => {
@@ -582,6 +584,48 @@ export function GameProvider({ children }: Props) {
             if (command === 'login') setGoldClick('login')
             if (command === '') setGoldClick('')
             // no abstraction! 
+        }
+
+        // {passworduppercase:true} 
+        // {specialchar: true}
+        // {numberchar: true}
+        // {validemail: true}
+        // {ageinput: true}
+        // {tooeasy: falsy} {userunique: false}
+
+        const whatsWrong = (inputstate:any[]) => {
+            let i:number = 0;
+            length = inputstate.length;
+            let problemstate = '';
+            let problemarray = new Array();
+            let message:string = `Fools Gold! Please Fix Your: ${problemstate}`
+            const loopandpush = () => {
+                for (i; i < length; i++) {      // was going to get specific down there it's easier to just run the loop and check for false and ignore the intentionally false ones.
+                    if (inputstate[i] === false) {
+                        let preproblemarraybucket = new Array() || []
+                         // i understand .join more, can push values into array. if value === 1? .join()
+                        if (inputstate[i] !== tooeasy || inputstate[i] !== userunique) {
+                            // these will stay false if the condition is passing the constraints. i also thought of undoing boolean defaults and making them uniform
+// true if the value is passing to the users favor of their being able to sign up. userunique and tooeasy become true if they restrict user signup vs true and permits it                            
+                            console.log(inputstate[i])
+                            problemarray.push(inputstate[i])
+                        }}}}
+            const handleValues = () => {
+                if (problemarray.length > 1) {
+                    // let combinedString:string = problemarray.join()
+                    problemarray.forEach( (item) => {
+                        problemstate += 'item, and'
+                    })                    
+                    let problemstatelength = problemstate.length
+                    problemstate.slice(0, problemstatelength - 5) // to chop off the last (please fix your: password, and email**, AND**) slice chops this off.
+                }
+            }
+            const returnValues = async () => {
+                await loopandpush() 
+                await handleValues()                
+                return message
+            }
+            return returnValues()
         }
 
         // * user functionality ends above
@@ -706,6 +750,7 @@ export function GameProvider({ children }: Props) {
         constraintshowset,
         goldClick,
         goldClickSet,
+        whatsWrong
         
         
     // ... state for age constraints
