@@ -52,7 +52,7 @@ export default function InOut (props) {
         checked, choosechecked, usernamestr, passwordstr, 
         emailstr, agestr, pwstrchange, url, urlSetter,
          emailstrchange, agestrchange, userstrchange, passworduppercase, uppercaseset, specialchar, specialcharset, numberchar, numbercharset,
-          tooeasy, tooeasyset, tooeasybucket, easybucketset, nocursing, nocursingset, cursingboolean, cursingbooleanset,
+          tooeasy, tooeasyset, tooeasybucket, easybucketset, nocursing, nocursingset, cursingboolean, cursingbooleanset, userunique,
           usergood, usergoodset, validemail, validemailset, oldenough, oldenoughset, constraintshow, constraintshowset,
           goldClick, goldClickSet,
 currentinput, currentinputset, usernameinput, usernameinputset, passwordinput, passwordinputset, emailinput, emailinputset, ageinput, ageinputset, 
@@ -89,15 +89,7 @@ currentinput, currentinputset, usernameinput, usernameinputset, passwordinput, p
             }
             bothfunctions()
             
-            
-            // console.log('alldbmap')
-            // console.log(alldbmap)            
-            // allusernameset(alldbmap)
 
-            // allusernameset(['hey', 'yeah'])
-            
-            
-            
             alluserset(alldb)            
             // let usernameDB = await alldb.filter( (dbitem) => {dbitem.username})
 
@@ -164,13 +156,25 @@ currentinput, currentinputset, usernameinput, usernameinputset, passwordinput, p
     }
 
     const semisubmit = () => {
+
+
+if (passworduppercase === true && specialchar === true && numberchar === true && validemail && ageinput && tooeasy === false && userunique === false ) {
+    console.log("passing every condition of the constraint box from the other component, facilitated by global state.")
+    $('input').each( (index, elem:any) => {                    
+        let jqelem = $(elem)[0]         
+        // let jqelem = $(elem)         
+        // let value = jqelem[0].attributes[1].nodeValue            
+        let value:any = jqelem.value          
+        console.log('jqelem')
+        console.log(jqelem)
     
-        $('input').each( (index, elem:any) => {                    
-            let jqelem = $(elem)[0]         
-            // let jqelem = $(elem)         
-            // let value = jqelem[0].attributes[1].nodeValue            
-            let value:any = jqelem.value          
-        })
+        console.log('value')
+        console.log(value)
+    })
+    
+}
+        // if (passworduppercase &&  )
+    
     }
 
     const toggleshow = () => {
