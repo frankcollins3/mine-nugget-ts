@@ -46,9 +46,10 @@
         let rowandborder = [sty.centerYbetweenXrow, sty.blueborder].join(" ")
         let UsernameInputDouble = [sty.UsernameInput, "SignupUsername"].join(" ")
 
-
+        // * api hitting routes 
         const { allStrain, getSpecifiedStrain, userStrainPost, getAllUsers } = useUrl()  //obj destructuring
 
+        // * global state from /Contexts/game
         const {
             checked, choosechecked, usernamestr, passwordstr, 
             emailstr, agestr, pwstrchange, url, urlSetter,
@@ -62,6 +63,8 @@
              whatsWrong
         } = useGame()
 
+        const [problemstate, setProblemstate] = useState<any>([] || '')  // didn't know you could do this.
+
         const userobject = new Map([
             ['username', ''],
             ['password', ''],
@@ -70,6 +73,7 @@
         ]);
         
         useEffect( () => {
+            // * hit the modular POST function with the getAllUsers and setState to username state
             (async() => {
                 let predata:any = await POST(getAllUsers, 'data')            
                 let returndata = predata.returndata
@@ -93,12 +97,7 @@
                 bothfunctions()
                 
 
-                alluserset(alldb)            
-                // let usernameDB = await alldb.filter( (dbitem) => {dbitem.username})
-
-                // console.log('usernameDB')
-                // console.log(usernameDB)
-
+                alluserset(alldb)                        
             })()
 
             urlSetter(path)  
@@ -137,8 +136,6 @@
             let siblings:any = await Siblings(event.target)
             let siblingText:string = siblings[0].outerText
 
-            console.log($('#UserNameInput'))
-
             setTimeout( () => {
                 AttrTool($('#UsernameInput'), 'value', 'username')
                 AttrTool($('#PasswordInput'), 'value', 'password')        
@@ -157,7 +154,8 @@
                 goldClickSet('')            
             }
         }
-
+        
+        let bucketbucket = []
         let passwordbucket = new Array()
         let emailbucket = new Array()
 
@@ -179,17 +177,7 @@
         
         const whatsWrong = async (inputstate:any[]) => {
 
-                const map1 = new Map();
-            // map1.set('a', 44);
-            // map1.set('b', 2);
-            // map1.set('c', 3);
-            // map1.set('a', 48)
-            // console.log(map1.get('a'))
-
             let inputstatebucket = [{passwordU:passworduppercase}, {passwordS:specialchar},{passwordN:numberchar}, {emailE:validemail}]                        
-            // let passwordbucket:string[] = []       
-            // let emailbucket:string[] = []               
-            
 
             const loopandpush = () => {
                 inputstatebucket.forEach(async(stateitems) => {                                    
@@ -197,41 +185,32 @@
                     if (stateVal === false) {
                         let stateKey = Object.keys(stateitems)[0]
                         let lastChar = await Regex(stateKey, 'lastchar')                        
-                                         
-                                        
+
+                        whatswrongproblemset('hey')
+                        
                         if (lastChar === 'password') {                            
-                            console.log(`lastChar in the password: ${lastChar} `)
-                            
-                            if (passwordbucket.length < 1) {
-                                // await whatswrongproblemset(`${lastChar}`)
-                                passwordbucket.push(`${lastChar}`)
-                                // await ProblemMap.set('password', `${lastChar}`)
-                                // await ProblemMap.set('password', `${lastChar}`)
-                            }                                                    
+                            console.log(`lastChar in the password: ${lastChar} `)  
+                            setProblemstate(`${lastChar}`)                          
+                            // whatswrongproblemset(`${lastChar}`)
+                            // if (passwordbucket.length < 1) passwordbucket.push(`${lastChar}`)                                                                                                                
                         }
 
                         if (lastChar === 'email') {                            
                             console.log(`lastChar in the email: ${lastChar} `)                            
-                            if (emailbucket.length < 1) {
-                                emailbucket.push(`${lastChar}`)
-                                // await whatswrongproblemset(`${lastChar}`)
-                                // await whatswrongproblemset(`${lastChar}`)                                
-                            }                        
-                        }
-                        
-                    } else {
-                        return 
-                    }
+                            if (emailbucket.length < 1) emailbucket.push(`${lastChar}`)                                                            
+                        }                        
+                    } else return                     
                 })                    
             }
             const checkValues = () => {
                 console.log('running the check values function')
-                console.log(passwordbucket)
-                console.log(emailbucket)
-
+                console.log(whatsWrongProblem)
             }
 
             const loopAndCheck = async () => {
+                console.log('bucketbucket')
+                console.log(bucketbucket)
+                console.log(bucketbucket.length)
                 await loopandpush()
                 await checkValues()
             }
