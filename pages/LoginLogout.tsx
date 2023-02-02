@@ -22,9 +22,12 @@
     import SignupConstraints from 'components/SignupConstraints'
     import SignupContainer from 'components/SignupContainer'
 
+
     let usernamearray = new Array()
 
     export default function InOut (props) {
+
+        const [returnstring, setReturnstring] = useState('oh wow')
 
         let badwords = props.clientenv.DONTSAYTHAT
         let ezpre = props.clientenv.EZGUESS
@@ -62,8 +65,6 @@
             wrongMsg, whatsWrongProblem, whatswrongproblemset,
              whatsWrong
         } = useGame()
-
-        const [problemstate, setProblemstate] = useState<any>([] || '')  // didn't know you could do this.
 
         const userobject = new Map([
             ['username', ''],
@@ -104,15 +105,6 @@
             nocursingset(swearjar)    
             easybucketset(ezjar) 
         }, [])
-
-        const check = async () => {
-            console.log("were just checking")        
-        }
-
-        const check2 = () => {
-            console.log('nocursing')
-            console.log(nocursing)
-        }
 
         const changehandler = async (event) => {
             let target = $(event.target)    
@@ -159,7 +151,7 @@
         let passwordbucket = new Array()
         let emailbucket = new Array()
 
-        const semisubmit = async () => {
+        const semisubmit = async () => {            
             // let inputstate = [{password_uppercase:passworduppercase}, {password_special:specialchar},{password_number:numberchar}, validemail]
             
             if (passworduppercase === true && specialchar === true && numberchar === true && validemail && ageinput && tooeasy === false && userunique === false ) {
@@ -168,64 +160,41 @@
             let jqelem = $(elem)[0]                 
             let value:any = jqelem.value                  
         })
-    } else {
-        console.log('well actually...')
-        
-        let inputstate = [{passwordU:passworduppercase}, {passwordS:specialchar},{passwordN:numberchar}, {emailE:validemail}]
-        
-        
-        
-        const whatsWrong = async (inputstate:any[]) => {
+        } else {                
+            let inputstate = [{passwordU:passworduppercase}, {passwordS:specialchar},{passwordN:numberchar}, {emailE:validemail}]        
+            const whatsWrong = async (inputstate:any[]) => {
+                // let inputstatebucket = [{passwordU:passworduppercase}, {passwordS:specialchar},{passwordN:numberchar}, {emailE:validemail}]                        
+                // const loopandpush = async () => {                
+                    inputstate.forEach(async(stateitems) => {                                    
+                        let stateVal = Object.values(stateitems)[0]
+                        if (stateVal === false) {
+                            let stateKey = Object.keys(stateitems)[0]
+                            let lastChar = await Regex(stateKey, 'lastchar')      
 
-            let inputstatebucket = [{passwordU:passworduppercase}, {passwordS:specialchar},{passwordN:numberchar}, {emailE:validemail}]                        
+                            console.log('lastChar')   // if this works and returns values.
+                            console.log(lastChar)
+                            await setReturnstring('setState in the loop') //    [returnstring, setReturnstring] = useState('')                                                                 
+                        } else return                     
+                    })                    
+                // }
 
-            const loopandpush = () => {
-                inputstatebucket.forEach(async(stateitems) => {                                    
-                    let stateVal = Object.values(stateitems)[0]
-                    if (stateVal === false) {
-                        let stateKey = Object.keys(stateitems)[0]
-                        let lastChar = await Regex(stateKey, 'lastchar')                        
+                const checkvalues = async () => {
+                    console.log('returnstring')
+                    console.log(returnstring)                                        
+                }
 
-                        whatswrongproblemset('hey')
-                        
-                        if (lastChar === 'password') {                            
-                            console.log(`lastChar in the password: ${lastChar} `)  
-                            setProblemstate(`${lastChar}`)                          
-                            // whatswrongproblemset(`${lastChar}`)
-                            // if (passwordbucket.length < 1) passwordbucket.push(`${lastChar}`)                                                                                                                
-                        }
+                const asyncfunc = async () => {
+                    console.log('async function')
+                    await checkvalues()
+                    console.log('returnstring in the async function')
+                    console.log(returnstring)
+                }
+                await asyncfunc()
 
-                        if (lastChar === 'email') {                            
-                            console.log(`lastChar in the email: ${lastChar} `)                            
-                            if (emailbucket.length < 1) emailbucket.push(`${lastChar}`)                                                            
-                        }                        
-                    } else return                     
-                })                    
+                
             }
-            const checkValues = () => {
-                console.log('running the check values function')
-                console.log(whatsWrongProblem)
-            }
-
-            const loopAndCheck = async () => {
-                console.log('bucketbucket')
-                console.log(bucketbucket)
-                console.log(bucketbucket.length)
-                await loopandpush()
-                await checkValues()
-            }
-            loopAndCheck()
+            whatsWrong(inputstate)            
         }
-        whatsWrong(inputstate)
-           
-           
-            
-            // let wrongstate = await whatsWrong(inputstate)            
-            // console.log('wrongstate')
-            // console.log(wrongstate)
-
-
-    }
     }            
         
         const toggleshow = () => {
@@ -235,6 +204,17 @@
             if (constraintshow === true) {
                 constraintshowset('false')
             }
+        }
+
+        const click1 = () => {
+            console.log('* * * click1 function')
+            setReturnstring("set by click1")
+        }
+
+        const click2 = () => {
+            console.log('click2 function running')
+            console.log('returnstring')
+            console.log(returnstring)
         }
             
         
@@ -271,10 +251,6 @@
                 :
                 <div></div>
                 }
-
-                {/* <p style={{ color: 'moccasin', fontWeight: 'bold', fontSize: '30px'}}> {checked} </p> */}
-
-
 
                 { goldClick === 'signup' 
                     ?
@@ -360,7 +336,9 @@
                 
                 <Container className={sty.endYcenterXcolumn} id={sty.HelmetCont}>                                
                     <Helmet/>   
-                                        
+                    <button onClick={click1} style={{ backgroundColor: 'olive'}}></button>         
+                    <button onClick={click2}style={{ backgroundColor: 'orange'}}></button>     
+                    <p> {returnstring} </p>    
                     </Container>
             </Page>
             
