@@ -58,7 +58,8 @@
             goldClick, goldClickSet,
     currentinput, currentinputset, usernameinput, usernameinputset, passwordinput, passwordinputset, emailinput, emailinputset, ageinput, ageinputset, 
             alluser, alluserset, allusername, allusernameset,
-            //  whatsWrong
+            wrongMsg, whatsWrongProblem, whatswrongproblemset,
+             whatsWrong
         } = useGame()
 
         const userobject = new Map([
@@ -157,65 +158,95 @@
             }
         }
 
-        const whatsWrong = async (inputstate:any[]) => {
-            let i:number = 0;
-            length = inputstate.length;
-            let problemstate = ''
-            let problemarray = new Array();
-            let message:string = `Fools Gold! Please Fix Your: ${problemstate}`
-            for (i; i < length; i++) {
-            }
-        }
-
 
         const semisubmit = async () => {
-        let inputstate = [{passwordU:passworduppercase}, {passwordS:specialchar},{passwordN:numberchar}, {emailE:validemail}]
             // let inputstate = [{password_uppercase:passworduppercase}, {password_special:specialchar},{password_number:numberchar}, validemail]
-
-    if (passworduppercase === true && specialchar === true && numberchar === true && validemail && ageinput && tooeasy === false && userunique === false ) {
+            
+            if (passworduppercase === true && specialchar === true && numberchar === true && validemail && ageinput && tooeasy === false && userunique === false ) {
         console.log("passing every condition of the constraint box from the other component, facilitated by global state.")
         $('input').each( (index, elem:any) => {                    
             let jqelem = $(elem)[0]                 
             let value:any = jqelem.value                  
         })
     } else {
-            console.log('well actually...')
-            // let myvalue = await whatsWrong(inputstate)
+        console.log('well actually...')
+        
+        let inputstate = [{passwordU:passworduppercase}, {passwordS:specialchar},{passwordN:numberchar}, {emailE:validemail}]
 
-            const whatsWrong = async (inputstate:any[]) => {
-                let i:number = 0;
-                length = inputstate.length;
-                let problemstate = ''
-                let problemarray = new Array();
-                // let message:string = `Fools Gold! Please Fix Your: ${problemstate}`
-                let message = [`Fools Gold! `, 'Please Fix Your: ', `${problemstate}`]
-                console.log('message')
-                console.log(message)
-                inputstate.forEach(async(stateitems) => {
-                    console.log('stateitems')
-                    console.log(stateitems)
-                    let stateKey = Object.keys(stateitems)[0]
-                    let lastChar = await Regex(stateKey, 'lastchar')
-                    console.log('stateKey')
-                    console.log(stateKey)
-                    console.log('lastChar')
-                    console.log(lastChar)
-                    
-                })
+        
+        const whatsWrong = async (inputstate:any[]) => {
+            let inputstatebucket = [{passwordU:passworduppercase}, {passwordS:specialchar},{passwordN:numberchar}, {emailE:validemail}]                        
+            let passwordbucket:string[] = []       
+            let emailbucket:string[] = []               
+
+            const loopandpush = () => {
+                inputstatebucket.forEach(async(stateitems) => {                                    
+                    let stateVal = Object.values(stateitems)[0]
+                    if (stateVal === false) {
+                        let stateKey = Object.keys(stateitems)[0]
+                        let lastChar = await Regex(stateKey, 'lastchar')
+                        console.log('lastChar')
+                        console.log(lastChar)
+                        await whatswrongproblemset(`${stateKey}`)                        
+                        if (lastChar === 'password') {
+                            console.log('hey password!')
+                            console.log(`lastChar in the password: ${lastChar} `)
+                            if (passwordbucket.length < 1) passwordbucket.push(lastChar)
+                        }
+                        if (lastChar === 'email') {
+                            console.log('hey email! hey bear!!')
+                            console.log(`lastChar in the email: ${lastChar} `)
+                            if (emailbucket.length < 1) emailbucket.push(lastChar)
+                        }
+                        // if (lastChar === 'password') passwordbucket.push(lastChar)
+                        // if (lastChar === 'email') emailbucket.push(lastChar)
+                    } else {
+                        return 
+                    }
+                })                    
             }
-            whatsWrong(inputstate)
+            const checkValues = () => {
+                console.log('running the check values function')
+                console.log('passwordbucket')
+                console.log(passwordbucket)
+                
+                console.log('emailbucket')
+                console.log(emailbucket)
+
+                console.log('wrongMsg')
+                console.log(wrongMsg)
+
+                let newMessage:string = wrongMsg;
+
+                console.log("email and passwordbucket length")
+                console.log(emailbucket.length)
+                console.log(passwordbucket.length)
+
+                if (passwordbucket) newMessage += passwordbucket[0]
+                if (emailbucket) newMessage += emailbucket[0]
+
+                // console.log('newMessage')
+                // console.log(newMessage)
+                
+            }
+            const loopAndCheck = async () => {
+                await loopandpush()
+                await checkValues()
+            }
+            loopAndCheck()
+        }
+        whatsWrong(inputstate)
+           
+           
+            
+            // let wrongstate = await whatsWrong(inputstate)            
+            // console.log('wrongstate')
+            // console.log(wrongstate)
 
 
-            // console.log('myvalue')
-            // console.log(myvalue)
     }
-    }
-
-
+    }            
         
-            // if (passworduppercase &&  )
-        
-
         const toggleshow = () => {
             if (constraintshow === false) {
                 constraintshowset('true')            
@@ -268,14 +299,11 @@
                     ?
                 <Container className={centerYcenterXcolumn} id={sty.LoginDiv}>
                     
-
                 <input  id="UsernameInput" onChange={changehandler} />
                 <input  id="PasswordInput" onChange={changehandler} />
                 <input  id="EmailInput" onChange={changehandler} />
                 <input  id="AgeInput" onChange={changehandler} />
-            
-                {/* <div onClick={semisubmit} className={sty.MiniGoldBar}></div> */}
-                
+                                            
                 </Container>
                 :
                 <div></div>
@@ -351,8 +379,7 @@
                 
                 <Container className={sty.endYcenterXcolumn} id={sty.HelmetCont}>                                
                     <Helmet/>   
-                    
-                    
+                                        
                     </Container>
             </Page>
             
@@ -365,15 +392,9 @@
             let predata = await fetch(new URL(`${url}/api/strains/strain`))            
             let propurl = await predata.json()        
             let clientenv = process.env
-            
-            
+                          
             let preuser = await fetch(new URL(`${url}/api/user/GetAllusers`))            
-            
-            // let preuserdata = await POST(getAllUsers, 'data')
-            // let returndata = predata.returndata
-                    // let alldb = returndata.data.users   
-            
-                    
+                                
             return {
                 props: {
                     localhost, clientenv,           
@@ -384,3 +405,23 @@
         // * this page will have state that when given a number it uses ternary rendering to render difference custom footers.
         // * one page ninja input. swap login or logout by state.
         // * {we dig you: shovel} {youre pure gold: goldbar} {gold to be mine mine to be gold: mine with border, viva oro: cactus}
+
+
+        // const whatsWrong = async (inputstate:any[]) => {
+        //     let i:number = 0;
+        //     length = inputstate.length;
+        //     let problemstate = ''
+        //     let problemarray = new Array();                
+        //     let message = [`Fools Gold.`, 'Please Fix Your: ']            
+        //     inputstate.forEach(async(stateitems) => {                    
+        //         // * whatswrongMsg State. Message. Problem state. 
+        //         let stateVal = Object.values(stateitems)[0]
+        //         if (stateVal === false) {
+        //             let stateKey = Object.keys(stateitems)[0]
+        //             let lastChar = await Regex(stateKey, 'lastchar')
+        //             problemstate = lastChar;
+        //             await whatswrongproblemset(`${stateKey}`)                        
+        //             let msgrebuild:string = `${wrongMsg}${lastChar}`                        
+        //         }
+        //     })                    
+        // }
