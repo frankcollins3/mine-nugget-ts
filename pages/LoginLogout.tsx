@@ -158,6 +158,8 @@
             }
         }
 
+        let passwordbucket = new Array()
+        let emailbucket = new Array()
 
         const semisubmit = async () => {
             // let inputstate = [{password_uppercase:passworduppercase}, {password_special:specialchar},{password_number:numberchar}, validemail]
@@ -172,34 +174,51 @@
         console.log('well actually...')
         
         let inputstate = [{passwordU:passworduppercase}, {passwordS:specialchar},{passwordN:numberchar}, {emailE:validemail}]
-
+        
+        
         
         const whatsWrong = async (inputstate:any[]) => {
+
+                const map1 = new Map();
+            // map1.set('a', 44);
+            // map1.set('b', 2);
+            // map1.set('c', 3);
+            // map1.set('a', 48)
+            // console.log(map1.get('a'))
+
             let inputstatebucket = [{passwordU:passworduppercase}, {passwordS:specialchar},{passwordN:numberchar}, {emailE:validemail}]                        
-            let passwordbucket:string[] = []       
-            let emailbucket:string[] = []               
+            // let passwordbucket:string[] = []       
+            // let emailbucket:string[] = []               
+            
 
             const loopandpush = () => {
                 inputstatebucket.forEach(async(stateitems) => {                                    
                     let stateVal = Object.values(stateitems)[0]
                     if (stateVal === false) {
                         let stateKey = Object.keys(stateitems)[0]
-                        let lastChar = await Regex(stateKey, 'lastchar')
-                        console.log('lastChar')
-                        console.log(lastChar)
-                        await whatswrongproblemset(`${stateKey}`)                        
-                        if (lastChar === 'password') {
-                            console.log('hey password!')
+                        let lastChar = await Regex(stateKey, 'lastchar')                        
+                                         
+                                        
+                        if (lastChar === 'password') {                            
                             console.log(`lastChar in the password: ${lastChar} `)
-                            if (passwordbucket.length < 1) passwordbucket.push(lastChar)
+                            
+                            if (passwordbucket.length < 1) {
+                                // await whatswrongproblemset(`${lastChar}`)
+                                passwordbucket.push(`${lastChar}`)
+                                // await ProblemMap.set('password', `${lastChar}`)
+                                // await ProblemMap.set('password', `${lastChar}`)
+                            }                                                    
                         }
-                        if (lastChar === 'email') {
-                            console.log('hey email! hey bear!!')
-                            console.log(`lastChar in the email: ${lastChar} `)
-                            if (emailbucket.length < 1) emailbucket.push(lastChar)
+
+                        if (lastChar === 'email') {                            
+                            console.log(`lastChar in the email: ${lastChar} `)                            
+                            if (emailbucket.length < 1) {
+                                emailbucket.push(`${lastChar}`)
+                                // await whatswrongproblemset(`${lastChar}`)
+                                // await whatswrongproblemset(`${lastChar}`)                                
+                            }                        
                         }
-                        // if (lastChar === 'password') passwordbucket.push(lastChar)
-                        // if (lastChar === 'email') emailbucket.push(lastChar)
+                        
                     } else {
                         return 
                     }
@@ -207,28 +226,11 @@
             }
             const checkValues = () => {
                 console.log('running the check values function')
-                console.log('passwordbucket')
                 console.log(passwordbucket)
-                
-                console.log('emailbucket')
                 console.log(emailbucket)
 
-                console.log('wrongMsg')
-                console.log(wrongMsg)
-
-                let newMessage:string = wrongMsg;
-
-                console.log("email and passwordbucket length")
-                console.log(emailbucket.length)
-                console.log(passwordbucket.length)
-
-                if (passwordbucket) newMessage += passwordbucket[0]
-                if (emailbucket) newMessage += emailbucket[0]
-
-                // console.log('newMessage')
-                // console.log(newMessage)
-                
             }
+
             const loopAndCheck = async () => {
                 await loopandpush()
                 await checkValues()
