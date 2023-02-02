@@ -21,6 +21,10 @@ export default async function Regex(url, action) {      // already forgot its no
             get nospecialchar() {
                 return this.nospecials()
             }
+
+            get lastchar() {
+                return this.returnlastchar()
+            }
             
             numberexp () {
                 // if (typeof url === 'string') {
@@ -46,6 +50,11 @@ export default async function Regex(url, action) {      // already forgot its no
                 let nospec = url.replace(/[\/!@#$%^&*]/g, '')
                 return nospec
             }
+            returnlastchar() {
+                let urlLength = url.length // let urlLength:number = url.length
+                let lastchar = url.slice(0, urlLength - 1)
+                return lastchar
+            }
         }
         if (action !== null || action !== undefined && typeof action === 'string') {
             if (action === 'numreturn') {                
@@ -68,6 +77,10 @@ export default async function Regex(url, action) {      // already forgot its no
             if (action === 'specialchar') {
                 let noSpecial = new Exp(url).nospecials
                 return noSpecial
+            }
+            if (action === 'lastchar') {
+                let lastCharacter = new Exp(url).lastchar
+                return lastCharacter
             }
         }
     }
