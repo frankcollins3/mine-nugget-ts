@@ -81,6 +81,12 @@ export default async function Regex(url, action) {      // already forgot its no
             if (action === 'lastchar') {
                 let lastCharacter = new Exp(url).lastchar
                 return lastCharacter
+            } 
+            if (action !== 'numreturn' || action !== 'alphareturn' || action !== 'whiteout' || action !== 'stringsplit' || action !== 'specialchar' || action !== 'lastchar') {
+                let characterJoin = action.join()
+                let expression = /[\/`${characterjoin}`]/g;
+                let charRegex = url.replace(expression)
+                return charRegex                
             }
         }
     }
