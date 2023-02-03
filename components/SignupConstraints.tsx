@@ -24,7 +24,6 @@ const { checked, choosechecked, usernamestr, passwordstr,
       usergood, usergoodset, validemail, validemailset, oldenough, oldenoughset, constraintshow, constraintshowset,
 usernameinput, usernameinputset, passwordinput, passwordinputset, emailinput, emailinputset, ageinput, ageinputset, userunique, useruniqueset,
 alluser, alluserset, allusername, allusernameset
-
       } = useGame()
 
     let passPassword = [passworduppercase, specialchar, numberchar]
@@ -38,8 +37,6 @@ alluser, alluserset, allusername, allusernameset
     let upperCasePattern = /[A-Z\s]/g;
     let specialPattern = /[!@#$%&*?]/g;
     let onlyLettersPattern = /[a-zA-Z]/g;
-
-    // 
 
         useEffect( () => {
             console.log('passwordinput')
@@ -305,7 +302,8 @@ alluser, alluserset, allusername, allusernameset
                         <img 
                         style={{ 
                             display: passworduppercase === true && specialchar === true && numberchar === true ? "flex" : "none",
-                            height: '65px', width: '65px'
+                            height: '2em',
+                            width: '2em',
                               }}
                         src="/img/gold.png"
                         />
@@ -358,7 +356,8 @@ alluser, alluserset, allusername, allusernameset
                         <div 
                         className="Row"
                         style={{ 
-                            display: passworduppercase === true && specialchar === true && numberchar === true ? "none" : "flex"
+                            // display: passworduppercase === true && specialchar === true && numberchar === true ? "none" : "flex"
+                            display: checked === 'email' ? "flex" : "none",
                         }}>
 
                         <p
