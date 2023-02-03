@@ -6,9 +6,9 @@ import { createContext, useContext, ReactNode, useState } from "react";
         getSpecifiedStrain: string;
         dbFirstLetter: string;
         dbNumber: string;
-        userStrains: string;  
-        getAllUsers: string;
-
+        userStrains: string;    
+        getAllUsers: string;    
+        POSTuser: string;        
     }
     
     const urlDefaults: urlTypes = {
@@ -18,7 +18,8 @@ import { createContext, useContext, ReactNode, useState } from "react";
         dbFirstLetter: '/api/strains/dbFirstLetter',
         dbNumber: '/api/strains/dbNumber',
         userStrains: '/api/strains/postuserstrains',        
-        getAllUsers: '/api/user/GetAllUsers'
+        getAllUsers: '/api/user/GetAllUsers',
+        POSTuser: '/api/user/POSTuser'
     }
 
 const UrlContext = createContext<urlTypes>(urlDefaults);
@@ -35,9 +36,9 @@ export default function UrlProvider( { children }, context ) {
         const [dbFirstLetter, setDbFirstLetter] = useState<string>('/api/strains/dbFirstLetter')
         const [dbNumber, setDbNumber] = useState<string>('/api/strains/dbFirstLetter')
         const [userStrains, setUserStrains] = useState<string>('/api/strains/postuserstrains')
-
         const [getAllUsers, setGetAllUsers] = useState<string>('/api/user/GetAllUsers')
-        // const [userStrains, setUserStrains] = useState<string>('/api/strains/userstrainpost')
+        const [POSTuser, setPOSTuser] = useState<string>('/api/user/POSTuser')
+        
 
     console.log(context)
 
@@ -48,7 +49,8 @@ export default function UrlProvider( { children }, context ) {
             dbFirstLetter,
             dbNumber,
             userStrains,
-            getAllUsers,                     
+            getAllUsers,
+            POSTuser      
         }
 
     return (
