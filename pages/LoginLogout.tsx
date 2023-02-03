@@ -27,8 +27,7 @@
 
     export default function InOut (props) {
 
-        const [returnstring, setReturnstring] = useState('oh wow')
-
+        // const [returnstring, setReturnstring] = uses
         let badwords = props.clientenv.DONTSAYTHAT
         let ezpre = props.clientenv.EZGUESS
         let ezjar = ezpre.split(',')
@@ -62,8 +61,8 @@
             goldClick, goldClickSet,
     currentinput, currentinputset, usernameinput, usernameinputset, passwordinput, passwordinputset, emailinput, emailinputset, ageinput, ageinputset, 
             alluser, alluserset, allusername, allusernameset,
-            wrongMsg, whatsWrongProblem, whatswrongproblemset,
-             whatsWrong
+            wrongMsg, wrongmsgset, whatsWrongProblem, whatswrongproblemset, 
+            //  whatsWrong
         } = useGame()
 
         const userobject = new Map([
@@ -170,28 +169,43 @@
                         if (stateVal === false) {
                             let stateKey = Object.keys(stateitems)[0]
                             let lastChar = await Regex(stateKey, 'lastchar')      
+                            let MsgMap = new Map()
+                            MsgMap.set('password', 'test')
+                            MsgMap.set('email', '')
+
+                            console.log(MsgMap.get('password'))
+                            
+                            if (lastChar === 'password') {
+                                MsgMap.set('password', '')
+                                wrongmsgset(MsgMap.get('password'))                        
+                                // wrongmsgset(['password', 'email'])                        
+                                if (wrongMsg.length < 5) {
+                                    // if (returnstring.length < 5) {                                        
+                                        // await setReturnstring(`${wrongMsg} ${lastChar}`) //    [returnstring, setReturnstring] = useState('')                                                                                                 
+                                    } else {
+                                        // await setReturnstring(`${wrongMsg} and ${lastChar}`)
+                                    }
+                                }
+                                if (lastChar === 'email') {
+                                    // wrongmsgset('email')                        
+                                    // wrongmsgset(lastChar)
+                                    if (wrongMsg.length < 5) {
+                                    // wrongmsgset(`${lastChar}`)
+
+                                    // await setReturnstring(`${wrongMsg} ${lastChar}`) //    [returnstring, setReturnstring] = useState('')                                                                                                                                     
+                                } else {
+                                    // await setReturnstring(`${returnstring} and ${lastChar}`)
+                                }
+                            }                            
 
                             console.log('lastChar')   // if this works and returns values.
                             console.log(lastChar)
-                            await setReturnstring('setState in the loop') //    [returnstring, setReturnstring] = useState('')                                                                 
+                            // await setReturnstring(`${wrongMsg}${lastChar}`) //    [returnstring, setReturnstring] = useState('')                                                                 
                         } else return                     
                     })                    
                 // }
 
-                const checkvalues = async () => {
-                    console.log('returnstring')
-                    console.log(returnstring)                                        
-                }
 
-                const asyncfunc = async () => {
-                    console.log('async function')
-                    await checkvalues()
-                    console.log('returnstring in the async function')
-                    console.log(returnstring)
-                }
-                await asyncfunc()
-
-                
             }
             whatsWrong(inputstate)            
         }
@@ -208,13 +222,13 @@
 
         const click1 = () => {
             console.log('* * * click1 function')
-            setReturnstring("set by click1")
+            // setReturnstring("set by click1")
         }
 
         const click2 = () => {
             console.log('click2 function running')
             console.log('returnstring')
-            console.log(returnstring)
+            // console.log(returnstring)
         }
             
         
@@ -276,11 +290,6 @@
 
                 </Container>
 
-                
-
-                {/* <img
-                    style={{ transform: 'scale(0.075)'}}
-                    src="/img/magnify.png"/> */}
 
                     { goldClick === 'login' || goldClick === 'signup'
                         ?
@@ -298,17 +307,12 @@
                         :
                         <div></div>
                     }
-    {/* 
-                <SignupContainer/> */}
-            
 
                 {goldClick === 'signup' 
                 
                     ?
                     <Container className={sty.centerYcenterXcolumn}>
-
-                        
-                        
+                                        
                     {
                         constraintshow 
                         ?                    
@@ -338,7 +342,9 @@
                     <Helmet/>   
                     <button onClick={click1} style={{ backgroundColor: 'olive'}}></button>         
                     <button onClick={click2}style={{ backgroundColor: 'orange'}}></button>     
-                    <p> {returnstring} </p>    
+                    <p
+                    style={{ color: 'papayawhip'}}
+                    > {wrongMsg} </p>    
                     </Container>
             </Page>
             
