@@ -11,14 +11,82 @@ if (typeof str === 'string') {
 }
 
 if (typeof str === 'object') {
-    console.log('str')    
-    console.log(str)    
+    let IndexMap = new Map()
+    await IndexMap.set('username', 'nice')
+    await IndexMap.set('password', '')
+    await IndexMap.set('email', '')
+    await IndexMap.set('age', '')
+
+    let test = str[0]
+
+    const mapValueLoopSetter = () => {
+        str.forEach( (elem) => {
+            for (const property in elem) {
+                console.log(`${property}`)
+                console.log(`${elem[property]}`)
+                const loopProperty = `${property}`
+                const elemproperty = `${elem[property]}`
+                
+                let lowercasechar = property.slice(0, property.lastIndexOf('I')).toLowerCase()
+                console.log('lowercasechar')
+                console.log(lowercasechar)
+                if (lowercasechar === 'username') {
+                    IndexMap.set(lowercasechar, elemproperty)
+                }
+                if (lowercasechar === 'password') {
+                    IndexMap.set(lowercasechar, elemproperty)
+                }
+                if (lowercasechar === 'email') {
+                    IndexMap.set(lowercasechar, elemproperty)
+                }
+                if (lowercasechar === 'age') {
+                    IndexMap.set(lowercasechar, elemproperty)
+                }
+            }
+        })
+    }
+
+    const returnMap = () => {
+        return IndexMap
+    }
+
+    const bothFunctions = async () => {
+        await mapValueLoopSetter()
+        return returnMap()
+    }
+    return bothFunctions()
+        
+    // for (const char in test) {
+    //     let CHAR:string = test[char]
+    //     if (CHAR === wheresMyIndex) {
+    //         console.log('wheresMyIndex')
+    //         console.log(wheresMyIndex)
+    //         console.log('test')
+    //         console.log(test)
+    //         let testregex = test.slice(0, char)
+    //         let lowercasetext = testregex.toLowerCase()
+            
+    //         console.log(IndexMap.get(lowercasetext))
+    //         console.log('testregex')
+    //         console.log(testregex)
+    //     }
+    // 
 }
-
-
-
-
-
 }
+            
 
-// The right-hand side of a 'for...in' statement must be of type 'any', an object type or a type parameter, but here has type 'string'.ts(2407)
+
+
+
+        
+    
+
+    
+    
+
+
+
+
+
+
+
