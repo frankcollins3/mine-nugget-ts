@@ -3,22 +3,15 @@ import {useGame} from 'Contexts/game'
 
 export default async function POSTuserCLASS (API, data) {
     const UserMap = new Map() 
-    let datausername = await UserMap.set('username', API.username)
-    let datapassword = await UserMap.set('password', API.password)
-    let dataemail = await UserMap.set('email', API.email)
-    let dataage = await UserMap.set('age', API.age)
+     await UserMap.set('username', data.username)
+     await UserMap.set('password', data.password)
+     await UserMap.set('email', data.email)
+     await UserMap.set('age', data.age)
 
-    // console.log('API from ES6')
-    // console.log(API)
-
-    // console.log('data')
-    // console.log(data)
-    console.log('API')
-    console.log(API)
-
-    console.log('data')
-    console.log(data)
-
+     let datausername = await UserMap.get('username')
+     let datapassword = await UserMap.get('password')
+     let dataemail = await UserMap.get('email')
+     let dataage = await UserMap.get('age')
     
     class POSTuserES6 {
         constructor(API) {
@@ -30,20 +23,20 @@ export default async function POSTuserCLASS (API, data) {
         }
         async newuserpost() {
             try {
-                let myfetch = await Axios.post(API, {
+                return Axios.post(API, {                
                     data: {
                         username: datausername,
                         password: datapassword,
                         email: dataemail,
                         dataage: dataage,
                     }
-                })            
-                console.log('myfetch')
-                console.log(myfetch)
-                return myfetch
+                }).then( (response) => {    
+                    return response.data
+                })                        
             }
             catch (err) {
-                // error component triggeering.
+                console.log('huge error')
+                return err
             }
 
         }
