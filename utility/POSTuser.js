@@ -1,58 +1,67 @@
-import Axios from 'axios'
-import {useGame} from 'Contexts/game'
+import { Prisma, PrismaClient } from '@prisma/client';
+let prisma = new PrismaClient()
 
-export default async function POSTuserCLASS (API, data) {
-    const UserMap = new Map() 
-     await UserMap.set('username', data.username)
-     await UserMap.set('password', data.password)
-     await UserMap.set('email', data.email)
-     await UserMap.set('age', data.age)
+export default async function POSTroute (req:any, res:any) {
 
-     let datausername = await UserMap.get('username')
-     let datapassword = await UserMap.get('password')
-     let dataemail = await UserMap.get('email')
-     let dataage = await UserMap.get('age')
-    
-    class POSTuserES6 {
-        constructor(API) {
-            this.API = API;
-        }
-        // setter methods: 
-        get newuser() {
-            return this.newuserpost()
-        }
-        async newuserpost() {
-            try {
-                return Axios.post(API, {                
-                    data: {
-                        username: datausername,
-                        password: datapassword,
-                        email: dataemail,
-                        dataage: dataage,
-                    }
-                }).then( (response) => {    
-                    return response.data
-                })                        
-            }
-            catch (err) {
-                console.log('huge error')
-                return err
-            }
+    let data = req.body.data
 
-        }
+    console.log('req.body.data')
+    console.log(req.body.data)
+
+    let username = req.body.data.username
+    let password = req.body.data.password
+    let email = req.body.data.email
+    let age;
+
+    console.log(username)
+    console.log(password)
+    console.log(email)
+    console.log(age)
+
+    let numberbucket = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]
+    let stringbucket = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30']
+
+    const loopAndSet = () => {
+        stringbucket.forEach( (string) => {
+            numberbucket.forEach( (number) => {
+                let stringnum:string = number.toString()
+                if (number.toString() === string) {
+                    age = number
+                }
+            })
+        })
     }
-    // try {
-        if (typeof API === 'string') {
-            let serverToClientConfirm = await new POSTuserES6(API).newuser
-            console.log('serverToClientConfirm')
-            console.log(serverToClientConfirm)
-            
-            return serverToClientConfirm
-        } 
-        // else {return}
-//  I believe i don't want a return statement in here because this will execute return upon the if statement not being validated, triggering else block to be the default, effectively ever avoiding catch block init
-    
-    // }
 
+    const userCreate = async () => {
+        const createuser = await prisma.users.create({
+            data: {
+                username: username,
+                password: password,
+                email: email,
+                age: age
+            }
+        }).then( (newuser:(object|number|string)) => {                    
+            console.log('newuser')
+            console.log(newuser)
+            return newuser
+        })
+        res.json( { returndata: `this is  my newuser ${createuser}` } )    
+    }
 
+    const setAndRes = async () => {
+        await loopAndSet()
+        await userCreate()
+    }
+    setAndRes()
+        
+    // res.json( { returndata: `this is  my newuser ${newuser}` } )    
 }
+
+// model users {
+//     id        Int      @id @default(autoincrement())
+//     username  String?  @db.VarChar(255)
+//     password  String?  @db.VarChar(255)
+//     age       Int?
+//     email     String?  @db.VarChar(255)
+//     strains   UsersOnStrains[]  
+//   }
