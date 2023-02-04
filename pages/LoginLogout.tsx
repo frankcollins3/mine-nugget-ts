@@ -17,6 +17,7 @@
     import Siblings from 'utility/JqSiblings'
     import AttrTool from 'utility/JqAttr'
     import POST from 'utility/POSTdataJS'
+    import POSTuserCLASS from 'utility/POSTuser'
     import Regex from 'utility/MasterRegex'
 
     import SignupConstraints from 'components/SignupConstraints'
@@ -30,6 +31,9 @@
         // const [returnstring, setReturnstring] = uses
         let badwords = props.clientenv.DONTSAYTHAT
         let ezpre = props.clientenv.EZGUESS
+        
+    
+             
         let ezjar = ezpre.split(',')
 
         let swearjar = badwords.split(',')
@@ -49,7 +53,8 @@
         let UsernameInputDouble = [sty.UsernameInput, "SignupUsername"].join(" ")
 
         // * api hitting routes 
-        const { allStrain, getSpecifiedStrain, userStrainPost, getAllUsers } = useUrl()  //obj destructuring
+        const { allStrain, getSpecifiedStrain, userStrainPost, getAllUsers, POSTuser } = useUrl()  //obj destructuring
+        let POSTuserREBUILD = URLclient += POSTuser
 
         // * global state from /Contexts/game
         const {
@@ -66,10 +71,10 @@
         } = useGame()
 
         const userobject = new Map([
-            ['username', ''],
-            ['password', ''],
-            ['email', ''],
-            ['age', ''],
+            ['username', 'myuser'],
+            ['password', 'mypassword'],
+            ['email', 'myemail'],
+            ['age', 'myage'],
         ]);
         
         useEffect( () => {
@@ -152,63 +157,61 @@
 
         const semisubmit = async () => {            
             // let inputstate = [{password_uppercase:passworduppercase}, {password_special:specialchar},{password_number:numberchar}, validemail]
-            
-            if (passworduppercase === true && specialchar === true && numberchar === true && validemail && ageinput && tooeasy === false && userunique === false ) {
-        console.log("passing every condition of the constraint box from the other component, facilitated by global state.")
-        $('input').each( (index, elem:any) => {                    
-            let jqelem = $(elem)[0]                 
-            let value:any = jqelem.value                  
-        })
-        } else {                
-            let inputstate = [{passwordU:passworduppercase}, {passwordS:specialchar},{passwordN:numberchar}, {emailE:validemail}]        
-            const whatsWrong = async (inputstate:any[]) => {
-                // let inputstatebucket = [{passwordU:passworduppercase}, {passwordS:specialchar},{passwordN:numberchar}, {emailE:validemail}]                        
-                // const loopandpush = async () => {                
-                    inputstate.forEach(async(stateitems) => {                                    
-                        let stateVal = Object.values(stateitems)[0]
-                        if (stateVal === false) {
-                            let stateKey = Object.keys(stateitems)[0]
-                            let lastChar = await Regex(stateKey, 'lastchar')      
-                            let MsgMap = new Map()
-                            MsgMap.set('password', 'test')
-                            MsgMap.set('email', '')
 
-                            console.log(MsgMap.get('password'))
+                
+                let newuserPOST = await POSTuserCLASS(POSTuserREBUILD, {yeah: 'sure'})
+                console.log('newuserPOST')
+                console.log(newuserPOST)
+                // let userPOST = await POSTuserCLASS(POSTuserClient, )      
+                
+
+                // let userPOST = await POSTuser(POSTuserClient, {username: 'yeah sure', password: 'my password', email: 'my email', age: 30}            
+                // console.log("passing every condition of the constraint box from the other component, facilitated by global state.")
+                                
+                $('input').each( (index, elem:any) => {
+                    console.log('elem')                    
+                    console.log(elem)                    
+                    let jqelem = $(elem)[0]                 
+                    let value:any = jqelem.value                  
+                })
+        //     } else {                
+        //         let inputstate = [{passwordU:passworduppercase}, {passwordS:specialchar},{passwordN:numberchar}, {emailE:validemail}]        
+        //         const whatsWrong = async (inputstate:any[]) => {
+        //             let MsgMap = new Map()
+                    
+        //             MsgMap.set('password', '')
+        //             MsgMap.set('email', '')
+        //             let stringbucket:any = []
+                
+        //             await inputstate.forEach(async(stateitems) => {                                    
+        //                 let stateVal = Object.values(stateitems)[0]
+        //                 if (stateVal === false) {
+        //                     let stateKey = Object.keys(stateitems)[0]
+        //                     let lastChar = await Regex(stateKey, 'lastchar')     
+
+        //                     const mapValueAssertations = async () => {
+
+        //                         if (lastChar === 'password') await MsgMap.set('password', 'password')
+        //                         if (lastChar === 'email') await MsgMap.set('email', 'email')
+                        
+        //                     }
+        //                     mapValueAssertations()
+
+
+        //                 } else return                     
+        //             })                    
+
+        //             const stateWithValues = async () => {
+        //                     let mapPw = MsgMap.get('password')
+        //                     let mapEmail = MsgMap.get('email')
+        //                     let joinedValues = [mapPw, mapEmail].join()
+        //                     wrongmsgset(joinedValues)
                             
-                            if (lastChar === 'password') {
-                                MsgMap.set('password', '')
-                                wrongmsgset(MsgMap.get('password'))                        
-                                // wrongmsgset(['password', 'email'])                        
-                                if (wrongMsg.length < 5) {
-                                    // if (returnstring.length < 5) {                                        
-                                        // await setReturnstring(`${wrongMsg} ${lastChar}`) //    [returnstring, setReturnstring] = useState('')                                                                                                 
-                                    } else {
-                                        // await setReturnstring(`${wrongMsg} and ${lastChar}`)
-                                    }
-                                }
-                                if (lastChar === 'email') {
-                                    // wrongmsgset('email')                        
-                                    // wrongmsgset(lastChar)
-                                    if (wrongMsg.length < 5) {
-                                    // wrongmsgset(`${lastChar}`)
-
-                                    // await setReturnstring(`${wrongMsg} ${lastChar}`) //    [returnstring, setReturnstring] = useState('')                                                                                                                                     
-                                } else {
-                                    // await setReturnstring(`${returnstring} and ${lastChar}`)
-                                }
-                            }                            
-
-                            console.log('lastChar')   // if this works and returns values.
-                            console.log(lastChar)
-                            // await setReturnstring(`${wrongMsg}${lastChar}`) //    [returnstring, setReturnstring] = useState('')                                                                 
-                        } else return                     
-                    })                    
-                // }
-
-
-            }
-            whatsWrong(inputstate)            
-        }
+        //             }
+        //             stateWithValues()
+        //     }
+        //     whatsWrong(inputstate)            
+        // }
     }            
         
         const toggleshow = () => {
@@ -280,7 +283,6 @@
                 <div></div>
                 }
 
-
                 <Container 
                 style={{ display: goldClick === 'signup' || goldClick === 'login' ? 'none' : 'flex' }}
                 className={centerYcenterXcolumn}>
@@ -289,7 +291,6 @@
                 </Container>
 
                 </Container>
-
 
                     { goldClick === 'login' || goldClick === 'signup'
                         ?
@@ -358,11 +359,16 @@
             let propurl = await predata.json()        
             let clientenv = process.env
                           
-            let preuser = await fetch(new URL(`${url}/api/user/GetAllusers`))            
+            let preuser = await fetch(new URL(`${url}/api/user/GetAllUsers`))
+            let newuser = await preuser.json()
+
+            let prePOSTuser = await fetch(new URL(`${url}/api/user/POSTuser`))   
+            let POSTuserAPI = await prePOSTuser.json()
+            let redeclare = POSTuserAPI;
                                 
             return {
                 props: {
-                    localhost, clientenv,           
+                    localhost, clientenv, 
                 }
             }
         }
