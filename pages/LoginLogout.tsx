@@ -19,6 +19,8 @@
     import POST from 'utility/POSTdataJS'
     import POSTuserCLASS from 'utility/POSTuser'
     import Regex from 'utility/MasterRegex'
+    import FindIndex from 'utility/FindIndexForIn'
+    import ElemEndpoint from 'utility/JqElemEndpoint'
 
     import SignupConstraints from 'components/SignupConstraints'
     import SignupContainer from 'components/SignupContainer'
@@ -156,24 +158,91 @@
         let emailbucket = new Array()
 
         const semisubmit = async () => {            
-            // let inputstate = [{password_uppercase:passworduppercase}, {password_special:specialchar},{password_number:numberchar}, validemail]
+                // let inputstate = [{password_uppercase:passworduppercase}, {password_special:specialchar},{password_number:numberchar}, validemail]                
+                // let newuserPOST = await POSTuserCLASS(POSTuserREBUILD, {username: 'me', password: 'hey123', email: 'me@gmail.com', age: 30})
+                // console.log('newuserPOST')
+                // console.log(newuserPOST)
 
-                
-                let newuserPOST = await POSTuserCLASS(POSTuserREBUILD, {yeah: 'sure'})
-                console.log('newuserPOST')
-                console.log(newuserPOST)
                 // let userPOST = await POSTuserCLASS(POSTuserClient, )      
                 
-
                 // let userPOST = await POSTuser(POSTuserClient, {username: 'yeah sure', password: 'my password', email: 'my email', age: 30}            
                 // console.log("passing every condition of the constraint box from the other component, facilitated by global state.")
-                                
-                $('input').each( (index, elem:any) => {
-                    console.log('elem')                    
-                    console.log(elem)                    
-                    let jqelem = $(elem)[0]                 
-                    let value:any = jqelem.value                  
-                })
+
+                let UsernameInputID = $('#UsernameInput')[0].attributes[0].nodeValue
+                let PasswordInputID = $('#UsernameInput')[0].attributes[0].nodeValue
+                let EmailInputID = $('#UsernameInput')[0].attributes[0].nodeValue
+                let AgeInputID = $('#UsernameInput')[0].attributes[0].nodeValue
+
+                let UsernameInputById:any = document.getElementById('UsernameInput')
+                let PasswordInputById:any = document.getElementById('PasswordInput')
+                let EmailInputById:any = document.getElementById('EmailInput')
+                let AgeInputById:any = document.getElementById('AgeInput')
+
+                let usernamevalue = UsernameInputById.value
+                let passwordvalue = PasswordInputById.value
+                let emailvalue = EmailInputById.value
+                let agevalue = AgeInputById.value
+
+
+                
+                // let UsernameInputValue = $('#UsernameInput')[0].value
+                
+                // let userinputindex = await FindIndex(UsernameInputID, 'I')
+                // let passwordindex = await FindIndex(PasswordInputID, 'I')
+                // let emailindex = await FindIndex(EmailInputID, 'I')
+                // let ageindex = await FindIndex(AgeInputID, 'I')
+
+                let indexbucket = [{UsernameInputID:usernamevalue}, {PasswordInputID:passwordvalue}, {EmailInputID:emailvalue}, {AgeInputID:agevalue}]
+                // let indexbucket = [UsernameInputID, PasswordInputID, EmailInputID, AgeInputID]
+                let allIndex = await FindIndex(indexbucket, 'I')
+                console.log('allIndex')
+                console.log(allIndex)
+
+                
+
+
+                // let passwordinputindex = await FindIndex(PasswordInput, 'I')
+                // let emailinputindex = await FindIndex(EmailInput, 'I')
+                // let ageinputindex= await FindIndex(AgeInput, 'I')
+
+                // console.log(passwordinputindex)
+                // console.log(emailinputindex)
+                // console.log(ageinputindex)
+                                            
+                // $('input').each( async function (index:any, elem:any) {
+                    
+                //     let jqelem = $(elem)[0]   
+                //     let value:any = jqelem.value                  
+                //     console.log('$(elem)')
+                //     console.log($(elem))
+                    
+                //     let inputId:any = jqelem.attributes[0].nodeValue
+                //     console.log('inputId')
+                //     console.log(inputId)
+
+                //     let indexI = await FindIndex(inputId, 'I')                    
+                //     console.log('indexI')
+                //     console.log(indexI)                    
+                //     return indexI                    
+                // })
+                    
+
+                    
+                    
+                // ? what i'm currently working on doing inputs and regex and character finding and returning the 'username' from usernameInput. slashing the I from input.
+                // let regex = inputId.substring(inputId.lastIndexOf('I'))
+                // console.log('regex')
+                // console.log(regex)                                
+                // test regex first and then use                     
+                // conditional logic to separate values 
+                // map.key()
+                // UserMap.set('password')
+                // send map over to ES6 function
+                // dismantle the ES6 map logic. 
+                // Input removing regex. 
+
+                    
+// * leave this else block of code its for the return statement for when the password validator isn't filled out correctly.
         //     } else {                
         //         let inputstate = [{passwordU:passworduppercase}, {passwordS:specialchar},{passwordN:numberchar}, {emailE:validemail}]        
         //         const whatsWrong = async (inputstate:any[]) => {
