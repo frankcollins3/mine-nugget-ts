@@ -47,7 +47,15 @@ if (typeof str === 'object') {
     }
 
     const returnMap = () => {
-        return IndexMap
+        // return IndexMap
+        // let mapget = IndexMap.get()
+        let userObject = {
+            username: IndexMap.get('username'),
+            password: IndexMap.get('password'),
+            email: IndexMap.get('email'),
+            age: IndexMap.get('age'),
+        }
+        return userObject
     }
 
     const bothFunctions = async () => {
