@@ -246,7 +246,17 @@ import Helmet from 'components/Helmet'
                             let mapEmail = MsgMap.get('email')
                             console.log('wrongMsg.length')
                             console.log(wrongMsg.length)
-                            let joinedValues = [mapPw, mapEmail].join()
+                            let joinedValues:any = [mapPw, mapEmail].join()
+                            console.log('joinedValues')
+                            console.log(joinedValues)
+                            console.log(joinedValues.charAt(0))
+                            console.log(joinedValues.charAt(1))
+                            console.log(joinedValues.charAt(2))
+                            if (joinedValues.charAt(0) === ',') {
+                                console.log('the value is a comma')
+                                joinedValues = 'email'
+                            }   
+
                             setOpacityToggle(true)
                             if (wrongMsg.length === 29) {
                                 wrongmsgset(joinedValues)
