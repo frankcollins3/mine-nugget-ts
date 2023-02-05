@@ -4,11 +4,13 @@
     import CardStyle from 'styles/StrainDisplay'
     import MineCont from 'styles/PickMines'
     import React, { useEffect, useState, useContext, createContext } from 'react'
-    import DataCall from 'utility/DataCallJS'
     import Axios from 'axios'
     import POST from '/utility/POSTdataJS'
-    import MasterRegex from '/utility/MasterRegex'
     import {useUrl} from 'Contexts/Url'
+
+    import POSTuserstrainsES6 from 'utility/POSTuserstrainsES6'
+    import MasterRegex from '/utility/MasterRegex'
+    import DataCall from 'utility/DataCallJS'
 
     export default function PickMines(props) {
         
@@ -16,7 +18,8 @@
         console.log(props)
         
         const { userStrainPost } = useUrl()
-        let localhost = props.localhost
+        let localURL = props.localhost
+        let userstrainURL = localURL += userStrainPost
         
         let globalstate = props.global
         let clickedStrain = props.global.clickedStrain
@@ -48,8 +51,8 @@
             await userstrainsMAP.set('strainsId', '')
 
             console.log("lets see the clickPick!")        
-            let localurl = await props.url();
-            let realurl = `${localurl}/api/strains/postuserstrains`;
+            // let localurl = await props.url();
+            // let realurl = `${localurl}/api/strains/postuserstrains`;
                          
             let straindata = globalstate.currentStrain;       
             console.log('straindata')                 
