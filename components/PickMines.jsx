@@ -8,50 +8,63 @@
     import Axios from 'axios'
     import POST from '/utility/POSTdataJS'
     import MasterRegex from '/utility/MasterRegex'
-    
-
-
-
-    let ptag = 'PickMineP' 
-    let column = 'Column'
-
-
-    let double = [column, ptag].join(' ')
-    // let tripleclass = [column, ptag, CardStyle].join(' ')
-
+    import {useUrl} from 'Contexts/Url'
 
     export default function PickMines(props) {
-
+        
         console.log('props in pickmines')
         console.log(props)
-
-
-
+        
+        const { userStrainPost } = useUrl()
+        let localhost = props.localhost
+        
         let globalstate = props.global
         let clickedStrain = props.global.clickedStrain
-
+        
         const [global, setGlobal] = useState()
         const [save, setSave] = useState(false)
         const [savedStrain, setSavedStrain] = useState('')
         
-        // let localurl:string = props.url()
-        
+        let ptag = 'PickMineP' 
+        let column = 'Column'
+    
+        let double = [column, ptag].join(' ')
+
+        let userstrainsMAP = new Map()
         
         useEffect( () => {
             setGlobal(globalstate)
         }, [])   
+
+        // useEffect( () => {
+        //     (async() => {
+
+        //     })()
+
+        // }, [])
         
-        const clickPick = async () => {             
+        const clickPick = async () => {     
+            await userstrainsMAP.set('usersId', 'test')
+            await userstrainsMAP.set('strainsId', '')
+
+            console.log("lets see the clickPick!")        
             let localurl = await props.url();
             let realurl = `${localurl}/api/strains/postuserstrains`;
                          
-            let straindata = globalstate.currentStrain;                        
-            // let userid = '4'; this would/will be pulling global.userId                         
-            let dataForDb = [straindata, userid];                     
-            let xmldata = await POST(realurl, dataForDb);
-            console.log(xmldata)
+            let straindata = globalstate.currentStrain;       
+            console.log('straindata')                 
+            console.log(straindata)          
+            
+            console.log(userstrainsMAP.get('usersId'))       
+            let userid = '6'; // this would/will be pulling global.userId.toString()                         
 
+            let submissionData = straindata += userid            
+            // let xmldata = await POST(realurl, submissionData);            
+            // console.log('xmldata')            
+            // console.log(xmldata)            
 
+            
+             
             setSavedStrain(props.global.clickedStrain)
             setSave(true)
         }
