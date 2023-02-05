@@ -22,7 +22,7 @@ export default async function POSTuserCLASS (API, data) {
             return this.newuserpost()
         }
         async newuserpost() {
-            try {
+            // try {
                 return Axios.post(API, {                
                     data: {
                         username: datausername,
@@ -33,13 +33,7 @@ export default async function POSTuserCLASS (API, data) {
                 }).then( (response) => {    
                     return response.data
                 })                        
-            }
-            catch (err) {
-                console.log('huge error')
-                return err
-                // error component triggeering.
-            }
-
+            // }            
         }
     }
     // try {
