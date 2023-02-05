@@ -1,0 +1,88 @@
+{
+    "strains": [
+        { 
+            "strain": "wedding cake",
+            "dominant": "indica",
+            "funfact": "leafly strain of year 2019",
+            "parents": "triangle kush, animal mints",
+            "taste": "sour-tang, earthy-pepper, creamy, vanilla",
+            "smell": "vanilla, frosting",
+            "gold": "pain, insomnia, appetite",
+            "nugget": "short, dense",
+            "thc": "25%",
+            "cbd": "0.1%"
+        },
+        { 
+            "strain": "GorillaGlue#4",
+            "dominant": "sativa",
+            "funfact": "sticks to fingers and scissors, #1 cann cup 2014",
+            "parents": "sour dubb, chocolate diesel",
+            "taste": "sour, chocolatey, fuel & diesel",
+            "smell": "fuel, skunk, sour",
+            "gold": "euphoria, relaxation, doing nothing",
+            "nugget": "trichomes, dense, resiny, spongy",
+            "thc": "20%",
+            "cbd": "0%"
+        },
+        { 
+            "strain": "Do-Si-Dos",
+            "dominant": "indica-hybrid",
+            "funfact": "gender-fluid, warm or humid climate, in or outdoors",
+            "parents": "girl scout cookies, face off OG",
+            "taste": "cookie, spicy, earthy",
+            "smell": "pungent, sweet, earthy",
+            "gold": "insomnia, pain",
+            "nugget": "glittery, lime green, purple",
+            "thc": "20%, 30%",
+            "cbd": "0%"
+        },
+        { 
+            "strain": "mimosa",
+            "dominant": "sativa-hybrid",
+            "funfact":  "nutrient greedy: needs encouragement to grow to full potential",
+            "parents":  "purple punch, clementine",
+            "taste": "mimosa, orange",
+            "smell": "mimosa, orange, fruity",
+            "gold": "stress, uplifted, migraines, appetite",
+            "nugget": "trichomes, semi-dense",
+            "thc": "20%, 27%",
+            "cbd": "0%"
+        },
+        { 
+            "strain": "cherry pie",
+            "dominant": "indica hybrid",
+            "funfact":  "effects in minutes, lasts for hours, pungent: use discretion",
+            "parents":  "indica GDP, sativa durban poison",
+            "taste": "cherry, pie, fruity,",
+            "smell": "cherry, pie, hashy, fruity",
+            "gold": "insomnia, focused",
+            "nugget": "dense, orange",
+            "thc": "20%",
+            "cbd": "0%"
+        },
+        { 
+            "strain": "white widow",
+            "dominant": "balanced hybrid",
+            "funfact":  "passed genes to white rhino & white russian, growers prefer original",
+            "parents":  "south indian indica, brazilian sativa landrace",
+            "taste": "not very tasty, earthy, piney, smooth, disappointing to fruity fans",
+            "smell": "tropical, fruity",
+            "gold": "euphoria, conversation, energy",
+            "nugget": "white trichomes, frosty",
+            "thc": "15%, 20%",
+            "cbd": "0.1%"
+        },
+        { 
+            "strain": "pineapple express",
+            "dominant": "sativa",
+            "funfact":  "name comes from meteorology: hawaiian water vapor, shares name with a movie",
+            "parents":  "trainwreck, hawaiian ",
+            "taste": "citrus, fruity, sweet, sour, creamy",
+            "smell": "fruity, tropical, pineapple",
+            "gold": "anti-inflammatory, euphoria, happy",
+            "nugget": "small decorated christmas trees",
+            "thc": "15%, 26%",
+            "cbd": "1%"
+        }
+    ]
+    }   
