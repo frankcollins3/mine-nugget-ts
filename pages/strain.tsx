@@ -4,7 +4,6 @@ import AllStrainContainer from 'components/AllStrainContainer'
 import StrainDisplay from 'components/StrainDisplay'
 import StrainDisplayValue from 'components/strainDisplayvalue'
 import PickMines from 'components/PickMines'
-
 import styles from 'styles/Strain.module.scss'
 import Container from 'react-bootstrap/Container';
 import getAllStrain from 'pages/api/strains/strain'
@@ -23,12 +22,10 @@ import styled from 'styled-components'
 import Display from 'styles/StrainDisplay'
 
                     
-export default  function Strain ( props:any, context ) {   
-    // console.log('props')
-    // console.log(props)
+export default  function Strain ( props:any, context ) {       
     let explicitprops = props
-    
 
+    let localhost = props.localhost
 
     const TextContext = createContext('')
     
@@ -45,10 +42,7 @@ export default  function Strain ( props:any, context ) {
     
     const access = async (context:any) => {             
     let ajaxstraindata = await DataCall('axios', `${url}/api/strains/allStrain`, null) // /pages/api/getAllStrains      
-    let url:string = await ReturnUrl(context);  
-      // console.log('url')
-      // console.log(url)
-      // let ajaxstraindata = await AjaxCall(`${url}/api/getAllStrain`, null, null) // /pages/api/getAllStrains        
+    let url:string = await ReturnUrl(context);        
   }
     
     const returnUrl = async (context:any) => { 
@@ -75,15 +69,8 @@ export default  function Strain ( props:any, context ) {
                 serverdata={props.serverdata}      
                 url={props.url} setUrl={props.setUrl}
                 allStrains={props.allStrains} setAllStrains={props.setAllStrains}
-                currentStrain={props.currentStrain} setCurrentStrain={props.setCurrentStrain}            
-                // keyState={props.keyState} setKeyState={props.setKeyState}
-                // valueState={props.valueState} setValueState={props.setValueState}
-                // fetchLock={props.fetchLock} setFetchLock={props.setFetchLock}
+                currentStrain={props.currentStrain} setCurrentStrain={props.setCurrentStrain}                            
                 />
-
-              {/* { props.strainSave === false      this made it take an extra 30 minutes
-                            ? */}
-
 
               <div className={styles.Rows}>
               {props.strainSave === false 
@@ -111,16 +98,17 @@ export default  function Strain ( props:any, context ) {
             }
                 </div>
                 
-             {props.strainSave === false 
+             {/* {props.strainSave === false 
                 ? 
                 ''
-                :
+                : */}
               <PickMines
+              localhost={localhost}
               url={returnUrl}
               global={explicitprops}
               let contextprops={context}
               />
-             }
+             {/* } */}
                  
           </Container>
             
@@ -130,12 +118,13 @@ export default  function Strain ( props:any, context ) {
 
 export async function getServerSideProps(context:any) {              
   let url:any = await ReturnUrl(context);    
+  let localhost = url
   // let pokeurl = `https://pokeapi.co/api/v2/pokemon/`    
   let predata = await fetch(new URL(`${url}/api/strains/strain`))            
   let serverdata = await predata.json()        
 return {
 props: {
-  serverdata    
+  serverdata, localhost
 }
 };
 }
