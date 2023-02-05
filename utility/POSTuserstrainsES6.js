@@ -1,6 +1,6 @@
 import Axios from 'axios'
 
-export default async function POSTuserstrainsES6(endpoint, strainName) {
+export default async function POSTuserstrainsES6(endpoint, strainName, userId) {
     // * i was going to create a: pages/api (req, res) => func that accepted a a req.body.strainName and returned a strain.strainsId. 
 // instead i'm going to allow this function to accept the name instead of the id, and handle the transferral of the strain.name value to strain.id value in userstrainsPost Route Prisma exp.
     console.log('endpoint')
