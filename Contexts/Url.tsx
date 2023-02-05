@@ -17,9 +17,11 @@ import { createContext, useContext, ReactNode, useState } from "react";
         getSpecifiedStrain: '/api/strains/getSpecifiedStrain',
         dbFirstLetter: '/api/strains/dbFirstLetter',
         dbNumber: '/api/strains/dbNumber',
-        userStrains: '/api/strains/postuserstrains',        
+        // userStrains: '/api/strains/postuserstrains',        
+        userStrains: '/api/strains/userstrainpost',
         getAllUsers: '/api/user/GetAllUsers',
         POSTuser: '/api/user/POSTuser'
+        // pages/api/strains/userstrainpost.ts
     }
 
 const UrlContext = createContext<urlTypes>(urlDefaults);
@@ -35,13 +37,10 @@ export default function UrlProvider( { children }, context ) {
         const [getSpecifiedStrain, setGetSpecifiedString] = useState<string>('/api/strains/getSpecifiedStrain')
         const [dbFirstLetter, setDbFirstLetter] = useState<string>('/api/strains/dbFirstLetter')
         const [dbNumber, setDbNumber] = useState<string>('/api/strains/dbFirstLetter')
-        const [userStrains, setUserStrains] = useState<string>('/api/strains/postuserstrains')
+        const [userStrains, setUserStrains] = useState<string>('/api/strains/userstrainpost')
         const [getAllUsers, setGetAllUsers] = useState<string>('/api/user/GetAllUsers')
         const [POSTuser, setPOSTuser] = useState<string>('/api/user/POSTuser')
-        
-
-    console.log(context)
-
+            
         const exportvalues = {
             allStrain,
             userStrainPost,
