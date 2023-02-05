@@ -1,29 +1,37 @@
-    import Helmet from 'components/Helmet'
-    import {useEffect, useState} from 'react'
-    import $ from 'jquery'
-    import Container from 'react-bootstrap/Container'
-    import {useRouter} from 'next/router'
+import {useEffect, useState} from 'react'
+import $ from 'jquery'
+import Container from 'react-bootstrap/Container'
+import {useRouter} from 'next/router'
+import bcrypt from 'bcryptjs'
 
-    //* CSS  */
-    import styles from 'styles/LoginLogout/LogInOut.module.scss'
-    import Page from 'styles/LoginLogout/styledcomponents/Page'
+//* CSS  */
+import styles from 'styles/LoginLogout/LogInOut.module.scss'
+import Page from 'styles/LoginLogout/styledcomponents/Page'
 
-    // * state / context
-    import {useGame} from 'Contexts/game'
-    import {useUrl} from 'Contexts/Url'
+// * state / context
+import {useGame} from 'Contexts/game'
+import {useUrl} from 'Contexts/Url'
 
-    // * utility 
-    import ReturnUrl from 'utility/ReturnUrl'
-    import Siblings from 'utility/JqSiblings'
-    import AttrTool from 'utility/JqAttr'
-    import POST from 'utility/POSTdataJS'
-    import POSTuserCLASS from 'utility/POSTuser'
-    import Regex from 'utility/MasterRegex'
-    import FindIndex from 'utility/FindIndexForIn'
-    import ElemEndpoint from 'utility/JqElemEndpoint'
+// * utility 
+import ReturnUrl from 'utility/ReturnUrl'
+import Siblings from 'utility/JqSiblings'
+import AttrTool from 'utility/JqAttr'
+import POST from 'utility/POSTdataJS'
+import POSTuserCLASS from 'utility/POSTuser'
+import Regex from 'utility/MasterRegex'
+import FindIndex from 'utility/FindIndexForIn'
+import ElemEndpoint from 'utility/JqElemEndpoint'
 
-    import SignupConstraints from 'components/SignupConstraints'
-    import SignupContainer from 'components/SignupContainer'
+import SignupConstraints from 'components/SignupConstraints'
+import SignupContainer from 'components/SignupContainer'
+import Helmet from 'components/Helmet'
+
+
+    
+    console.log('bcrypt')
+    console.log(bcrypt)
+
+    
 
 
     let usernamearray = new Array()
@@ -236,11 +244,17 @@
                     const stateWithValues = async () => {
                             let mapPw = MsgMap.get('password')
                             let mapEmail = MsgMap.get('email')
+                            console.log('wrongMsg.length')
+                            console.log(wrongMsg.length)
                             let joinedValues = [mapPw, mapEmail].join()
                             setOpacityToggle(true)
-                            wrongmsgset(joinedValues)
+                            if (wrongMsg.length === 29) {
+                                wrongmsgset(joinedValues)
+                            }
                             setTimeout( () => {
-                                wrongmsgset('')
+                                // wrongmsgset('urmom')
+                                console.log('wrongMsg.length')
+                                console.log(wrongMsg.length)
                                 setOpacityToggle(false)
                             }, 2000)    
 
@@ -384,7 +398,7 @@
                     id="WrongPtag"
                     style={{
                          color: 'papayawhip', 
-                         opacity: opacityToggle ? "1.0" : "0.2"
+                         opacity: opacityToggle ? "1.0" : "0.0"
                         
                           }}
                     > {wrongMsg} </p>    
