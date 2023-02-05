@@ -27,6 +27,7 @@
     "jsdom": "^21.0.0",
     "next": "13.0.3",
     "next-redux-wrapper": "^8.0.0",
+    "passport": "^0.6.0",
     "prisma": "^4.6.1",
     "react": "18.2.0",
     "react-bootstrap": "^2.6.0",
