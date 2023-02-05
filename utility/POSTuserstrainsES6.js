@@ -1,10 +1,12 @@
 import Axios from 'axios'
 
-export default async function POSTuserstrainsES6(endpoint, strainName, userId) {
+export default async function POSTuserstrainsES6(endpoint, map) {
     // * i was going to create a: pages/api (req, res) => func that accepted a a req.body.strainName and returned a strain.strainsId. 
 // instead i'm going to allow this function to accept the name instead of the id, and handle the transferral of the strain.name value to strain.id value in userstrainsPost Route Prisma exp.
-    console.log('endpoint')
-    console.log(endpoint)
+    
+    let usersId = await map.get('usersId')
+    let strain = await map.get('strain')
+
     class POSTuserstrains {
         constructor(endpoint) {
             this.endpoint = endpoint
@@ -13,15 +15,23 @@ export default async function POSTuserstrainsES6(endpoint, strainName, userId) {
             return this.userstrains()
         }
         async userstrains() {
-            Axios.post(endpoint, {
-                usersId: data.usersId,
-                strainName: strainName
-                // strainsId: data.strainsId,
-            })                
+            return  Axios.post(endpoint, {
+                usersId: usersId || map.usersId,
+                strain: strain || map.strain
+              })
+              .then(function (response) {
+                return response
+                // console.log(response);
+              })
+              .catch(function (error) {
+                return 
+              });   
+   
+            // * one liner i tried  */ ->  return Axios.post( endpoint, { usermap: map }).then( (data) => { return data })
         }
     }
     if (endpoint) {
-        const newuserstrain = new POSTuserstrains(endpoint).POST
+        const newuserstrain = await new POSTuserstrains(endpoint).POST
         console.log('newuserstrain')
         console.log(newuserstrain)
         return newuserstrain
