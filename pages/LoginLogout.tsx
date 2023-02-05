@@ -30,6 +30,8 @@
 
     export default function InOut (props) {
 
+        const [opacityToggle, setOpacityToggle] = useState(false)
+
         // const [returnstring, setReturnstring] = uses
         let badwords = props.clientenv.DONTSAYTHAT
         let ezpre = props.clientenv.EZGUESS
@@ -80,6 +82,7 @@
         ]);
         
         useEffect( () => {
+            
             // * hit the modular POST function with the getAllUsers and setState to username state
             (async() => {
                 let predata:any = await POST(getAllUsers, 'data')            
@@ -168,10 +171,13 @@
                 // let userPOST = await POSTuser(POSTuserClient, {username: 'yeah sure', password: 'my password', email: 'my email', age: 30}            
                 // console.log("passing every condition of the constraint box from the other component, facilitated by global state.")
 
-                let UsernameInputID = $('#UsernameInput')[0].attributes[0].nodeValue
-                let PasswordInputID = $('#UsernameInput')[0].attributes[0].nodeValue
-                let EmailInputID = $('#UsernameInput')[0].attributes[0].nodeValue
-                let AgeInputID = $('#UsernameInput')[0].attributes[0].nodeValue
+
+                if (passworduppercase === true && specialchar === true && numberchar === true && validemail && ageinput && tooeasy === false && userunique === false ) {
+
+                let UsernameInputid = $('#UsernameInput')[0].attributes[0].nodeValue
+                let PasswordInputid = $('#UsernameInput')[0].attributes[0].nodeValue
+                let EmailInputid = $('#UsernameInput')[0].attributes[0].nodeValue
+                let AgeInputid = $('#UsernameInput')[0].attributes[0].nodeValue
 
                 let UsernameInputById:any = document.getElementById('UsernameInput')
                 let PasswordInputById:any = document.getElementById('PasswordInput')
@@ -184,103 +190,67 @@
                 let agevalue = AgeInputById.value
 
 
-                
-                // let UsernameInputValue = $('#UsernameInput')[0].value
-                
-                // let userinputindex = await FindIndex(UsernameInputID, 'I')
-                // let passwordindex = await FindIndex(PasswordInputID, 'I')
-                // let emailindex = await FindIndex(EmailInputID, 'I')
-                // let ageindex = await FindIndex(AgeInputID, 'I')
-
-                let indexbucket = [{UsernameInputID:usernamevalue}, {PasswordInputID:passwordvalue}, {EmailInputID:emailvalue}, {AgeInputID:agevalue}]
+                let indexbucket = [{UsernameInputid:usernamevalue}, {PasswordInputid:passwordvalue}, {EmailInputid:emailvalue}, {AgeInputid:agevalue}]
                 // let indexbucket = [UsernameInputID, PasswordInputID, EmailInputID, AgeInputID]
                 let allIndex = await FindIndex(indexbucket, 'I')
                 console.log('allIndex')
                 console.log(allIndex)
+                
+                let newuser = await POSTuserCLASS(POSTuserREBUILD, allIndex)
+                console.log('newuser')
+                console.log(newuser)
+                
+                
+            }
+
 
                 
-
-
-                // let passwordinputindex = await FindIndex(PasswordInput, 'I')
-                // let emailinputindex = await FindIndex(EmailInput, 'I')
-                // let ageinputindex= await FindIndex(AgeInput, 'I')
-
-                // console.log(passwordinputindex)
-                // console.log(emailinputindex)
-                // console.log(ageinputindex)
-                                            
-                // $('input').each( async function (index:any, elem:any) {
-                    
-                //     let jqelem = $(elem)[0]   
-                //     let value:any = jqelem.value                  
-                //     console.log('$(elem)')
-                //     console.log($(elem))
-                    
-                //     let inputId:any = jqelem.attributes[0].nodeValue
-                //     console.log('inputId')
-                //     console.log(inputId)
-
-                //     let indexI = await FindIndex(inputId, 'I')                    
-                //     console.log('indexI')
-                //     console.log(indexI)                    
-                //     return indexI                    
-                // })
-                    
-
-                    
-                    
-                // ? what i'm currently working on doing inputs and regex and character finding and returning the 'username' from usernameInput. slashing the I from input.
-                // let regex = inputId.substring(inputId.lastIndexOf('I'))
-                // console.log('regex')
-                // console.log(regex)                                
-                // test regex first and then use                     
-                // conditional logic to separate values 
-                // map.key()
-                // UserMap.set('password')
-                // send map over to ES6 function
-                // dismantle the ES6 map logic. 
-                // Input removing regex. 
-
-                    
 // * leave this else block of code its for the return statement for when the password validator isn't filled out correctly.
-        //     } else {                
-        //         let inputstate = [{passwordU:passworduppercase}, {passwordS:specialchar},{passwordN:numberchar}, {emailE:validemail}]        
-        //         const whatsWrong = async (inputstate:any[]) => {
-        //             let MsgMap = new Map()
+            else {                
+                let inputstate = [{passwordU:passworduppercase}, {passwordS:specialchar},{passwordN:numberchar}, {emailE:validemail}]        
+                const whatsWrong = async (inputstate:any[]) => {
+                    let MsgMap = new Map()
                     
-        //             MsgMap.set('password', '')
-        //             MsgMap.set('email', '')
-        //             let stringbucket:any = []
+                    MsgMap.set('password', '')
+                    MsgMap.set('email', '')
+                    let stringbucket:any = []
                 
-        //             await inputstate.forEach(async(stateitems) => {                                    
-        //                 let stateVal = Object.values(stateitems)[0]
-        //                 if (stateVal === false) {
-        //                     let stateKey = Object.keys(stateitems)[0]
-        //                     let lastChar = await Regex(stateKey, 'lastchar')     
+                    await inputstate.forEach(async(stateitems) => {                                    
+                        let stateVal = Object.values(stateitems)[0]
+                        if (stateVal === false) {
+                            let stateKey = Object.keys(stateitems)[0]
+                            let lastChar = await Regex(stateKey, 'lastchar')     
 
-        //                     const mapValueAssertations = async () => {
+                            const mapValueAssertations = async () => {
 
-        //                         if (lastChar === 'password') await MsgMap.set('password', 'password')
-        //                         if (lastChar === 'email') await MsgMap.set('email', 'email')
+                                if (lastChar === 'password') await MsgMap.set('password', 'password')
+                                if (lastChar === 'email') await MsgMap.set('email', 'email')
                         
-        //                     }
-        //                     mapValueAssertations()
+                            }
+                            mapValueAssertations()
 
 
-        //                 } else return                     
-        //             })                    
+                        } else return                     
+                    })                    
 
-        //             const stateWithValues = async () => {
-        //                     let mapPw = MsgMap.get('password')
-        //                     let mapEmail = MsgMap.get('email')
-        //                     let joinedValues = [mapPw, mapEmail].join()
-        //                     wrongmsgset(joinedValues)
+                    const stateWithValues = async () => {
+                            let mapPw = MsgMap.get('password')
+                            let mapEmail = MsgMap.get('email')
+                            let joinedValues = [mapPw, mapEmail].join()
+                            setOpacityToggle(true)
+                            wrongmsgset(joinedValues)
+                            setTimeout( () => {
+                                wrongmsgset('')
+                                setOpacityToggle(false)
+                            }, 2000)    
+
                             
-        //             }
-        //             stateWithValues()
-        //     }
-        //     whatsWrong(inputstate)            
-        // }
+                    }
+                    stateWithValues()
+            }
+            whatsWrong(inputstate)  
+            
+        }
     }            
         
         const toggleshow = () => {
@@ -409,11 +379,14 @@
                 }
                 
                 <Container className={sty.endYcenterXcolumn} id={sty.HelmetCont}>                                
-                    <Helmet/>   
-                    <button onClick={click1} style={{ backgroundColor: 'olive'}}></button>         
-                    <button onClick={click2}style={{ backgroundColor: 'orange'}}></button>     
+                    <Helmet/>                       
                     <p
-                    style={{ color: 'papayawhip'}}
+                    id="WrongPtag"
+                    style={{
+                         color: 'papayawhip', 
+                         opacity: opacityToggle ? "1.0" : "0.2"
+                        
+                          }}
                     > {wrongMsg} </p>    
                     </Container>
             </Page>
@@ -431,9 +404,9 @@
             let preuser = await fetch(new URL(`${url}/api/user/GetAllUsers`))
             let newuser = await preuser.json()
 
-            let prePOSTuser = await fetch(new URL(`${url}/api/user/POSTuser`))   
-            let POSTuserAPI = await prePOSTuser.json()
-            let redeclare = POSTuserAPI;
+            // let prePOSTuser = await fetch(new URL(`${url}/api/user/POSTuser`))   
+            // let POSTuserAPI = await prePOSTuser.json()
+            // let redeclare = POSTuserAPI;
                                 
             return {
                 props: {
