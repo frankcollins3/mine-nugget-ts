@@ -2,7 +2,6 @@ import { createContext, useContext, ReactNode, useState } from "react";
 import APIcall from 'utility/APIcall'
 import Random from 'utility/Randomizer'
 import Regex from 'utility/MasterRegex'
-import { collapseTextChangeRangesAcrossMultipleVersions } from "typescript";
 
 type gameContextType = {
     gameOn: string;
@@ -57,6 +56,8 @@ type gameContextType = {
     fillSearchBucket: (strains) => void;
     selectedSearch: string;
     searchSelector: (search:string) => void; 
+    searchStrainId: number;
+    searchstrainidset: (id:number) => void;
     searchType: string;
     searchTypeClick: (type:string) => void; // retrieved from jQ event object by clicking the button with 'all' or 'mine'kam
     // * end of  above. Below is the data.strain.search() page
@@ -201,6 +202,8 @@ const gameDefaults: gameContextType = {
     toggleTheme: () => {},
     searchChar: 'none',
     searchCharFunc: (term) => {},
+    searchStrainId: 0,
+    searchstrainidset: (id:number) => {},
 
     searchBucket: [],
     fillSearchBucket: (strains) => {},
@@ -324,6 +327,7 @@ export function GameProvider({ children }: Props) {
 
     const [searchBucket, setSearchBucket] = useState([])
     const [selectedSearch, setSelectedSearch] = useState<string>('')
+    const [searchStrainId, setSearchStrainId] = useState<number>(0)
     const [searchType, setSearchType] = useState<string>('')
     const [url, setUrl] = useState<string>('');
     
@@ -474,6 +478,10 @@ export function GameProvider({ children }: Props) {
         const searchSelector = (search:string) => {
             setSelectedSearch('') // checking if this is            
             setSelectedSearch(search)
+        }
+
+        const searchstrainidset = (id:number) => {
+            setSearchStrainId(id)
         }
 
         const searchTypeClick = (type:string) => {
@@ -713,6 +721,8 @@ export function GameProvider({ children }: Props) {
         searchCharFunc,
 
         searchBucket,
+        searchStrainId,
+        searchstrainidset,
         fillSearchBucket,
         selectedSearch,
         searchSelector,
