@@ -38,7 +38,7 @@ export default async function (req, res) {
 
             const newUserStrains = await prisma.usersOnStrains.create({
                 data: {
-                  usersId: 47,
+                  usersId: usersId,
                   strainsId: strainId,
                 },
               }).then( (newUserStrain) => {
