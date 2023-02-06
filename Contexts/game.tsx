@@ -2,6 +2,7 @@ import { createContext, useContext, ReactNode, useState } from "react";
 import APIcall from 'utility/APIcall'
 import Random from 'utility/Randomizer'
 import Regex from 'utility/MasterRegex'
+import { collapseTextChangeRangesAcrossMultipleVersions } from "typescript";
 
 type gameContextType = {
     gameOn: string;
@@ -117,6 +118,9 @@ type gameContextType = {
     alluserset: (userbucket:any[]) => void;
     allusername: any[];    
     allusernameset: (userbucket:any[]) => void;
+
+    userStrains: any[];
+    userstrainset: (userstrainbucket:any[]) => void;
     
     // ... email state
     validemail: boolean;
@@ -131,7 +135,13 @@ type gameContextType = {
     constraintshowset: (command:string) => void;
     goldClick: string;
     goldClickSet: (command:string) => void;
-    whatsWrong: (inputstate:any[]) => void;
+    // WrongMsgBuilder
+    wrongMsg:any;
+    // wrongMsg:(string[]|string|object);
+    wrongmsgset:(problemstate:any) => void;  
+    whatsWrongProblem: any[];
+    whatswrongproblemset:(problemstate:any) => void;  
+    // whatsWrong: (inputstate:any[]) => void;  function to remigrate back to global since its almost successful.
 
 
 
@@ -259,6 +269,9 @@ const gameDefaults: gameContextType = {
     allusername: [],
     allusernameset: (userbucket:any[]) => {},
 
+    userStrains: [],
+    userstrainset: (userstrainbucket:any[]) => {},
+
         // ... email state
         validemail: false,
         validemailset: (command:string) => {},
@@ -272,8 +285,13 @@ const gameDefaults: gameContextType = {
         constraintshowset: (command:string) => {},
         goldClick: '',
         goldClickSet: (command:string) => {},
-        whatsWrong: (inputstate:any[]) => {},
-
+        
+        wrongMsg: "Fools Gold. Please Fix your: ",
+        wrongmsgset: (problemstate:any) => {},
+        whatsWrongProblem: [],
+        whatswrongproblemset: (problemstate:any) => {},
+        // whatsWrong: (inputstate:any[]) => {},
+        
     // * 
     // ?
 };
@@ -353,10 +371,13 @@ export function GameProvider({ children }: Props) {
     const [goldClick, setGoldClick] = useState<string>('')
     const [alluser, setAlluser] = useState<any[]>([])
     const [allusername, setAllusername] = useState<any[]>([])
-        
-        // ... state for age constraints
-    // * 
+    const [userStrains, setUserStrains] = useState<any[]>([])
 
+    // ... state for age constraints
+    // * 
+    const [wrongMsg, setWrongMsg] = useState<any>('Fools Gold. Please Fix Your: ')
+    const [whatsWrongProblem, setWhatsWrongProblem] = useState<any>([])
+    
     // ?
     
     const playing = () => {
@@ -558,6 +579,10 @@ export function GameProvider({ children }: Props) {
             setAllusername(namebucket)
         }
 
+        const userstrainset = (userstrainbucket:any[]) => {
+            setUserStrains(userstrainbucket)
+        }
+
         const useruniqueset = (command:string) => {
             if (command === 'true') setUserunique(true)
             if (command === 'false') setUserunique(false)
@@ -585,47 +610,56 @@ export function GameProvider({ children }: Props) {
             if (command === '') setGoldClick('')
             // no abstraction! 
         }
-
-        // {passworduppercase:true} 
-        // {specialchar: true}
-        // {numberchar: true}
-        // {validemail: true}
-        // {ageinput: true}
-        // {tooeasy: falsy} {userunique: false}
-
-        const whatsWrong = (inputstate:any[]) => {
-            let i:number = 0;
-            length = inputstate.length;
-            let problemstate = '';
-            let problemarray = new Array();
-            let message:string = `Fools Gold! Please Fix Your: ${problemstate}`
+        
+        const whatsWrong = async (inputstate:any[]) => {
+            let inputstatebucket = [{passwordU:passworduppercase}, {passwordS:specialchar},{passwordN:numberchar}, {emailE:validemail}]                        
+            let passwordbucket:string[] = []       
+            let emailbucket:string[] = []       
             const loopandpush = () => {
-                for (i; i < length; i++) {      // was going to get specific down there it's easier to just run the loop and check for false and ignore the intentionally false ones.
-                    if (inputstate[i] === false) {
-                        let preproblemarraybucket = new Array() || []
-                         // i understand .join more, can push values into array. if value === 1? .join()
-                        if (inputstate[i] !== tooeasy || inputstate[i] !== userunique) {
-                            // these will stay false if the condition is passing the constraints. i also thought of undoing boolean defaults and making them uniform
-// true if the value is passing to the users favor of their being able to sign up. userunique and tooeasy become true if they restrict user signup vs true and permits it                            
-                            console.log(inputstate[i])
-                            problemarray.push(inputstate[i])
-                        }}}}
-            const handleValues = () => {
-                if (problemarray.length > 1) {
-                    // let combinedString:string = problemarray.join()
-                    problemarray.forEach( (item) => {
-                        problemstate += 'item, and'
-                    })                    
-                    let problemstatelength = problemstate.length
-                    problemstate.slice(0, problemstatelength - 5) // to chop off the last (please fix your: password, and email**, AND**) slice chops this off.
-                }
+                inputstatebucket.forEach(async(stateitems) => {                                    
+                    let stateVal = Object.values(stateitems)[0]
+                    if (stateVal === false) {
+                        let stateKey = Object.keys(stateitems)[0]
+                        let lastChar = await Regex(stateKey, 'lastchar')
+                        await whatswrongproblemset(`${stateKey}`)                        
+                        if (lastChar === 'password') passwordbucket.push(lastChar)
+                        if (lastChar === 'email') passwordbucket.push(lastChar)
+                    } else {
+                        return 
+                    }
+                })                    
             }
-            const returnValues = async () => {
-                await loopandpush() 
-                await handleValues()                
-                return message
+            const checkValues = () => {
+                console.log('running the check values function')
+                console.log('passwordbucket')
+                console.log(passwordbucket)
+                console.log('emailbucket')
+                console.log(emailbucket)
             }
-            return returnValues()
+            const loopAndCheck = async () => {
+
+                await loopandpush()
+                await checkValues()
+            }
+            loopAndCheck()
+        }
+        // whatsWrong(inputstatebucket)
+
+        const whatswrongproblemset =  async (problemstate:any) => {    
+            if (typeof problemstate === 'object') {
+                problemstate.forEach( (problem) => {
+                    setWhatsWrongProblem([{...whatsWrongProblem}, `${problemstate}`])
+                })
+            } else {                
+                    setWhatsWrongProblem(problemstate)
+            }            
+        }
+
+        const wrongmsgset = (whatsWrongProblem) => {
+            // setWrongMsg(whatsWrongProblem)
+            setWrongMsg([wrongMsg, whatsWrongProblem])
+            // if (typeof whatsWrongProblem === 'object') {
+            // }
         }
 
         // * user functionality ends above
@@ -741,8 +775,12 @@ export function GameProvider({ children }: Props) {
         alluserset,
         allusername,
         allusernameset,
+        userStrains,
+        userstrainset,
         validemail,
         validemailset,
+
+        
     // ... email state
         oldenough,
         oldenoughset,
@@ -750,7 +788,11 @@ export function GameProvider({ children }: Props) {
         constraintshowset,
         goldClick,
         goldClickSet,
-        whatsWrong
+        wrongMsg,
+        wrongmsgset,
+        whatsWrong, // function
+        whatsWrongProblem,
+        whatswrongproblemset, // haven't ever exported a setState function as is. 
         
         
     // ... state for age constraints
@@ -769,6 +811,8 @@ export function GameProvider({ children }: Props) {
         </>
     );
 }
+
+
 
 
 
