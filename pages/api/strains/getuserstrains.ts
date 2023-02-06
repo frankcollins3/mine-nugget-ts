@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import APIcall from 'utility/APIcall'
 import path from 'path';
 import { promises as fs } from 'fs';
+import { createNoSubstitutionTemplateLiteral } from 'typescript';
 
 export default async function (req, res) {
     // hmm also just realized you could follow that same one prisma call ideaology twice.
@@ -40,7 +41,8 @@ export default async function (req, res) {
         let length:string = req.body.data.length
         console.log('length serverside length')
         console.log(length)
-        if (length === 'nothing') {             
+
+if (length === 'nothing') {             // * let oneGetStrain = await GETuserstrains(userStrainUrl, {strain: 'mimosa', userId: 48})  // this is the syntax to get return data correctly from this if block
             // let createdStrain = await Prisma.usersOnStrains.findOne()
             let id = 0;
             // let AllStrains = Prisma.usersOnStrains.findMany()
@@ -62,8 +64,43 @@ export default async function (req, res) {
                 // return newuserstrain
             })            
         }
+    if (length) {
+        let returnstraindata:any = []        
+        let axiosdata = req.body.data.data
+        let usersId = axiosdata[0]
+        let straindata:string[] = axiosdata[1]
+        let straindataLength = straindata.length
         
-    }
-    // {strain: 'white widow'} || ['white widow', 'pineapple express', 'GorillaGlue#4'] both of these would validate the condition as [typeof object] leaving 'all' excluded as [typeof string]
+        const loopAndPush = async () => {
+        await straindata.forEach(async(strains:any) => {
+            console.log('strains')
+            console.log(strains)     
+                if (strains) {
+                    let strainsId = 0
+                    const foundStrain = await allStrains.filter(strain => strain.strain === strains);
+                    strainsId = strainsId + foundStrain[0].id
 
+                    await Prisma.usersOnStrains.findFirst({
+                        where: {
+                            usersId: usersId,
+                            strainsId: strainsId
+                        }
+                    }).then( (strain:any) => {
+                        console.log('were here in the .then')
+                        console.log('strain')
+                        console.log(strain)                        
+                        returnstraindata.push(strain)
+
+                    })
+                }
+            })
+        }
+    
+        const returnResponse = async () => {            
+            await loopAndPush() 
+            await res.json( { userStrain: returnstraindata, testKey: 'testVal',  } )
+        }
+        await returnResponse()        
+    }        
+    }    
 }
