@@ -22,7 +22,7 @@ import FirstLetter from 'utility/firstLetterSearch'
 import GETuserstrains from 'utility/GETuserstrains'
 
 export default function FindMine (props, context) {    
-    let urlagain = props.urlagain    
+    let urlagain = props.urlagain        
     let serverdata = props.data 
     
     let userStrainUrl = props.userStrainUrlAgain
@@ -128,7 +128,7 @@ export default function FindMine (props, context) {
         <DisplayForSearch url={urlagain}/>
             {selectedSearch.length > 5 
             ?
-        <SelectedSearch userStrainUrl={userStrainUrl}/>
+        <SelectedSearch userStrainUrl={userStrainUrl} localURL={urlagain} />
             :
             <pre></pre>
             }
@@ -147,15 +147,7 @@ export async function getServerSideProps(context:any) {
 
     let userStrainUrl = `${url}/api/strains/getuserstrains`
     let userStrainUrlAgain = userStrainUrl
-    // let userStrainUrl = url += '/api/strains/getuserstrains'
-    // let userStrainUrl = url += '/api/strains/getuserstrains'
-
-
-    // let GETuserStrain = await fetch(new URL(`${url}/api/strains/getuser`))
-                
-
-
-    
+        
   return {
   props: {
       data, urlbuild, urlagain, userStrainUrl, userStrainUrlAgain
