@@ -22,10 +22,10 @@ import FirstLetter from 'utility/firstLetterSearch'
 import GETuserstrains from 'utility/GETuserstrains'
 
 export default function FindMine (props, context) {    
-    let urlagain = props.urlagain
-    console.log('urlagain')
-    console.log(urlagain)
+    let urlagain = props.urlagain    
     let serverdata = props.data 
+    
+    let userStrainUrl = props.userStrainUrlAgain
 
     let [preUrl, setPreUrl] = useState('')
     
@@ -36,13 +36,10 @@ export default function FindMine (props, context) {
     const { 
             gameOn, playing, searchHover, hoverOnSearch, findMineTheme, toggleTheme,
             selectedSearch, searchSelector,                             
-
           } = useGame()
     const slashindexbucket = new Array() || []
-
-    // let host:string = props.url
-    let allStrainUrl = urlagain += allStrain 
-    let userStrainUrl = urlagain += userStrainGet
+    
+    let allStrainUrl = urlagain += allStrain     
 
     let workingurl = props.urlbuild    
 
@@ -73,12 +70,11 @@ export default function FindMine (props, context) {
         textExit()
     }, [])
 
-    useEffect( () => {
-
-    
-        const util = async () => {
-            // let search = await FirstLetter('g')       
-            
+    useEffect( () => {    
+        const util = async () => {                
+            let getUserStrains = await GETuserstrains(userStrainUrl, 'all')
+            console.log('getUserStrains')
+            console.log(getUserStrains)
         }
         util()
 
@@ -92,6 +88,7 @@ export default function FindMine (props, context) {
                 }                
             }
         }
+
         const checkAndHandle = async () => {
             let mychar:number = slashindexbucket[0]         
             // * this accesses 
@@ -106,8 +103,7 @@ export default function FindMine (props, context) {
         doublefunction()
     }, [])    
 
-    const togglebtn = () => {
-        console.log("hey were clicking a button!")
+    const togglebtn = () => {        
         toggleTheme()
     }
 
@@ -119,16 +115,15 @@ export default function FindMine (props, context) {
         <div className="Column">                
         <FindMineText findMineTheme={findMineTheme}/>
         
-
         <Magnify url={urlagain} findMineTheme={findMineTheme}/>
             <h6 className="HoverHintHeader"
              style={{ color: 'papayawhip'}}> Click on the Magnifying Glass <br/>& Press a letter to search  </h6>         
         </div>
         </Container>        
-        <DisplayForSearch GETuserStrainUrl={userStrainUrl}  url={urlagain}/>
+        <DisplayForSearch url={urlagain}/>
             {selectedSearch.length > 5 
             ?
-        <SelectedSearch GETuserStrainUrl={userStrainUrl}/>
+        <SelectedSearch userStrainUrl={userStrainUrl}/>
             :
             <pre></pre>
             }
@@ -144,13 +139,21 @@ export async function getServerSideProps(context:any) {
     let urlagain = url 
     let predata = await fetch(new URL(`${url}/api/strains/strain`))            
     let data = await predata.json()   
+
+    let userStrainUrl = `${url}/api/strains/getuserstrains`
+    let userStrainUrlAgain = userStrainUrl
+    // let userStrainUrl = url += '/api/strains/getuserstrains'
+    // let userStrainUrl = url += '/api/strains/getuserstrains'
+
+
+    // let GETuserStrain = await fetch(new URL(`${url}/api/strains/getuser`))
                 
 
 
     
   return {
   props: {
-      data, urlbuild, urlagain
+      data, urlbuild, urlagain, userStrainUrl, userStrainUrlAgain
     }
   };
   }
