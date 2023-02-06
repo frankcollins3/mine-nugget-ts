@@ -35,7 +35,7 @@ export default function FindMine (props, context) {
     // * global state for the whole app as CONTEXT API 
     const { 
             gameOn, playing, searchHover, hoverOnSearch, findMineTheme, toggleTheme,
-            selectedSearch, searchSelector,                             
+            selectedSearch, searchSelector, userStrains, userstrainset                          
           } = useGame()
     const slashindexbucket = new Array() || []
     
@@ -72,9 +72,14 @@ export default function FindMine (props, context) {
 
     useEffect( () => {    
         const util = async () => {                
+            
             let getUserStrains = await GETuserstrains(userStrainUrl, 'all')
-            console.log('getUserStrains')
-            console.log(getUserStrains)
+            let userstraindata = getUserStrains.data
+            await userstrainset(userstraindata)
+
+            // let strainArray = ['mimosa', 'Do-Si-Dos']
+            // let getSpecifyUserStrains = await GETuserstrains(suserStrainUrl, [48, strainArray])
+            
         }
         util()
 
@@ -117,7 +122,7 @@ export default function FindMine (props, context) {
         
         <Magnify url={urlagain} findMineTheme={findMineTheme}/>
             <h6 className="HoverHintHeader"
-             style={{ color: 'papayawhip'}}> Click on the Magnifying Glass <br/>& Press a letter to search  </h6>         
+             style={{ color: 'papayawhip'}}> Click on the Magnifying Glass <br/> Press a letter to search  </h6>         
         </div>
         </Container>        
         <DisplayForSearch url={urlagain}/>
