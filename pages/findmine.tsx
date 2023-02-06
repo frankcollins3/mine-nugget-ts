@@ -1,7 +1,6 @@
+// @ts-nocheck
 import Page from 'styles/findmine/components/Searchpage'
 import styles from 'styles/findmine/sass/FindMine.module.scss'
-import Helmet from 'components/Helmet'
-import Magnify from 'components/Magnify'
 import { useState, useEffect } from 'react'
 import $ from 'jquery'
 import Container from 'react-bootstrap/Container'
@@ -9,34 +8,44 @@ import {useGame} from 'Contexts/game'
 import GET from 'utility/GETdataJS'
 import {useUrl} from 'Contexts/Url'
 import { useRouter } from 'next/router'
+import FindMineText from 'components/findminetext'
+// import FindMineText from 'components/findminetext'
 
-// import {UrlProvider} from 'Contexts/Url'
+import DisplayForSearch from 'components/Searchdisplay'
+import SelectedSearch from 'components/SelectedSearch'
+import Magnify from 'components/Magnify'
+import Helmet from 'components/Helmet'
 
 // * utility
 import ReturnUrl from 'utility/ReturnUrl'
+import FirstLetter from 'utility/firstLetterSearch'
+import GETuserstrains from 'utility/GETuserstrains'
 
 export default function FindMine (props, context) {    
     let urlagain = props.urlagain
     console.log('urlagain')
     console.log(urlagain)
-
-
     let serverdata = props.data 
 
-    let [preUrl, setPreUrl] = useState([])
-    // const [preUrl, setPreUrl] = useState<string/>/('')
+    let [preUrl, setPreUrl] = useState('')
+    
+    // * database accessing endpoint bank app: CONTEXT API 
+    const { allStrain, getSpecifiedStrain, userStrainPost, userStrainGet } = useUrl()  //obj destructuring
 
-    const { allStrain } = useUrl()  //obj destructuring
-    const { gameOn, playing, searchHover, hoverOnSearch  } = useGame()
+    // * global state for the whole app as CONTEXT API 
+    const { 
+            gameOn, playing, searchHover, hoverOnSearch, findMineTheme, toggleTheme,
+            selectedSearch, searchSelector,                             
+
+          } = useGame()
     const slashindexbucket = new Array() || []
 
     // let host:string = props.url
-    let newurl = urlagain += allStrain 
-    console.log('newurl')
-    console.log(newurl)
+    let allStrainUrl = urlagain += allStrain 
+    let userStrainUrl = urlagain += userStrainGet
 
     let workingurl = props.urlbuild    
-    
+
     let slashcounter = 0
 
     useEffect( () => {
@@ -64,60 +73,67 @@ export default function FindMine (props, context) {
         textExit()
     }, [])
 
-        // useEffect( () => {
-            const loopAndPush = async () => {
-                for (const char in workingurl) {            
-                    if (workingurl[char] === '/') {
-                        slashcounter++
-                        if (slashcounter === 3) {
-                            slashindexbucket.push(char + 1)
-                        }
-                    }
-                }
-            }   
-            const valuecheck = async () => {
-                    let preslashindex = workingurl.slice(0, slashindexbucket)   // operator + 1 cant be used on :any[] || never i changed the push to [ char + 1 ]     
-                    setPreUrl(preslashindex)
-\
-        const check = async () => {
-            console.log(props.url)
-            let pokeapi = `https://pokeapi.co/api/v2/pokemon`
-            // let data = await GET(allStrain)
-            // let data = await GET('http://localhost:3000/pages/api/strains/strain')
-            console.log('preurl')
-            console.log(preUrl)
+    useEffect( () => {
 
-            if (preUrl === workingurl) return console.log(`preUrl: ${preUrl} workingurl: ${workingurl}`)
-
-            let data = await GET(workingurl)
-            // let data = await GET('http://localhost:3000/api/strains/strain')
-            // let data = await GET('http://localhost:3000/api/strains/strain')
-            // let data = await GET(preUrl)
-            // let data = await GET(preUrl[0])
+    
+        const util = async () => {
+            // let search = await FirstLetter('g')       
             
-            console.log('data from get')
-            console.log(data)
+        }
+        util()
 
-            console.log(`newurl ${newurl} allStrain ${allStrain} `)
+        const loopPush = () => {
+            for (const char in urlagain) {                
+                if (urlagain[char] === '/') {
+                    slashcounter++
+                    if (slashcounter === 3) {                        
+                        slashindexbucket.push(char)                                   
+                    }
+                }                
+            }
+        }
+        const checkAndHandle = async () => {
+            let mychar:number = slashindexbucket[0]         
+            // * this accesses 
+            let slashthird:string = urlagain.slice(0, mychar)
+            let actualurl:string = slashthird += getSpecifiedStrain                                    
+            let checkfetch = await GET(actualurl, {strain: 'wedding cake'})            
+        }
+        const doublefunction = async () => {
+            await loopPush()
+            await checkAndHandle()
+        }
+        doublefunction()
+    }, [])    
 
-        } 
+    const togglebtn = () => {
+        console.log("hey were clicking a button!")
+        toggleTheme()
+    }
 
-        check()
-    return (        
+    return (      
+        <>
         <Page>       
-
-        <Container className={styles.row}>     
+        <Container 
+        className={styles.row}>             
+        <div className="Column">                
+        <FindMineText findMineTheme={findMineTheme}/>
         
 
-        <div className="Column">        
-        <h1 className={styles.h1} style={{ color: 'papayawhip', fontFamily: 'papyrus' }}> Find Mine </h1>'
-        <Magnify/>
+        <Magnify url={urlagain} findMineTheme={findMineTheme}/>
             <h6 className="HoverHintHeader"
-             style={{ color: 'papayawhip'}}> Hover on the Magnifying Glass <br/> Press a letter to search  </h6>
+             style={{ color: 'papayawhip'}}> Click on the Magnifying Glass <br/>& Press a letter to search  </h6>         
         </div>
-
         </Container>        
-        </Page>
+        <DisplayForSearch GETuserStrainUrl={userStrainUrl}  url={urlagain}/>
+            {selectedSearch.length > 5 
+            ?
+        <SelectedSearch GETuserStrainUrl={userStrainUrl}/>
+            :
+            <pre></pre>
+            }
+        </Page>        
+        </>          
     )
         
 }
@@ -126,9 +142,10 @@ export async function getServerSideProps(context:any) {
     let url:any = await ReturnUrl(context);   
     let urlbuild = `${url}/api/strains/strain`
     let urlagain = url 
-    // let pokeurl = `https://pokeapi.co/api/v2/pokemon/`    
     let predata = await fetch(new URL(`${url}/api/strains/strain`))            
     let data = await predata.json()   
+                
+
 
     
   return {
