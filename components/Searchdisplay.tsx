@@ -1,29 +1,40 @@
 
 import Container from 'react-bootstrap/Container'
-import APIcall from 'utility/APIcall'
 import {useEffect, useState} from 'react'
-import {useGame} from 'Contexts/game'
 import Searchdisplay from 'styles/findmine/components/Searchdisplay'
 import styles from 'styles/findmine/sass/FindMine.module.scss'
 import $ from 'jquery'
+
+import {useGame} from 'Contexts/game'
+import {useUrl} from 'Contexts/Url'
+
+// * Components
+import SelectedSearch from 'components/SelectedSearch'
+
+// * utility function
+import APIcall from 'utility/APIcall'
 import CSS from 'utility/CSStool'
 import Children from 'utility/jqChildren'
 import Siblings from 'utility/JqSiblings'
-
-import SelectedSearch from 'components/SelectedSearch'
-
+import GETuserstrains from 'utility/GETuserstrains'
 
 
-
-export default function DisplayForSearch () {
+export default function DisplayForSearch (props) {
 
     // const [selectedSearch, setSelectedSearch] = useState('')
 
     const { 
         gameOn, playing, searchHover, searchOn, searchOff, 
         findMineTheme, toggleTheme, searchChar, searchCharFunc,
-        searchBucket, fillSearchBucket, selectedSearch, searchSelector
+        searchBucket, fillSearchBucket, selectedSearch, searchSelector, searchType, searchTypeClick, userStrains, searchStrainId, searchstrainidset, 
         } = useGame()
+
+    let absoluteURLpath = props.localURL
+
+    const getIDurl = props.getIDurl
+    const usernamesForID = props.usernamesForID
+    console.log('usernamesForID in the searchdisplay!')
+    console.log(usernamesForID)
 
     let searchCount:any = searchBucket.length
 
@@ -37,10 +48,22 @@ export default function DisplayForSearch () {
     }
 
     const selectFunc = async (event) => {        
+        console.log('firing selectFunc')
         let siblings:any = await Siblings($(event.target))
         let children = await Children($(event.target))
-        let siblingText:string = siblings[0].outerText        
+        let siblingText:string = siblings[0].outerText  
+        let dataArg = `getID${siblingText}`
+        let textStrainId = await GETuserstrains(getIDurl, dataArg)
+        let IDofStrain = textStrainId!.data.id      
+        console.log('textStrainId')
+        console.log(textStrainId)
+        let usernamesFromID = await GETuserstrains(usernamesForID, textStrainId)
+        console.log('usernamesFromID')
+        console.log(usernamesFromID)        
+        searchstrainidset(IDofStrain)   
         searchSelector(siblingText)
+
+
     }
 
     let strainmap = searchBucket.map( (mapitem, idx) => {        
@@ -82,29 +105,17 @@ export default function DisplayForSearch () {
         searchSelector('')
     }
 
-
     return (
             <Container
-            // * this code triggers the option to search again!
-            onMouseLeave={containerleave}
             >
         <Searchdisplay className="Column">                    
-            <img className={styles.DisplayCaseCone} src="/img/cone.png"/>
-            {/* <div className={ searchBucket.length > 4 ? styles.row : "Column"}> */}
-    
-            {selectedSearch.length > 1 ?
-            <SelectedSearch/>
-            :
-            strainmap            
-            }
-
-            {/* </div> */}
             <img className={styles.DisplayCaseCone} src="/img/cone.png"/>    
-
-            {/* organize this code!  the components before weren't working.          */}
-            
-            
+            {strainmap}         
+            <img className={styles.DisplayCaseCone} src="/img/cone.png"/>   
         </Searchdisplay>
+        <p style={{ color: 'papayawhip'}}> {searchStrainId} </p>
+            
+            
             </Container>
 
     )
