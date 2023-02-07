@@ -60,6 +60,8 @@ type gameContextType = {
     searchstrainidset: (id:number) => void;
     searchType: string;
     searchTypeClick: (type:string) => void; // retrieved from jQ event object by clicking the button with 'all' or 'mine'kam
+    usersOfSearchStrain: any[];
+    usersofsearchstrainset: (searchStrainUsers:any[]) => void;
     // * end of  above. Below is the data.strain.search() page
 
     url: string;
@@ -211,6 +213,8 @@ const gameDefaults: gameContextType = {
     searchSelector: (search:string) => {},
     searchType: '',
     searchTypeClick: () => {},
+    usersOfSearchStrain: [],
+    usersofsearchstrainset: (searchStrainUsers:any[]) => {},
 
     url: '',
     urlSetter: (url:string) => {},
@@ -329,6 +333,8 @@ export function GameProvider({ children }: Props) {
     const [selectedSearch, setSelectedSearch] = useState<string>('')
     const [searchStrainId, setSearchStrainId] = useState<number>(0)
     const [searchType, setSearchType] = useState<string>('')
+    const [usersOfSearchStrain, setUsersOfSearchStrain] = useState<any[]>([])
+    
     const [url, setUrl] = useState<string>('');
     
     // ? userstate
@@ -488,6 +494,10 @@ export function GameProvider({ children }: Props) {
             setSearchType(type);
         }
 
+        const usersofsearchstrainset = (searchStrainUsers:any[]) => {
+            setUsersOfSearchStrain(searchStrainUsers)
+        }
+        
         const currentinputset = (letter) => {
             // console.log('letter')
             // console.log(letter)
@@ -728,6 +738,9 @@ export function GameProvider({ children }: Props) {
         searchSelector,
         searchType,
         searchTypeClick,
+        usersOfSearchStrain,
+        usersofsearchstrainset,
+        
 
         // ?
         username,
