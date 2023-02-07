@@ -27,6 +27,7 @@ export default function DisplayForSearch (props) {
         gameOn, playing, searchHover, searchOn, searchOff, 
         findMineTheme, toggleTheme, searchChar, searchCharFunc,
         searchBucket, fillSearchBucket, selectedSearch, searchSelector, searchType, searchTypeClick, userStrains, searchStrainId, searchstrainidset, 
+        usersOfSearchStrain, usersofsearchstrainset,
         } = useGame()
 
     let absoluteURLpath = props.localURL
@@ -54,16 +55,13 @@ export default function DisplayForSearch (props) {
         let siblingText:string = siblings[0].outerText  
         let dataArg = `getID${siblingText}`
         let textStrainId = await GETuserstrains(getIDurl, dataArg)
-        let IDofStrain = textStrainId!.data.id      
-        console.log('textStrainId')
-        console.log(textStrainId)
+        let IDofStrain = textStrainId!.data.id              
         let usernamesFromID = await GETuserstrains(usernamesForID, textStrainId)
-        console.log('usernamesFromID')
-        console.log(usernamesFromID)        
+        let allusernames = usernamesFromID!.data.usernames        
+        let userStrains = usernamesFromID!.data.userStrains
+        usersofsearchstrainset(allusernames)
         searchstrainidset(IDofStrain)   
         searchSelector(siblingText)
-
-
     }
 
     let strainmap = searchBucket.map( (mapitem, idx) => {        
