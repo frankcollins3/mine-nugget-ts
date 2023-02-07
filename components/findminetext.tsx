@@ -66,7 +66,8 @@
             <p id="word3" className={styles.h1}> n </p>
             <p id="word4" className={styles.h1}> d </p>
             </div>
-            <button onClick={allormine} className={styles.allOrMine}>All</button>
+            {selectedSearch.length > 5 ? <button onClick={allormine} className={styles.allOrMine}>All</button> : <pre></pre>}
+            
             </div>
 
 
@@ -88,7 +89,7 @@
             <p id="word7" className={styles.h1}> n </p>
             <p id="word8" className={styles.h1}> e </p>
             </div>
-            <button onClick={allormine} className={styles.allOrMine}>Mine</button>            
+            {selectedSearch.length > 5 ? <button onClick={allormine} className={styles.allOrMine}>Mine</button> : <pre></pre>}         
             </div>
 
             </div>
