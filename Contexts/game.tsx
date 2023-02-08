@@ -483,7 +483,11 @@ export function GameProvider({ children }: Props) {
 
         const searchSelector = (search:string) => {
             setSelectedSearch('') // checking if this is            
-            setSelectedSearch(search)
+            if (search) {
+                setSelectedSearch(search)
+            } else {
+                setSelectedSearch('')
+            }
         }
 
         const searchstrainidset = (id:number) => {
