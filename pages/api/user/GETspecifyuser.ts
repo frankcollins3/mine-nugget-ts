@@ -1,5 +1,7 @@
 import { Prisma, PrismaClient } from '@prisma/client';
 let prisma = new PrismaClient()
+import bcrypt from 'bcryptjs'
+
 export default async function GETspecifyuser(req, res) {
     console.log("get specify user route!")
     console.log('req.body')
@@ -7,17 +9,40 @@ export default async function GETspecifyuser(req, res) {
 
     let username:string = req.body.username
     let password:string = req.body.password
-
-    const findUser = await prisma.users.findFirst({
+    
+    const findUser:any = await prisma.users.findFirst({
         where: {
-            username: username
+            username: username,            
         }
     }).then( (user) => {
-        console.log('user in the username')
-        console.log(user)
+        return user
+    }).catch( () => {
+        return []
     })
 
-    res.json({ body: req.body, test: 'hey man'})
+    console.log('findUser returned success!')
+    console.log(findUser)
+    console.log(findUser.username)
+    
+    let findUserpassword = findUser.password
+    
+    
+    let bcryptresult = await bcrypt
+    .compare(password, findUserpassword)
+    .then(res => {
+        return res ? true : false // this looks weird at first.
+    })
+
+    res.json({ user: bcryptresult === true && findUser.username ? findUser : []})
+    
+    // bcrypt.compare(plaintextPassword, hash, function(err, result) {
+    //         if (result) {
+    //            // password is valid
+    //        }
+    //     });
+
+
+
 
 
 }
