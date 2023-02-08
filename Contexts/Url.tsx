@@ -7,6 +7,7 @@ import { createContext, useContext, ReactNode, useState } from "react";
         getSpecifiedStrain: string;
         getID: string;
         allUsernamesForID: string;
+        specifyUserGET: string;
         dbFirstLetter: string;
         dbNumber: string;
         // userStrains: string;    
@@ -22,6 +23,7 @@ import { createContext, useContext, ReactNode, useState } from "react";
         getID: '/api/strains/getIDwithNAME',
         allUsernamesForID: '/api/strains/AllUsernamesForStrain',
         dbFirstLetter: '/api/strains/dbFirstLetter',
+        specifyUserGET: '/api/user/GETspecifyuser',
         dbNumber: '/api/strains/dbNumber',
         // userStrains: '/api/strains/postuserstrains',        
         // userStrains: '/api/strains/userstrainpost',
@@ -43,6 +45,7 @@ export default function UrlProvider( { children }, context ) {
         const [dbNumber, setDbNumber] = useState<string>('/api/strains/dbFirstLetter')
         const [userStrainPost, setUserStrainPost] = useState<string>('/api/strains/userstrainpost')
         const [userStrainGet, setUserStrainGet] = useState<string>('/api/strains/getuserstrains')
+        const [specifyUserGET, setSpecifyUserGET] = useState<string>('/api/user/GETspecifyuser')
         const [getID, setGetID] = useState<string>('/api/strains/getIDwithNAME')
         const [allUsernamesForID, setAllUsernamesForID] = useState<string>('/api/strains/allUsernamesForId')
         const [getAllUsers, setGetAllUsers] = useState<string>('/api/user/GetAllUsers')
@@ -56,6 +59,7 @@ export default function UrlProvider( { children }, context ) {
             getSpecifiedStrain,
             getID,
             allUsernamesForID,
+            specifyUserGET,
             dbFirstLetter,
             dbNumber,
             getAllUsers,
