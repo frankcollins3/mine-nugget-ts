@@ -22,62 +22,48 @@ import SeeAndSave from 'utility/SeeAndSave'
 import APIcall from 'utility/APIcall'
 import MasterListStyle from 'utility/MasterListStyle'
 import MasterRegex from 'utility/MasterRegex'
+import {useGame} from 'Contexts/game'
+import { createSemanticDiagnosticsBuilderProgram } from 'typescript'
 
 export default  function AllStrainContainer(props:any) {   
-    console.log('props from the allstraincontainer')
-    console.log(props)
 
+    // globalstate
+    const {currentUser, currentUserName, currentuseridset, currentUserId, currentusernameset, noUser, nouserset } = useGame()
+
+    // local | passed-as-props globalstate
     let globalprops:any = props.global
-    console.log('globalprops')
-    console.log(globalprops)
-
-
-
-    // const [styleFile, setStyleFile] = useState('')
-    // const [nothing, setNothing] = useState()
-    // const [apiLen, setApiLen] = useState(0)
-
-    // let globalstrains = props.globalState[1]
-    // let globalclickedstrain = globalstrains.clickedStrain
-    // let setglobalclickedstrain = globalstrains.setClickedStrain
-
-    // let 86:string = globalstrains.bgToggle
-    // let setBG = globalstrains.setBgToggle
-    // let clickedStrain:string = globalclickedstrain
-    // let setClickedStrain = setglobalclickedstrain
-
-    // let globalapilen = globalstrains.apiLen
-    // let globalsetapilen = globalstrains.setApiLen
-
-    // let globaltext:string = globalstrains.textState
-    // let setglobal = globalstrains.setTextState
-
-    // useEffect( () => {        
-    //     console.log("dang")
-    //     // if (props.textState === 'thc')           
-    // }, [props.textState])
+    // const [noUser, setNoUser] = useState(true)
 
     let text:string = props.textState
     useEffect( () => {
-      console.log("running the useEffect function")
-      if (text === 'thc') props.setStrainSave(true)
-    //   if (text === 'thc') {
-    //       props.setStrainSave(true)
-    //   } else { props.setStrainSave(false)}
-      //   if (text === 'thc') props.setStrainSave(true)
-      
+      if (text === 'thc') props.setStrainSave(true)      
     }, [text])
+
+    useEffect( () => {
+        console.log('useEffect.. currentUser from from strain')
+        const checkuser = async () => {
+          let currentusername =   window.localStorage.getItem('currentUserName')
+          let currentuserid =  window.localStorage.getItem('currentUserId')
+  
+          currentusernameset(currentusername)
+          currentuseridset(currentuserid)
+          console.log("checking the checkuser from strain")
+          let user = await window.localStorage.getItem('currentUserName')
+          let username = user.username
+          console.log('user from localstorage')
+          console.log(user)
+          console.log('username')
+          console.log(username)
+        }
+        checkuser()
+    }, [currentUser])
 
     const checkstyles = async () => {        
         let allsass = await MasterListStyle('straincontainer')                
 }
     const toggleBg = async () => {                 
         if (props.bgToggle === 'old') props.setBgToggle('new') 
-        if (props.bgToggle === 'new') props.setBgToggle('old') 
-        // if (BG === 'new') setBG('old')
-        // * create a logical OR operator to trigger a state-changing/rendering based on either props.bgToggle or globalstageBgToggle
-        // if (props.bgToggle === 'old')  props.setBgToggle('new')
-        // else if (props.bgToggle === 'new') props.setBgToggle('old')
+        if (props.bgToggle === 'new') props.setBgToggle('old')         
     }
     const nowYouSee = (event:any) => {
         CSS($(event.target), 'color', 'papayawhip')
@@ -89,8 +75,10 @@ export default  function AllStrainContainer(props:any) {
 
     
     const strainClick = async (event:any) => {    
+
+        if (currentUserName) {
+
         if (props.bgToggle === 'new' || props.bgToggle === 'old') {
-            console.log('were clicking')  
             let text:string = event.target.innerText      
     
             if (text === 'thc') {            
@@ -106,25 +94,14 @@ export default  function AllStrainContainer(props:any) {
             await props.global.setCurrentStrain(text)
             await props.setClickedStrain(text)
     
-            if (props.clickedStrain === text) {  
+            if (props.clickedStrain === text) {            
                 let callbucket:(string|object)[] = []
-                let call2;
-                let redeclaredkeys = {}
-                let redeclaredvalues = {}
-                
-                if (globalprops.setFetchLock === false) {
-
-                    call2 = await $.ajax({
+                    let call2 = await $.ajax({
                         method: 'get',
                         url: `api/strains/getSpecifiedStrain`,                
                         data: {  strain: text  }})                    
-                        let keys = await ReturnEndpoints(call2, 'keys')
-                         redeclaredkeys = await ReturnEndpoints(call2, 'keys')
-                        await globalprops.setKeyState(keys)
-                        let vals = await ReturnEndpoints(call2, 'values')
-                        await globalprops.setValueState(vals)
-                        globalprops.setFetchLock(true)          
-                    }
+                    let keys = await ReturnEndpoints(call2, 'keys')
+                    let vals = await ReturnEndpoints(call2, 'values')
                 
                     let keylength:number = keys.length
     
@@ -138,18 +115,22 @@ export default  function AllStrainContainer(props:any) {
                 
                 let returnedId = JSON.parse(axiosfactory.data)        
                 const {strain, dominant, funfact, parents} = returnedId
-                
-                await SeeAndSave(keys || globalprops.keyState, keylength, props.textState, props.setTextState)
-                await SeeAndSave(vals || globalprops.valueState, keylength, props.displayText, props.setDisplayText)
+                                
+                await SeeAndSave(keys, keylength, props.textState, props.setTextState)
+                await SeeAndSave(vals, keylength, props.displayText, props.setDisplayText)
 
             } else { 
-                globalprops.setFetchLock(false)
                 props.setTextState('')
                 props.setDisplayText('')
             }
 
         }
+        } else {
+            console.log("no username");
+            $('*').css('cursor', 'pointer' )            
+            nouserset(true)
         }
+    }
     
 
     const joinedClassStr = [styles.ul, styles.FlexBottom].join(" ")    
@@ -159,7 +140,7 @@ export default  function AllStrainContainer(props:any) {
         let id:(number|string) = item.strainId  //oh wow was using sequelize table id getting wrong id.
 
         return (        
-            <div key={'column' + index} className="Column">
+            <div key={'column' + index} className="Column">                
             <img key={`id ${strain} `} src=""/>
 
             {props.bgToggle === 'new' ?
