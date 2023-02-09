@@ -23,6 +23,8 @@ import POSTuserCLASS from 'utility/POSTuser'
 import Regex from 'utility/MasterRegex'
 import FindIndex from 'utility/FindIndexForIn'
 import ElemEndpoint from 'utility/JqElemEndpoint'
+import myStrainsES6 from 'utility/myStrainsES6'
+
 
 import SignupConstraints from 'components/SignupConstraints'
 import SignupContainer from 'components/SignupContainer'
@@ -78,12 +80,12 @@ import Helmet from 'components/Helmet'
         let UsernameInputDouble = [sty.UsernameInput, "SignupUsername"].join(" ")
 
         // * api hitting routes 
-        const { allStrain, getSpecifiedStrain, userStrainPost, getAllUsers, POSTuser } = useUrl()  //obj destructuring
+        const { allStrain, getSpecifiedStrain, userStrainPost, getAllUsers, POSTuser, myStrainsForUsersId } = useUrl()  //obj destructuring
         let POSTuserREBUILD = URLclient += POSTuser
         let GETuserspecifyURL = props.GETuserspecifyURL
-        console.log('GETuserspecifyURL')
-        console.log(GETuserspecifyURL)
 
+        // let myStrainsForMyId = URLclient += myStrainsForUsersId
+    
         // * global state from /Contexts/game
         const {
             checked, choosechecked, usernamestr, passwordstr, 
@@ -94,7 +96,9 @@ import Helmet from 'components/Helmet'
             goldClick, goldClickSet,
     currentinput, currentinputset, usernameinput, usernameinputset, passwordinput, passwordinputset, emailinput, emailinputset, ageinput, ageinputset, 
             alluser, alluserset, allusername, allusernameset,
-            wrongMsg, wrongmsgset, whatsWrongProblem, whatswrongproblemset, currentusernameset, currentUser, currentUserName, currentuserset, currentUserId, currentuseridset
+            wrongMsg, wrongmsgset, whatsWrongProblem, whatswrongproblemset, currentusernameset, currentUser, currentUserName, currentuserset, currentUserId, currentuseridset,
+            userStrains, userstrainset
+
             //  whatsWrong
         } = useGame()
 
@@ -280,19 +284,13 @@ import Helmet from 'components/Helmet'
         }
     }
         if (goldClick === 'login') {
-            console.log("forms separated from each other keeping all the logic intact!")
             let userloginInput:any = document.getElementById('LoginUsernameInput')
             let PasswordInputById:any = document.getElementById('LoginPasswordInput')
             
             let usernamevalue = userloginInput.value
             let passwordvalue = PasswordInputById.value
-
-            console.log('usernamevalue')
-            console.log(usernamevalue)
-
-            console.log('passwordvalue')
-            console.log(passwordvalue)
-            
+                
+            // * This Posts to the userbody and then changes state and accesses localStorage to persist userdata through browser refresh and nextPages/Page.ts navigation.
             let LoginData = await Axios.post(GETuserspecifyURL, {
                 username: usernamevalue,
                 password: passwordvalue
@@ -304,18 +302,34 @@ import Helmet from 'components/Helmet'
                 // * *  show the error component at this point! dismissable upon acknowledgement type of component!
                 return []   // this avoids the
             })            
-            if (LoginData) {
+            if (LoginData) {            
+                let loginuserid = LoginData.id
+                let loginusername = LoginData.username
                 await currentuserset(LoginData)
                 await currentusernameset(LoginData.username)
                 await setAppCurrentUser(LoginData)
                 await setAppCurrentUserName(LoginData.username)
 
-                 window.localStorage.setItem('currentUserName', LoginData.username)            
-                 window.localStorage.setItem('currentUserId', LoginData.id)            
+                window.localStorage.setItem('currentUserName', loginusername)            
+                window.localStorage.setItem('currentUserId', loginuserid)                
                 
-                    location.href = '/strain'
-                // setTimeout( () => {
-                // }, 1000)
+                const getMyStrains = async () => {
+                    // let strainbucket:string[] = []
+                    let strainIdString = '';
+                    let usersMap = new Map()
+                    usersMap.set('usersId', LoginData.id)                    
+                    const myStrainsFetch = await myStrainsES6(props.myStrainsForMyIdUrl, loginuserid)  
+                    let myStrains = myStrainsFetch!.data.myStrains                         
+                    await myStrains.forEach( (mystrain) => {
+                        let stringPiece = `${mystrain.strainsId},`
+                        strainIdString += stringPiece
+                    })
+                    await window.localStorage.setItem('myStrains', strainIdString)                                        
+                    userstrainset(myStrains)
+                    return myStrains                                   
+                }                       
+                getMyStrains()                      
+                location.href = '/strain'
             }
 
         }
@@ -330,13 +344,11 @@ import Helmet from 'components/Helmet'
             }
         }
 
-        const check = () => {
-            console.log("hey check")                
-            console.log('appCurrentUser')
-            console.log(appCurrentUser)
-            console.log('appCurrentUserName')
-            console.log(appCurrentUserName)
-            location.href = '/strain'
+        const check = () => {            
+            console.log(currentUser)
+            console.log('userStrains from check')
+            console.log(userStrains)
+            // location.href = '/strain'
         }
 
         const test = () => {            
@@ -477,12 +489,11 @@ import Helmet from 'components/Helmet'
             let newuser = await preuser.json()
 
             let GETuserspecifyURL = url += '/api/user/GETspecifyuser'
-            console.log('GETuserspecifyURL')
-            console.log(GETuserspecifyURL)
-                                        
+            let myStrainsForMyIdUrl = `${localhost}${'/api/strains/userStrainsForUsersId'}`
+                                                
             return {
                 props: {
-                    localhost, clientenv, GETuserspecifyURL
+                    localhost, clientenv, GETuserspecifyURL, myStrainsForMyIdUrl
                 }
             }
         }
