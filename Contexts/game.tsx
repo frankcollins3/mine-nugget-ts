@@ -52,6 +52,7 @@ type gameContextType = {
     searchChar: string;
     searchCharFunc: (term) => void;
 
+
     searchBucket: any;
     fillSearchBucket: (strains) => void;
     selectedSearch: string;
@@ -62,6 +63,8 @@ type gameContextType = {
     searchTypeClick: (type:string) => void; // retrieved from jQ event object by clicking the button with 'all' or 'mine'kam
     usersOfSearchStrain: any[];
     usersofsearchstrainset: (searchStrainUsers:any[]) => void;
+    noUser: boolean;
+    nouserset: () => void;
     // * end of  above. Below is the data.strain.search() page
 
     url: string;
@@ -222,7 +225,8 @@ const gameDefaults: gameContextType = {
     searchTypeClick: () => {},
     usersOfSearchStrain: [],
     usersofsearchstrainset: (searchStrainUsers:any[]) => {},
-
+    noUser: false,
+    nouserset: () => {},
     url: '',
     urlSetter: (url:string) => {},
 
@@ -350,6 +354,7 @@ export function GameProvider({ children }: Props) {
     const [searchStrainId, setSearchStrainId] = useState<number>(0)
     const [searchType, setSearchType] = useState<string>('')
     const [usersOfSearchStrain, setUsersOfSearchStrain] = useState<any[]>([])
+    const [noUser, setNoUser] = useState<boolean>(false)
     
     const [url, setUrl] = useState<string>('');
     
@@ -639,6 +644,11 @@ export function GameProvider({ children }: Props) {
             setUserStrains(userstrainbucket)
         }
 
+        const nouserset = () => {
+            if (noUser === false) setNoUser(true)
+            if (noUser === true) setNoUser(false)
+        }
+
         const useruniqueset = (command:string) => {
             if (command === 'true') setUserunique(true)
             if (command === 'false') setUserunique(false)
@@ -777,8 +787,8 @@ export function GameProvider({ children }: Props) {
         searchTypeClick,
         usersOfSearchStrain,
         usersofsearchstrainset,
-        
-
+        noUser,
+        nouserset,    
         // ?
         username,
         password,
