@@ -39,6 +39,16 @@ import Helmet from 'components/Helmet'
     let usernamearray = new Array()
 
     export default function InOut (props) {
+        console.log('props from loginlogout')
+        console.log(props)
+        console.log('props.appCurrentUser')
+        console.log(props.appCurrentUser)
+        console.log('props.appCurrentUserName')
+        console.log(props.appCurrentUserName)
+        let appCurrentUser = props.appCurrentUser        
+        let appCurrentUserName = props.appCurrentUserName
+        let setAppCurrentUser = props.setAppCurrentUser
+        let setAppCurrentUserName = props.setAppCurrentUserName
 
         const [opacityToggle, setOpacityToggle] = useState(false)
 
@@ -84,9 +94,14 @@ import Helmet from 'components/Helmet'
             goldClick, goldClickSet,
     currentinput, currentinputset, usernameinput, usernameinputset, passwordinput, passwordinputset, emailinput, emailinputset, ageinput, ageinputset, 
             alluser, alluserset, allusername, allusernameset,
-            wrongMsg, wrongmsgset, whatsWrongProblem, whatswrongproblemset, currentusernameset, currentUser, currentUserName, currentuserset
+            wrongMsg, wrongmsgset, whatsWrongProblem, whatswrongproblemset, currentusernameset, currentUser, currentUserName, currentuserset, currentUserId, currentuseridset
             //  whatsWrong
         } = useGame()
+
+        useEffect( () => {
+            console.log('useEffect.. currentUser from LoginLogout')
+            
+        }, [currentUser])
 
         const userobject = new Map([
             ['username', 'myuser'],
@@ -283,24 +298,24 @@ import Helmet from 'components/Helmet'
                 password: passwordvalue
             }).then( (data) => {                
                 let userdata = data.data.user
-                let username:string = userdata.username
-                console.log('userdata from the post route thenblock')
-                console.log(userdata)
-                return userdata
-                if (userdata) currentuserset(userdata)
-                currentusernameset('hey')
-                // if (username) currentusernameset(username)
-                // location.href = '/str    ain'                              
+                let username:string = userdata.username                
+                return userdata                
             }).catch( (err) => {
                 // * *  show the error component at this point! dismissable upon acknowledgement type of component!
                 return []   // this avoids the
-            })
-            console.log('LoginData')
-            console.log(LoginData)
-            console.log(LoginData.username)
+            })            
             if (LoginData) {
-                currentuserset(LoginData)
-                currentusernameset(LoginData.username)
+                await currentuserset(LoginData)
+                await currentusernameset(LoginData.username)
+                await setAppCurrentUser(LoginData)
+                await setAppCurrentUserName(LoginData.username)
+
+                 window.localStorage.setItem('currentUserName', LoginData.username)            
+                 window.localStorage.setItem('currentUserId', LoginData.id)            
+                
+                    location.href = '/strain'
+                // setTimeout( () => {
+                // }, 1000)
             }
 
         }
@@ -316,20 +331,15 @@ import Helmet from 'components/Helmet'
         }
 
         const check = () => {
-            console.log("hey check")
-                console.log('userName')
-
-                console.log('currentUser')
-                console.log(currentUser)
-                console.log(currentUser!.id)
-
-                console.log('currentUserName')
-                console.log(currentUserName)
+            console.log("hey check")                
+            console.log('appCurrentUser')
+            console.log(appCurrentUser)
+            console.log('appCurrentUserName')
+            console.log(appCurrentUserName)
+            location.href = '/strain'
         }
 
-        const test = () => {
-            console.log('hey test')
-                currentusernameset('hey')
+        const test = () => {            
         }
         
         return (                            
