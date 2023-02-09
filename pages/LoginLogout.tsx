@@ -282,15 +282,26 @@ import Helmet from 'components/Helmet'
                 username: usernamevalue,
                 password: passwordvalue
             }).then( (data) => {                
-                let userdata = data.data
+                let userdata = data.data.user
                 let username:string = userdata.username
-                if (username) currentusernameset(username);
+                console.log('userdata from the post route thenblock')
+                console.log(userdata)
+                return userdata
                 if (userdata) currentuserset(userdata)
-                location.href = '/strain'              
+                currentusernameset('hey')
+                // if (username) currentusernameset(username)
+                // location.href = '/str    ain'                              
             }).catch( (err) => {
                 // * *  show the error component at this point! dismissable upon acknowledgement type of component!
                 return []   // this avoids the
             })
+            console.log('LoginData')
+            console.log(LoginData)
+            console.log(LoginData.username)
+            if (LoginData) {
+                currentuserset(LoginData)
+                currentusernameset(LoginData.username)
+            }
 
         }
     }            
@@ -302,6 +313,23 @@ import Helmet from 'components/Helmet'
             if (constraintshow === true) {
                 constraintshowset('false')
             }
+        }
+
+        const check = () => {
+            console.log("hey check")
+                console.log('userName')
+
+                console.log('currentUser')
+                console.log(currentUser)
+                console.log(currentUser!.id)
+
+                console.log('currentUserName')
+                console.log(currentUserName)
+        }
+
+        const test = () => {
+            console.log('hey test')
+                currentusernameset('hey')
         }
         
         return (                            
@@ -421,6 +449,8 @@ import Helmet from 'components/Helmet'
                           }}
                     > {wrongMsg} </p>    
                     </Container>
+                    <button style={{ backgroundColor: 'green', margin: '2em' }} onClick={test}></button>
+                    <button style={{ backgroundColor: 'blue', margin: '2em' }} onClick={check}></button>
             </Page>
             
             )
