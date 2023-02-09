@@ -6,6 +6,7 @@ let randomNumbers:string[] = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
 import $ from 'jquery'
 import CSS from 'utility/CSStool'
 import AllMine from 'components/AllMineBtnStrip'
+import userStrainsForUsersId from 'pages/api/strains/userStrainsForUsersId'
 
 export default function SelectedSearch(props) {
     const [uiHover, setUiHover] = useState('')
@@ -14,15 +15,25 @@ export default function SelectedSearch(props) {
     let h1 = styles.h1
     let soClassy:any = [allOrMine, h1].join()
 
+    let findMineMyStrains = props.findMineMyStrains
+    console.log('findMineMyStrains')
+    console.log(findMineMyStrains)
+
        const { 
         selectedSearch, searchSelector, searchStrainId, 
         searchType, usersOfSearchStrain, usersofsearchstrainset, 
+        currentUser, currentusernameset, currentuseridset, userstrainset, userStrains, 
+        
         } = useGame()
 
     useEffect( () => {
         console.log('usersOfSearchStrain in selected search component!')
         console.log(usersOfSearchStrain)
     }, [usersOfSearchStrain])   
+
+
+
+
     
     const quicktest = () => {
         console.log("hey from quicktest!")
@@ -40,18 +51,11 @@ export default function SelectedSearch(props) {
         console.log('shovel click')
     }
 
-    // let usersOfSearchStrainMap = usersOfSearchStrain.map((mapitem) => {
-    //     console.log('mapitem')
-    //     console.log(mapitem)
-    //     return (
-    //         <p>  {mapitem || ''}  </p>
-    //     )
-    // })
-
 
     
+
     return (
-        <>
+        <>        
         <div         
         id={styles.SelectedSearchBox} className="Column">
             <p 
@@ -63,10 +67,11 @@ export default function SelectedSearch(props) {
                 <div className="Row">
 
                 {
-                    searchType === 'All' 
-                    
+                    searchType === 'All'                     
                     ?
-                    usersOfSearchStrain ? usersOfSearchStrain.map( (mapitem, idx) => {
+                    usersOfSearchStrain.length
+                     ?
+                      usersOfSearchStrain.map( (mapitem, idx) => {
                         return (
                             <p key={idx} style={{ color: 'papayawhip', margin: '0 2em' }}> {mapitem} </p>
                             )
@@ -74,14 +79,28 @@ export default function SelectedSearch(props) {
                         :
                         <div> </div>
                         :
-                        <pre >. . .</pre>
+                        <pre style={ {color: 'papayawhip'}}>. . .</pre>
                     }
+                
+                {
+                    searchType === 'Mine' 
+                    ?
+                    // <p> hey </p>                    
+                    findMineMyStrains.map( (mystrain, idx) => {
+                        // if (mystrain.usersId)
+                        console.log('mystrain from the map statement')
+                        console.log(mystrain)
+                        return (
+                            <p key={idx}> {mystrain} </p>
+                        )                        
+                    })
+                    :
+                    <pre></pre>
+                }
+                
              </div>
                     
-        {/* if all render all the strains */}
-        {/* if mine render all the usersStrains data for that strain. */}
-
-
+        
         <img className={styles.Shovel} onClick={() => console.log("image click")} src="/img/shovel.png"/>
             
         </div>
