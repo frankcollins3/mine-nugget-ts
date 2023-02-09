@@ -132,7 +132,7 @@ type gameContextType = {
     allusername: any[];    
     allusernameset: (userbucket:any[]) => void;
 
-    userStrains: any[];
+    userStrains: any;
     userstrainset: (userstrainbucket:any[]) => void;
     
     // ... email state
@@ -406,7 +406,7 @@ export function GameProvider({ children }: Props) {
     const [goldClick, setGoldClick] = useState<string>('')
     const [alluser, setAlluser] = useState<any[]>([])
     const [allusername, setAllusername] = useState<any[]>([])
-    const [userStrains, setUserStrains] = useState<any[]>([])
+    const [userStrains, setUserStrains] = useState<any>([])
 
     // ... state for age constraints
     // * 
