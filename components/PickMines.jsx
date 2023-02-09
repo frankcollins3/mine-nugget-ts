@@ -7,6 +7,7 @@
     import Axios from 'axios'
     import POST from '/utility/POSTdataJS'
     import {useUrl} from 'Contexts/Url'
+    import {useGame} from 'Contexts/game'
 
     import POSTuserstrainsES6 from 'utility/POSTuserstrainsES6'
     import MasterRegex from '/utility/MasterRegex'
@@ -18,8 +19,32 @@
         console.log(props)
         
         const { userStrainPost } = useUrl()
+        const { currentUser, currentUserName, currentusernameset, currentuseridset, currentUserId} = useGame()
+
+        useEffect( () => {
+            console.log('useEffect.. currentUser from from strain')
+            const checkuser = async () => {
+              let currentusername =   window.localStorage.getItem('currentUserName')
+              let currentuserid =  window.localStorage.getItem('currentUserId')
+      
+              currentusernameset(currentusername)
+              currentuseridset(currentuserid)
+              console.log("checking the checkuser from strain")
+              let user = await window.localStorage.getItem('currentUserName')
+              let username = user.username
+              console.log('user from localstorage')
+              console.log(user)
+              console.log('username')
+              console.log(username)
+            }
+            checkuser()
+        }, [currentUser])
+      
+
+
         let localURL = props.localhost
         let userstrainURL = localURL += userStrainPost
+        // let userStrainURL = props.userStrainUrl
         
         let globalstate = props.global
         let clickedStrain = props.global.clickedStrain
@@ -47,8 +72,8 @@
         // }, [])
         
         const clickPick = async () => {     
-            await userstrainsMAP.set('usersId', 'test')
-            await userstrainsMAP.set('strainsId', '')
+            await userstrainsMAP.set('usersId', '')
+            await userstrainsMAP.set('strain', '')
 
             console.log("lets see the clickPick!")        
             // let localurl = await props.url();
@@ -59,17 +84,21 @@
             console.log(straindata)          
             
             console.log(userstrainsMAP.get('usersId'))       
-            let userid = '6'; // this would/will be pulling global.userId.toString()                         
+            let userid = parseInt(currentUserId); // this would/will be pulling global.userId.toString()                         
+            await userstrainsMAP.set('usersId', userid)
+            await userstrainsMAP.set('strain', straindata)
+            await userstrainsMAP.set('strainsId', 0)
 
-            let submissionData = straindata += userid            
+            let submissionData = straindata += userid
+            let newUserStrain = await POSTuserstrainsES6(userstrainURL, userstrainsMAP)            
             // let xmldata = await POST(realurl, submissionData);            
             // console.log('xmldata')            
+            setSave(true)
+            setSavedStrain(props.global.clickedStrain)
             // console.log(xmldata)            
 
             
              
-            setSavedStrain(props.global.clickedStrain)
-            setSave(true)
         }
 
         
