@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@1,100&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Moon+Dance&display=swap');
 
 html,
 body {
@@ -42,7 +43,10 @@ a {
   justify-content: center;
   align-items: center;
   flex-direction: row;
+
+  text-align: center;
 }
+
 
 .goldenone {
   color: 'white';
@@ -268,7 +272,7 @@ body {
   margin-top: 0.45em;
 }
 
-#UsernameInput, #PasswordInput, #AgeInput, #EmailInput {
+#UsernameInput, #PasswordInput, #AgeInput, #EmailInput, #LoginPasswordInput, #LoginUsernameInput {
   background: transparent;
   border: 5px solid orange;
   border: 2px solid papayawhip;
@@ -289,7 +293,7 @@ body {
 }
 
 
-#PasswordInput:focus, #AgeInput:focus, #EmailInput:focus {
+#PasswordInput:focus, #AgeInput:focus, #EmailInput:focus, #LoginPasswordInput:focus, #LoginUsernameInput:focus {
 /* #UsernameInput:focus, #PasswordInput:focus, #AgeInput:focus, #EmailInput:focus { */
   color: papayawhip;
   background-color: papayawhip;
@@ -385,14 +389,19 @@ input[type=checkbox]:focus {
 
 /* * other working checkbox */
 
+/* * {
+  box-sizing: border-box;
+}
+
 .checkbox-container {
-  /* border: 5px solid hotpink; */
+  display: flex;
   margin: 0 2em;
 }
- 
-
 
 .checkbox-container label {
+  cursor: pointer;
+  display: flex;
+
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -403,9 +412,10 @@ input[type=checkbox]:focus {
   color: rgb(62, 50, 32);
   font-family: 'Josefin Sans', sans-serif;
   text-align: center;
+
 }
 
-.checkbox-container input[type="checkbox"] {
+.checkbox-container input[type='checkbox'] {
   cursor: pointer;
   opacity: 0;
   position: absolute;
@@ -413,7 +423,57 @@ input[type=checkbox]:focus {
 
 .checkbox-container label::before {
   content: '';
+    width: 1em;
+    height: 1em;
+    border: 0.125em solid rgb(247, 208, 32);
+    border-radius: 0.125em;
+}
+
+.checkbox-container label:hover::before {
+  content: '';
   width: 1em;
   height: 1em;
   border: 0.125em solid rgb(247, 208, 32);
+  border-radius: 0.125em;
+
+  background-color: moccasin;
+  -webkit-clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+          clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+
+
+
+.checkbox-container input[type='checkbox']:disabled + label {
+  background-color: moccasin;
+  -webkit-clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+          clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+
+.checkbox-container input[type='checkbox']:checked + label::before {
+  content: '\002714';
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgb(247, 208, 36);
+} */
+
+.checkbox-container {
+  display: flex;
+  margin: 0 2em;
+  border: 0.125em solid rgb(247, 208, 32);
+  background-color: moccasin;
+}
+
+#MagnifyShowBtn {
+  height: 20px;
+  width: 20px;
+  background-image: url('/img/magnify.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin-bottom: 0.45em;
+}
+
+#noUserText {
+  color: papayawhip; 
+  font-family: Moon Dance;
 }
