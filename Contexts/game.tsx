@@ -76,6 +76,8 @@ type gameContextType = {
     currentUser: any[]|any;
     currentUserName: string;
     currentuserset: (user:any[]) => void;
+    currentUserId: number;
+    currentuseridset: (id:number) => void;
     currentusernameset: (username) => void;
     // currUser: {username: '', password: '', email: '', age: '', strains: []};
 
@@ -237,6 +239,8 @@ const gameDefaults: gameContextType = {
     currentUserName: '',
     currentusernameset: (username) => {},
     currentuserset: ([]) => {},
+    currentUserId: 0,
+    currentuseridset: (id:number) => {},
     // currentUser: {username: '', email: '',age: ''},
     // currentuserset: ([]) => {},
 
@@ -364,6 +368,7 @@ export function GameProvider({ children }: Props) {
     const [ageinput, setAgeinput] = useState<string|number[]>([])
     const [currentUser, setCurrentUser] = useState<any[]|any>([])
     const [currentUserName, setCurrentUserName] = useState<string>('')
+    const [currentUserId, setCurrentUserId] = useState<number>(0)
     
     
 
@@ -618,6 +623,10 @@ export function GameProvider({ children }: Props) {
             setCurrentUserName(username)
         }
 
+        const currentuseridset = (id:number) => {
+            setCurrentUserId(id)
+        }
+
         const alluserset = (userbucket:any[]) => {
             setAlluser(userbucket)
         }
@@ -780,6 +789,8 @@ export function GameProvider({ children }: Props) {
         currentuserset,    
         currentUserName,
         currentusernameset,
+        currentUserId,
+        currentuseridset,
         // *
         currentinput,
         currentinputset,
