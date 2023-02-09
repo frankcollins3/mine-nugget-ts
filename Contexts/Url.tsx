@@ -8,6 +8,7 @@ import { createContext, useContext, ReactNode, useState } from "react";
         getID: string;
         allUsernamesForID: string;
         specifyUserGET: string;
+        myStrainsForUsersId: string;
         dbFirstLetter: string;
         dbNumber: string;
         // userStrains: string;    
@@ -24,6 +25,7 @@ import { createContext, useContext, ReactNode, useState } from "react";
         allUsernamesForID: '/api/strains/AllUsernamesForStrain',
         dbFirstLetter: '/api/strains/dbFirstLetter',
         specifyUserGET: '/api/user/GETspecifyuser',
+        myStrainsForUsersId: '/api/strains/userStrainsForUsersId',
         dbNumber: '/api/strains/dbNumber',
         // userStrains: '/api/strains/postuserstrains',        
         // userStrains: '/api/strains/userstrainpost',
@@ -46,6 +48,7 @@ export default function UrlProvider( { children }, context ) {
         const [userStrainPost, setUserStrainPost] = useState<string>('/api/strains/userstrainpost')
         const [userStrainGet, setUserStrainGet] = useState<string>('/api/strains/getuserstrains')
         const [specifyUserGET, setSpecifyUserGET] = useState<string>('/api/user/GETspecifyuser')
+        const [myStrainsForUsersId, setMyStrainsForUsersId] = useState<string>('/api/strains/userStrainsForUsersId')
         const [getID, setGetID] = useState<string>('/api/strains/getIDwithNAME')
         const [allUsernamesForID, setAllUsernamesForID] = useState<string>('/api/strains/allUsernamesForId')
         const [getAllUsers, setGetAllUsers] = useState<string>('/api/user/GetAllUsers')
@@ -54,14 +57,15 @@ export default function UrlProvider( { children }, context ) {
             
         const exportvalues = {
             allStrain,
+            getSpecifiedStrain,
+            dbFirstLetter,
+            dbNumber,
             userStrainPost,
             userStrainGet,
-            getSpecifiedStrain,
+            myStrainsForUsersId,
             getID,
             allUsernamesForID,
             specifyUserGET,
-            dbFirstLetter,
-            dbNumber,
             getAllUsers,
             POSTuser      
         }
