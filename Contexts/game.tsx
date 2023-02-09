@@ -73,7 +73,7 @@ type gameContextType = {
     email: string;
     age: number;
     strains: string|number[];
-    currentUser: [];
+    currentUser: any[]|any;
     currentUserName: string;
     currentuserset: (user:any[]) => void;
     currentusernameset: (username) => void;
@@ -362,7 +362,7 @@ export function GameProvider({ children }: Props) {
     const [passwordinput, setPasswordinput] = useState<string|number[]>([])
     const [emailinput, setEmailinput] = useState<string|number[]>([])
     const [ageinput, setAgeinput] = useState<string|number[]>([])
-    const [currentUser, setCurrentUser] = useState<[]>([])
+    const [currentUser, setCurrentUser] = useState<any[]|any>([])
     const [currentUserName, setCurrentUserName] = useState<string>('')
     
     
@@ -610,8 +610,8 @@ export function GameProvider({ children }: Props) {
 
 
         const currentuserset = (user:any[]) => {
-            let uservalue = user[0]            
-            setCurrentUser(uservalue)
+            // let uservalue = user[0]            
+            setCurrentUser(user)
         }
 
         const currentusernameset = (username) => {
@@ -684,7 +684,6 @@ export function GameProvider({ children }: Props) {
                 console.log(emailbucket)
             }
             const loopAndCheck = async () => {
-
                 await loopandpush()
                 await checkValues()
             }
