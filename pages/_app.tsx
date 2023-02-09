@@ -24,6 +24,9 @@ import '../styles/globals.css'
     // const {store, props} = wrapper.useWrappedStore()
     
     // const {  pageProps } = wrapper.useWrappedStore(rest);
+
+    const [appCurrentUser, setAppCurrentUser] = useState([])
+    const [appCurrentUserName, setAppCurrentUserName] = useState('')
     
 // * index.tsx 
   //  const [ pokemon, setPokemon ] = useState('')
@@ -156,6 +159,10 @@ import '../styles/globals.css'
           } */}
       
       <Component {...pageProps}
+      appCurrentUser={appCurrentUser} setAppCurrentUser={setAppCurrentUser}
+      appCurrentUser={appCurrentUser} setAppCurrentUserName={setAppCurrentUserName}
+
+
       globalstate={stateArray}// homebody={initialstate}
       error={error} setError={setError}
       currentStrain={currentStrain} setCurrentStrain={setCurrentStrain}
