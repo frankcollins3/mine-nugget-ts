@@ -3,6 +3,8 @@ import $ from 'jquery'
 import Container from 'react-bootstrap/Container'
 import {useRouter} from 'next/router'
 import bcrypt from 'bcryptjs'
+import Axios from 'axios'
+
 
 //* CSS  */
 import styles from 'styles/LoginLogout/LogInOut.module.scss'
@@ -44,6 +46,7 @@ import Helmet from 'components/Helmet'
         let badwords = props.clientenv.DONTSAYTHAT
         let ezpre = props.clientenv.EZGUESS
         
+
     
              
         let ezjar = ezpre.split(',')
@@ -67,6 +70,9 @@ import Helmet from 'components/Helmet'
         // * api hitting routes 
         const { allStrain, getSpecifiedStrain, userStrainPost, getAllUsers, POSTuser } = useUrl()  //obj destructuring
         let POSTuserREBUILD = URLclient += POSTuser
+        let GETuserspecifyURL = props.GETuserspecifyURL
+        console.log('GETuserspecifyURL')
+        console.log(GETuserspecifyURL)
 
         // * global state from /Contexts/game
         const {
@@ -78,7 +84,7 @@ import Helmet from 'components/Helmet'
             goldClick, goldClickSet,
     currentinput, currentinputset, usernameinput, usernameinputset, passwordinput, passwordinputset, emailinput, emailinputset, ageinput, ageinputset, 
             alluser, alluserset, allusername, allusernameset,
-            wrongMsg, wrongmsgset, whatsWrongProblem, whatswrongproblemset, 
+            wrongMsg, wrongmsgset, whatsWrongProblem, whatswrongproblemset, currentusernameset, currentUser, currentUserName, currentuserset
             //  whatsWrong
         } = useGame()
 
@@ -141,6 +147,12 @@ import Helmet from 'components/Helmet'
             // console.log(event)        
         }
 
+        const loginchangeHandler = async () => {
+            // was going to deal with params in the above function, would just like to separate concerns for speed and ease of use.
+            console.log('loginchangehandler function')
+            
+        }
+
         const goldClickFunc = async (event) => {        
             let siblings:any = await Siblings(event.target)
             let siblingText:string = siblings[0].outerText
@@ -148,6 +160,8 @@ import Helmet from 'components/Helmet'
             setTimeout( () => {
                 AttrTool($('#UsernameInput'), 'value', 'username')
                 AttrTool($('#PasswordInput'), 'value', 'password')        
+                AttrTool($('#LoginUsernameInput'), 'value', 'username')
+                AttrTool($('#LoginPasswordInput'), 'value', 'password')        
             }, 1000)
 
             if (siblingText === 'Signup') {
@@ -169,19 +183,11 @@ import Helmet from 'components/Helmet'
         let emailbucket = new Array()
 
         const semisubmit = async () => {            
-                // let inputstate = [{password_uppercase:passworduppercase}, {password_special:specialchar},{password_number:numberchar}, validemail]                
-                // let newuserPOST = await POSTuserCLASS(POSTuserREBUILD, {username: 'me', password: 'hey123', email: 'me@gmail.com', age: 30})
-                // console.log('newuserPOST')
-                // console.log(newuserPOST)
-
-                // let userPOST = await POSTuserCLASS(POSTuserClient, )      
-                
-                // let userPOST = await POSTuser(POSTuserClient, {username: 'yeah sure', password: 'my password', email: 'my email', age: 30}            
-                // console.log("passing every condition of the constraint box from the other component, facilitated by global state.")
-
-
+            
                 if (passworduppercase === true && specialchar === true && numberchar === true && validemail && ageinput && tooeasy === false && userunique === false ) {
 
+                if (goldClick === 'signup') {
+                
                 let UsernameInputid = $('#UsernameInput')[0].attributes[0].nodeValue
                 let PasswordInputid = $('#UsernameInput')[0].attributes[0].nodeValue
                 let EmailInputid = $('#UsernameInput')[0].attributes[0].nodeValue
@@ -206,14 +212,8 @@ import Helmet from 'components/Helmet'
                 
                 let newuser = await POSTuserCLASS(POSTuserREBUILD, allIndex)
                 console.log('newuser')
-                console.log(newuser)
-                
-                
+                console.log(newuser)                            
             }
-
-
-                
-// * leave this else block of code its for the return statement for when the password validator isn't filled out correctly.
             else {                
                 let inputstate = [{passwordU:passworduppercase}, {passwordS:specialchar},{passwordN:numberchar}, {emailE:validemail}]        
                 const whatsWrong = async (inputstate:any[]) => {
@@ -230,28 +230,18 @@ import Helmet from 'components/Helmet'
                             let lastChar = await Regex(stateKey, 'lastchar')     
 
                             const mapValueAssertations = async () => {
-
                                 if (lastChar === 'password') await MsgMap.set('password', 'password')
-                                if (lastChar === 'email') await MsgMap.set('email', 'email')
-                        
+                                if (lastChar === 'email') await MsgMap.set('email', 'email')                        
                             }
                             mapValueAssertations()
-
-
                         } else return                     
                     })                    
 
                     const stateWithValues = async () => {
                             let mapPw = MsgMap.get('password')
                             let mapEmail = MsgMap.get('email')
-                            console.log('wrongMsg.length')
-                            console.log(wrongMsg.length)
                             let joinedValues:any = [mapPw, mapEmail].join()
-                            console.log('joinedValues')
-                            console.log(joinedValues)
-                            console.log(joinedValues.charAt(0))
-                            console.log(joinedValues.charAt(1))
-                            console.log(joinedValues.charAt(2))
+ 
                             if (joinedValues.charAt(0) === ',') {
                                 console.log('the value is a comma')
                                 joinedValues = 'email'
@@ -267,13 +257,41 @@ import Helmet from 'components/Helmet'
                                 console.log(wrongMsg.length)
                                 setOpacityToggle(false)
                             }, 2000)    
-
                             
                     }
                     stateWithValues()
             }
-            whatsWrong(inputstate)  
+            whatsWrong(inputstate)         
+        }
+    }
+        if (goldClick === 'login') {
+            console.log("forms separated from each other keeping all the logic intact!")
+            let userloginInput:any = document.getElementById('LoginUsernameInput')
+            let PasswordInputById:any = document.getElementById('LoginPasswordInput')
             
+            let usernamevalue = userloginInput.value
+            let passwordvalue = PasswordInputById.value
+
+            console.log('usernamevalue')
+            console.log(usernamevalue)
+
+            console.log('passwordvalue')
+            console.log(passwordvalue)
+            
+            let LoginData = await Axios.post(GETuserspecifyURL, {
+                username: usernamevalue,
+                password: passwordvalue
+            }).then( (data) => {                
+                let userdata = data.data
+                let username:string = userdata.username
+                if (username) currentusernameset(username);
+                if (userdata) currentuserset(userdata)
+                location.href = '/strain'              
+            }).catch( (err) => {
+                // * *  show the error component at this point! dismissable upon acknowledgement type of component!
+                return []   // this avoids the
+            })
+
         }
     }            
         
@@ -285,18 +303,6 @@ import Helmet from 'components/Helmet'
                 constraintshowset('false')
             }
         }
-
-        const click1 = () => {
-            console.log('* * * click1 function')
-            // setReturnstring("set by click1")
-        }
-
-        const click2 = () => {
-            console.log('click2 function running')
-            console.log('returnstring')
-            // console.log(returnstring)
-        }
-            
         
         return (                            
             <Page>
@@ -323,8 +329,10 @@ import Helmet from 'components/Helmet'
                     ?
                 <Container className={centerYcenterXcolumn} id={sty.LoginDiv}>
                 
-                <input  id="UsernameInput" onChange={changehandler} />
-                <input  id="PasswordInput" onChange={changehandler} />
+                <input className="loginInputs"  id="LoginUsernameInput" onChange={loginchangeHandler} />
+                <input
+                 style={{ marginTop: '0.75em'}}
+                 className="loginInputs" id="LoginPasswordInput" onChange={loginchangeHandler} />
             
 
                 </Container>
@@ -428,37 +436,13 @@ import Helmet from 'components/Helmet'
             let preuser = await fetch(new URL(`${url}/api/user/GetAllUsers`))
             let newuser = await preuser.json()
 
-            // let prePOSTuser = await fetch(new URL(`${url}/api/user/POSTuser`))   
-            // let POSTuserAPI = await prePOSTuser.json()
-            // let redeclare = POSTuserAPI;
-                                
+            let GETuserspecifyURL = url += '/api/user/GETspecifyuser'
+            console.log('GETuserspecifyURL')
+            console.log(GETuserspecifyURL)
+                                        
             return {
                 props: {
-                    localhost, clientenv, 
+                    localhost, clientenv, GETuserspecifyURL
                 }
             }
         }
-
-        // * this page will have state that when given a number it uses ternary rendering to render difference custom footers.
-        // * one page ninja input. swap login or logout by state.
-        // * {we dig you: shovel} {youre pure gold: goldbar} {gold to be mine mine to be gold: mine with border, viva oro: cactus}
-
-
-        // const whatsWrong = async (inputstate:any[]) => {
-        //     let i:number = 0;
-        //     length = inputstate.length;
-        //     let problemstate = ''
-        //     let problemarray = new Array();                
-        //     let message = [`Fools Gold.`, 'Please Fix Your: ']            
-        //     inputstate.forEach(async(stateitems) => {                    
-        //         // * whatswrongMsg State. Message. Problem state. 
-        //         let stateVal = Object.values(stateitems)[0]
-        //         if (stateVal === false) {
-        //             let stateKey = Object.keys(stateitems)[0]
-        //             let lastChar = await Regex(stateKey, 'lastchar')
-        //             problemstate = lastChar;
-        //             await whatswrongproblemset(`${stateKey}`)                        
-        //             let msgrebuild:string = `${wrongMsg}${lastChar}`                        
-        //         }
-        //     })                    
-        // }
