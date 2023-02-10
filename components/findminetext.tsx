@@ -54,16 +54,12 @@
         const allormine = async (event) => {
             let btnText:string = event.target.outerText
             if (btnText === 'Mine') {
-                allMyStrains.includes(searchStrainId) ? '' : nomineshovelset("This Gold Isn't Mine")
-            }
-            console.log('btnText')
-            console.log(btnText)
+                allMyStrains.includes(searchStrainId.toString()) ? '' : nomineshovelset("This Gold Isn't Mine")
+            }            
             await searchTypeClick(btnText)
         }
 
-        const unsearch = async () => {          
-            console.log('usersOfSearchStrain from the findmine text component')  
-            console.log(usersOfSearchStrain)  
+        const unsearch = async () => {                      
             searchSelector('');
         }
 
@@ -104,9 +100,10 @@
             </div>
 
             </div>
-                
+
             </div>  
-                
+
+
             </>
         )
     }
