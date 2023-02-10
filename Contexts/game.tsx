@@ -82,6 +82,8 @@ type gameContextType = {
     currentUserId: number;
     currentuseridset: (id:number) => void;
     currentusernameset: (username) => void;
+    MineShovelUser: string;
+    mineshoveluserset: (user:string) => void;
     // currUser: {username: '', password: '', email: '', age: '', strains: []};
 
     //* signup constraints */
@@ -225,6 +227,8 @@ const gameDefaults: gameContextType = {
     searchTypeClick: () => {},
     usersOfSearchStrain: [],
     usersofsearchstrainset: (searchStrainUsers:any[]) => {},
+    MineShovelUser: '',
+    mineshoveluserset: (user:string) => {},
     noUser: false,
     nouserset: () => {},
     url: '',
@@ -374,6 +378,7 @@ export function GameProvider({ children }: Props) {
     const [currentUser, setCurrentUser] = useState<any[]|any>([])
     const [currentUserName, setCurrentUserName] = useState<string>('')
     const [currentUserId, setCurrentUserId] = useState<number>(0)
+    const [MineShovelUser, setMineShovelUser] = useState<string>('')
     
     
 
@@ -564,6 +569,10 @@ export function GameProvider({ children }: Props) {
         
         const userstrchange = (str:string) => {
             setUsernamestr(str)
+        }
+
+        const mineshoveluserset = (user:string) => {
+            setMineShovelUser(user)
         }
         
         const pwstrchange  = (str:string) => {
@@ -783,6 +792,7 @@ export function GameProvider({ children }: Props) {
         fillSearchBucket,
         selectedSearch,
         searchSelector,
+        
         searchType,
         searchTypeClick,
         usersOfSearchStrain,
@@ -804,7 +814,8 @@ export function GameProvider({ children }: Props) {
         // *
         currentinput,
         currentinputset,
-
+        MineShovelUser,
+        mineshoveluserset,
         usernameinput,
         usernameinputset,
         passwordinput,
