@@ -30,7 +30,9 @@ export default function SelectedSearch(props) {
         selectedSearch, searchSelector, searchStrainId, searchstrainidset,
         searchType, usersOfSearchStrain, usersofsearchstrainset, 
         currentUser, currentusernameset, currentuseridset, userstrainset, userStrains, 
-        
+        allMyStrains, allmystrainset,
+        MineShovelUser, mineshoveluserset, noMineShovel, nomineshovelset,
+        searchMinePost, searchminepostset, searchMineRead, searchminereadpost, 
         } = useGame()
 
     useEffect( () => {
@@ -42,16 +44,19 @@ export default function SelectedSearch(props) {
         console.log('selectedSearch in the selectedSearch component')
         console.log(selectedSearch)
 
-        // const getId = async () => {
+        const getId = async () => {
+
             Axios.post(getIDurl, {
                 name: selectedSearch
             }).then( (id) => {
-                let returnid:number = id.data.id                
-                searchstrainidset(returnid)
+                // let returnid:number = id
                 return id        
-        })
+            })
+        }
+            // searchstrainidset(1)
         // let searchID = getId()
         // setSearchId(searchID)
+            
 
     }, [])
 
@@ -73,19 +78,54 @@ export default function SelectedSearch(props) {
         console.log('shovel click')
     }
 
+    const usernameClick = (event) => {
+        console.log(event)
+        console.log('event.target')
+        console.log(event.target)
+        let text = event.target.outerText
+        mineshoveluserset(text)
+        console.log('text')
+        console.log(text)
+    }
 
+    const onChange = () => {
+        console.log('we are changing the input')
+    }
+
+    const fakesubmit = () => {
+        // let input = $('.shovelMineInput')
+        let input:any = document.querySelector('.shovelMineInput')
+        let inputvalue:string = input.value
+
+        console.log('input')
+        console.log(input)
+
+        console.log('inputvalue')
+        console.log(inputvalue)
+        
+
+    }
+    
     
 
     return (
         <>        
         <div         
         id={styles.SelectedSearchBox} className="Column">
-            <p 
+        <div
+        style = {{
+            // backgroundImage: `url('/img/cone.png')`, backgroundSize: '10%', backgroundRepeat: 'no-repeat',
+        }}
+        >
+            {/* <h1 
             style={{ fontSize: '18px', marginTop: '0.75em', }}
             onClick={shovel}
             className={styles.h1}>
              {selectedSearch || ''} 
-            </p> 
+            </h1>  */}
+                    
+            
+            
                 <div className="Row">
 
                 {
@@ -95,39 +135,84 @@ export default function SelectedSearch(props) {
                      ?
                       usersOfSearchStrain.map( (mapitem, idx) => {
                         return (
-                            <p key={idx} style={{ color: 'papayawhip', margin: '0 2em' }}> {mapitem} </p>
+                            <div key={`div${idx}`} 
+                            className="Row"
+                            // style={{
+                            //     display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row'
+                            // }}
+                            >
+                            <p
+                            onClick={usernameClick}
+                             key={idx} style={{ color: 'papayawhip', margin: '0 2em', cursor: 'pointer' }}> {mapitem} </p>
+                            
+                            
+                            </div>                                
                             )
-                        })
+                    })
                         :
                         <div> </div>
                         :
                         <pre></pre>
                         // <pre style={ {color: 'papayawhip'}}>. . .</pre>
+                        
                     }
+                </div>       
                 
                 {
                     searchType === 'Mine' 
                     ?
-                    findMineMyStrains.map( (mystrain, idx) => {
-                        console.log('mystrain from the map statement')
-                        console.log('mystrain')
-                        console.log(mystrain)
-
-                        console.log('searchId')
-                        console.log(searchId)
-                        if (parseInt(mystrain) === searchStrainId) {                            
-                            return (
-                                <p key={idx} style={{ color: 'papayawhip' }}> {mystrain} </p>
-                                // * need a shovel and mine here for digs and reviews. 
-                            )
-                        }
-                    })
+                    allMyStrains.map( (mystrain, idx) => {  
+                            if (parseInt(mystrain) === searchStrainId) {                                    
+                                return (
+                                    <div 
+                                    key={`${idx}div`}                                    
+                                    className="Column"
+                                    >                                                                                             
+                                    <img style={{ height: '4em', width: '4em' }} src="/img/gold.png"/>                                    
+                                    </div>
+                                )
+                            }                            
+                    })                                
                     :
                     <pre></pre>
-                }                
-             </div>                            
-        <img className={styles.Shovel} onClick={() => console.log("image click")} src="/img/shovel.png"/>
-                <button style={{ backgroundColor: 'yellow' }} onClick={quicktest}></button>
+                }          
+
+                    {searchType === 'Mine'
+                        ?
+                        <div className="Column">
+                        {searchMineRead === true 
+                            ?
+                        <p> read is true </p>
+                            :
+                        <pre></pre>
+                        }
+                        
+                        {searchMinePost === true 
+                            ?
+                        <form action="/" className="Column">
+                        <input onChange={onChange} type="text" className="shovelMineInput"/>
+                        <div onClick={fakesubmit} style={{ marginTop: '0.95em' }} className="MiniGoldBar"></div>
+                        </form>
+                            :
+                        <pre></pre>
+                        }
+
+                        </div>                            
+                        :
+                        <pre></pre>
+                    }
+
+                
+
+
+                {/* <h2> {searchType === 'Mine' ?  }  </h2> */}
+                {/* <h2> this is where the display text container will go </h2> */}
+                <h2 style={{ color: 'rgb(247, 208, 36)', boxShadow: '2px 10px 2px rgb(247, 208, 36)'}}> {noMineShovel} </h2>
+                
+             </div>   
+                                    
+        {/* <img className={styles.Shovel} onClick={() => console.log("image click")} src="/img/shovel.png"/> */}
+                {/* <button style={{ backgroundColor: 'yellow' }} onClick={quicktest}></button> */}
         </div>
         </>
     )
