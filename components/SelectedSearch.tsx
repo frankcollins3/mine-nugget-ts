@@ -1,3 +1,4 @@
+import Axios from 'axios';
 import {useGame} from 'Contexts/game'
 import styles from 'styles/findmine/sass/FindMine.module.scss'
 import {useEffect, useState} from 'react'
@@ -10,17 +11,23 @@ import userStrainsForUsersId from 'pages/api/strains/userStrainsForUsersId'
 
 export default function SelectedSearch(props) {
     const [uiHover, setUiHover] = useState('')
+    const [searchId, setSearchId] = useState<any>(0)
+
+    let getIDurl = props.getIDurl
+    console.log('getIDurl')
+    console.log(getIDurl)
 
     let allOrMine = styles.allOrMine
     let h1 = styles.h1
     let soClassy:any = [allOrMine, h1].join()
+
 
     let findMineMyStrains = props.findMineMyStrains
     console.log('findMineMyStrains')
     console.log(findMineMyStrains)
 
        const { 
-        selectedSearch, searchSelector, searchStrainId, 
+        selectedSearch, searchSelector, searchStrainId, searchstrainidset,
         searchType, usersOfSearchStrain, usersofsearchstrainset, 
         currentUser, currentusernameset, currentuseridset, userstrainset, userStrains, 
         
@@ -31,7 +38,22 @@ export default function SelectedSearch(props) {
         console.log(usersOfSearchStrain)
     }, [usersOfSearchStrain])   
 
+    useEffect( () => {
+        console.log('selectedSearch in the selectedSearch component')
+        console.log(selectedSearch)
 
+        // const getId = async () => {
+            Axios.post(getIDurl, {
+                name: selectedSearch
+            }).then( (id) => {
+                let returnid:number = id.data.id                
+                searchstrainidset(returnid)
+                return id        
+        })
+        // let searchID = getId()
+        // setSearchId(searchID)
+
+    }, [])
 
 
     
@@ -79,30 +101,33 @@ export default function SelectedSearch(props) {
                         :
                         <div> </div>
                         :
-                        <pre style={ {color: 'papayawhip'}}>. . .</pre>
+                        <pre></pre>
+                        // <pre style={ {color: 'papayawhip'}}>. . .</pre>
                     }
                 
                 {
                     searchType === 'Mine' 
                     ?
-                    // <p> hey </p>                    
                     findMineMyStrains.map( (mystrain, idx) => {
-                        // if (mystrain.usersId)
                         console.log('mystrain from the map statement')
+                        console.log('mystrain')
                         console.log(mystrain)
-                        return (
-                            <p key={idx}> {mystrain} </p>
-                        )                        
+
+                        console.log('searchId')
+                        console.log(searchId)
+                        if (parseInt(mystrain) === searchStrainId) {                            
+                            return (
+                                <p key={idx} style={{ color: 'papayawhip' }}> {mystrain} </p>
+                                // * need a shovel and mine here for digs and reviews. 
+                            )
+                        }
                     })
                     :
                     <pre></pre>
-                }
-                
-             </div>
-                    
-        
+                }                
+             </div>                            
         <img className={styles.Shovel} onClick={() => console.log("image click")} src="/img/shovel.png"/>
-            
+                <button style={{ backgroundColor: 'yellow' }} onClick={quicktest}></button>
         </div>
         </>
     )
