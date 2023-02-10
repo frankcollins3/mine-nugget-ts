@@ -100,7 +100,7 @@ const {
             } 
             else if (regexlength >= 1) {
     
-                if (parseInt(numreturn) <= 6 || parseInt(numreturn) > 6) {                                    
+                if (parseInt(numreturn) <= 6 ) {                                    
                     let newcode = await Regex(code, 'numreturn')
     
                     const specifyStringLength = await IntStringCount(newcode)
@@ -115,6 +115,11 @@ const {
                     console.log(myStrains)
                     fillSearchBucket(myStrains)                
                 }            
+                else if (parseInt(numreturn) > 6) {
+                    console.log("num return at this time")
+                    console.log(parseInt)
+                    fillSearchBucket(allstrains)
+                }
             }        
 
         }
