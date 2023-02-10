@@ -1,3 +1,4 @@
+import { MenuIcon } from '@chakra-ui/react'
 import {useGame} from 'Contexts/game'
 import $ from 'jquery'
 import mineshovelES6 from 'utility/mineshovelES6'
@@ -14,37 +15,21 @@ export default function MineShovel (props) {
 
         // state that toggles whether the SelectedSearch will append an input to post a mine or the text of other mines/reviews to read other user data.
         searchMinePost, searchminepostset, searchMineRead, searchminereadpost, 
+        myMineReview, myminereviewset, myMineTitle, myminetitleset,  // myMine state that stores the review for a user whose looking at their own data reviews.
       } = useGame()
 
       const postMINEurl = props.postMINEurl
+      const getALLminesURL = props.getALLminesURL;
+      const deleteMinesURL = props.deleteMinesURL
 
     const MineClick = async (event) => {
-        console.log('usersOfSearchStrain in the MineCLick!')
-        console.log(usersOfSearchStrain)
-        console.log(event.target)
-        console.log('MineShovelUser')
-        console.log(MineShovelUser)
-
-        console.log('currentUser')
-        console.log(currentUser)
-
-        console.log('currentUserName')
-        console.log(currentUserName)
-
-        console.log('currentUserId')
-        console.log(currentUserId)
-
-        console.log('searchStrainId')
-        console.log(searchStrainId)
-
-
         if (searchType === 'All') {
             console.log('searchType === All')            
         }            
         if (searchType === 'Mine') {
             console.log('searchType === Mine')     
             console.log("clicking the Mine while searchType is mine")       
-            let postMine = await mineshovelES6(postMINEurl, )
+            // let postMine = await mineshovelES6(postMINEurl,  )
         }            
     }
 
@@ -59,11 +44,10 @@ export default function MineShovel (props) {
         }            
         if (searchType === 'Mine') {
             console.log('searchType === Mine')            
-
         }            
     }
 
-    const ReadOrWrite = (event) => {
+    const ReadOrWrite = async (event) => {
         console.log('event')
         console.log(event)
         console.log(event.target)
@@ -72,9 +56,126 @@ export default function MineShovel (props) {
         console.log(imgsrc)
         let srcLen:number = imgsrc.length
         let localSrc = imgsrc.slice(imgsrc.lastIndexOf('/') + 1, srcLen - 4)
-        // let imgIcon = imgsrc.slice(5, srcLen - 4)
-        console.log('localSrc')
-        console.log(localSrc)
+        let id = event.target.id
+        let myStrains:any = []
+
+        if (id === 'edit') {
+            if (searchMineRead === true) searchminereadpost()
+            searchminepostset()
+        }
+        if (id === 'glasses') {
+            if (searchMinePost === true) searchminepostset()
+
+            console.log('currentUserId')
+            console.log(currentUserId)
+
+            console.log('searchStrainId')
+            console.log(searchStrainId)
+
+            let allMinesForAllUsers = await mineshovelES6(getALLminesURL, '', 'GETallmines')
+            let allmines = allMinesForAllUsers?.data.allmines
+            let strainReview = allmines.filter( mine => mine.strainId === searchStrainId)
+            
+            console.log('strainReview from the glasses!')
+            console.log(strainReview)
+
+            let review = strainReview[0] ? strainReview[0].review : ''
+            let title = strainReview[0] ?  strainReview[0].title : ''
+            let AfterSlashIndex:number = title.indexOf('/') + 1
+            let titleLen:number = title.length
+
+            let sliceUserFromTitle = title.slice(AfterSlashIndex, titleLen)
+
+            myminereviewset(review)
+            myminetitleset(sliceUserFromTitle)
+            console.log('review')
+            console.log(review)
+
+
+
+            const pushMyStrains = () => {
+
+                allmines.forEach( (mine:any) => {
+                    let looptitle:string = mine!.title
+                    let slashIndex:number = looptitle.indexOf('/')
+                    let userId = looptitle.slice(0, slashIndex)
+                    console.log('userId')
+                    console.log(`userId in loop: ${userId} typeof: ${typeof userId}`)
+
+                    console.log('currentUserId')
+                    console.log(`currentUser ${currentUserId} typeof: ${typeof currentUserId}`)
+                    if (userId.toString() === currentUserId.toString()) {
+                        console.log('this condition is equal!')
+                        myStrains.push(mine)
+                    }    
+                })
+            }
+
+            const getMyStrains = () => {
+                console.log('myStrains in the getMyStrains')
+                console.log(myStrains)
+            }
+
+            const strainfunctions = async () => {
+                await pushMyStrains()
+                await getMyStrains()
+            }
+            strainfunctions()
+
+            searchminereadpost()
+
+        }
+        if (id === 'eraser') {
+            let allMinesForAllUsers = await mineshovelES6(getALLminesURL, '', 'GETallmines') // DRY i know. could put in a useEffect and make localstate instead.
+            let allmines = allMinesForAllUsers!.data.allmines
+            let localmystrains:any = []
+            
+            const pushMyMines = async () => {
+                await allmines.forEach( (mine) => {
+                    let looptitle:string = mine!.title
+                    let slashIndex:number = looptitle.indexOf('/')
+                    let userId = looptitle.slice(0, slashIndex)
+                    if (userId.toString() === currentUserId.toString()) {
+                        if (mine.strainId === searchStrainId) {
+                            myminetitleset('')
+                            myminereviewset('')
+                            let dataobject = {
+                                usersId: userId,
+                                strainId: mine.strainId,
+                                review: mine.review
+                            }
+                            localmystrains.push(dataobject)
+                        }
+                    }
+                })
+            }
+            
+            const bucketcheck = () => {
+                console.log('localmystrains')
+                console.log(localmystrains)
+                return localmystrains
+            }
+            
+            const bothfunctions = async () => {
+                await pushMyMines()
+                let myreview = await bucketcheck()
+                // let filteredmines = allmines.filter( mine => mine.strainId === searchStrainId)
+
+                console.log('myreview')
+                console.log(myreview)
+
+                let deleteMine = await mineshovelES6(deleteMinesURL, myreview, 'DELETEone') // DRY i know. could put in a useEffect and make localstate instead.
+                console.log('deleteMine')
+                console.log(deleteMine)
+
+
+                
+            }
+            bothfunctions()
+            
+            
+            // * pages/api/delete route for MyReviews relative to SearchStrainId            
+        }        
     }
 
     return (
@@ -88,9 +189,9 @@ export default function MineShovel (props) {
                 {searchType === 'Mine' 
                         ?
                 <div className="Row">
-                <img onClick={ReadOrWrite} className="readWriteErase" src="/img/edit.png"/>
-                <img onClick={ReadOrWrite} className="readWriteErase" src="/img/glasses.png"/>
-                <img onClick={ReadOrWrite} className="readWriteErase" src="/img/eraser.png"/>
+                <img id="edit" onClick={ReadOrWrite} className="readWriteErase" src="/img/edit.png"/>
+                <img id="glasses" onClick={ReadOrWrite} className="readWriteErase" src="/img/glasses.png"/>
+                <img id="eraser" onClick={ReadOrWrite} className="readWriteErase" src="/img/eraser.png"/>
                 </div>       
                         :
                 <pre></pre>
