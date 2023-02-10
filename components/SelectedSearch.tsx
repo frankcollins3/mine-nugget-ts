@@ -8,31 +8,30 @@ import $ from 'jquery'
 import CSS from 'utility/CSStool'
 import AllMine from 'components/AllMineBtnStrip'
 import userStrainsForUsersId from 'pages/api/strains/userStrainsForUsersId'
+import mineshovelES6 from 'utility/mineshovelES6'
 
 export default function SelectedSearch(props) {
     const [uiHover, setUiHover] = useState('')
     const [searchId, setSearchId] = useState<any>(0)
 
     let getIDurl = props.getIDurl
-    console.log('getIDurl')
-    console.log(getIDurl)
+    let postMINEurl = props.postMINEurl
+    
 
     let allOrMine = styles.allOrMine
     let h1 = styles.h1
     let soClassy:any = [allOrMine, h1].join()
-
-
-    let findMineMyStrains = props.findMineMyStrains
-    console.log('findMineMyStrains')
-    console.log(findMineMyStrains)
+    let findMineMyStrains = props.findMineMyStrains    
 
        const { 
         selectedSearch, searchSelector, searchStrainId, searchstrainidset,
         searchType, usersOfSearchStrain, usersofsearchstrainset, 
-        currentUser, currentusernameset, currentuseridset, userstrainset, userStrains, 
+        currentUser, currentusernameset, currentuseridset, currentUserId, userstrainset, userStrains, 
         allMyStrains, allmystrainset,
         MineShovelUser, mineshoveluserset, noMineShovel, nomineshovelset,
         searchMinePost, searchminepostset, searchMineRead, searchminereadpost, 
+        myMineReview, myminereviewset, myMineTitle, myminetitleset,
+        
         } = useGame()
 
     useEffect( () => {
@@ -82,7 +81,7 @@ export default function SelectedSearch(props) {
         console.log(event)
         console.log('event.target')
         console.log(event.target)
-        let text = event.target.outerText
+    let text = event.target.outerText
         mineshoveluserset(text)
         console.log('text')
         console.log(text)
@@ -92,18 +91,20 @@ export default function SelectedSearch(props) {
         console.log('we are changing the input')
     }
 
-    const fakesubmit = () => {
+    const fakesubmit = async () => {        
         // let input = $('.shovelMineInput')
-        let input:any = document.querySelector('.shovelMineInput')
-        let inputvalue:string = input.value
+        let titleinput:any = document.querySelector('#TitleInput')
+        let reviewinput:any = document.querySelector('#ReviewInput')
 
-        console.log('input')
-        console.log(input)
+        let valuetitle = titleinput.value
+        let titleWithUserId = `${currentUserId}/${valuetitle}`
+        let valuereview = reviewinput.value
 
-        console.log('inputvalue')
-        console.log(inputvalue)
-        
-
+        console.log(`titlevalue: ${valuetitle} reviewvalue: ${valuereview}`)
+        let postobjectDATA = { strainId: searchStrainId, review: valuereview, title: titleWithUserId, usersId: currentUserId };
+        let newminePOST = await mineshovelES6(postMINEurl, postobjectDATA, 'minePOST')        
+        console.log('newminePOST')
+        console.log(newminePOST)        
     }
     
     
@@ -182,7 +183,10 @@ export default function SelectedSearch(props) {
                         <div className="Column">
                         {searchMineRead === true 
                             ?
-                        <p> read is true </p>
+                            <>
+                            <h1 className="myMineText" style={{letterSpacing: '0.8em' }}> {myMineTitle} </h1>
+                            <p className="myMineText"  style={{ marginTop: '0.4em' }}> {myMineReview} </p>
+                            </>
                             :
                         <pre></pre>
                         }
@@ -190,7 +194,10 @@ export default function SelectedSearch(props) {
                         {searchMinePost === true 
                             ?
                         <form action="/" className="Column">
-                        <input onChange={onChange} type="text" className="shovelMineInput"/>
+                        <input id="TitleInput" onChange={onChange} type="text" className="shovelMineInput"/>                    
+                        <label className="shovelMineInputLabel" htmlFor="TitleInput"> Title</label>
+                        <input id="ReviewInput" style={{ marginTop: '0.25em'}} onChange={onChange} type="text" className="shovelMineInput"/>
+                        <label className="shovelMineInputLabel" htmlFor="ReviewInput"> Review </label>
                         <div onClick={fakesubmit} style={{ marginTop: '0.95em' }} className="MiniGoldBar"></div>
                         </form>
                             :
