@@ -10,10 +10,12 @@ import { createContext, useContext, ReactNode, useState } from "react";
         specifyUserGET: string;
         myStrainsForUsersId: string;
         dbFirstLetter: string;
-        dbNumber: string;
-        // userStrains: string;    
+        dbNumber: string;   
         getAllUsers: string;    
-        POSTuser: string;        
+        getALLmines: string;    
+        deleteMinesUrl: string;
+        POSTuser: string;              
+        minePOSTurl: string;
     }
     
     const urlDefaults: urlTypes = {
@@ -27,11 +29,11 @@ import { createContext, useContext, ReactNode, useState } from "react";
         specifyUserGET: '/api/user/GETspecifyuser',
         myStrainsForUsersId: '/api/strains/userStrainsForUsersId',
         dbNumber: '/api/strains/dbNumber',
-        // userStrains: '/api/strains/postuserstrains',        
-        // userStrains: '/api/strains/userstrainpost',
         getAllUsers: '/api/user/GetAllUsers',
-        POSTuser: '/api/user/POSTuser'
-        // pages/api/strains/userstrainpost.ts
+        POSTuser: '/api/user/POSTuser',
+        minePOSTurl: '/api/strains/minePOST',
+        getALLmines: '/api/strains/GETallmines',
+        deleteMinesUrl: '/api/strains/DELETEmines'
     }
 
 const UrlContext = createContext<urlTypes>(urlDefaults);
@@ -52,8 +54,11 @@ export default function UrlProvider( { children }, context ) {
         const [getID, setGetID] = useState<string>('/api/strains/getIDwithNAME')
         const [allUsernamesForID, setAllUsernamesForID] = useState<string>('/api/strains/allUsernamesForId')
         const [getAllUsers, setGetAllUsers] = useState<string>('/api/user/GetAllUsers')
+        const [getALLmines, setGetALLMines] = useState<string>('/api/strains/GETallmines')
+        const [deleteMinesUrl, setDeleteMinesUrl] = useState<string>('/api/strains/DELETEmines')
         const [POSTuser, setPOSTuser] = useState<string>('/api/user/POSTuser')
-        // const [userStrains, setUserStrains] = useState<string>('/api/strains/userstrainpost')
+
+        const [minePOSTurl, setMinePOSTUrl] = useState<string>('/api/strains/minePOST')
             
         const exportvalues = {
             allStrain,
@@ -67,7 +72,10 @@ export default function UrlProvider( { children }, context ) {
             allUsernamesForID,
             specifyUserGET,
             getAllUsers,
-            POSTuser      
+            getALLmines,
+            POSTuser,
+            minePOSTurl,
+            deleteMinesUrl,
         }
 
     return (
