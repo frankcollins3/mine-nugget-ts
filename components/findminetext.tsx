@@ -54,9 +54,12 @@
         const allormine = async (event) => {
             let btnText:string = event.target.outerText
             if (btnText === 'Mine') {
-                allMyStrains.includes(searchStrainId.toString()) ? '' : nomineshovelset("This Gold Isn't Mine")
-            }            
-            await searchTypeClick(btnText)
+                allMyStrains.includes(searchStrainId.toString()) 
+                ?
+                 await searchTypeClick(btnText)
+                  :
+                  nomineshovelset("This Gold Isn't Mine")
+                }            
         }
 
         const unsearch = async () => {                      
