@@ -3,33 +3,35 @@ let prisma = new PrismaClient()
 
 export default async function minePOST (req, res) {
 
-    console.log('req.body')
-    console.log(req.body)
-
     let data = req.body.data
     let strainId = data.strainId
     let title = data.title
     let review = data.review
+    let usersId = data.usersId
 
-    console.log('data from the post route')
-    console.log(data)
+    let allmines = await prisma.mines.findMany()
+    // const duplicateMap = new Map()
+    let duplicatearray:any = []
 
-    console.log('title')
-    console.log(title)
+    let filteredForStrain = allmines.filter( mines => mines.strainId === strainId)
+    await filteredForStrain.forEach( (searchStrain:any) => {
+        let looptitle:string = searchStrain!.title
+        let userId = looptitle.slice(0, looptitle.indexOf('/'))
+        if (userId === usersId) duplicatearray.push(userId)
+    })
 
-    console.log('review')
-    console.log(review)
-
-    const user = await prisma.mines.create({
-        data: {
-          title: title,
-          review: review,
-          strainId: strainId
-        },
-      })
-
-
-
-
-    res.json( { body: req.body, hey: 'hi'})
+    if (duplicatearray.includes(usersId)) {
+        console.log('yeah the array has that value we did it')
+        res.json( { body: req.body, msg: 'Already Have A Mine!' })
+    } else {
+        console.log("there are no duplicates were good to post!")
+        const newmine = await prisma.mines.create({
+            data: {
+                title: title,
+                review: review,
+                strainId: strainId
+            },
+        })
+        res.json( { body: req.body, filter: filteredForStrain })
+    }
 }
