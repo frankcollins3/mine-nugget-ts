@@ -11,7 +11,12 @@
 
         const { 
              searchHover, searchOn, searchOff, searchChar, searchCharFunc,
-            searchBucket, fillSearchBucket, searchType, searchTypeClick, selectedSearch, searchSelector
+            searchBucket, fillSearchBucket, searchType, searchTypeClick, selectedSearch, searchSelector,
+            usersOfSearchStrain, usersofsearchstrainset,
+
+            allMyStrains, allmystrainset,
+            noMineShovel, nomineshovelset, 
+            searchStrainId,
             } = useGame()
         
         useEffect( () => {
@@ -48,9 +53,18 @@
 
         const allormine = async (event) => {
             let btnText:string = event.target.outerText
+            if (btnText === 'Mine') {
+                allMyStrains.includes(searchStrainId) ? '' : nomineshovelset("This Gold Isn't Mine")
+            }
             console.log('btnText')
             console.log(btnText)
             await searchTypeClick(btnText)
+        }
+
+        const unsearch = async () => {          
+            console.log('usersOfSearchStrain from the findmine text component')  
+            console.log(usersOfSearchStrain)  
+            searchSelector('');
         }
 
         return (
@@ -70,17 +84,14 @@
             
             </div>
 
-
-            {selectedSearch.length > 1 ?
-            // <SelectedSearch/>
-            <div className={styles.TextParent}>
-            <img style={{ margin: '0 2em'}} onMouseEnter={shoveltest} className={styles.Shovel} src="/img/shovel.png"/>
-            <img style={{ margin: '0 2em'}} onMouseEnter={shoveltest} className={styles.Shovel} src="/img/mine.png"/>
-            </div>
-            :
-            <p> </p>
-        } 
-
+            <div
+                style={{
+                cursor: 'pointer'            
+                }}
+                onClick={unsearch}
+                className={styles.MiniGoldBar}
+                // src="/img/gold.png"
+                ></div>
 
             <div className="Column">
             <div className={styles.TextParent}>
@@ -93,10 +104,9 @@
             </div>
 
             </div>
-
+                
             </div>  
-
-
+                
             </>
         )
     }
