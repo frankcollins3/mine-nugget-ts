@@ -12,6 +12,7 @@ import userStrainsForUsersId from 'pages/api/strains/userStrainsForUsersId'
 import mineshovelES6 from 'utility/mineshovelES6'
 import GETuserstrains from 'utility/GETuserstrains'
 import POSTuserstrainsES6 from 'utility/POSTuserstrainsES6'
+import digsES6 from 'utility/digsES6'
 
 import Children from 'utility/jqChildren'
 import Siblings from 'utility/JqSiblings'
@@ -25,13 +26,12 @@ export default function SelectedSearch(props) {
     let getALLminesURL = props.getALLminesURL
     const ALLusersGET = props.ALLusersGET
     const userStrainPostUrl = props.userStrainPostUrl
+    const DIGSurl = props.digsURL
     
     let allOrMine = styles.allOrMine
     let h1 = styles.h1
     let soClassy:any = [allOrMine, h1].join()
     let findMineMyStrains = props.findMineMyStrains 
-
-    // const { userStrainPost } = useUrl()
     
        const { 
         selectedSearch, searchSelector, searchStrainId, searchstrainidset,
@@ -50,9 +50,7 @@ export default function SelectedSearch(props) {
         console.log(usersOfSearchStrain)
     }, [usersOfSearchStrain])   
 
-    useEffect( () => {     
-        console.log('allMyStrains from the useEffect from SelectedSearch')   
-        console.log(allMyStrains)   
+    useEffect( () => {             
         const getId = async () => {
             Axios.post(getIDurl, { name: selectedSearch
             }).then( (id) => { return id })}            
@@ -76,16 +74,38 @@ export default function SelectedSearch(props) {
     let ValueSavingMap = new Map()
     ValueSavingMap.set('selectedSearch', selectedSearch)
 
-    const usernameClick = async (event) => {        
+    const usernameClick = async (event) => {      
+        let preusers:any = await GETuserstrains(ALLusersGET, 'onlyusers')
+        let ALLusers = preusers!.data.users
         let target = $(event.target)
         let text = event.target.outerText
         let eventSibs:any = await Siblings(target)
+
+        let premines = await mineshovelES6(getALLminesURL, '', 'GETallmines')
+        let ALLmines = premines?.data.allmines
+
+        let filteredUser = ALLusers.filter( user => user.username === text)[0]
+        let clickedUserId = filteredUser.id 
+
         let mineimg = eventSibs![0]
         let shovelimg = eventSibs![1]        
         let mineimgopacity = mineimg.style.opacity
         let shovelimgopacity = shovelimg.style.opacity
-        if (mineimgopacity === '0') await CSS(eventSibs, 'opacity', '1.0')
-        if (mineimgopacity === '1') await CSS(eventSibs, 'opacity', '0.0')
+        
+
+        let alldigs = await digsES6(DIGSurl, '', 'GETallDIGS')
+        let digs = alldigs?.data.alldigs        
+            digs.forEach( (likes) => {
+                console.log(`likes: ${likes} typeof ${typeof likes}`)
+                console.log('likes.userId')
+                console.log(likes.userId)
+                let userId = likes.userId
+                if (userId.toString() === clickedUserId.toString()) {
+                        CSS(shovelimg, 'opacity', '1.0')
+                }                
+            })
+        if (mineimgopacity === '0') await CSS(mineimg, 'opacity', '1.0')
+        if (mineimgopacity === '1') await CSS(mineimg, 'opacity', '0.0')
         mineshoveluserset(text)
     }
 
@@ -125,13 +145,8 @@ export default function SelectedSearch(props) {
             let looptitle:string = mine!.title
         let userId = looptitle.slice(0, looptitle.indexOf('/'))
             if (userId.toString() === clickedUserId.toString()) {
-                console.log("we are in this condition")
-                if (mine.strainId === searchStrainId) {
-                    console.log('mine.review')
-                    console.log(mine.review)
-                    let reviewmatch = mine.review
-                    console.log('reviewmatch')
-                    console.log(reviewmatch)
+                if (mine.strainId === searchStrainId) {                    
+                    let reviewmatch = mine.review                    
                     // let originalText = selectedSearch
                     let originalValue = ValueSavingMap.get('selectedSearch')                    
                     if (MineShovel === reviewmatch) {
@@ -140,16 +155,10 @@ export default function SelectedSearch(props) {
                         otherusermineclickset()
                         }
                     } else if (MineShovel !== reviewmatch) {
-                        // otherUserMineClick === false ? mineshovelset(reviewmatch) : ''
                         if (otherUserMineClick === false)  {
                             mineshovelset(reviewmatch)
                             otherusermineclickset()
-                        }
-                    }                    
-                }
-            }
-        })
-    }
+                        }}}}})}
 
     const wannasave = async (event) => {
         let target = $(event.target)
@@ -182,7 +191,32 @@ export default function SelectedSearch(props) {
     }
 
     const nothing = () => {return}
-    
+
+    const otherUserShovelClick = async (event) => {
+        
+        let preusers:any = await GETuserstrains(ALLusersGET, 'onlyusers')
+        let ALLusers = preusers!.data.users
+        let newDigMap = new Map()
+        
+        let currentUserDB = ALLusers.filter( user => user.id.toString() === currentUserId)[0]
+        let INTuserID = currentUserDB.id        
+        newDigMap.set('userId', INTuserID)
+        newDigMap.set('strain', selectedSearch)
+        let data = [newDigMap.get('userId'), newDigMap.get('strain')]
+
+        let alldigs = await digsES6(DIGSurl, '', 'GETallDIGS')[0]
+            alldigs.forEach( (likes) => {
+                console.log(`likes: ${likes} typeof ${typeof likes}`)
+                console.log('likes.userId')
+                console.log(likes.userId)
+                let userId = likes.userId
+                if (userId.toString() === INTuserID.toString()) {
+
+                }
+                
+            })
+        
+    }
 
     return (
         <>        
@@ -202,7 +236,7 @@ export default function SelectedSearch(props) {
                              <p  onClick={otherUserMineClick === false ? usernameClick : nothing } key={idx} 
 style={{ color: mapitem === currentUserName ? 'rgb(247, 208, 32)' : 'papayawhip', margin: '0 2em', cursor: mapitem === currentUserName ? 'not-allowed' : 'pointer',
          pointerEvents: mapitem === currentUserName ? 'none' : 'all' }}> {mapitem === currentUserName ? 'me' : mapitem} </p>   
-                            <img style={{ height: '40px', width: '40px', opacity: '0.0', cursor: 'pointer' }} src="/img/shovel.png"/>                        
+                            <img onClick={otherUserShovelClick} style={{ height: '40px', width: '40px', opacity: '0.0', cursor: 'pointer' }} src="/img/shovel.png"/>                        
                             </div>                                                                                                           
                             )
                     })
