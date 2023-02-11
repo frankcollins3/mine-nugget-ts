@@ -26,7 +26,7 @@ export default function SelectedSearch(props) {
        const { 
         selectedSearch, searchSelector, searchStrainId, searchstrainidset,
         searchType, usersOfSearchStrain, usersofsearchstrainset, 
-        currentUser, currentusernameset, currentuseridset, currentUserId, userstrainset, userStrains, 
+        currentUser, currentUserName, currentusernameset, currentuseridset, currentUserId, userstrainset, userStrains, 
         allMyStrains, allmystrainset,
         MineShovelUser, mineshoveluserset, noMineShovel, nomineshovelset,
         searchMinePost, searchminepostset, searchMineRead, searchminereadpost, 
@@ -102,7 +102,8 @@ export default function SelectedSearch(props) {
 
         console.log(`titlevalue: ${valuetitle} reviewvalue: ${valuereview}`)
         let postobjectDATA = { strainId: searchStrainId, review: valuereview, title: titleWithUserId, usersId: currentUserId };
-        let newminePOST = await mineshovelES6(postMINEurl, postobjectDATA, 'minePOST')        
+        let newminePOST = await mineshovelES6(postMINEurl, postobjectDATA, 'minePOST') 
+        searchMinePost === true ? searchminepostset() : ''
         console.log('newminePOST')
         console.log(newminePOST)        
     }
@@ -118,35 +119,20 @@ export default function SelectedSearch(props) {
             // backgroundImage: `url('/img/cone.png')`, backgroundSize: '10%', backgroundRepeat: 'no-repeat',
         }}
         >
-            {/* <h1 
-            style={{ fontSize: '18px', marginTop: '0.75em', }}
-            onClick={shovel}
-            className={styles.h1}>
-             {selectedSearch || ''} 
-            </h1>  */}
-                    
-            
-            
+
                 <div className="Row">
 
                 {
                     searchType === 'All'                     
                     ?
-                    usersOfSearchStrain.length
+                    usersOfSearchStrain.length 
                      ?
                       usersOfSearchStrain.map( (mapitem, idx) => {
                         return (
-                            <div key={`div${idx}`} 
-                            className="Row"
-                            // style={{
-                            //     display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row'
-                            // }}
-                            >
-                            <p
-                            onClick={usernameClick}
-                             key={idx} style={{ color: 'papayawhip', margin: '0 2em', cursor: 'pointer' }}> {mapitem} </p>
-                            
-                            
+                            <div key={`div${idx}`} className="Row">
+                        <p onClick={usernameClick} key={idx} 
+style={{ color: mapitem === currentUserName ? 'rgb(247, 208, 32)' : 'papayawhip', margin: '0 2em', cursor: mapitem === currentUserName ? 'not-allowed' : 'pointer' }}> 
+        {mapitem === currentUserName ? 'me' : mapitem} </p>                                                                                    
                             </div>                                
                             )
                     })
@@ -184,8 +170,7 @@ export default function SelectedSearch(props) {
                         {searchMineRead === true 
                             ?
                             <>
-                            <h1 className="myMineText" style={{letterSpacing: '0.8em' }}> {myMineTitle} </h1>
-                            <p className="myMineText"  style={{ marginTop: '0.4em' }}> {myMineReview} </p>
+                            <p className="myMineText"  style={{ marginTop: '0.4em' }}> <span className="titlespan"> {myMineTitle}  </span> : {myMineReview}  </p>
                             </>
                             :
                         <pre></pre>
@@ -208,18 +193,8 @@ export default function SelectedSearch(props) {
                         :
                         <pre></pre>
                     }
-
-                
-
-
-                {/* <h2> {searchType === 'Mine' ?  }  </h2> */}
-                {/* <h2> this is where the display text container will go </h2> */}
-                <h2 style={{ color: 'rgb(247, 208, 36)', boxShadow: '2px 10px 2px rgb(247, 208, 36)'}}> {noMineShovel} </h2>
-                
-             </div>   
-                                    
-        {/* <img className={styles.Shovel} onClick={() => console.log("image click")} src="/img/shovel.png"/> */}
-                {/* <button style={{ backgroundColor: 'yellow' }} onClick={quicktest}></button> */}
+                <h2 style={{ color: 'rgb(247, 208, 36)', boxShadow: '2px 10px 2px rgb(247, 208, 36)'}}> {noMineShovel} </h2>                
+             </div>                                       
         </div>
         </>
     )
