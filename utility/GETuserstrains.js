@@ -6,10 +6,13 @@ export default async function GETuserstrains(endpoint, data) {
 
     // let precheck = data.replace(/^ID*$/g, '')
     // let IDcheck = precheck.slice(3, precheck.length)
-    let IDcheck = data.slice(5, data.length)
-    let paramcheck = data.slice(0, 5)
+    let IDcheck = typeof data === 'string' ? data.slice(5, data.length) : ''
+    let paramcheck = typeof data === 'string' ? data.slice(0, 5) : ''
 
-    let length = data.length || 'nothing'
+    let length = typeof data === 'string' ? data.length || 'nothing' : 'something'
+
+    console.log('data from the GETuserstrains')
+    console.log(data)
 
     class GETuserstrainsES6 {
         constructor(data) {
@@ -27,6 +30,10 @@ export default async function GETuserstrains(endpoint, data) {
         }
         get usernamesforid() {
             return this.usersStrainsStrainID()
+        }
+
+        get allusersnostrains() {
+            return this.onlyAllUsers()
         }
 
         async GETuserstrainsALL() {
@@ -71,7 +78,7 @@ export default async function GETuserstrains(endpoint, data) {
                 return response 
             })
         }
-        async usersStrainsStrainId() {
+        async usersStrainsStrainID() {
             return Axios.post(endpoint, {
                 id: data
             }).then( (response) => {
@@ -79,6 +86,10 @@ export default async function GETuserstrains(endpoint, data) {
                 console.log(response)
                 return response
             })
+        }
+
+        async onlyAllUsers() {
+            return Axios.get(endpoint)
         }
 
     }
@@ -97,6 +108,12 @@ export default async function GETuserstrains(endpoint, data) {
                 console.log(getIdWithName)
                 return getIdWithName
             }
+            if (data === 'onlyusers') {
+                let allusers = await new GETuserstrainsES6(data).allusersnostrains
+                console.log('allusers from the return')
+                console.log(allusers)
+                return allusers
+            }
 
         }        
         if (typeof data === 'object') {            
@@ -106,11 +123,10 @@ export default async function GETuserstrains(endpoint, data) {
         if (typeof data === 'number') {
             console.log("we  met our number condition")
             let usernamesFromStrainId = await new GETuserstrainsES6(data).usernamesforid
+            console.log('usernamesFromStrainId')
+            console.log(usernamesFromStrainId)
             return usernamesFromStrainId            
         }    
+
     }
 }
-// * {mydata: 'white widow'}  {mydata: ['white widow', 'pineapple express']} // this is how the objects would be set up to specify which getUserStrains data is coming back
-// * i was originally going to use this but I decided the way the state would be handled is by returning all strains and doing ternary rendering based on currentUser
-// * this approach means theres only one instance of grabbing the user strains database. and for a user to see other users' saved strains when they search a strain that has other user data associated with it,
-// * We don't have to do all those prisma calls or hit all of these routes during this revised approach of global state 1 prisma call 1 global state to handle the bucket of all UserStrainsData
