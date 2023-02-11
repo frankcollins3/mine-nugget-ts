@@ -9,39 +9,43 @@ export default async function digsROUTE (req, res) {
     console.log('body')
     console.log(body)
     let alldigs = await prisma.digs.findMany()
+    let allstrains = await prisma.strains.findMany()
     console.log('alldigs')
     console.log(alldigs)
     
     let method = data.method ? data.method : ''
 
     if (method === 'POSTnewDIGS') {
-        // let userId = data.userId
-        // let strainId = data.strainId
+
         let userId = data.userId        
-        let strainId = data.strainId        
+        let name = data.strain
 
-        console.log("POSTnewDIGS in the POST ROUTE!")
-        let dataLikesFilter = await alldigs.filter( alldig => alldig.strainId === strainId && alldig.userId === userId)
+        let filterForPostStrain = await allstrains.filter( strain => strain.strain === name)[0]
+        let IDofStrain = filterForPostStrain.id
 
-        console.log('dataLikesFilter')
-        console.log(dataLikesFilter)
+        let dataLikesFilter = await alldigs.filter( alldig => alldig.id === IDofStrain && alldig.userId === userId)
         
-        await prisma.digs.create({
-            data: {
-                userId: userId,
-                strainId: strainId,
-                into_it: true                
-            }
-        }).then(async(newlike) => {
-            console.log('hey super duper!')
-            await res.json( { newlike })            
-            
-        }).catch (async(err) => {
-            console.log('there is an error')
-            await res.json( { error: 'error' })            
-        })
+        if (dataLikesFilter.length) {
+            res.json( { status: 'rejected', code: 'Already Dig Strain'} )
+        } else {
+            await prisma.digs.create({
+                data: {
+                    userId: userId,
+                    strainId: IDofStrain,
+                    into_it: true                
+                }
+            }).then(async(newlike) => {
+                console.log('hey super duper!')
+                await res.json( { newlike })            
+                
+            }).catch (async(err) => {
+                console.log('there is an error')
+                await res.json( { error: 'error' })            
+            })
 
-        
+        }
+        await res.json( { error: 'error' })            
+                
     } else {
         console.log('there isnt any method so run this code')
         alldigs? res.json( {alldigs} ) : res.json( 'oops' )
