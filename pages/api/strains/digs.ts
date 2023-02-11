@@ -45,10 +45,12 @@ export default async function digsROUTE (req, res) {
 
         }
         await res.json( { error: 'error' })            
-                
-    } else {
+
+    } 
+    else if (method === 'GETallDIGS') {
         console.log('there isnt any method so run this code')
-        alldigs? res.json( {alldigs} ) : res.json( 'oops' )
+    res.json( { alldigs })
+        // alldigs? res.json( {alldigs} ) : res.json( 'oops' )
     }
 
 
