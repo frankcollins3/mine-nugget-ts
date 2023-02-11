@@ -4,6 +4,9 @@ import { isConstructorDeclaration } from "typescript";
 
 
 export default async function digsES6 (endpoint, data, method) {        
+        console.log('endpoint from the ES6 class')
+        console.log(endpoint)
+
         class digdata {
             constructor(endpoint) {
                 this.endpoint = endpoint;
@@ -19,8 +22,6 @@ export default async function digsES6 (endpoint, data, method) {
                    data: {
                        userId: data[0],
                        strain: data[1],
-                        // userId: data.get('userId'),
-                        // strainId: data.get('strainId'),
                         method: method
                    }
                }).then( (response) => {
@@ -31,15 +32,42 @@ export default async function digsES6 (endpoint, data, method) {
             
             //  ? * * * * * * * * * * * * * *
             get alldigs() {
-                let alldigdata = this.AllDigs()
-                return alldigdata
+                let getdata = this.GETdigs()
+                return getdata
             }
-            async AllDigs() {
-                let alldigs = await Axios.get(endpoint)
-                return alldigs
-            }            
+            // async GETdigs() { return Axios.get(endpoint) }       // definition errors of no req.body.data
+            async GETdigs() {
+                return Axios.post(endpoint, {
+                   data: {                                               
+                        method: method
+                   }
+               }).then( (response) => {
+                    console.log('response from the get .then() block!')
+                    console.log(response)
+                   return response
+               })                
+           }
             //  ? * * * * * * * * * * * * * *
+
+            //  * * * * * * * * * * * * * * *
+            get deletedig() {
+                return this.DeleteDig()
+            }
+
+            async DeleteDig() {
+                return Axios.post(endpoint, {
+                    data: {
+                        userId: data[0],
+                        strain: data[1],
+                        method: method,
+                    }
+                }).then( (deleteconfirm) => {
+                    return deleteconfirm
+                })
+            }
+            //  * * * * * * * * * * * * * * *
         }
+        //  get && methods above      |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   | class setUps and method invocations below
         
         //  * * * * * * * * * * * * * * *
         if (method === 'POSTnewDIGS') {            
@@ -51,13 +79,22 @@ export default async function digsES6 (endpoint, data, method) {
         //  * * * * * * * * * * * * * * *
         
         //  ? * * * * * * * * * * * * * *        
-        if (method === 'GETallDIGS') {
-            let GETdigsToClient = await new digdata(endpoint).alldigs
-            console.log('GETdigsToClient')
-            console.log(GETdigsToClient)
-            return GETdigsToClients
+        if (method === 'GETallDIGS') {            
+            let GETdata = await new digdata(endpoint).alldigs
+            console.log('GETdata')
+            console.log(GETdata)
+            return GETdata
         }
         //  ? * * * * * * * * * * * * * *
+
+        // :) * * * * * * * * * * * * * * * 
+        if (method === 'DELETEDIG') {
+            let deleteConfirm = await new digdata(endpoint).deletedig
+            console.log('deleteConfirm')
+            console.log(deleteConfirm)
+            return deleteConfirm
+        }
+        // :) * * * * * * * * * * * * * * * 
 
 }
 
