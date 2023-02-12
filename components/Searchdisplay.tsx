@@ -17,6 +17,7 @@ import CSS from 'utility/CSStool'
 import Children from 'utility/jqChildren'
 import Siblings from 'utility/JqSiblings'
 import GETuserstrains from 'utility/GETuserstrains'
+import allStrain from 'pages/api/strains/allStrain'
 
 
 export default function DisplayForSearch (props) {
@@ -27,15 +28,14 @@ export default function DisplayForSearch (props) {
         gameOn, playing, searchHover, searchOn, searchOff, 
         findMineTheme, toggleTheme, searchChar, searchCharFunc,
         searchBucket, fillSearchBucket, selectedSearch, searchSelector, searchType, searchTypeClick, searchStrainId, searchstrainidset, 
+        currentUser, currentUserId, currentuseridset, currentUserName, currentusernameset,
         usersOfSearchStrain, usersofsearchstrainset, // usersId data that belongs to the currently selected strain from FindMine.tsx
         userStrains, userstrainset, // all usersStrains: every {strainsId: int usersId: int} 
         allMyStrains, allmystrainset,    // all MyStrains: Associative UsersStrains data that belongs to the currentUser triggered in the [ctrl-F LoginData] from [/LoginLogout.tsx]
         
         // state that toggles whether the SelectedSearch will append an input to post a mine or the text of other mines/reviews to read other user data.
         searchMinePost, searchminepostset, searchMineRead, searchminereadpost, 
-        
-        noMineShovel, nomineshovelset,
-
+        MineShovel, mineshovelset,
         } = useGame()
 
     let absoluteURLpath = props.localURL
@@ -53,38 +53,30 @@ export default function DisplayForSearch (props) {
         $(event.target).css('border', '2px solid none')        
     }
 
-    const selectFunc = async (event) => {        
-        console.log('firing selectFunc')
+    
+
+    const selectFunc = async (event) => {            
         let siblings:any = await Siblings($(event.target))
         let children = await Children($(event.target))
         let siblingText:string = siblings[0].outerText  
         let dataArg = `getID${siblingText}`
         let textStrainId = await GETuserstrains(getIDurl, dataArg)      
-        let id = textStrainId?.data.id        
-
-        console.log('textStrainId')
-        console.log(textStrainId)
-        console.log(`id: ${id} typeof: ${typeof id}`)
-        console.log(typeof textStrainId)
-
-        console.log('allMyStrains')
-        console.log(allMyStrains)
-        
-        allMyStrains.includes(id.toString) ?  '' : nomineshovelset('')
+        let id = textStrainId?.data.id                
+        allMyStrains.includes(id.toString) ?  '' : mineshovelset('')
 
         if (searchMinePost === true) searchminepostset()
         if (searchMineRead === true) searchminereadpost()
-
-        
 
         let usernamesFromID = await GETuserstrains(usernamesForID, textStrainId)
         let usernames = usernamesFromID!.data.usernames        
         searchstrainidset(id)   
         searchSelector(siblingText)
         usersofsearchstrainset(usernames)
-
-
     }
+
+
+
+    
 
     let strainmap = searchBucket.map( (mapitem, idx) => {        
     let length = searchBucket.length
@@ -120,36 +112,27 @@ export default function DisplayForSearch (props) {
                 </div>
         )
     })
-
     const shoveltest = () => {
         console.log("shovel test")
     }
-
     const containerleave = () => {
         searchSelector('')
     }
-
     return (
             <Container
             >
         <Searchdisplay 
-        style={{
-            // display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap',
-            //  placeContent: 'center',
+        style={{            
             width: '50vw'
         }}
         className="searchDisplay"
-        >                    
-        
-        {/* <Searchdisplay className="Column">                     */}
+        >                                    
             <img className={styles.DisplayCaseCone} src="/img/cone.png"/>    
             {strainmap}         
             <img className={styles.DisplayCaseCone} src="/img/cone.png"/>   
         </Searchdisplay>
-        {/* <p style={{ color: 'papayawhip'}}> {searchStrainId} </p> */}
-            
-            
-            </Container>
+        {/* <p style={{ color: 'papayawhip'}}> {searchStrainId} </p> */}                        
 
+            </Container>
     )
 }
