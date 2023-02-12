@@ -1,26 +1,29 @@
 // @ts-nocheck
 
-import AllStrainContainer from 'components/AllStrainContainer'
-import StrainDisplay from 'components/StrainDisplay'
-import StrainDisplayValue from 'components/strainDisplayvalue'
-import PickMines from 'components/PickMines'
 import styles from 'styles/Strain.module.scss'
 import Container from 'react-bootstrap/Container';
 import getAllStrain from 'pages/api/strains/strain'
-import Random from 'utility/Randomizer'
-import Children from 'utility/jqChildren'
 import React, { useEffect, useState, useContext, createContext } from 'react'
-import ReturnUrl from 'utility/ReturnUrl'
-import AjaxCall from 'utility/AjaxCall'
 import $ from 'jquery'
-// import DataCall from 'utility/DataCall'
-import CSS from 'utility/CSStool'
-import DataCall from 'utility/DataCallJS'
 import Axios from 'axios';
 let relativepath = `/api/getAllStrain.ts`
 import styled from 'styled-components'
 import Display from 'styles/StrainDisplay'
 import {useGame} from 'Contexts/game'
+
+import AllStrainContainer from 'components/AllStrainContainer'
+import StrainDisplay from 'components/StrainDisplay'
+import StrainDisplayValue from 'components/strainDisplayvalue'
+import PickMines from 'components/PickMines'
+
+import Random from 'utility/Randomizer'
+import Children from 'utility/jqChildren'
+import ReturnUrl from 'utility/ReturnUrl'
+import AjaxCall from 'utility/AjaxCall'
+import CSS from 'utility/CSStool'
+import DataCall from 'utility/DataCallJS'
+import regularStrainsES6 from 'utility/regularStrainsES6'
+
 
 import Document, { Html, Head, Main, NextScript } from 'next/document'
 
@@ -28,12 +31,6 @@ import Document, { Html, Head, Main, NextScript } from 'next/document'
                     
 export default  function Strain ( props:any, context ) {       
 
-  console.log('props from strain page')
-        console.log(props)
-        console.log('props.appCurrentUser')
-        console.log(props.appCurrentUser)
-        console.log('props.appCurrentUserName')
-        console.log(props.appCurrentUserName)
         let appCurrentUser = props.appCurrentUser
         let appCurrentUserName = props.appCurrentUserName
 
@@ -41,6 +38,7 @@ export default  function Strain ( props:any, context ) {
     let explicitprops = props
 
     let localhost = props.localhost
+    let ALLstrainPOSTurl = props.ALLstrainPOSTurl
 
     const TextContext = createContext('')
     
@@ -59,18 +57,34 @@ export default  function Strain ( props:any, context ) {
         let currentuserid =  window.localStorage.getItem('currentUserId')
         let prestrains = window.localStorage.getItem('myStrains')          
         let splitId = prestrains?.split(',')        
-        console.log('splitId')
-        console.log(splitId)
+        
+        // console.log(`splitID to show myStrains exist: ${splitId}`)
         let filteredId = await splitId?.filter( strainsId => strainsId !== ',' && strainsId.length === 1)      
-        console.log('filteredId these are my strains!')                                    
-        console.log(filteredId)                                    
+        
+        // console.log(`filteredId: (mystrains) ${filteredId}`)                                    
         currentusernameset(currentusername)
         currentuseridset(currentuserid)    
-        userstrainset(filteredId)    
-        
+        userstrainset(filteredId)            
       }
       checkuser()
   }, [currentUser])
+
+   useEffect( () => {
+      (async() => {
+          // const strainfunc = async () => {
+    $.ajax({
+      method: 'post',
+      url: '/api/strains/allStrain',
+      data: {
+       key: 'all'
+      }
+    }).then( (msg) => {
+      console.log('msg we are in the .then() statement')
+      console.log(msg)      
+    })
+    })()
+    // }
+   }, [])
 
 
     const globalstrain = props.globalstate
@@ -245,10 +259,13 @@ export async function getServerSideProps(context:any) {
   let localhost = url
   // let pokeurl = `https://pokeapi.co/api/v2/pokemon/`    
   let predata = await fetch(new URL(`${url}/api/strains/strain`))            
-  let serverdata = await predata.json()        
+  let serverdata = await predata.json()     
+  
+  let ALLstrainPOSTurl = `${url}/api/strains/allStrain`
+  
 return {
 props: {
-  serverdata, localhost
+  serverdata, localhost, ALLstrainPOSTurl
 }
 };
 }
