@@ -9,17 +9,17 @@ const prisma = new PrismaClient();
 export default async function (req:any, res:any) {
   
     const { body } = req;      
-    // console.log(body)
+    console.log('body')
+    console.log(body)
     let allstrainspost:any = await APIcall(body.key, null, null)
     let dbstrainlist = await prisma.strains.findMany()
     let strains = prisma.strains
-
+    
+    console.log('we are in the allstrain post route **************')
     
     const createStrains = async () => {
-      
-          if (dbstrainlist.length < 3) {
-      
-            
+          console.log('firing the createStrains function')
+          if (dbstrainlist.length < 3) {                
           allstrainspost.map( (mapitem:any, index:number) => {
             let strainId:number = index + 1
             let strain:string = mapitem.strain
@@ -35,32 +35,27 @@ export default async function (req:any, res:any) {
                 parents: parents,
                 funfact: funfact
               }
-            }).then( (createdstrains:any) => {              
+            }).then( (createdstrains:any) => {        
+              res.json( { successObject: dbstrainlist, length: dbstrainlist.length})                   
+            }).catch( (err) => {
+              res.json ( 'Gold in the Mines' )
             })              
         })
-    }
+    } else { res.json ( 'Gold in the Mines' )}
     }
       createStrains()    
 
-    const checkdb = () => {      
-    }
-    checkdb()
+  // if (req.method === 'POST') {      
+  //     let status:string = req.status            
+  //     let dblength = dbstrainlist.length
+  //     if (dbstrainlist.length) {
 
-
-
-  if (req.method === 'POST') {      
-      let status:string = req.status            
-      let dblength = dbstrainlist.length
-      if (dbstrainlist.length) {
-
-      }   
-    
-  }
-  try {
-      res.json( { successObject: dbstrainlist, length: dbstrainlist.length})
-  }
-  catch (err) {
-    console.log(err)
-  }
+  //     }   
+  // }
+  // try {
+  // }
+  // catch (err) {
+  //   console.log(err)
+  // }
 
 }
