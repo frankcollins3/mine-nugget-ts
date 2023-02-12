@@ -15,6 +15,8 @@ import DisplayForSearch from 'components/Searchdisplay'
 import SelectedSearch from 'components/SelectedSearch'
 import Magnify from 'components/Magnify'
 import Helmet from 'components/Helmet'
+import AllMine from 'components/AllMineBtnStrip'
+import MineShovel from 'components/mineshovel'
 
 // * utility
 import ReturnUrl from 'utility/ReturnUrl'
@@ -24,28 +26,37 @@ import GETuserstrains from 'utility/GETuserstrains'
 export default function FindMine (props, context) {    
     let urlagain = props.urlagain        
     let serverdata = props.data 
+
+    const { allStrain, getSpecifiedStrain, userStrainPost, userStrainGet, getID } = useUrl()  //obj destructuring
     
     let userStrainUrl = props.userStrainUrlAgain
+    let postMINEurl = props.postMINEurl
+    let getALLminesURL = props.getALLminesURL
+    let allStrainUrl = urlagain += allStrain     
+    let getIDurl = props.getIDurl
+    let workingurl = props.urlbuild    
+    let userStrainPostUrl = props.userStrainPost
+    let digsURL = props.digsURL
 
     let [preUrl, setPreUrl] = useState('')
     
     // * database accessing endpoint bank app: CONTEXT API 
-    const { allStrain, getSpecifiedStrain, userStrainPost, userStrainGet } = useUrl()  //obj destructuring
 
     // * global state for the whole app as CONTEXT API 
     const { 
             gameOn, playing, searchHover, hoverOnSearch, findMineTheme, toggleTheme,
-            selectedSearch, searchSelector, userStrains, userstrainset                          
+            selectedSearch, searchSelector, searchType, searchTypeClick,
+            userStrains, userstrainset, allMyStrains, allmystrainset,
+            currentuserset, currentUser, currentusernameset, currentuseridset,  currentUserId,                      
           } = useGame()
+
     const slashindexbucket = new Array() || []
-    
-    let allStrainUrl = urlagain += allStrain     
-
-    let workingurl = props.urlbuild    
-
+    const [findMineMyStrains, setFindMineMyStrains] = useState([])
     let slashcounter = 0
+          
 
-    useEffect( () => {
+    useEffect( () => {      
+        currentuserset(currentUser)  
         const textExit = () => {        // i would put turn this abstract expression into a modular reusable function but it won't be reused again.
             $('.HoverHintHeader')
             .animate({
@@ -70,19 +81,68 @@ export default function FindMine (props, context) {
         textExit()
     }, [])
 
+    useEffect( () => {
+        console.log('useEffect.. triggered triggere triggered!')
+        const checkuser = async () => {          
+          let currentusername =   window.localStorage.getItem('currentUserName')
+          let currentuserid =  window.localStorage.getItem('currentUserId')
+          let prestrains = window.localStorage.getItem('myStrains')            
+
+          let splitId = prestrains?.split(',')        
+          let filteredId = await splitId?.filter( strainsId => strainsId !== ',' && strainsId.length === 1)                                          
+          console.log('filteredId from FindMine these are my strains!')
+          console.log(filteredId)
+          currentusernameset(currentusername)
+          currentuseridset(currentuserid)    
+          userstrainset(filteredId)       
+
+        //   * myStrains: associated to currentUser.
+          setFindMineMyStrains(filteredId)       
+        allmystrainset(filteredId)
+        //   setFindMineMyStrains(filteredId)       
+        }
+        checkuser()
+    }, [currentUser])
+
+
+
     useEffect( () => {    
         const util = async () => {                
+            let strainIdString = '';                    
+            let getUserStrains = await GETuserstrains(userStrainUrl, 'all')            
+            let userstraindata = getUserStrains.data.userStrains
+            await userstrainset(userstraindata)     
             
-            let getUserStrains = await GETuserstrains(userStrainUrl, 'all')
-            let userstraindata = getUserStrains.data
-            await userstrainset(userstraindata)
-
-            // let strainArray = ['mimosa', 'Do-Si-Dos']
-            // let getSpecifyUserStrains = await GETuserstrains(suserStrainUrl, [48, strainArray])
-            
+            let userid:any = window.localStorage.getItem('currentUserId')            
+            let filteredStrains = userstraindata.filter(strain => strain.usersId.toString() === userid?.toString())            
+            await filteredStrains.forEach( (mystrain) => {
+                let stringPiece = `${mystrain.strainsId},`
+                strainIdString += stringPiece
+            })                    
+            await window.localStorage.setItem('myStrains', strainIdString)                                                   
         }
-        util()
+        // util()
 
+        const util2 = async () => {
+            let currentusername =   window.localStorage.getItem('currentUserName')
+            let currentuserid =  window.localStorage.getItem('currentUserId')
+            let prestrains = window.localStorage.getItem('myStrains')          
+            let splitId = prestrains?.split(',')        
+            console.log('splitId')
+            console.log(splitId)
+            let filteredId = await splitId?.filter( strainsId => strainsId !== ',' && strainsId.length === 1)                  
+            console.log('filteredId these are my strains!')                                    
+            console.log(filteredId)                                    
+            currentusernameset(currentusername)
+            currentuseridset(currentuserid)    
+            userstrainset(filteredId)   
+        }
+        const userutility = async () => {
+            await util()
+            await util2()
+        }
+        userutility()
+        
         const loopPush = () => {
             for (const char in urlagain) {                
                 if (urlagain[char] === '/') {
@@ -112,31 +172,67 @@ export default function FindMine (props, context) {
         toggleTheme()
     }
 
+    const allormine = async (event) => {
+        let btnText:string = event.target.outerText
+        console.log('btnText')
+        console.log(btnText)
+        await searchTypeClick(btnText)
+    }
+
+
+
     return (      
         <>
-        <Page>       
+        <Page style={{ border: 'none'}}
+        >             
+        {/* <button style={{ backgroundColor: 'orange'}} onClick={orangetest}> </button>   */}
         <Container 
+
         className={styles.row}>             
-        <div className="Column">                
-        <FindMineText findMineTheme={findMineTheme}/>
+        <div className="Column">    
         
-        <Magnify url={urlagain} findMineTheme={findMineTheme}/>
-            <h6 className="HoverHintHeader"
-             style={{ color: 'papayawhip'}}> Click on the Magnifying Glass <br/> Press a letter to search  </h6>         
-        </div>
-        </Container>        
-        <DisplayForSearch url={urlagain}/>
-            {selectedSearch.length > 5 
+        {
+            selectedSearch.length > 5
             ?
-        <SelectedSearch userStrainUrl={userStrainUrl} localURL={urlagain} />
+            <FindMineText findMineTheme={findMineTheme}/>
             :
             <pre></pre>
-            }
+        }
+                    
+        {
+            selectedSearch.length > 5
+            ?
+            <pre></pre>
+            :
+            <div className="Column">
+            <Magnify url={urlagain} findMineTheme={findMineTheme}/>
+            <h6 className="HoverHintHeader" style={{ color: 'papayawhip'}}> Click on the Magnifying Glass <br/> Press a letter to search  </h6>         
+            <DisplayForSearch url={urlagain} localURL={urlagain} getIDurl={getIDurl} usernamesForID={props.usernamesForIDurl}/>            
+            </div>
+        }
+        </div>
+        </Container>        
+
+    {/* <SelectedSearch findMineMyStrains={findMineMyStrains} getIDurl={getIDurl} />     */}
+        {selectedSearch.length > 5 
+        ?
+        <>
+        <SelectedSearch  
+                    findMineMyStrains={findMineMyStrains} getIDurl={getIDurl} postMINEurl={postMINEurl}
+                    getALLminesURL={getALLminesURL} ALLusersGET={props.ALLusersGET} userStrainPostUrl={userStrainPostUrl} digsURL={digsURL}
+        />
+        
+        <MineShovel postMINEurl={postMINEurl} getALLminesURL={getALLminesURL} deleteMinesURL={props.deleteMinesURL} digsURL={digsURL} ALLusersGET={props.ALLusersGET} />
+
+        </>
+        :
+        <pre></pre>
+        }             
         </Page>        
         </>          
     )
-        
 }
+    
 
 export async function getServerSideProps(context:any) {              
     let url:any = await ReturnUrl(context);   
@@ -144,13 +240,26 @@ export async function getServerSideProps(context:any) {
     let urlagain = url 
     let predata = await fetch(new URL(`${url}/api/strains/strain`))            
     let data = await predata.json()   
-
+    
     let userStrainUrl = `${url}/api/strains/getuserstrains`
     let userStrainUrlAgain = userStrainUrl
+    
+    let getIDurl = `${url}/api/strains/getIDwithNAME`
+    let usernamesForIDurl = `${url}/api/strains/allUsernamesForId`
+
+    let postMINEurl = `${url}/api/strains/minePOST`
+    let getALLminesURL = `${url}/api/strains/GETallmines`
+
+    let deleteMinesURL = `${url}/api/strains/DELETEmines`
+    let ALLusersGET = `${url}/api/user/GetAllUsers`
+
+    let userStrainPost = `${url}/api/strains/userstrainpost`
+    
+    let digsURL = `${url}/api/strains/digs`
         
-  return {
-  props: {
-      data, urlbuild, urlagain, userStrainUrl, userStrainUrlAgain
+    return {
+        props: {
+            data, urlbuild, urlagain, userStrainUrl, userStrainUrlAgain, getIDurl, usernamesForIDurl, postMINEurl, getALLminesURL, deleteMinesURL, ALLusersGET, userStrainPost, digsURL
     }
   };
   }
