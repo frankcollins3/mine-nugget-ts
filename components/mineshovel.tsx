@@ -1,7 +1,10 @@
-import { MenuIcon } from '@chakra-ui/react'
 import {useGame} from 'Contexts/game'
 import $ from 'jquery'
+
 import mineshovelES6 from 'utility/mineshovelES6'
+import digsES6 from 'utility/digsES6'
+import GETuserstrains from 'utility/GETuserstrains'
+import CSS from 'utility/CSStool'
 
 
 export default function MineShovel (props) {
@@ -16,11 +19,14 @@ export default function MineShovel (props) {
         // state that toggles whether the SelectedSearch will append an input to post a mine or the text of other mines/reviews to read other user data.
         searchMinePost, searchminepostset, searchMineRead, searchminereadpost, 
         myMineReview, myminereviewset, myMineTitle, myminetitleset,  // myMine state that stores the review for a user whose looking at their own data reviews.
-      } = useGame()
+        allMinesReviews,
+    } = useGame()
 
       const postMINEurl = props.postMINEurl
       const getALLminesURL = props.getALLminesURL;
-      const deleteMinesURL = props.deleteMinesURL
+      const deleteMinesURL = props.deleteMinesURL;
+      const digsURL = props.digsURL;
+      const ALLusersGET = props.ALLusersGET
 
     const MineClick = async (event) => {
         if (searchType === 'All') {
@@ -29,24 +35,48 @@ export default function MineShovel (props) {
         if (searchType === 'Mine') {
             console.log('searchType === Mine')     
             console.log("clicking the Mine while searchType is mine")       
-            // let postMine = await mineshovelES6(postMINEurl,  )
         }            
     }
+    
+    const ShovelClick = async (event) => {
+        $(event.target)
+        .animate({
+            height: '45px'
+        },200)
+        .animate({
+            height: '50px',
+            border: `rgb(247, 208, 32)`,
+        },200)
+        .animate({
+            height: '55px'
+        },200)
+        .animate({
+            height: '50px'
+        },200)
+        .animate({
+            height: '45px',
+        },200)
+        .animate({
+            height: '40px',
+            border: 'none',
+        },200)
 
-    const ShovelClick = (event) => {
-        console.log('usersOfSearchStrain in the shovelclick')
-        console.log(usersOfSearchStrain)
-        console.log(event.target)
-        console.log('MineShovelUser')
-        console.log(MineShovelUser)
-        if (searchType === 'All') {
-            console.log('searchType === All')            
-        }            
-        if (searchType === 'Mine') {
-            console.log('searchType === Mine')            
-        }            
-    }
+        if (searchType === 'Mine') {        
+        let preusers:any = await GETuserstrains(ALLusersGET, 'onlyusers')
+        let ALLusers = preusers!.data.users
+        let newDigMap = new Map()
+        
+        let currentUserDB = ALLusers.filter( user => user.id.toString() === currentUserId)[0]
+        let INTuserID = currentUserDB.id
+        
+        newDigMap.set('userId', INTuserID)
+        newDigMap.set('strain', selectedSearch)
+        let data = [newDigMap.get('userId'), newDigMap.get('strain')]
 
+        let digpost = await digsES6(digsURL, data, 'POSTnewDIGS')     
+    }            
+}
+        
     const ReadOrWrite = async (event) => {
         console.log('event')
         console.log(event)
@@ -58,8 +88,8 @@ export default function MineShovel (props) {
         let localSrc = imgsrc.slice(imgsrc.lastIndexOf('/') + 1, srcLen - 4)
         let id = event.target.id
         let myStrains:any = []
-
-        if (id === 'edit') {
+        
+        if (id === 'edit') {                        
             if (searchMineRead === true) searchminereadpost()
             searchminepostset()
         }
@@ -79,43 +109,56 @@ export default function MineShovel (props) {
             console.log('strainReview from the glasses!')
             console.log(strainReview)
 
-            let review = strainReview[0] ? strainReview[0].review : ''
-            let title = strainReview[0] ?  strainReview[0].title : ''
-            let AfterSlashIndex:number = title.indexOf('/') + 1
-            let titleLen:number = title.length
-
-            let sliceUserFromTitle = title.slice(AfterSlashIndex, titleLen)
-
-            myminereviewset(review)
-            myminetitleset(sliceUserFromTitle)
-            console.log('review')
-            console.log(review)
-
-
-
-            const pushMyStrains = () => {
-
+            
+                        
+            const pushMyStrains = () => {                         
                 allmines.forEach( (mine:any) => {
                     let looptitle:string = mine!.title
                     let slashIndex:number = looptitle.indexOf('/')
-                    let userId = looptitle.slice(0, slashIndex)
+                    let userId = looptitle.slice(0, slashIndex) 
+                    let AfterSlashIndex:number = mine.title.indexOf('/') + 1
+                    let titleLen:number = mine.title.length
+                    let sliceUserFromTitle = mine.title.slice(AfterSlashIndex, titleLen)
+                    
                     console.log('userId')
                     console.log(`userId in loop: ${userId} typeof: ${typeof userId}`)
-
+                    
                     console.log('currentUserId')
                     console.log(`currentUser ${currentUserId} typeof: ${typeof currentUserId}`)
-                    if (userId.toString() === currentUserId.toString()) {
-                        console.log('this condition is equal!')
-                        myStrains.push(mine)
-                    }    
+                    // if (parseInt(userId) === currentUserId) {
+                        if (userId.toString() === currentUserId.toString()) {
+                            console.log('this condition is equal!')
+                            myStrains.push(mine)
+                        }    
+                    })               
+                }
+                
+                const getMyStrains = () => {
+                    console.log('myStrains in the getMyStrains')
+                    myStrains.length 
+                    // * this ternary code right here might cause problems! To fix data.forEach definition errors have some seeder data! 
+                            ?
+                    myStrains.forEach( (strain) => {
+                        let looptitle:string = strain!.title
+                        let slashIndex:number = looptitle.indexOf('/')
+                    let userId = looptitle.slice(0, slashIndex)
+                    let AfterSlashIndex:number = strain.title.indexOf('/') + 1
+                    let titleLen:number = strain.title.length
+                    let sliceUserFromTitle = strain.title.slice(AfterSlashIndex, titleLen)
+                    // strain.id === searchStrainId ?                    
+                    if (strain.strainId === searchStrainId ) {
+                        console.log(`strainId: ${strain.strainId} ${typeof strain.strainId} searchStrain ${searchStrainId} ${typeof searchStrainId}`)
+                            myminereviewset(strain.review)
+                            myminetitleset(sliceUserFromTitle)
+                    }                    
                 })
+                          :
+                         ( () => {
+                            CSS($('#edit'), 'box-shadow', '3px 3px 3px rgb(247, 208, 32);')
+                            setTimeout( () => CSS($('#edit'), 'box-shadow', ''))
+                         })()
             }
-
-            const getMyStrains = () => {
-                console.log('myStrains in the getMyStrains')
-                console.log(myStrains)
-            }
-
+            
             const strainfunctions = async () => {
                 await pushMyStrains()
                 await getMyStrains()
@@ -165,6 +208,8 @@ export default function MineShovel (props) {
                 console.log(myreview)
 
                 let deleteMine = await mineshovelES6(deleteMinesURL, myreview, 'DELETEone') // DRY i know. could put in a useEffect and make localstate instead.
+                // * delete all that works but isn't needed as far as I can see. 
+                // let deleteMine = await mineshovelES6(deleteMinesURL, myreview, 'DELETEALL') 
                 console.log('deleteMine')
                 console.log(deleteMine)
 
@@ -185,7 +230,7 @@ export default function MineShovel (props) {
             // display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row',
         }}
         >   
-
+                    
                 {searchType === 'Mine' 
                         ?
                 <div className="Row">
@@ -213,6 +258,7 @@ export default function MineShovel (props) {
             <img onClick={ShovelClick}
               style={{
                  height: '50px', width: '65px', 
+                 display: searchType === 'Mine' ? '' : 'none',
                 //  margin: '1.25em 1.25em 0 1.25em', 
                  cursor: 'pointer',
                  }} src="/img/shovel.png"/>
