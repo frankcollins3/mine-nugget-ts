@@ -94,7 +94,7 @@ export default function SelectedSearch(props) {
         
 
         let alldigs = await digsES6(DIGSurl, '', 'GETallDIGS')
-        let digs = alldigs?.data.alldigs        
+        let digs = alldigs?.data.alldigs || ['', '', '']    
             digs.forEach( (likes) => {
                 console.log(`likes: ${likes} typeof ${typeof likes}`)
                 console.log('likes.userId')
