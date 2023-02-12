@@ -28,28 +28,28 @@ export default function Magnify (props) {
     let tam = ["tam1", "tam1", "tam1", "tam2", "tam3"];
     let opacity = ["opacity1", "opacity1", "opacity1", "opacity2", "opacity2", "opacity3"];
     let theme:string = props.findMineTheme
+
+    const [hover, setHover] = useState(false)
+    const [reduxBucket, setReduxBucket] = useState([])
+    const [isUser, setIsUser] = useState(false)
     
+    useEffect( () => {
+        let currentUsername = window.localStorage.getItem('currentUserName')        
+        currentUsername ? setIsUser(true) : setIsUser(false)    
+    }, [])
 
     const { allStrain, getSpecifiedStrain, userStrainPost, dbFirstLetter, dbNumber } = useUrl()  //obj destructuring
 
 const { 
     gameOn, playing, searchHover, searchOn, searchOff,
     findMineTheme, toggleTheme, searchChar, searchCharFunc,
-    searchBucket, fillSearchBucket
+    searchBucket, fillSearchBucket,
+    userStrains, userstrainset, currentuserset, currentUser, currentusernameset, currentuseridset, currentUserName, currentUserId,
+    searchMinePost, searchminepostset, searchMineRead, searchminereadpost, 
+    allMyStrains, allmystrainset,
+
     } = useGame()
 
-    const [hover, setHover] = useState(false)
-    const [reduxBucket, setReduxBucket] = useState([])
-
-    const checkKey = (event) => {
-        console.log("checkKey firing!")
-        console.log(event)
-    }
-
-    
-    
-    // * redux
-    
     function getRandomArbitrary(min, max) {
       return Math.floor(Math.random() * (max - min)) + min;
     }
@@ -70,12 +70,14 @@ const {
         }
     }, [])
 
-    const mouseleave = () => {
-        
-    }
+    const keyHandler = async (evt) => {    
+        // location.href='/loginlogout' 
+        if (isUser === false) {
+            location.href='/LoginLogout'
+        }
 
-    const keyHandler = async (evt) => {        
-        if (searchHover) {
+        
+        if (searchHover && isUser) {
 
             let precode:string = evt.code
             let code:string = evt.code.slice(3).toLowerCase()        
@@ -121,15 +123,14 @@ const {
                     fillSearchBucket(allstrains)
                 }
             }        
-
-        }
+        }         
     }
 
     const nothing = () => { 
         console.log("nothing function is firing");
      }
 
-    const searchOnFunc = () => {        
+    const searchOnFunc = async () => {                      
         searchOn()        
     }
 
@@ -141,10 +142,8 @@ const {
         console.log("something function!")
     }
 
-
     return (
         <Container className="Column">
-
 
         <div         
         onKeyDown={searchHover === true ? keyHandler : nothing}        
