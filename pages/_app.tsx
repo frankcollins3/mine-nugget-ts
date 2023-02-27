@@ -2,7 +2,7 @@
 import '../styles/globals.css'
   import type { AppProps } from 'next/app'
   import Head from "next/head";
-  import React, { useState, useContext, createContext } from 'react'
+  import React, { useState, useContext, useEffect, createContext } from 'react'
   import 'bootstrap/dist/css/bootstrap.css'
   import styled from 'styled-components'
   import Axios from 'axios';
@@ -16,11 +16,23 @@ import '../styles/globals.css'
   import store from 'redux/store'
   import {Provider} from 'react-redux';
   import { GameProvider } from 'Contexts/game'
+  import { useRouter } from 'next/router'
+  import NavBar from 'components/NavBar'
   
 
 
   
  export default function App({ Component, pageProps, context }: AppProps) {
+
+  // i posted an issue before finding this as a solution. I wanted to delete index.tsx but didn't know how to handle auto renavigate
+   const router = useRouter()
+   if (typeof window !== 'undefined') {
+     router.push('/strain')
+   }
+
+  useEffect( () => {
+  
+  }, [])
     // const {store, props} = wrapper.useWrappedStore()
     
     // const {  pageProps } = wrapper.useWrappedStore(rest);
@@ -157,7 +169,7 @@ import '../styles/globals.css'
           {/* if (state === 'toggle') {
             <error/>
           } */}
-      
+      <NavBar/>
       <Component {...pageProps}
       appCurrentUser={appCurrentUser} setAppCurrentUser={setAppCurrentUser}
       appCurrentUser={appCurrentUser} setAppCurrentUserName={setAppCurrentUserName}
