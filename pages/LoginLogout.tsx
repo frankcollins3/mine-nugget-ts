@@ -40,13 +40,7 @@ import Helmet from 'components/Helmet'
 
     let usernamearray = new Array()
 
-    export default function InOut (props) {
-        console.log('props from loginlogout')
-        console.log(props)
-        console.log('props.appCurrentUser')
-        console.log(props.appCurrentUser)
-        console.log('props.appCurrentUserName')
-        console.log(props.appCurrentUserName)
+    export default function InOut (props) {        
         let appCurrentUser = props.appCurrentUser        
         let appCurrentUserName = props.appCurrentUserName
         let setAppCurrentUser = props.setAppCurrentUser
@@ -97,14 +91,14 @@ import Helmet from 'components/Helmet'
     currentinput, currentinputset, usernameinput, usernameinputset, passwordinput, passwordinputset, emailinput, emailinputset, ageinput, ageinputset, 
             alluser, alluserset, allusername, allusernameset,
             wrongMsg, wrongmsgset, whatsWrongProblem, whatswrongproblemset, currentusernameset, currentUser, currentUserName, currentuserset, currentUserId, currentuseridset,
-            userStrains, userstrainset
+            userStrains, userstrainset, allMyStrains, allmystrainset,
 
             //  whatsWrong
         } = useGame()
 
         useEffect( () => {
             console.log('useEffect.. currentUser from LoginLogout')
-            
+
         }, [currentUser])
 
         const userobject = new Map([
@@ -230,6 +224,7 @@ import Helmet from 'components/Helmet'
                 console.log(allIndex)
                 
                 let newuser = await POSTuserCLASS(POSTuserREBUILD, allIndex)
+                goldClickSet('login')
                 console.log('newuser')
                 console.log(newuser)                            
             }
@@ -310,29 +305,32 @@ import Helmet from 'components/Helmet'
                 await setAppCurrentUser(LoginData)
                 await setAppCurrentUserName(LoginData.username)
 
-                window.localStorage.setItem('currentUserName', loginusername)            
-                window.localStorage.setItem('currentUserId', loginuserid)                
+                await window.localStorage.setItem('currentUserName', loginusername)            
+                await window.localStorage.setItem('currentUserId', loginuserid)                
                 
                 const getMyStrains = async () => {
-                    // let strainbucket:string[] = []
-                    let strainIdString = '';
+                    let strainIdString = '';                    
                     let usersMap = new Map()
                     usersMap.set('usersId', LoginData.id)                    
-                    const myStrainsFetch = await myStrainsES6(props.myStrainsForMyIdUrl, loginuserid)  
-                    let myStrains = myStrainsFetch!.data.myStrains                         
+                    const myStrainsFetch = await myStrainsES6(props.myStrainsForMyIdUrl, loginuserid)                                          
+                    let myStrains = myStrainsFetch!.data.myStrains                                             
                     await myStrains.forEach( (mystrain) => {
                         let stringPiece = `${mystrain.strainsId},`
                         strainIdString += stringPiece
-                    })
+                    })                    
                     await window.localStorage.setItem('myStrains', strainIdString)                                        
-                    userstrainset(myStrains)
+                    // allmystrainset(myStrains)
                     return myStrains                                   
                 }                       
-                getMyStrains()                      
-                location.href = '/strain'
-            }
-
-        }
+                await getMyStrains()   
+                await goldClickSet('login')   
+                setTimeout( () => {
+                    location.href = '/'
+                }, 2000)
+                // $('body').on('mouseenter', () => {
+                //     location.href = '/strain'
+                // })                
+            }}
     }            
         
         const toggleshow = () => {
@@ -344,16 +342,16 @@ import Helmet from 'components/Helmet'
             }
         }
 
-        const check = () => {            
-            console.log(currentUser)
-            console.log('userStrains from check')
-            console.log(userStrains)
-            // location.href = '/strain'
+        const check = async () => {                        
+            console.log('allMyStrains')
+            console.log(allMyStrains)
+
+            // location.href = '/strain'                    
         }
 
         const test = () => {            
         }
-        
+                        
         return (                            
             <Page>
 
@@ -368,6 +366,7 @@ import Helmet from 'components/Helmet'
                 <Container style={{  maxWidth: '100vw'}} className={centerYbetweenXrow}>      
 
                 <Container
+                
                 style={{ display: goldClick === 'signup' || goldClick === 'login' ? 'none' : 'flex' }}
                 // style={{ display: goldClick === 'signup' || goldClick === 'login' ? 'none' : 'flex' }}
                 className={centerYcenterXcolumn}>
@@ -384,7 +383,6 @@ import Helmet from 'components/Helmet'
                  style={{ marginTop: '0.75em'}}
                  className="loginInputs" id="LoginPasswordInput" onChange={loginchangeHandler} />
             
-
                 </Container>
                 :
                 <div></div>
@@ -470,9 +468,7 @@ import Helmet from 'components/Helmet'
                         
                           }}
                     > {wrongMsg} </p>    
-                    </Container>
-                    <button style={{ backgroundColor: 'green', margin: '2em' }} onClick={test}></button>
-                    <button style={{ backgroundColor: 'blue', margin: '2em' }} onClick={check}></button>
+                    </Container>                     
             </Page>
             
             )
