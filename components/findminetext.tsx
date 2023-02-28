@@ -2,7 +2,7 @@
     import {useEffect, useState} from 'react'
     import $ from 'jquery'
     import {useGame} from 'Contexts/game'
-    import Container from 'react-bootstrap/container'
+    import Container from 'react-bootstrap/Container'
 
     export default function FindMineText (props) {
         const randomNumbers = [1,2,3,4,5,6,7,8]
