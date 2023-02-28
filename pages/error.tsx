@@ -7,25 +7,23 @@ import styles from 'styles/Misc.module.sass'
 import Random from 'utility/Randomizer'
 import Resize from 'hooks/MediaQuery'
 
+export default function Error (props) {    
+    // console.log('props')
+    // console.log(props)
+    let globalappstate:(object|string) = props.globalstate
+    console.log('globalappstate')
+    console.log(globalappstate)
 
-
-
-export default function Error () {    
+    let targetRef = useRef(null)
     const changeSize = async () => {
-        let targetRef = useRef(null)
         let screenSizeBucket:(string)[] = ['800px', '400px', '1200px']
-        let randomSize:string =  await Random(screenSizeBucket)
-        // console.log('randomSize')
-        // window.addEventListener("resize", '500px');
-
-        // console.log(randomSize)
-        // import Card from 'react-bootstrap'
+        let randomSize:string =  await Random(screenSizeBucket)        
     }
+    
     return ( 
         
-        // <Container>
-            <pre ref={target}>
-
+        <pre ref={targetRef}>
+            {/* <Container> */}
             <Container className="Column">
                 {/* <p> {media.matches } </p> */}
             <ErrorCont>
@@ -47,12 +45,12 @@ export default function Error () {
                src="/img/barrier.png"></img>
               </Col>
               </Row>
-               </pre>
               {/* <img src="/img/pick.png"/> */}
                           
             </ErrorCont>
             <button onClick={changeSize}></button>
                 </Container>
+               </pre>
         //  </Container> 
         
         
