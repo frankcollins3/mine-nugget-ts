@@ -1,178 +1,268 @@
-import Head from 'next/head'
-import Image from 'next/image'
-// import styles from '../styles/Home.module.css'
-import styles from '../styles/Home.module.scss'
-import Axios from 'axios'
-import APIcall from '../utility/APIcall'
-import Random from '../utility/Randomizer'
-import Client from '../utility/Prisma'
-import CSS from '../utility/CSStool'
-// import allStrain from './api/allStrain'
-import $ from 'jquery' // import * as $ from 'jquery'
-import React,  { useEffect, useState} from 'react'
-import { PrismaClient } from '@prisma/client'
-let prisma; 
+// @ts-nocheck
+
+import styles from 'styles/Strain.module.scss'
+import Container from 'react-bootstrap/Container';
+import getAllStrain from 'pages/api/strains/strain'
+import React, { useEffect, useState, useContext, createContext } from 'react'
+import $ from 'jquery'
+import Axios from 'axios';
+let relativepath = `/api/getAllStrain.ts`
+import styled from 'styled-components'
+import Display from 'styles/StrainDisplay'
+import {useGame} from 'Contexts/game'
+
+import AllStrainContainer from 'components/AllStrainContainer'
+import StrainDisplay from 'components/StrainDisplay'
+import StrainDisplayValue from 'components/strainDisplayvalue'
+import PickMines from 'components/PickMines'
+
+import Random from 'utility/Randomizer'
+import Children from 'utility/jqChildren'
+import ReturnUrl from 'utility/ReturnUrl'
+import AjaxCall from 'utility/AjaxCall'
+import CSS from 'utility/CSStool'
+import DataCall from 'utility/DataCallJS'
+import regularStrainsES6 from 'utility/regularStrainsES6'
 
 
-
-// id | strainId | strain | dominant | funfact | parents | createdAt | updatedAt
-
-// const user = await prisma.user.create({
-//   data: {
-//     email: 'elsa@prisma.io',
-//     name: 'Elsa Prisma',
-//   },
-// })
+import Document, { Html, Head, Main, NextScript } from 'next/document'
 
 
+                    
+export default  function Strain ( props:any, context ) {       
+
+        let appCurrentUser = props.appCurrentUser
+        let appCurrentUserName = props.appCurrentUserName
 
 
-export default function Home( props: any, {poke}:any) {
-  console.log('props from the home function!')
-  console.log(props)
-  
-  console.log('poke')
-  console.log(poke)
+    let explicitprops = props
 
-  const [ pokemon, setPokemon ] = useState('')
-  const [currentStrain, setCurrentStrain] = useState('')
-  const [savedStrains, setSavedStrains] = useState('')
+    let localhost = props.localhost
+    let ALLstrainPOSTurl = props.ALLstrainPOSTurl
 
-  const [users, setUsers] = useState([])
-  const [dbStrains, setDbStrains] = useState([])
+    const TextContext = createContext('')
+    
+    // * State 
+    const [clickedStrain, setClickedStrain] = useState()
+    const [bgToggle, setBgToggle] = useState('new')
+    const [textState, setTextState] = useState('')
+    const [displayText, setDisplayText] = useState('')
 
-  const classList = [styles.Container, styles.Column].join(" ")
+    const {currentUser, currentUserName, currentuseridset, currentUserId, currentusernameset, noUser, nouserset, userStrains, userstrainset } = useGame()
 
-  const checkAPI = async () => {  
-    let predata: any[] = await [APIcall('all', null, setCurrentStrain)]        
-    let randomstrain = await APIcall('random', null, setCurrentStrain)          
-    }
+    useEffect( () => {
+      console.log('useEffect.. currentUser from from strain')
+      const checkuser = async () => {
+        let currentusername =   window.localStorage.getItem('currentUserName')
+        let currentuserid =  window.localStorage.getItem('currentUserId')
+        let prestrains = window.localStorage.getItem('myStrains')          
+        let splitId = prestrains?.split(',')        
+        
+        let filteredId = await splitId?.filter( strainsId => strainsId !== ',' && strainsId.length === 1)      
+                                         
+        currentusernameset(currentusername)
+        currentuseridset(currentuserid)    
+        userstrainset(filteredId)            
+      }
+      checkuser()
+  }, [currentUser])
 
-
-
-  const strainfunc = async () => {
-    let btn = $('.button')        
-    CSS(btn, 'border', '5px solid hotpink');
+   useEffect( () => {
+      (async() => {
+          // const strainfunc = async () => {
     $.ajax({
       method: 'post',
       url: '/api/strains/allStrain',
-      // data: {
-      //  key: 'all'
-      // }
+      data: {
+       key: 'all'
+      }
     }).then( (msg) => {
       console.log('msg we are in the .then() statement')
-      console.log(msg)      // res.json( { successObject: allstrainspost})   * the console.log(msg) is this    res.json() 
+      console.log(msg)      
     })
-  }
+    })()
+    // }
+   }, [])
 
-  const getRouteTest = async () => {
-    console.log("were in the getRoutesTest function")
-    $.ajax({
-      method: 'get',
-      url: '/api/getAllStrain',
-        data: {
-          key: 'GETall'
-        }
-      }).then( (resFromAPI) => {
-        console.log('resFromAPI')
-        console.log(resFromAPI)
-        let res = resFromAPI
-        // *  this is client side 
+
+    const globalstrain = props.globalstate
+    let userId = currentUser ? currentUser.id : ''
+    console.log('userId from over here!')
+    console.log(userId)
+
+    const classList:string = [styles.Page, 'Column'].join(" ")
+    const textClasses:string = [styles.FontSizeTest, styles.BorderTest].join(" ");
+    
+    const access = async (context:any) => {             
+    let ajaxstraindata = await DataCall('axios', `${url}/api/strains/allStrain`, null) // /pages/api/getAllStrains      
+    let url:string = await ReturnUrl(context);        
+  }
+    
+    const returnUrl = async (context:any) => { 
+      let url:string = await ReturnUrl(context)      
+      return url
+    } // no 1liner?
+    returnUrl()
+
+    const usercheck = async () => {
+      console.log('appCurrentUser')
+      console.log(appCurrentUser)
+      console.log('appCurrentUserName')
+      console.log(appCurrentUserName)
+      
+      console.log('userStrain')
+      console.log(userStrains)
+    }
+
+    const LOGOUT = () => {
+      // window.localStorage.setItem('currentUserId', '')
+      // window.localStorage.setItem('currentUserName', '')
+      window.localStorage.setItem('currentUserName', '')            
+      window.localStorage.setItem('currentUserId', '')            
+      currentusernameset('')
+      currentuseridset('')
+    }
+
+    const noUserClickMine = (event) => {
+      
+
+      $(event.target)
+      .animate({
+        opacity: '0.8'  
+      }, 500)
+      .animate({
+        opacity: '0.3'
+      }, 500)
+      .animate({
+        opacity: '0.3'
+      }, 500, () => {
+        setTimeout( () => {
+          location.href = '/LoginLogout'          
+          nouserset(false);
+          $('*').css('cursor', 'pointer' )
+        }, 1000)
+
       })
-  }
-  
 
-  return (
-    <div className={classList}>    
-    <main className={styles.main}>
-        <h1>         
-          {currentStrain || 'hey'}
-        </h1>
-      {/* <p> {} </p> */}
+      setTimeout( () => {
+        $('*')        
+        .animate({
+          opacity: '0.8'  
+        }, 500)
+        .animate({
+          opacity: '0.3'
+        }, 500)
+        .animate({
+          opacity: '0.3'
+        })
+      }, 2000)
+
+    }
+
+    return (
+
+      <>
+        
         
 
-        <button onClick={checkAPI} type="button"> </button>
+          <Container 
+          style={ { minWidth: '100%'}}
+          className={classList}>
 
-          <button     
-           className="button"     
-           onClick={strainfunc}
-           type="submit"
-           style={{ minHeight: '5em', minWidth: '5em', backgroundColor: 'papayawhip', borderRadius: '50%'}}
-           id='straininput'          
-          >
-          </button>
+            
+            { noUser === true ? 
+            <div className="Row">
+              <p id="noUserText" > You Must Be Mine To Dig For Gold. </p>
+            </div>
+            :
+            <pre></pre>
+          }
+            <AllStrainContainer   
+                let global={explicitprops}
+                strainSave={props.strainSave} setStrainSave={props.setStrainSave}
+                // globalState={globalstrain}
+                bgToggle={bgToggle} setBgToggle={setBgToggle}
+                textState={textState} setTextState={setTextState}
+                displayText={displayText} setDisplayText={setDisplayText}
+                clickedStrain={clickedStrain} setClickedStrain={setClickedStrain}       
+                serverdata={props.serverdata}      
+                url={props.url} setUrl={props.setUrl}
+                allStrains={props.allStrains} setAllStrains={props.setAllStrains}
+                currentStrain={props.currentStrain} setCurrentStrain={props.setCurrentStrain}                            
+                />
+            {
+              noUser === true ?
+              <div style={{
+                height: '10em',
+                width: '10em',
+                display: 'flex', justifyContent: 'center', alignItems: 'center', 
+                flexDirection: 'row'
+              }} 
+              >
+                <img 
+                onClick={noUserClickMine}
+                style={{ transform: 'scale(0.10)', boxShadow: '18px 50px 10px papayawhip', borderRadius: '50%', padding: '0', margin: '0' }}  src="/img/mine.png"/>              
+            </div>            
+              : 
+              <div></div>
+            }
 
-          <button     
-           className="button"     
-           onClick={getRouteTest}
-           type="submit"
-           style={{ minHeight: '5em', minWidth: '5em', backgroundColor: 'orange', borderRadius: '50%'}}
-           id='straininput'          
-          >
-          </button>
-  
-          
-          
-    </main>
+              <div className={styles.Rows}>
+              {props.strainSave === false 
+                 ?
+                 <>
+              <StrainDisplay  
+                strainSave={props.strainSave} setStrainSave={props.setStrainSave}
+                // globalState={globalstrain}
+                textState={textState} setTextState={setTextState}
+                bgToggle={bgToggle} setBgToggle={setBgToggle}
+                clickedStrain={clickedStrain} setClickedStrain={setClickedStrain}       
+                />
 
-    </div>
-  )
+              <StrainDisplayValue
+              // globalState={globalstrain}
+              strainSave={props.strainSave} setStrainSave={props.setStrainSave}
+              displayText={displayText} setDisplayText={setDisplayText}
+              bgToggle={bgToggle} setBgToggle={setBgToggle}
+              clickedStrain={clickedStrain} setClickedStrain={setClickedStrain}       
+              >
+              </StrainDisplayValue>
+                </>
+              :
+              ''
+            }
+                </div>                
+             {props.strainSave === false 
+                ? 
+                ''
+              :
+              <PickMines
+              localhost={localhost}
+              url={returnUrl}
+              global={explicitprops}
+              contextprops={context}
+              />
+              }
+                 
+          </Container>
+          </>
+            
+              
+    )
 }
 
-
-export async function getStaticProps() {
-
-  let allstrains:any = await APIcall('all', null, null)
-  prisma = new PrismaClient()
+export async function getServerSideProps(context:any) {              
+  let url:any = await ReturnUrl(context);    
+  let localhost = url
+  // let pokeurl = `https://pokeapi.co/api/v2/pokemon/`    
+  let predata = await fetch(new URL(`${url}/api/strains/strain`))            
+  let serverdata = await predata.json()     
   
-  let allusers = await prisma.users.findMany()
-  let dbstrains = await prisma.strains.findMany()
-  let strainlength = allstrains.length
+  let ALLstrainPOSTurl = `${url}/api/strains/allStrain`
   
-  // let length = allusers.length
-  let randomStrain = await Random(allstrains)
- 
-  let strainname:string = randomStrain.strain
-  console.log('strainname')
-  console.log(strainname)
-
-  let response = await fetch(`https://pokeapi.co/api/v2/pokemon/ditto`)
-  let pokemon:any = await response.json()
-
-
-    return {
-      props: { poke: pokemon } // will be passed to the page component as props
-    }
-  }
-  
-
-    // const master = await prisma.users.findFirst({
-  //     where: {
-  //       username: 'mastermizery' // old runescape account name.
-  //     }
-  // })
-  // console.log(master)
-  // id | strainId | strain | dominant | funfact | parents
-
-
-  // const newstrain = await prisma.strains.create({
-  //   data: {
-  //     id: dbstrains.length + 1,
-  //     strain: randomStrain.strain,
-  //     strainId: dbstrains.length + 1,    
-  //     dominant: randomStrain.dominant,
-  //     funfact: randomStrain.funfact, 
-  //     parents: randomStrain.parents,      
-  //   }
-  // })    
-  // console.log('newstrain')
-  // console.log(newstrain)
-
-  // const findStrain = await prisma.strains.findFirst({
-  //   where: { strain: 'mimosa'}
-  // }).then( (strain:any) => {
-  //   let name:(string|any) = strain.strain
-  //   console.log('name')
-  //   console.log(name)  
-
-  // })
+return {
+props: {
+  serverdata, localhost, ALLstrainPOSTurl
+}
+};
+}
