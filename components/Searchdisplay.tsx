@@ -1,7 +1,7 @@
 
 import Container from 'react-bootstrap/Container'
 import {useEffect, useState} from 'react'
-import Searchdisplay from 'styles/findmine/components/Searchdisplay'
+import Searchdisplay from 'styles/findmine/components/SearchDisplay'
 import styles from 'styles/findmine/sass/FindMine.module.scss'
 import $ from 'jquery'
 
