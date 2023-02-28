@@ -4,8 +4,6 @@ import { useState, useEffect } from 'react'
 import Regex from 'utility/MasterRegex'
 import APIcall from 'utility/APIcall'
 import $ from 'jquery'
-// var jsdom = require('jsdom');
-// $ = require('jquery')(new jsdom.JSDOM().window);
 import {useUrl} from 'Contexts/Url'
 import {useGame} from 'Contexts/game'
 import FirstLetter from 'utility/firstLetterSearch'
@@ -19,9 +17,6 @@ import IntStringCount from 'utility/IntStringCount'
 
 // * components
 import AllMine from 'components/AllMineBtnStrip'
-
-// let hoverstring:string = magnifyhover.toString()
-
 
 export default function Magnify (props) {
     let style = ["style1", "style3", "style4"];
@@ -71,25 +66,18 @@ const {
     }, [])
 
     const keyHandler = async (evt) => {    
-        // location.href='/loginlogout' 
         if (isUser === false) {
             location.href='/LoginLogout'
         }
 
         
         if (searchHover && isUser) {
-
             let precode:string = evt.code
-            let code:string = evt.code.slice(3).toLowerCase()        
-            // gpmcwd gorilla, pineapple, mimosa, cherry, wid & cake, dosidos
-    
+            let code:string = evt.code.slice(3).toLowerCase()            
             let numreturn = await Regex(precode, 'numreturn')
-            let allstrains = await APIcall('all', null, null)
-    
+            let allstrains = await APIcall('all', null, null)    
             let regexlength:number = numreturn.length        
-            if (regexlength < 1) {
-    
-    
+            if (regexlength < 1) {    
                 if (code === 'g' || code === 'w' || code === 'p' || code === 'm' || code === 'c' || code === 'd') {
                     let searchFor:(string|object|any) = await FirstLetter(code)
                     fillSearchBucket(searchFor)                
@@ -110,16 +98,10 @@ const {
                     let searching = await POST(dbNumber, stringjoin)                                
     
                     let myarray = ['1', '2', '3', '4', '5']
-                    // fillSearchBucket(allstrains)                
-                    let myStrains = await NumberSearch(numreturn)
-    
-                    console.log('myStrains')
-                    console.log(myStrains)
+                    let myStrains = await NumberSearch(numreturn)                    
                     fillSearchBucket(myStrains)                
                 }            
-                else if (parseInt(numreturn) > 6) {
-                    console.log("num return at this time")
-                    console.log(parseInt)
+                else if (parseInt(numreturn) > 6) {                    
                     fillSearchBucket(allstrains)
                 }
             }        
@@ -138,8 +120,7 @@ const {
         searchOff()        
     }
 
-    const something = () => {
-        console.log("something function!")
+    const something = () => {    
     }
 
     return (
@@ -160,8 +141,6 @@ const {
                 </div>
             </div>
         </div>
-
-        {/* <AllMine/> */}  
         </Container>
     )
 }
