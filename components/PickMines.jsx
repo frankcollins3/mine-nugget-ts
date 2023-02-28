@@ -14,37 +14,24 @@
     import DataCall from 'utility/DataCallJS'
 
     export default function PickMines(props) {
-        
-        console.log('props in pickmines')
-        console.log(props)
-        
+                
         const { userStrainPost } = useUrl()
         const { currentUser, currentUserName, currentusernameset, currentuseridset, currentUserId} = useGame()
 
-        useEffect( () => {
-            console.log('useEffect.. currentUser from from strain')
+        useEffect( () => {        
             const checkuser = async () => {
               let currentusername =   window.localStorage.getItem('currentUserName')
-              let currentuserid =  window.localStorage.getItem('currentUserId')
-      
+              let currentuserid =  window.localStorage.getItem('currentUserId')      
               currentusernameset(currentusername)
               currentuseridset(currentuserid)
-              console.log("checking the checkuser from strain")
               let user = await window.localStorage.getItem('currentUserName')
               let username = user.username
-              console.log('user from localstorage')
-              console.log(user)
-              console.log('username')
-              console.log(username)
             }
             checkuser()
         }, [currentUser])
       
-
-
         let localURL = props.localhost
         let userstrainURL = localURL += userStrainPost
-        // let userStrainURL = props.userStrainUrl
         
         let globalstate = props.global
         let clickedStrain = props.global.clickedStrain
@@ -63,48 +50,22 @@
         useEffect( () => {
             setGlobal(globalstate)
         }, [])   
-
-        // useEffect( () => {
-        //     (async() => {
-
-        //     })()
-
-        // }, [])
+        
         
         const clickPick = async () => {     
             await userstrainsMAP.set('usersId', '')
-            await userstrainsMAP.set('strain', '')
-
-            console.log("lets see the clickPick!")        
-            // let localurl = await props.url();
-            // let realurl = `${localurl}/api/strains/postuserstrains`;
-                         
-            let straindata = globalstate.currentStrain;       
-            console.log('straindata')                 
-            console.log(straindata)          
-            
-            console.log(userstrainsMAP.get('usersId'))       
+            await userstrainsMAP.set('strain', '')                                     
+            let straindata = globalstate.currentStrain;           
             let userid = parseInt(currentUserId); // this would/will be pulling global.userId.toString()                         
             await userstrainsMAP.set('usersId', userid)
             await userstrainsMAP.set('strain', straindata)
             await userstrainsMAP.set('strainsId', 0)
 
             let submissionData = straindata += userid
-            let newUserStrain = await POSTuserstrainsES6(userstrainURL, userstrainsMAP)            
-            // let xmldata = await POST(realurl, submissionData);            
-            // console.log('xmldata')            
+            let newUserStrain = await POSTuserstrainsES6(userstrainURL, userstrainsMAP)                        
             setSave(true)
-            setSavedStrain(props.global.clickedStrain)
-            // console.log(xmldata)            
-
-            
-             
+            setSavedStrain(props.global.clickedStrain)             
         }
-
-        
-
-        // let globalstate:(string|object|number)  = props.global
-
 
         return (
 
