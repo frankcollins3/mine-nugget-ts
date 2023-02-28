@@ -13,7 +13,7 @@ import ParentRing from 'components/ParentRing'
 import ParentWatch from 'components/ParentWatch'
 import Container from 'react-bootstrap/Container'
 import Family from 'components/FamilyTreeContainer1'
-import Family2 from 'components/FamilyTreeContainer2'
+// import Family2 from 'components/FamilyTreeContainer2'
 import GameCounter from 'components/GameCounter'
 import GameChild from 'components/GameChild'
 
@@ -30,9 +30,6 @@ import AttrTool from 'utility/JqAttr'
 
 // * Context
 import { useGame } from 'Contexts/game'
-
-
-
 
 
 export default  function GameContainer (props) {
