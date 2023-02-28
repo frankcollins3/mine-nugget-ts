@@ -23,37 +23,24 @@ import APIcall from 'utility/APIcall'
 import MasterListStyle from 'utility/MasterListStyle'
 import MasterRegex from 'utility/MasterRegex'
 import {useGame} from 'Contexts/game'
-import { createSemanticDiagnosticsBuilderProgram } from 'typescript'
 
 export default  function AllStrainContainer(props:any) {   
 
-    // globalstate
     const {currentUser, currentUserName, currentuseridset, currentUserId, currentusernameset, noUser, nouserset } = useGame()
-
-    // local | passed-as-props globalstate
     let globalprops:any = props.global
-    // const [noUser, setNoUser] = useState(true)
-
     let text:string = props.textState
     useEffect( () => {
       if (text === 'thc') props.setStrainSave(true)      
     }, [text])
 
     useEffect( () => {
-        console.log('useEffect.. currentUser from from strain')
         const checkuser = async () => {
           let currentusername =   window.localStorage.getItem('currentUserName')
-          let currentuserid =  window.localStorage.getItem('currentUserId')
-  
+          let currentuserid =  window.localStorage.getItem('currentUserId')  
           currentusernameset(currentusername)
           currentuseridset(currentuserid)
-          console.log("checking the checkuser from strain")
-          let user = await window.localStorage.getItem('currentUserName')
-          let username = user.username
-          console.log('user from localstorage')
-          console.log(user)
-          console.log('username')
-          console.log(username)
+          let user = await window.localStorage.getItem('currentUserName') || ''
+          let username = user.username          
         }
         checkuser()
     }, [currentUser])
@@ -126,7 +113,6 @@ export default  function AllStrainContainer(props:any) {
 
         }
         } else {
-            console.log("no username");
             $('*').css('cursor', 'pointer' )            
             nouserset(true)
         }
@@ -196,14 +182,6 @@ export default  function AllStrainContainer(props:any) {
            }       
         </Container>
         <button id={styles.BgButton}
-        // style={ 
-        //     {
-        //         // backgroundColor: 'green',
-        //         backgroundImage: 'public/img/gold.png',
-        //         backgroundSize: 'cover',
-        //         backgroundRepeat: 'no-repeat'
-        //     } 
-        // }
         onClick={toggleBg}></button>
         </>
 
