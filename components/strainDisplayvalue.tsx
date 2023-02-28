@@ -1,40 +1,33 @@
+// @ts-nocheck
 
-import Container from 'react-bootstrap/Container'
-import APIcall from 'utility/APIcall'
-import {useEffect, useState} from 'react'
-import {useGame} from 'Contexts/game'
-import Searchdisplay from 'styles/findmine/components/Searchdisplay'
-
+import styled from 'styled-components'
+import CardStyle from 'styles/StrainDisplay'
+import {useState, useEffect} from 'react'
 
 
-export default function SearchDisplay () {
-
-    const { 
-        gameOn, playing, searchHover, hoverOnSearch, 
-        findMineTheme, toggleTheme, searchChar, searchCharFunc,
-        searchBucket, fillSearchBucket
-        } = useGame()
-
-    const textenter = () => {
-        console.log('searchBucket')
-        console.log(searchBucket)
-        console.log('enter the text')
-    }
-
-    let strainmap = searchBucket.map( (mapitem) => {
-        return (
-            <p> {mapitem.strain} </p>
-        )
-    })
-
+export default function StrainDisplayValue(props) {
+    console.log("hello from strain display values!")
+    let columnclass = 'Column'
+    let card = 'card' 
+    let doubleCardClass = [card, columnclass].join(' ')
     return (
-        <Searchdisplay>
-            <h1 onMouseEnter={textenter}> hey whaddya know </h1>
-            {strainmap}
-            {/* {searchBucket.map( (mapitem) => {
-                <p> {mapitem.strain} </p>
-            })} */}
-        </Searchdisplay>
+        <>        
 
+                 <CardStyle        
+            bgToggle={props.bgToggle} setBgToggle={props.setBgToggle}
+            clickedStrain={props.clickedStrain} setClickedStrain={props.setClickedStrain}            
+                >
+
+                <div 
+                className={doubleCardClass}
+                >            
+                <h2
+                style={{ backgroundColor: props.bgToggle === 'new' ? 'transparent' : 'rgb(62, 50, 32)'}}
+                 className="card-text">
+                    {props.displayText || ''}
+                 </h2>
+            </div>    
+         </CardStyle>   
+        </>
     )
 }
