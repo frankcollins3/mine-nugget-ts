@@ -1,5 +1,9 @@
 import $ from 'jquery'
 export default async function Family(object, method) {      // already forgot its not TS file: !(url:string)
+            console.log('object')
+            console.log(object)
+
+            
                         
             class Fam {
                 constructor(object, method) {
@@ -30,6 +34,7 @@ export default async function Family(object, method) {      // already forgot it
                 }
 
                 children() {
+                    console.log("children method")
                     let children = $(object).children()
                     return children
                 }
@@ -47,7 +52,9 @@ export default async function Family(object, method) {      // already forgot it
                         return sibling
                     }
                     if (method === 'children') {
-                        let children = await new Fam(object, method).getchildren
+                        console.log("hey were over here familyJS")
+                        let kids = await new Fam(object, method).getchildren
+                        return kids
                     }
 
     }
