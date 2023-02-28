@@ -13,12 +13,10 @@ import Regex from 'utility/MasterRegex'
 import ReturnRight from 'utility/ReturnRight'
 import ReturnWrong from 'utility/ReturnWrong'
 import Children from 'utility/jqChildren'
-import Family from 'utility/familyJS'
+import Family from 'utility/FamilyJS'
 import Animate from 'utility/jqAnimate'
 import { Draggable, Droppable } from 'react-drag-and-drop'
 
-
-import { propTypes } from 'react-bootstrap/esm/Image'
 
 
 // * redux 
