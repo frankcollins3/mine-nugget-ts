@@ -50,23 +50,14 @@ alluser, alluserset, allusername, allusernameset
            let loopsafeNoCursing = [nocursing]
            let loopsafeezbucket:any = tooeasybucket
            
-           
-           
            if (stringinput.length < 1) {
             uppercaseset('false')
             numbercharset('false')
             specialcharset('false')
            }
-           
-            // if (checked === 'password') {
-                console.log('tooeasybucket in the password')
-                console.log(tooeasybucket)
-
-
-
+                   
                 let uppercaseRegex = passwordinputstring.match(upperCasePattern)            
-                let regexnumber = passwordinputstring.match(numberPattern)                        
-                // let regexnumber = actualstring.match(numberPattern)                        
+                let regexnumber = passwordinputstring.match(numberPattern)                                   
                 let specialRegex = passwordinputstring.match(specialPattern)
                 let onlyletters = passwordinputstring.length > 2 ? passwordinputstring.match(onlyLettersPattern) : ['friends', 'for', 'ever']
 
@@ -75,9 +66,7 @@ alluser, alluserset, allusername, allusernameset
                 loopsafeezbucket.forEach( (easyword:string) => {
 
                     let lettersArrayJoined = onlyletters.join("")
-                    if (lettersArrayJoined === easyword) {
-                        // console.log('lettersArrayJoined')
-                        // console.log(lettersArrayJoined)
+                    if (lettersArrayJoined === easyword) {                        
                         easycount++
                         tooeasyset('true')
                     } else {
@@ -145,14 +134,6 @@ alluser, alluserset, allusername, allusernameset
             }
 
         }, [usernameinput])
-            
-        const inputClick = (event) => {            
-            
-        }
-
-        const btnclick3 = () => {  
-                        
-        }
 
         const checkboxclick = async (event) => {
             let cb1:any = $('#cb1')
@@ -160,12 +141,9 @@ alluser, alluserset, allusername, allusernameset
             let cb3:any = $('#cb3')
             let usercheck:string = cb1[0].checked
             let passcheck:string = cb2[0].checked
-            let emailcheck:string = cb3[0].checked
-        
-            let target:any = $(event.target)
-            // let target:any = $(event.target)[0]
+            let emailcheck:string = cb3[0].checked        
+            let target:any = $(event.target)        
             let boxsibling:any = await Siblings(target)
-
             let checktext:any = boxsibling[0].innerText
             let tag = $('.tag')
             
@@ -213,7 +191,6 @@ alluser, alluserset, allusername, allusernameset
                 }
                 const doublefunctions = async () => {
                     choosechecked('not checked')
-                    // setChecked('not checked')
                     await blankvalue()
                     await resetToNone()
                 }
@@ -291,9 +268,7 @@ alluser, alluserset, allusername, allusernameset
                  </div>
 
                         
-                <div id={sty.ConstraintB}>
-                    {/* <p style={{ color: 'moccasin', fontWeight: 'bold', fontSize: '30px'}}> {currentinput} </p> */}
-
+                <div id={sty.ConstraintB}>                
                     {
                         checked === 'password' 
                         ?
