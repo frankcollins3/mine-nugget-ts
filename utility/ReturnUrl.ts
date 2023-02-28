@@ -1,19 +1,12 @@
-async function ReturnUrl (context:any) {
-    console.log("in the return Url function");
+async function ReturnUrl (context:any) {    
 
-    if (process.env.NODE_ENV === "production") {
-        return `https://${context.req.rawHeaders[1]}`;
-      } else if (process.env.NODE_ENV !== "production") {
-        console.log("were still returning this no problem then")
-        return "http://localhost:3000";
-      }
-
-
-    console.log(process.env.NODE_ENV)
-
-    console.log('context')
-    console.log(context)
-    console.log(typeof context)
+  // if (process.env.NODE_ENV === "production") {
+      return `https://${context.req.rawHeaders[1]}`;
+      // } else  { 
+      //       this gets rid of the error
+      // } else if (process.env.NODE_ENV !== "production") {        
+      //   return "http://localhost:3000";      
+      // }
 }
 
 export default ReturnUrl
