@@ -9,9 +9,7 @@ export default function NavBar () {
     const [isUser, setIsUser] = useState(false)
 
     useEffect( () => {
-        let currentUsername = window.localStorage.getItem('currentUserName')
-        console.log('currentUsername')
-        console.log(currentUsername)
+        let currentUsername = window.localStorage.getItem('currentUserName')        
         currentUsername ? setIsUser(true) : setIsUser(false)
     }, [])
 
@@ -30,7 +28,6 @@ export default function NavBar () {
     return (
         
         <div id={styles.NavContainer}>            
-
     
             <Link href="/strain">
             <div style={{ backgroundImage: 'url(/img/gold.png)'}} className={styles.NavBtn} id="StrainLink"></div>
@@ -46,11 +43,8 @@ export default function NavBar () {
 
             <img
             onClick={logout}
-            style={{ display: isUser  ? 'block' : 'none'}}
-            // style={{ display: window.localStorage.getItem('currentUserId') ? 'block' : 'none'}}
+            style={{ display: isUser  ? 'block' : 'none'}}            
             className={styles.cart} src="/img/cart.png"></img>
-             {/* this will be the logout button */}
-
         </div>        
     )
 }
