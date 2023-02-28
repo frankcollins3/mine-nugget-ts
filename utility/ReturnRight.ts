@@ -1,32 +1,20 @@
     import APIcall from 'utility/APIcall'
     export default async function ReturnRight (parents:string) {
-        let allstrain = await APIcall('all', null, null)  // let allstrain:(object|string) = await APIcall('all', null, null) 
-        console.log('parents in the ReturnRight')
-        console.log(parents)
-
-
+        type miniany = string | number | object
+        
+        let allstrain = await APIcall('all', null, null)         
+        type arraystring = string | any;
     
-        let parentarray:(string)[] = []
-        // let parentarray:any = []
+        let parentarray:string[] = []        
         const loopandpush = () => {
-            allstrain.forEach( (strain) => {
-            // allstrain.forEach( (strain:(object|string)) => {        
+            allstrain.forEach( (strain) => {                
                 if (strain.parents === parents) {                            
                     parentarray.push(strain.strain)
                 } else {
-                    console.log('nope')                    
+                    // continue
                 }
             })
         }
         await loopandpush()
-        console.log(`parentarray: ${parentarray} type: ${typeof parentarray[0]}`)
-        return parentarray[0]
-        
-        // const returnvalue = async () => {
-        //     await loopandpush()
-        //     return parentarray[0]
-        // }
-        // return returnvalue()
-    }
-            // return parentarray
-            // let parents:(object|string) = strain.parents        
+        return parentarray[0]            
+    }            
