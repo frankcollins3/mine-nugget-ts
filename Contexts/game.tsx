@@ -82,8 +82,29 @@ type gameContextType = {
     currentUserId: number;
     currentuseridset: (id:number) => void;
     currentusernameset: (username) => void;
+
+    allMinesReviews: any;
+    allminesreviewsset: (reviews:any) => void;
     MineShovelUser: string;
     mineshoveluserset: (user:string) => void;
+    // * this state exists to return string values in the event that there are no likes or comments or data in existence during searching.
+    MineShovel: string;
+    mineshovelset: (message:string) => void;
+
+    // *  read == true;           set by clicking: [glasses, pencil, eraser] from selectedSearch for state to tell the container whether to display Mines on display or input to post
+    searchMinePost: boolean;
+    searchminepostset: () => void;
+    searchMineRead: boolean;
+    searchminereadpost: () => void;
+
+    // * my Mine is for when you clicked "Mine" from '/pages/findMine.tsx -> <findminetext/>     When you click the glasses it shows you the review you left for searched strain.
+    myMineReview: string;
+    myminereviewset: (review:string) => void;
+    myMineTitle: string;
+    myminetitleset: (title:string) => void;
+    otherUserMineClick: boolean;
+    otherusermineclickset: () => void;
+
     // currUser: {username: '', password: '', email: '', age: '', strains: []};
 
     //* signup constraints */
@@ -136,6 +157,8 @@ type gameContextType = {
 
     userStrains: any;
     userstrainset: (userstrainbucket:any[]) => void;
+    allMyStrains: any;
+    allmystrainset: (userstrainbucket:any[]) => void;
     
     // ... email state
     validemail: boolean;
@@ -227,8 +250,26 @@ const gameDefaults: gameContextType = {
     searchTypeClick: () => {},
     usersOfSearchStrain: [],
     usersofsearchstrainset: (searchStrainUsers:any[]) => {},
+
+    allMinesReviews: [],
+    allminesreviewsset: (reviews:any) => {},
     MineShovelUser: '',
     mineshoveluserset: (user:string) => {},
+    MineShovel: '',
+    mineshovelset: (message:string) => {},
+
+
+    searchMinePost: false,
+    searchminepostset: () => {},
+    searchMineRead: false,
+    searchminereadpost: () => {},
+
+    myMineReview: '',
+    myminereviewset: (review:string) => {},
+    myMineTitle: '',
+    myminetitleset: (title:string) => {},
+    otherUserMineClick: false,
+    otherusermineclickset: () => {},
     noUser: false,
     nouserset: () => {},
     url: '',
@@ -302,6 +343,9 @@ const gameDefaults: gameContextType = {
 
     userStrains: [],
     userstrainset: (userstrainbucket:any[]) => {},
+    allMyStrains: [],
+    allmystrainset: (userstrainbucket:any[]) => {},
+    
 
         // ... email state
         validemail: false,
@@ -378,11 +422,17 @@ export function GameProvider({ children }: Props) {
     const [currentUser, setCurrentUser] = useState<any[]|any>([])
     const [currentUserName, setCurrentUserName] = useState<string>('')
     const [currentUserId, setCurrentUserId] = useState<number>(0)
+
+    const [allMinesReviews, setAllMinesReviews] = useState<any>([])
     const [MineShovelUser, setMineShovelUser] = useState<string>('')
-    
-    
+    const [MineShovel, setMineShovel] = useState<string>('')
 
-
+    const [searchMinePost, setSearchMinePost] = useState<boolean>(false)
+    const [searchMineRead, setSearchMineRead] = useState<boolean>(false)
+    const [myMineReview, setMyMineReview] = useState<string>('')
+    const [myMineTitle, setMyMineTitle] = useState<string>('')
+    const [otherUserMineClick, setOtherUserMineClick] = useState<boolean>(false)
+        
      // i might keep this as an array too [] that loops or joins over values for comparison. leaving untyped for adaptability
     const [checked, setChecked] = useState<string>('not checked')
     const [usernamestr, setUsernamestr] = useState<string>('')
@@ -412,6 +462,7 @@ export function GameProvider({ children }: Props) {
     const [alluser, setAlluser] = useState<any[]>([])
     const [allusername, setAllusername] = useState<any[]>([])
     const [userStrains, setUserStrains] = useState<any>([])
+    const [allMyStrains, setAllMyStrains] = useState<any>([])
 
     // ... state for age constraints
     // * 
@@ -571,8 +622,41 @@ export function GameProvider({ children }: Props) {
             setUsernamestr(str)
         }
 
+        const allminesreviewsset = (reviews) => {
+            setAllMinesReviews(reviews)
+        }
+
         const mineshoveluserset = (user:string) => {
             setMineShovelUser(user)
+        }
+
+        const mineshovelset = (message:string) => {
+            setMineShovel(message)
+        }
+
+        const searchminepostset = () => {
+            searchMinePost === true ? setSearchMinePost(false) : setSearchMinePost(true)
+        }
+    
+        // const searchminedelete = (post:string) => {
+        //     setSearchMinePost(post)
+        // }
+
+        const searchminereadpost = () => {
+            searchMineRead === true ? setSearchMineRead(false) : setSearchMineRead(true)
+        }
+
+        const myminereviewset = (review:string) => {
+             setMyMineReview(review)
+        }
+
+        const myminetitleset = (title:string) => {
+             setMyMineTitle(title)
+        }
+
+        const otherusermineclickset = () => {
+            if (otherUserMineClick === true) setOtherUserMineClick(false)
+            if (otherUserMineClick === false) setOtherUserMineClick(true)
         }
         
         const pwstrchange  = (str:string) => {
@@ -651,6 +735,10 @@ export function GameProvider({ children }: Props) {
 
         const userstrainset = (userstrainbucket:any[]) => {
             setUserStrains(userstrainbucket)
+        }
+
+        const allmystrainset = (userstrainbucket:any[]) => {
+            setAllMyStrains(userstrainbucket)
         }
 
         const nouserset = () => {
@@ -814,8 +902,24 @@ export function GameProvider({ children }: Props) {
         // *
         currentinput,
         currentinputset,
+
+        allMinesReviews,
+        allminesreviewsset,
         MineShovelUser,
         mineshoveluserset,
+        MineShovel,
+        mineshovelset,
+        searchMinePost,
+        searchminepostset,
+        searchMineRead,
+        searchminereadpost,  
+        
+        myMineReview,
+        myminereviewset,
+        myMineTitle,
+        myminetitleset,     
+        otherUserMineClick,
+        otherusermineclickset,  
         usernameinput,
         usernameinputset,
         passwordinput,
@@ -863,6 +967,8 @@ export function GameProvider({ children }: Props) {
         allusernameset,
         userStrains,
         userstrainset,
+        allMyStrains,
+        allmystrainset,
         validemail,
         validemailset,
 
