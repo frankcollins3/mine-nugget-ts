@@ -29,7 +29,8 @@ export default function NavBar () {
         
         <div id={styles.NavContainer}>            
     
-            <Link href="/strain">
+            <Link href="/">
+            {/* <Link href="/strain"> */}
             <div style={{ backgroundImage: 'url(/img/gold.png)'}} className={styles.NavBtn} id="StrainLink"></div>
             </Link> 
 
