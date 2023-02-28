@@ -22,8 +22,6 @@ import allStrain from 'pages/api/strains/allStrain'
 
 export default function DisplayForSearch (props) {
 
-    // const [selectedSearch, setSelectedSearch] = useState('')
-
     const { 
         gameOn, playing, searchHover, searchOn, searchOff, 
         findMineTheme, toggleTheme, searchChar, searchCharFunc,
@@ -74,16 +72,11 @@ export default function DisplayForSearch (props) {
         usersofsearchstrainset(usernames)
     }
 
-
-
-    
-
     let strainmap = searchBucket.map( (mapitem, idx) => {        
     let length = searchBucket.length
     
         return (                                    
-                <div key={`div ${idx}`} 
-                // style={{ border: searchBucket.length > 4 ? "5px solid orange" : "5px solid white"}}
+                <div key={`div ${idx}`}                
                 className={searchBucket.length > 4 ? styles.row : "Column"}
                 >                
                 <div                 
@@ -130,8 +123,7 @@ export default function DisplayForSearch (props) {
             <img className={styles.DisplayCaseCone} src="/img/cone.png"/>    
             {strainmap}         
             <img className={styles.DisplayCaseCone} src="/img/cone.png"/>   
-        </Searchdisplay>
-        {/* <p style={{ color: 'papayawhip'}}> {searchStrainId} </p> */}                        
+        </Searchdisplay>        
 
             </Container>
     )
