@@ -10,15 +10,7 @@
         const [imgbucket, setImgbucket] = useState([])
         const [gameimg, setGameimg] = useState('')    
 
-        const {
-            // gameOn, playing, notplaying,
-            //  parents, meetTheParents, 
-            //  parent1, parent1state, parent2, parent2state, clearparent1, clearparent2,
-            //  dontuse, fillbucket, emptybucket,
-            winStreak, wrongGuess
-            //   winstreakincrement, wrongGuess, guesswrongincrement,
-            //   trophy, addTrophy, 
-            } = useGame()
+        const { winStreak, wrongGuess } = useGame()
         let ring = $('#Ring')
 
         useEffect( () => {
@@ -28,12 +20,8 @@
         })()
     }, [])
 
-        useEffect( () => {
-            const changeimg = async () => {
-                let gold = await Images("gold")        
-                CSS(ring, 'background-image', `url('${gold}')`)        
-            }
-            changeimg()
+        useEffect( () => {            
+                CSS(ring, 'background-image', `url('/img/gold.png')`)                    
         }, [winStreak])
 
         useEffect( () => {
