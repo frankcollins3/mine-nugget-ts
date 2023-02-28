@@ -1,202 +1,122 @@
-// * dependencies
-// import {connect} from 'react-redux';
-import { TypedUseSelectorHook, useSelector, connect } from 'react-redux'
-import { useState, useEffect, useContext} from 'react'
-import $ from 'jquery'
+    import styles from 'styles/findmine/sass/FindMine.module.scss'
+    import {useEffect, useState} from 'react'
+    import $ from 'jquery'
+    import {useGame} from 'Contexts/game'
+    import Container from 'react-bootstrap/container'
 
-// * CSS
-import styles from 'styles/game/sass/FamilyTree.module.scss'
-import ShadowBorder from 'styles/game/components/GameContainer'
+    export default function FindMineText (props) {
+        const randomNumbers = [1,2,3,4,5,6,7,8]
+        let theme = props.findMineTheme
+        // let theme:string = props.findMineTheme
+        const [clockTick, setClockTick] = useState('')
 
-// * components:
-import ParentRing from 'components/ParentRing'
-import ParentWatch from 'components/ParentWatch'
-import Container from 'react-bootstrap/Container'
-import Family from 'components/FamilyTreeContainer1'
-import Family2 from 'components/FamilyTreeContainer2'
-import GameCounter from 'components/GameCounter'
-import GameChild from 'components/GameChild'
+        const { 
+             searchHover, searchOn, searchOff, searchChar, searchCharFunc,
+            searchBucket, fillSearchBucket, searchType, searchTypeClick, selectedSearch, searchSelector,
+            usersOfSearchStrain, usersofsearchstrainset, userStrains, myminereviewset, myminetitleset,
 
-// * redux
-import wrapper from '../redux/store';
-import store from 'redux/store'
-import { useDispatch } from "react-redux";
-import customReduxSelector from 'redux/reduxselector'
-
-// * utility functions
-import APIcall from 'utility/APIcall'
-import Regex from 'utility/MasterRegex'
-import AttrTool from 'utility/JqAttr'
-
-// * Context
-import { useGame } from 'Contexts/game'
-
-
-
-
-
-export default  function GameContainer (props) {
-            
-    const [cactusHover, setCactusHover] = useState(false)
-    // const [gameOn, setGameOn] = useState(false)
-    
-    const {
-        gameOn, playing, notplaying,
-         parents, meetTheParents, 
-         parent1, parent1state, parent2, parent2state, clearparent1, clearparent2,
-         dontuse, fillbucket, emptybucket,
-         winStreak, winstreakincrement, wrongGuess, guesswrongincrement,
-          trophy, addTrophy, EitherParents, clearwinstreak, clearguesswrong
-         } = useGame()
-    
-     
-    useEffect( () => {
-        // Game Child and GameContainer linked here.s
-        console.log('useEffect firing off in GameContainer!')        
-        if (wrongGuess === 1) AttrTool($('#gold1'), 'src', '/img/dynamite.png')
-        if (wrongGuess === 2) {
-            AttrTool($('#gold2'), 'src', '/img/dynamite.png')               
-            notplaying()
-            EitherParents('1', 'Y O U')
-            EitherParents('2', 'L O S E')
-            clearwinstreak()
-            clearguesswrong()
-        }
-    }, [wrongGuess] )
-
-    useEffect( () => {        
-        if (wrongGuess === 2) {
-            AttrTool($('#gold1'), 'src', '/img/ring.png')               
-            AttrTool($('#gold2'), 'src', '/img/watch.png')               
-            notplaying()
-        }
-    }, [winStreak])
+            allMyStrains, allmystrainset,
+            MineShovel, mineshovelset, 
+            searchStrainId,
+            } = useGame()
         
-    
-    
-    const HoverOnCactus = async () => {                
-        await meetTheParents('strain')
-        playing()                
-        setCactusHover(true)        
-    }
+        useEffect( () => {
+            setTimeout( () => {
+                setClockTick('1')
+            }, 2000)
+        }, [])
 
-    const goldbarhover1 = async () => {
-        parent1state()
-    }
-    const goldbarhover2 = async () => {
-        parent2state()
-    }
+        const shoveltest = () => {
+            console.log('shovel')
+        }
+        
+        useEffect( () => {
+            let randomNumber:string = randomNumbers[Math.floor(Math.random()*randomNumbers.length).toString()]        
+            
+            setTimeout( () => {
+                $(`#word${randomNumber}`)
+                .css('color', `rgba(255, 166, 0, 0.85)`)
+                .animate({
+                    marginTop: '-20px',
+                    // color: 'green'
+                }, 1000)
 
-    return (
-        <>            
-            <ShadowBorder>
-                  {winStreak > 1 && cactusHover === false ? 
-                  <div 
-                  className={styles.Row2}>
-                  <Family/>
-                  <Family/>
-                  <Family/>
-                  </div>
+                setTimeout( () => {
+                    $(`#word${randomNumber}`)
+                    .css('color', 'papayawhip')
+                    .animate({
+                        marginTop: '0px',
+                    }, 1000)
+                    setClockTick(randomNumber)
+                }, 2000)
+            }, 3000)                    
+        }, [clockTick])
+
+        const allormine = async (event) => {
+            let btnText:string = event.target.outerText
+            if (btnText === 'Mine') {                
+                myminereviewset('')
+                myminetitleset('')            
+                await searchTypeClick(btnText)
+                allMyStrains.includes(searchStrainId.toString()) 
+                ?
+                 await searchTypeClick(btnText)
                   :
-                  ''
-                  }
-                 {cactusHover === false 
-                ?
-                
-                
-                <div                 
-                className="Column">                
-                <img onClick={HoverOnCactus}                
-                src="/img/cactus.png"/>
+                  mineshovelset("This Gold Isn't Mine")
+                }      
+            if (btnText === 'All') {                
+                mineshovelset('')                
+                await searchTypeClick(btnText)
+            }
+        }
 
-                <h1             
-                 style={{
-                        color:'wheat', letterSpacing: '1.1em', boxShadow: '20px 30px 40px limegreen'
-                        }}> F a m i l y  <br/>T r e e   </h1>
-                
-                {winStreak > 1 ?
-                    <div 
-                    className={styles.Row2}>
-                    <Family/>
-                    <Family/>
-                    <Family/>
-                    </div>
-                    :
-                    ''
-                    }
-                </div>
-                : 
+        const unsearch = async () => {                      
+            searchSelector('');
+            searchTypeClick('');
+        }
+
+        return (
+            <>
+            <Container
+            id="ParentFindMine" className="Column">
+
+            <Container id="outerParent" className={styles.TextParent}>
+
+            <Container className="Column">
+            <Container className={styles.TextParent}>
+            <p id="word1" className={styles.h1}> F </p>
+            <p id="word2" className={styles.h1}> i </p>
+            <p id="word3" className={styles.h1}> n </p>
+            <p id="word4" className={styles.h1}> d </p>
+            </Container>
+            {selectedSearch.length > 5 ? <button onClick={allormine} className={styles.allOrMine}>All</button> : <pre></pre>}
             
-                <div
-                onMouseEnter={async() => {
-                    if (gameOn === 'not playing') {
-                    } else {
-                    }
-                }}
-                >
-                {gameOn === 'playing' 
-                ?
-                <div 
-                className={styles.Row2}>
-                <Family/>
-                <Family/>
-                <Family/>
-                </div>
-                : 
-                ''
-                }
-                
-                <div className="Column">
-                <GameChild
-                 gold1={$('#gold1')} gold2={$('#gold2')} 
-                 cactusHover={cactusHover} setCactusHover={setCactusHover}/>
-                </div>
-                
-        
-                <Container className={styles.Row}>
-        
-                    <Container className={styles.ColumnParent}>
-                    <ParentRing />
-                                    
-                    <img
-                    id="gold1"                    
-                    style={{ height: '50px', width: '50px', marginTop: '0.5em'}}
-                    onMouseEnter={goldbarhover1}
-                    src="img/gold.png"/>
-                    <h1> { parent1 || '' }</h1>                                          
-                    </Container>
-                        
-                    <Container             
-                    className={styles.ColumnParent}>
-                    <ParentWatch />
-                    
-                    <img
-                    id="gold2"
-                    onMouseEnter={goldbarhover2}
-                    style={{ height: '50px', width: '50px', marginTop: '0.5em'}}
-                    src="img/gold.png"/>                                                               
-                    <h1> { parent2 || '' }</h1>                                          
-                    </Container>
-        
-                </Container>
-                
-                {gameOn === 'playing' ? 
-                <div 
-                className={styles.Row2}>
-                <Family/>
-                <Family/>
-                <Family/>
-                </div>
-                :
-                ''
-                }
-                </div>
-                
-                }    
+            </Container>
 
-            </ShadowBorder>
- 
- 
-        </>
-    )
-}
+            <div
+                style={{
+                cursor: 'pointer'            
+                }}
+                onClick={unsearch}
+                className={styles.MiniGoldBar}
+                // src="/img/gold.png"
+                ></div>
+
+            <Container className="Column">
+            <Container className={styles.TextParent}>
+            <p id="word5" className={styles.h1}> M </p>
+            <p id="word6" className={styles.h1}> i </p>
+            <p id="word7" className={styles.h1}> n </p>
+            <p id="word8" className={styles.h1}> e </p>
+            </Container>
+            {selectedSearch.length > 5 ? <button onClick={allormine} className={styles.allOrMine}>Mine</button> : <pre></pre>}         
+            </Container>
+
+            </Container>
+
+            </Container>  
+
+
+            </>
+        )
+    }
