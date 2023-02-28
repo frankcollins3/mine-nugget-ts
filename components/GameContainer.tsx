@@ -64,9 +64,7 @@ export default  function GameContainer (props) {
         }
     }, [wrongGuess] )
 
-    useEffect( () => {
-        // console.log("winstreak useEffect!!")
-        // if (wrongGuess === 1) AttrTool($('#gold1'), 'src', '/img/dynamite.png')
+    useEffect( () => {        
         if (wrongGuess === 2) {
             AttrTool($('#gold1'), 'src', '/img/ring.png')               
             AttrTool($('#gold2'), 'src', '/img/watch.png')               
@@ -92,7 +90,6 @@ export default  function GameContainer (props) {
     return (
         <>            
             <ShadowBorder>
-                  {/* {playing === false || cactusHover === false */}
                   {winStreak > 1 && cactusHover === false ? 
                   <div 
                   className={styles.Row2}>
@@ -128,8 +125,6 @@ export default  function GameContainer (props) {
                     ''
                     }
                 </div>
-
-
                 : 
             
                 <div
@@ -162,8 +157,7 @@ export default  function GameContainer (props) {
         
                     <Container className={styles.ColumnParent}>
                     <ParentRing />
-                
-                    
+                                    
                     <img
                     id="gold1"                    
                     style={{ height: '50px', width: '50px', marginTop: '0.5em'}}
