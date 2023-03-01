@@ -1,5 +1,5 @@
 // @ts-nocheck
-import Page from 'styles/findmine/components/Searchpage'
+import Page from 'styles/findmine/components/SearchPage'
 import styles from 'styles/findmine/sass/FindMine.module.scss'
 import { useState, useEffect } from 'react'
 import $ from 'jquery'
@@ -189,7 +189,7 @@ export default function FindMine (props, context) {
         <Container 
 
         className={styles.row}>             
-        <div className="Column">    
+        <Container className="Column">    
         
         {
             selectedSearch.length > 5
@@ -210,7 +210,7 @@ export default function FindMine (props, context) {
             <DisplayForSearch url={urlagain} localURL={urlagain} getIDurl={getIDurl} usernamesForID={props.usernamesForIDurl}/>            
             </div>
         }
-        </div>
+        </Container>
         </Container>        
 
     {/* <SelectedSearch findMineMyStrains={findMineMyStrains} getIDurl={getIDurl} />     */}
