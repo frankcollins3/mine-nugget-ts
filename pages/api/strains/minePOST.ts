@@ -32,6 +32,8 @@ export default async function minePOST (req, res) {
                 strainId: strainId
             },
         })
+        console.log('newmine from the POST route')
+        console.log(newmine)
         res.json( { body: req.body, filter: filteredForStrain })
     }
 }
