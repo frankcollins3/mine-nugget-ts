@@ -26,9 +26,10 @@ import '../styles/globals.css'
 
   // i posted an issue before finding this as a solution. I wanted to delete index.tsx but didn't know how to handle auto renavigate
    const router = useRouter()
-//    if (typeof window !== 'undefined') {
-//      router.push('/strain')
-//    }
+   
+  //  if (typeof window !== 'undefined') {
+  //    router.push('/loginlogout')
+  //  }
 
   useEffect( () => {
   
