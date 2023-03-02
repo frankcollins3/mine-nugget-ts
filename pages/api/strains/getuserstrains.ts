@@ -1,8 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import APIcall from 'utility/APIcall'
-import path from 'path';
+// import path from 'path';
 import { promises as fs } from 'fs';
-import { createNoSubstitutionTemplateLiteral } from 'typescript';
 
 export default async function (req, res) {
     // hmm also just realized you could follow that same one prisma call ideaology twice.
@@ -12,10 +11,7 @@ export default async function (req, res) {
 
     const Prisma = new PrismaClient()
     let body = req.body
-    let reqdata = body.data
-    console.log('req.body')
-    console.log(req.body)
-    console.log(`typeof reqdata: ${typeof reqdata}`)
+    let reqdata = body.data    
     let alluserStrains = await Prisma.usersOnStrains.findMany()
     let allStrains = await Prisma.strains.findMany()
 
@@ -23,12 +19,9 @@ export default async function (req, res) {
     const fileContents = await JSON.parse(await fs.readFile('utility/strainJSON.json', 'utf8'))
     let strainsFS = fileContents.strains
     let nonDBstrains = apidata || strainsFS
-    // console.log(req.body)
-
-    // let alluserStrains = Prisma.usersOnStrains.findMany()    // 1 data call up here for both conditions below to share as a root database store? 
-
+    
     if (reqdata === 'all' && typeof reqdata === 'string') {    
-        console.log('string condition  met')
+        // console.log('string condition  met')
         res.json( { body: req.body, userStrains: alluserStrains})
         // res.json( { body: req.body, hey: 'hi'})
     }
@@ -36,30 +29,18 @@ export default async function (req, res) {
 
 
     if (typeof reqdata === 'object') {
-        console.log(req.body.data === 'object')        
-
         let length:string = req.body.data.length
-        console.log('length serverside length')
-        console.log(length)
-
-if (length === 'nothing') {             // * let oneGetStrain = await GETuserstrains(userStrainUrl, {strain: 'mimosa', userId: 48})  // this is the syntax to get return data correctly from this if block
-            // let createdStrain = await Prisma.usersOnStrains.findOne()
+if (length === 'nothing') {             // * let oneGetStrain = await GETuserstrains(userStrainUrl, {strain: 'mimosa', userId: 48})  // this is the syntax to get return data correctly from this if block            
             let id = 0;
-            // let AllStrains = Prisma.usersOnStrains.findMany()
-            console.log('allStrains in the nothing condition!')            
             const foundStrain = await allStrains.filter(strain => strain.strain === req.body.data.strain);
             id = id + foundStrain[0].id
-            console.log('foundStrain')
-            console.log(foundStrain)
 
             const newUserStrain = await Prisma.usersOnStrains.findFirst({
                 where: {                    
                     strainsId: req.body.strainsId,
                     usersId: req.body.usersId
                 },
-              }).then( (foundUserStrain) => {
-                console.log('foundUserStrain')
-                console.log(foundUserStrain)
+              }).then( (foundUserStrain) => {                
                 res.json( { userStrain: foundUserStrain, foundStrain: foundStrain, APIdata: nonDBstrains } )
                 // return newuserstrain
             })            
@@ -72,9 +53,7 @@ if (length === 'nothing') {             // * let oneGetStrain = await GETuserstr
         let straindataLength = straindata.length
         
         const loopAndPush = async () => {
-        await straindata.forEach(async(strains:any) => {
-            console.log('strains')
-            console.log(strains)     
+        await straindata.forEach(async(strains:any) => {            
                 if (strains) {
                     let strainsId = 0
                     const foundStrain = await allStrains.filter(strain => strain.strain === strains);
@@ -85,10 +64,7 @@ if (length === 'nothing') {             // * let oneGetStrain = await GETuserstr
                             usersId: usersId,
                             strainsId: strainsId
                         }
-                    }).then( (strain:any) => {
-                        console.log('were here in the .then')
-                        console.log('strain')
-                        console.log(strain)                        
+                    }).then( (strain:any) => {                        
                         returnstraindata.push(strain)
 
                     })
