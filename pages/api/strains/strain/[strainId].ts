@@ -1,4 +1,3 @@
-
 import APIcall from 'utility/APIcall'
 import { PrismaClient } from '@prisma/client';
 import Regex from 'utility/MasterRegex'
@@ -8,7 +7,7 @@ let prisma = new PrismaClient()
 let i = 0;
 
 
-export default async function (req:any, res:any) {              // res:string doesn't work
+export default async function strainId (req:any, res:any) {              // res:string doesn't work
     let strainbucket:(string|number|object)[] = new Array() || []
 
     
