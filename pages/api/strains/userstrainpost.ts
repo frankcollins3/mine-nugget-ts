@@ -7,7 +7,7 @@ let strainJSON = 'utility/strainJSON.json'
 
 // * might grab the user from the URL too to also confirm!
 
-export default async function (req, res) {
+export default async function userstrainpost (req, res) {
 
     let prisma = new PrismaClient()
     let body = req.body
