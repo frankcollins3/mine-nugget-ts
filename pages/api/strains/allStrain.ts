@@ -6,7 +6,7 @@ import Random from 'utility/Randomizer'
 
 const prisma = new PrismaClient();
 
-export default async function (req:any, res:any) {
+export default async function allStrain (req:any, res:any) {
   
     const { body } = req;      
     console.log('body')
