@@ -3,7 +3,7 @@ import APIcall from 'utility/APIcall'
 // import path from 'path';
 import { promises as fs } from 'fs';
 
-export default async function (req, res) {
+export default async function getuserstrains (req, res) {
     // hmm also just realized you could follow that same one prisma call ideaology twice.
     //  I was going to have 2 different res.json here: 1 for the 'all' && 1 for 'specify' singular strain or array of specified 
     
@@ -79,4 +79,4 @@ if (length === 'nothing') {             // * let oneGetStrain = await GETuserstr
         await returnResponse()        
     }        
     }    
-}
+}       
