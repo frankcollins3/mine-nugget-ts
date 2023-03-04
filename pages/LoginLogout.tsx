@@ -464,8 +464,7 @@ import Helmet from 'components/Helmet'
                     id="WrongPtag"
                     style={{
                          color: 'papayawhip', 
-                         opacity: opacityToggle ? "1.0" : "0.0"
-                        
+                         opacity: opacityToggle ? "1.0" : "0.0"                        
                           }}
                     > {wrongMsg} </p>    
                     </Container>                     
@@ -477,12 +476,12 @@ import Helmet from 'components/Helmet'
         export async function getServerSideProps (context) {
             let url:any = await ReturnUrl(context);
             let localhost:string = url
-            let predata = await fetch(new URL(`${url}/api/strains/strain`))            
-            let propurl = await predata.json()        
+            // let predata = await fetch(new URL(`${url}/api/strains/strain`))            
+            // let propurl = await predata.json()        
             let clientenv = process.env
                           
-            let preuser = await fetch(new URL(`${url}/api/user/GetAllUsers`))
-            let newuser = await preuser.json()
+            // let preuser = await fetch(new URL(`${url}/api/user/GetAllUsers`))
+            // let newuser = await preuser.json()
 
             let GETuserspecifyURL = url += '/api/user/GETspecifyuser'
             let myStrainsForMyIdUrl = `${localhost}${'/api/strains/userStrainsForUsersId'}`
