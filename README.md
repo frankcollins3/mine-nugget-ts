@@ -44,3 +44,8 @@ connected to API data from github with fs.json as a backup
 
 new way tables: users userStrains no need for strains
 with source of truth as context and composition components doing all of the reusability handling easy as pie
+
+<StrainContext>
+  {...previousValues}
+  + users: [] // user.id stored for comparison against users table which context wont eliminate unlike table.strains 
+  
