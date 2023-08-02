@@ -1,33 +1,33 @@
 // id | userId | strainid | into_it
-export interface digsInterface {
+export interface digsINTERFACE {
     userId: number,
     strainid: number,
     into_it: boolean
 }
 
 // id | strainid | review | title
-export interface  minesInterface {
+export interface  minesINTERFACE {
     strainid: number,
     review: string,
     title: string
 }
 
 // minersId | strainsid
-export interface MinersOnStrainsInterface {
+export interface minersOnStrainsINTERFACE {
     minersId: number,
     strainsid: number
 }
 
 // id | username | password | age | email
-export interface minersInterface {
+export interface minersINTERFACE {
     username: string,
     password: string,
     age: number,
     email: string,
-    strains: MinersOnStrainsInterface[]
+    strains: minersOnStrainsINTERFACE[]
 }
 
-export interface StrainsInterface { 
+export interface strainsINTERFACE { 
     strain: string,
     strainid: number,
     dominant: string,
@@ -39,8 +39,8 @@ export interface StrainsInterface {
     nugget: string,
     thc: string,
     cbd: string,
-    mines: minesInterface[],
-    digs: digsInterface[]
+    mines: minesINTERFACE[],
+    digs: digsINTERFACE[]
     miners: any[]
 }
 
