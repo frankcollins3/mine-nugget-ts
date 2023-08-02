@@ -1,0 +1,428 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@1,100&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Moon+Dance&display=swap');
+
+  #App {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.2fr 1.75fr 0.05fr;
+    gap: 0px 0px;
+    grid-template-areas:
+      'navbar'
+      'main'
+      'credits';
+    width: 100vw;
+    height: 100vh;
+    margin: 0 auto;
+    align-items: center;
+    background-color: rgb(62, 50, 32)
+  }
+  
+  .Main {
+    min-height: 50vh !important;
+    min-width: 50vw !important;
+
+    border: 5px solid rgb(247, 208, 36);
+
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-content: center;
+    align-items: center;
+    grid-area: main;
+  }
+
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: open-sans;  
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+  text-align: center;
+  /* padding: 0;
+  margin: 0 auto; */
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+  body {
+    color: white;
+    background-color: rgb(62, 50, 32);
+  }
+}
+
+.Column {
+  /* border: 5px solid orange; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.Row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+
+  text-align: center;
+}
+
+
+.goldenone {
+  color: 'white';
+  text-shadow: '35px 25px 55px white';
+  box-shadow: '35px 25px 55px orange';
+  /* font-weight: 'bold'; */
+}
+
+.RingWatch {
+  min-height: 20vh;
+  min-width: 12vw;  
+  box-shadow: 10px 10px 10px rgb(247, 208, 32);    
+  border: 3px solid rgb(247, 208, 36);    
+  padding-top: 200px;
+}
+
+.GameCounter {
+  min-height: 20vh;
+  min-width: 12vw;  
+  /* box-shadow: 10px 10px 10px rgb(247, 208, 32);    
+  border: 3px solid rgb(247, 208, 36);     */
+  padding-top: 200px;
+}
+
+.ParentContText {
+  margin-top: 1em;
+}
+
+.Fake-Border{
+  height: 90vh;
+  width: 90vw;
+  border: 40px solid papayawhip;
+  background-size: 3%;
+}
+
+/* .PickMineCont {
+  transform: scale(0.2);
+  border: 5px solid hotpink;
+} */
+
+.PickMineP {
+  margin-top: 2em;  
+}
+
+li {
+  align-self: flex-start;
+  /* position: relative;   */
+  background-image: url('/img/gold.png');
+  background-position: right 90%;
+  background-size: 30%;
+  background-repeat: repeat;
+}
+
+ ::-webkit-scrollbar {
+  width: 40px;
+  } 
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+  box-shadow: inset 5px 9px 5px grey;
+  border-radius: 10px;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+  background: papayawhip;
+  border-radius: 10px;
+  }
+
+
+  span {
+    letter-spacing: '1.25';
+    font-family: 'Lemon-Milk';
+    /* transform: scale(2.0);             */
+    font-size: 35px;
+    text-shadow: 10px 10px 10px rgb(247, 208, 32);    
+}
+
+.double-size {
+  text-transform: scale(2.0);
+}
+
+/*  */
+@import url(https://fonts.googleapis.com/css?family=Press+Start+2P);
+
+* {
+  box-sizing: content-box;
+}
+
+html,
+
+/* body {
+  background-color: rgb(62, 50, 32);
+  font-family:'Press Start 2P';
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+} */
+
+/*** Background ***/
+.night {
+  width: 100%;
+  height: 100%;
+  
+  position: absolute;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.constellation {  
+  background-attachment: scroll;
+  position: absolute;
+  left: 35px;
+  top: 35px;
+  animation: rotate 600s infinite linear;
+}
+
+.sparkle {
+  background-color: rgb(247, 208, 36);
+  transform: scale(2.0);
+  border-radius: 50%;
+  position: absolute;
+  animation-name: sparkle;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.sparkle.style1 {
+  animation-duration: 0.5s;
+  animation-name: sparkle;
+}
+
+.sparkle.style3 {
+  animation-duration: 1.5s;
+  animation-name: sparkle;
+}
+
+.sparkle.style4 {
+  animation-duration: 2s;
+  animation-name: sparkleFeat;
+}
+
+.sparkle.tam1 {
+  width: 1px;
+  height: 1px;
+}
+
+.sparkle.tam2 {
+  width: 2px;
+  height: 2px;
+}
+
+.sparkle.tam3 {
+  width: 3px;
+  height: 3px;
+}
+
+.sparkle.opacity1 {
+  opacity: 1;
+}
+
+.sparkle.opacity2 {
+  opacity: .5;
+}
+
+.sparkle.opacity3 {
+  opacity: .1;
+}
+
+@keyframes sparkle {
+  0% {
+    box-shadow: 0 0 10px 0px rgba(255, 255, 255, 0.05);
+  }
+  50% {
+    box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 10px 0px rgba(255, 255, 255, 0.05);
+  }
+}
+
+@keyframes sparkleFeat {
+  0% {
+    background-color: #FFFFFF;
+    box-shadow: 0 0 10px 0px rgba(255, 255, 255, 1);
+  }
+  20% {
+    background-color: #FFC4C4;
+    box-shadow: 0 0 10px 0px rgb(255, 196, 196, 1);
+  }
+  80% {
+    background-color: #C4CFFF;
+    box-shadow: 0 0 10px 0px rgb(196, 207, 255, 1);
+  }
+  100% {
+    background-color: #FFFFFF;
+    box-shadow: 0 0 10px 0px rgba(255, 255, 255, 0.2);
+  }
+}
+
+
+/* transform */
+.doublesize { transform: scale(2.0);}
+.halfpint { transform: scale(0.5);}
+.quartersize { transform: scale(0.25);}
+/* transform */
+
+.redborder { border: 5px solid red;}
+.blue { border: 5px solid blue;}
+/* signup page backup global CSS */
+
+#UsernameInput { margin-top: 0.6em;}
+
+#PasswordInput, #AgeInput, #EmailInput {
+  margin-top: 0.45em;
+}
+
+#UsernameInput, #PasswordInput, #AgeInput, #EmailInput, #LoginPasswordInput, #LoginUsernameInput {
+  background: transparent;
+  border: 2px solid papayawhip;
+  color: #353935;
+  min-width: 9vw;
+}
+
+#UsernameInput:is(:focus) {
+  color: papayawhip;
+  background-color: papayawhip;
+  outline: ivory;
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: bold;
+  letter-spacing: 0.125em;
+  border: 3px solid ivory;
+}
+
+
+#PasswordInput:focus, #AgeInput:focus, #EmailInput:focus, #LoginPasswordInput:focus, #LoginUsernameInput:focus {
+/* #UsernameInput:focus, #PasswordInput:focus, #AgeInput:focus, #EmailInput:focus { */
+  color: papayawhip;
+  background-color: papayawhip;
+  outline: ivory;
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: bold;
+  letter-spacing: 0.125em;
+  border: 3px solid ivory;
+}
+
+.checkbox-container {
+  display: flex;
+  margin: 0 2em;
+  border: 0.125em solid rgb(247, 208, 32);
+  background-color: moccasin;
+}
+
+#MagnifyShowBtn {
+  height: 20px;
+  width: 20px;
+  background-image: url('/img/magnify.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin-bottom: 0.45em;
+}
+
+#noUserText {
+  color: papayawhip; 
+  font-family: Moon Dance;
+}
+
+.searchDisplay {
+  /* border: 5px solid hotpink; */
+  display: grid;
+  grid-template-columns: 10% 10% 10% 10%;
+  grid-template-rows: 10% 10% 
+  /* grid-template-columns: 10% 10% 10% 10%;
+  grid-template-rows: 10% 10%  */
+}
+
+.readWriteErase {
+  margin: 0 1.25em;
+  cursor: pointer;  
+}
+
+.MiniGoldBar {    
+  height: 50px;
+  width: 50px;    
+  background-image: url('/img/gold.png');    
+  background-size: 25%;
+  transform: rotate(45deg);
+  background-repeat: no-repeat;    
+  cursor: pointer;
+}
+
+.shovelMineInput {
+  /* border: 2px solid rgb(247, 208, 32); */
+  box-shadow: 2px 2px 2px rgb(247, 208, 32)
+}
+.shovelMineInput:focus {
+  outline: 2px solid papayawhip; 
+}
+
+.shovelMineInputLabel {
+  color: papaywhip;
+  margin-top: 0.125em;
+  font-family: Josefin;
+  letter-spacing: 0.25em;
+  color: rgb(247, 208, 32);
+  /* color: papayawhip; */
+  opacity: 0.8;
+  text-align: center;
+}
+
+.myMineText {
+  font-family: Josefin;
+  color: papayawhip;
+  /* letter-spacing: 0.8em;   */
+}
+
+.titlespan {
+  color: rgb(247, 208, 32);
+  font-size: 22px;
+}
+
+.Row2 {
+  padding: 0;
+  min-height: 2vh;    
+  display: flex;
+  justify-content: center;
+  align-items: center;     
+}
+
+@media (max-width: 1280px) and (min-width: 600px) {
+  #outerParent {
+    margin: 0 10em;
+  }
+
+  .TextParent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;    
+    margin: 0;   
+  }
+
+ 
+}
