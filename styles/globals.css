@@ -13,13 +13,16 @@
     width: 100vw;
     height: 100vh;
     margin: 0 auto;
+    justify-content: center;
     align-items: center;
     background-color: rgb(62, 50, 32)
   }
   
   .Main {
-    min-height: 50vh !important;
-    min-width: 50vw !important;
+    max-height: 50vh !important;
+    max-width: 100vw !important;
+    /* min-height: 50vh !important;
+    min-width: 50vw !important; */
 
     border: 5px solid rgb(247, 208, 36);
 
@@ -28,6 +31,14 @@
     justify-content: center;
     align-items: center;
     grid-area: main;
+    /* overflow: auto; */
+    overflow-y: scroll;
+  }
+
+  #main-cont {
+    overflow-y: scroll;
+    min-height: 50vh !important;
+    min-width: 50vw !important;
   }
 
 
