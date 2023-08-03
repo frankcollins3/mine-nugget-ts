@@ -1,0 +1,9 @@
+import { 
+    SET_VIEW_SELECTED_STRAIN, SET_VIEW_SELECTED_STRAIN_INDEX
+} from 'redux/main/mainSlice';
+
+export {
+    SET_VIEW_SELECTED_STRAIN, SET_VIEW_SELECTED_STRAIN_INDEX
+ };
+
+
