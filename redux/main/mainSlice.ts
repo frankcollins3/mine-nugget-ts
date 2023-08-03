@@ -8,7 +8,7 @@ interface MainSliceState {
 
 const initialState: MainSliceState = {
   // main
-  VIEW_SELECTED_STRAIN: '',
+  VIEW_SELECTED_STRAIN: 'testStrain',
   VIEW_SELECTED_STRAIN_INDEX: 0,
 };
 
@@ -16,8 +16,9 @@ const mainSlice = createSlice({
   name: 'main',
   initialState,
   reducers: {
-    SET_VIEW_SELECTED_STRAIN: (state, action) => state.VIEW_SELECTED_STRAIN = action.payload,
-    SET_VIEW_SELECTED_STRAIN_INDEX: (state, action) => state.VIEW_SELECTED_STRAIN_INDEX = action.payload
+    SET_VIEW_SELECTED_STRAIN: (state, action) => { state.VIEW_SELECTED_STRAIN = action.payload; },
+    SET_VIEW_SELECTED_STRAIN_INDEX: (state, action) => { state.VIEW_SELECTED_STRAIN_INDEX = action.payload; },
+    // SET_CURRENT_PAGE: (state, action) => { state.CURRENT_PAGE = action.payload; },    
   },
 });
 
