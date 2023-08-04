@@ -6,7 +6,7 @@ import axios from "axios"
 // @redux/toolkit global state management
 import {RootState} from "redux/store/rootReducer"
 import {useSelector, useDispatch} from "react-redux"
-import { SET_ALL_STRAINS } from "redux/main/mainSlice"
+import { SET_ALL_STRAINS, SET_VIEW_SELECTED_STRAIN_KEY, SET_VIEW_SELECTED_STRAIN_VALUE, SET_VIEW_SELECTED_STRAIN_INDEX } from "redux/main/mainSlice"
 // import { SET_CURRENT_USER, SET_NON_GOOGLE_IMG_URL  } from "redux/logInOutGoogle/logInOutGoogleSlice"
 
 // utils
@@ -22,12 +22,14 @@ type PromiseTypes = {
     iPROMISEcookies: () => any;
     setallstrainsPROMISE: () => any;
     deleteEndpointsPROMISE: (strain:any) => any;
+    strainIndexIncrementPROMISE: () => any;
 }   
 
 const PromiseDefaults = {
     iPROMISEcookies: () => {},
     setallstrainsPROMISE: () => {},
     deleteEndpointsPROMISE: (strain:any) => {},
+    strainIndexIncrementPROMISE: () => {}, // strainIndexIncrementPROMISE: (index, strain) => {},
 }
 
 const PromiseContext = createContext<PromiseTypes>(PromiseDefaults)
@@ -41,6 +43,9 @@ type Props = { children: ReactNode }
 export function PromiseProvider({children}:Props) {
 
     const dispatch = useDispatch()
+
+    const VIEW_SELECTED_STRAIN = useSelector( (state:RootState) => state.main.VIEW_SELECTED_STRAIN)
+    const VIEW_SELECTED_STRAIN_INDEX = useSelector( (state:RootState) => state.main.VIEW_SELECTED_STRAIN_INDEX)
 
     // main app and user PROMISES
     function iPROMISEcookies() {
@@ -88,11 +93,59 @@ export function PromiseProvider({children}:Props) {
         })        
     }
 
+    function strainIndexIncrementPROMISE() {
+        const keys = VIEW_SELECTED_STRAIN.strainKeys
+        const values = VIEW_SELECTED_STRAIN.strainValues
+
+        if (VIEW_SELECTED_STRAIN_INDEX === 1) {
+            dispatch(SET_VIEW_SELECTED_STRAIN_KEY(keys.strain))
+            dispatch(SET_VIEW_SELECTED_STRAIN_VALUE(values.strain))            
+   }
+   if (VIEW_SELECTED_STRAIN_INDEX === 2) {
+            dispatch(SET_VIEW_SELECTED_STRAIN_KEY(keys.dominant))
+            dispatch(SET_VIEW_SELECTED_STRAIN_VALUE(values.dominant))            
+   }
+   if (VIEW_SELECTED_STRAIN_INDEX === 3) {
+            dispatch(SET_VIEW_SELECTED_STRAIN_KEY(keys.gold))
+            dispatch(SET_VIEW_SELECTED_STRAIN_VALUE(values.gold))            
+   }
+   if (VIEW_SELECTED_STRAIN_INDEX === 3) {
+            dispatch(SET_VIEW_SELECTED_STRAIN_KEY(keys.nugget))
+            dispatch(SET_VIEW_SELECTED_STRAIN_VALUE(values.nugget))            
+   }
+   if (VIEW_SELECTED_STRAIN_INDEX === 4) {
+       dispatch(SET_VIEW_SELECTED_STRAIN_KEY(keys.smell))
+       dispatch(SET_VIEW_SELECTED_STRAIN_VALUE(values.smell))            
+   }
+   if (VIEW_SELECTED_STRAIN_INDEX === 5) {
+            dispatch(SET_VIEW_SELECTED_STRAIN_KEY(keys.taste))
+            dispatch(SET_VIEW_SELECTED_STRAIN_VALUE(values.taste))            
+   }
+   if (VIEW_SELECTED_STRAIN_INDEX === 6) {
+            dispatch(SET_VIEW_SELECTED_STRAIN_KEY(keys.thc))
+            dispatch(SET_VIEW_SELECTED_STRAIN_VALUE(values.thc))            
+   }
+   if (VIEW_SELECTED_STRAIN_INDEX === 7) {
+            dispatch(SET_VIEW_SELECTED_STRAIN_KEY(keys.cbd))
+            dispatch(SET_VIEW_SELECTED_STRAIN_VALUE(values.cbd))            
+   }
+   if (VIEW_SELECTED_STRAIN_INDEX === 8) {
+            dispatch(SET_VIEW_SELECTED_STRAIN_KEY(keys.funfact))
+            dispatch(SET_VIEW_SELECTED_STRAIN_VALUE(values.funfact))            
+   }
+   if (VIEW_SELECTED_STRAIN_INDEX === 9) {
+       console.log("9 golden lives!")
+       // this is where we save the strain!
+            dispatch(SET_VIEW_SELECTED_STRAIN_INDEX(0))
+   }
+    }
+
 
         const value = {
             iPROMISEcookies,
             setallstrainsPROMISE,
-            deleteEndpointsPROMISE
+            deleteEndpointsPROMISE,
+            strainIndexIncrementPROMISE,
         }        
 
 
