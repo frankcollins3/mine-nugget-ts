@@ -24,7 +24,7 @@ export interface minersINTERFACE {
     password: string,
     age: number,
     email: string,
-    strains: minersOnStrainsINTERFACE[]
+    strains: minersOnStrainsINTERFACE[] | undefined
 }
 
 export interface strainsINTERFACE { 
@@ -39,25 +39,14 @@ export interface strainsINTERFACE {
     nugget: string,
     thc: string,
     cbd: string,
-    mines: minesINTERFACE[],
-    digs: digsINTERFACE[]
-    miners: any[]
+    mines: any[] | null | undefined, // mines: minesINTERFACE[] | null | undefined,
+    digs: any[] | null | undefined, // digs: digsINTERFACE[] | null | undefined,
+    miners: any[] | null | undefined // miners: any[] | null | undefined        
+}
+
+export interface Strain<T> extends strainsINTERFACE { 
+    mines: T[] | null | undefined,
+    digs: T[] | null | undefined,
 }
 
 // model strains {
-//     id        Int      @id @default(autoincrement())
-//     strain    String   @db.VarChar(255)
-//     strainid  Int      @unique
-//     dominant  String   @db.VarChar(255)
-//     funfact   String   @db.VarChar(255)
-//     parents   String   @db.VarChar(255)
-//     taste     String   @db.VarChar(255)
-//     smell     String   @db.VarChar(255)
-//     gold      String   @db.VarChar(255)
-//     nugget    String   @db.VarChar(255)
-//     thc       String   @db.VarChar(255)
-//     cbd       String   @db.VarChar(255)
-//     mines     mines[]
-//     digs      digs []
-//     miners    MinersOnStrains[]
-//   }
