@@ -6,12 +6,12 @@ import axios from "axios"
 // @redux/toolkit global state management
 import {RootState} from "redux/store/rootReducer"
 import {useSelector, useDispatch} from "react-redux"
-import { SET_ALL_STRAINS, SET_VIEW_SELECTED_STRAIN_KEY, SET_VIEW_SELECTED_STRAIN_VALUE, SET_VIEW_SELECTED_STRAIN_INDEX } from "redux/main/mainSlice"
+import { SET_ALL_STRAINS, SET_VIEW_SELECTED_STRAIN_KEY, SET_VIEW_SELECTED_STRAIN_VALUE, SET_VIEW_SELECTED_STRAIN_INDEX, SET_VIEW_SELECTED_STRAIN } from "redux/main/mainSlice"
 // import { SET_CURRENT_USER, SET_NON_GOOGLE_IMG_URL  } from "redux/logInOutGoogle/logInOutGoogleSlice"
 
 // utils
 import { strainsINTERFACE } from "utility/InterfaceTypes";
-import { keysAndValuesFromStrain, nonGenericKeysAndValuesFromStrain } from "utility/utilityValues"
+import { keysAndValuesFromStrain, nonGenericKeysAndValuesFromStrain, findStrainFromAllStrains } from "utility/utilityValues"
 
 // queries
 import { allStrainsGETquery } from "graphql/queries";
@@ -23,6 +23,8 @@ type PromiseTypes = {
     setallstrainsPROMISE: () => any;
     deleteEndpointsPROMISE: (strain:any) => any;
     strainIndexIncrementPROMISE: () => any;
+
+    strainClickPROMISE: (strain:string) => any;
 }   
 
 const PromiseDefaults = {
@@ -30,6 +32,7 @@ const PromiseDefaults = {
     setallstrainsPROMISE: () => {},
     deleteEndpointsPROMISE: (strain:any) => {},
     strainIndexIncrementPROMISE: () => {}, // strainIndexIncrementPROMISE: (index, strain) => {},
+    strainClickPROMISE: (strain:string) => {},
 }
 
 const PromiseContext = createContext<PromiseTypes>(PromiseDefaults)
@@ -46,6 +49,7 @@ export function PromiseProvider({children}:Props) {
 
     const VIEW_SELECTED_STRAIN = useSelector( (state:RootState) => state.main.VIEW_SELECTED_STRAIN)
     const VIEW_SELECTED_STRAIN_INDEX = useSelector( (state:RootState) => state.main.VIEW_SELECTED_STRAIN_INDEX)
+    const ALL_STRAINS = useSelector( (state:RootState) => state.main.ALL_STRAINS)
 
     // main app and user PROMISES
     function iPROMISEcookies() {
@@ -140,12 +144,39 @@ export function PromiseProvider({children}:Props) {
    }
     }
 
+    const strainClickPROMISE = async (strain:string) => {
+            let clickedStrain = findStrainFromAllStrains(strain, ALL_STRAINS)
+            clickedStrain = await deleteEndpointsPROMISE(clickedStrain)
+            .then( (clickedStrain:any) => {
+                console.log('clickedStrain in the promise then',clickedStrain)
+                if (clickedStrain.strainValues) {
+                    console.log('strainValues in if', clickedStrain.strainValues)
+                // if (strain.length > 1 && strain !== VIEW_SELECTED_STRAIN.strainValues ? VIEW_SELECTED_STRAIN.strainValues.strain : ''){
+    
+                    if (strain.length > 1 && VIEW_SELECTED_STRAIN.strainValues && strain === VIEW_SELECTED_STRAIN.strainValues.strain ) {
+                    // if (strain.length > 1 && strain === VIEW_SELECTED_STRAIN.strainValues.strain ) {
+                        console.log('newstrain client PROMISE', clickedStrain)
+                        dispatch(SET_VIEW_SELECTED_STRAIN(clickedStrain))    
+                        dispatch(SET_VIEW_SELECTED_STRAIN_INDEX(VIEW_SELECTED_STRAIN_INDEX + 1))            
+    
+                    } else {
+                        console.log("strain is not equal");
+                        dispatch(SET_VIEW_SELECTED_STRAIN(clickedStrain))
+                        dispatch(SET_VIEW_SELECTED_STRAIN_KEY("strain"))
+                        dispatch(SET_VIEW_SELECTED_STRAIN_VALUE(strain))
+                        dispatch(SET_VIEW_SELECTED_STRAIN_INDEX(1))
+                    }
+                }
+            })
+    }
+
 
         const value = {
             iPROMISEcookies,
             setallstrainsPROMISE,
             deleteEndpointsPROMISE,
             strainIndexIncrementPROMISE,
+            strainClickPROMISE,
         }        
 
 
