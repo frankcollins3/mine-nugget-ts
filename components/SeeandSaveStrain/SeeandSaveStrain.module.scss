@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@1,100&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Moon+Dance&display=swap');
+
+$whip: papayawhip;
+
+#Cont {
+    // min-height: 100px;
+    // background-color: #ffffff;
+    color: $whip;
+    font-size: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // padding: 10px 0px; 
+}
+
+.strainbox { 
+    // height: 100px;
+    // width: 100px;
+}
+
+.li { background-color: $whip; color: rgb(247, 208, 36); border-radius: 2.5%; }
+
+@media only screen and (max-width: 2000px) {
+    .li {
+        height: 40px;
+        text-align: center;
+        background-image: url('/img/gold.png');
+        background-size: cover;        
+        width: 30%;            
+        margin-top: 1.5em;
+        list-style-type: none;
+        font-size: 22px;
+        // color: $whip;
+
+        font-family: 'Josefin Sans', sans-serif;
+        text-shadow: 1px 1px 1px rgb(247, 208, 36);    
+    }
+
+    // .li {
+    //     height: 40px;
+    //     text-align: center;
+    //     background-image: url('/img/goldentriangle.png');
+    //     background-size: 10%;
+    //     background-position: center bottom -7px;
+    //     background-repeat: no-repeat;
+    //     width: 30%;            
+    //     margin-top: 1.5em;
+    //     list-style-type: none;
+    //     font-size: 22px;
+    //     font-family: 'Josefin Sans', sans-serif;
+    //     text-shadow: 1px 1px 1px rgb(247, 208, 36);    
+    // }
+}
+
+@media only screen and (max-width: 600px) {
+    .li {
+        height: 40px;
+        text-align: center;
+        background-image: url('/img/gold.png');
+        background-size: cover;        
+        width: 75%;            
+        margin-top: 1.5em;
+        list-style-type: none;
+        font-size: 22px;
+        // color: $whip;
+
+        font-family: 'Josefin Sans', sans-serif;
+        text-shadow: 1px 1px 1px rgb(247, 208, 36);    
+    }
+}
+
+.li:hover { box-shadow: 3px 3px 9px $whip; }
