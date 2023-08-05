@@ -1,3 +1,5 @@
+// * * * * * PSQL DATA TYPE INTERFACES BELOW! !!
+
 // id | userId | strainid | into_it
 export interface digsINTERFACE {
     userId: number,
@@ -44,9 +46,16 @@ export interface strainsINTERFACE {
     miners: any[] | null | undefined // miners: any[] | null | undefined        
 }
 
-export interface Strain<T> extends strainsINTERFACE { 
-    mines: T[] | null | undefined,
-    digs: T[] | null | undefined,
+type OmitStrainsInterface = Omit<strainsINTERFACE, keyof strainsINTERFACE>;
+export interface Strain<T> extends OmitStrainsInterface { 
+    [key: string | number]: T;
 }
 
-// model strains {
+// * * * * * DATA TYPE INTERFACES ABOVE FOR PSQL !!
+
+
+// COMPONENT INTERFACES BELOW !
+export interface SeeAndSaveStrainProps { 
+    strain: string
+    key: string 
+}
