@@ -6,7 +6,9 @@ import axios from "axios"
 // @redux/toolkit global state management
 import {RootState} from "redux/store/rootReducer"
 import {useSelector, useDispatch} from "react-redux"
-import { SET_ALL_STRAINS, SET_VIEW_SELECTED_STRAIN_KEY, SET_VIEW_SELECTED_STRAIN_VALUE, SET_VIEW_SELECTED_STRAIN_INDEX, SET_VIEW_SELECTED_STRAIN } from "redux/main/mainSlice"
+import { SET_VIEW_SELECTED_STRAIN_KEY, SET_VIEW_SELECTED_STRAIN_VALUE, SET_VIEW_SELECTED_STRAIN_INDEX, SET_VIEW_SELECTED_STRAIN, TOGGLE_SELECTED_STRAIN_SAVE_OR_NOT } from "redux/main/mainSlice"
+
+import { TOGGLE_PASSWORD_TOO_EZ, TOGGLE_PASSWORD_NUMBER_CHAR, TOGGLE_PASSWORD_SPECIAL_CHAR, TOGGLE_PASSWORD_UPPERCASE } from "redux/loginSignup/loginSignupSlice";
 // import { SET_CURRENT_USER, SET_NON_GOOGLE_IMG_URL  } from "redux/logInOutGoogle/logInOutGoogleSlice"
 
 // utils
@@ -25,6 +27,10 @@ type PromiseTypes = {
     strainIndexIncrementPROMISE: () => any;
 
     strainClickPROMISE: (strain:string) => any;
+    
+    // SIGNUP INPUT FUNCTIONS!
+    passwordWordMatchPROMISE: () => any;
+    localPasswordCheckerPROMISE: () => any;
 }   
 
 const PromiseDefaults = {
@@ -33,6 +39,10 @@ const PromiseDefaults = {
     deleteEndpointsPROMISE: (strain:any) => {},
     strainIndexIncrementPROMISE: () => {}, // strainIndexIncrementPROMISE: (index, strain) => {},
     strainClickPROMISE: (strain:string) => {},
+
+    // SIGNUP INPUT FUNCTIONS!
+    passwordWordMatchPROMISE: () => {},
+    localPasswordCheckerPROMISE: () => {},
 }
 
 const PromiseContext = createContext<PromiseTypes>(PromiseDefaults)
@@ -47,9 +57,24 @@ export function PromiseProvider({children}:Props) {
 
     const dispatch = useDispatch()
 
+    // regex expressions since this is in Contexts which won't have access to Contexts/Regex
+    const RhasNums = /[0-9]/g
+    // regex 
+
+    // state from mainSlice
     const VIEW_SELECTED_STRAIN = useSelector( (state:RootState) => state.main.VIEW_SELECTED_STRAIN)
     const VIEW_SELECTED_STRAIN_INDEX = useSelector( (state:RootState) => state.main.VIEW_SELECTED_STRAIN_INDEX)
     const ALL_STRAINS = useSelector( (state:RootState) => state.main.ALL_STRAINS)
+    const SELECTED_STRAIN_SAVE_OR_NOT = useSelector( (state:RootState) => state.main.SELECTED_STRAIN_SAVE_OR_NOT)        
+
+    // state from loginSignupSlice
+    const PASSWORD_UPPERCASE = useSelector( (state:RootState) => state.loginSignup.PASSWORD_UPPERCASE)
+    const PASSWORD_NUMBER_CHAR = useSelector( (state:RootState) => state.loginSignup.PASSWORD_NUMBER_CHAR)
+    const PASSWORD_SPECIAL_CHAR = useSelector( (state:RootState) => state.loginSignup.PASSWORD_SPECIAL_CHAR)
+
+    const SIGNUP_PASSWORD_INPUT = useSelector( (state:RootState) => state.loginSignup.SIGNUP_PASSWORD_INPUT)
+    const PASSWORD_TOO_EZ = useSelector( (state:RootState) => state.loginSignup.PASSWORD_TOO_EZ)
+    const PASSWORD_TOO_EZ_BANK = useSelector( (state:RootState) => state.loginSignup.PASSWORD_TOO_EZ_BANK)
 
     // main app and user PROMISES
     function iPROMISEcookies() {
@@ -141,26 +166,21 @@ export function PromiseProvider({children}:Props) {
        console.log("9 golden lives!")
        // this is where we save the strain!
             dispatch(SET_VIEW_SELECTED_STRAIN_INDEX(0))
+            dispatch(TOGGLE_SELECTED_STRAIN_SAVE_OR_NOT())
    }
     }
 
     const strainClickPROMISE = async (strain:string) => {
+            if (SELECTED_STRAIN_SAVE_OR_NOT) dispatch(TOGGLE_SELECTED_STRAIN_SAVE_OR_NOT())
+
             let clickedStrain = findStrainFromAllStrains(strain, ALL_STRAINS)
             clickedStrain = await deleteEndpointsPROMISE(clickedStrain)
             .then( (clickedStrain:any) => {
-                console.log('clickedStrain in the promise then',clickedStrain)
-                if (clickedStrain.strainValues) {
-                    console.log('strainValues in if', clickedStrain.strainValues)
-                // if (strain.length > 1 && strain !== VIEW_SELECTED_STRAIN.strainValues ? VIEW_SELECTED_STRAIN.strainValues.strain : ''){
-    
+                if (clickedStrain.strainValues) {    
                     if (strain.length > 1 && VIEW_SELECTED_STRAIN.strainValues && strain === VIEW_SELECTED_STRAIN.strainValues.strain ) {
-                    // if (strain.length > 1 && strain === VIEW_SELECTED_STRAIN.strainValues.strain ) {
-                        console.log('newstrain client PROMISE', clickedStrain)
                         dispatch(SET_VIEW_SELECTED_STRAIN(clickedStrain))    
                         dispatch(SET_VIEW_SELECTED_STRAIN_INDEX(VIEW_SELECTED_STRAIN_INDEX + 1))            
-    
                     } else {
-                        console.log("strain is not equal");
                         dispatch(SET_VIEW_SELECTED_STRAIN(clickedStrain))
                         dispatch(SET_VIEW_SELECTED_STRAIN_KEY("strain"))
                         dispatch(SET_VIEW_SELECTED_STRAIN_VALUE(strain))
@@ -170,6 +190,60 @@ export function PromiseProvider({children}:Props) {
             })
     }
 
+    const passwordWordMatchPROMISE = () => {
+        let wordmatchPROMISE = new Promise( (resolve:any, reject:any) => {
+            let nonNumChar = SIGNUP_PASSWORD_INPUT.match(/[^0-9]/g)?.join(" ").replace(/\s/g, '')
+            resolve(nonNumChar)
+            reject("you reject!")
+        })
+        wordmatchPROMISE
+        .then( (wordGex) => {   
+        let matchCount = 0;
+        console.log('wordGex in the promise', wordGex)
+    const matchCountPromise = new Promise(async(resolve:any, reject:any) => {
+        await PASSWORD_TOO_EZ_BANK.forEach( (word) => {
+            if (word === wordGex && PASSWORD_TOO_EZ === false) {
+                matchCount++;
+            } else if (word !== wordGex && PASSWORD_TOO_EZ === true) {
+                return
+            }
+        })
+        resolve(matchCount)
+        reject("none")
+    })
+    matchCountPromise
+    .then( (matchCount:any) => {
+        if (matchCount > 0 && PASSWORD_TOO_EZ === false) {
+            dispatch(TOGGLE_PASSWORD_TOO_EZ())
+        } else if (matchCount === 0 && PASSWORD_TOO_EZ === true) {
+            dispatch(TOGGLE_PASSWORD_TOO_EZ())
+        }            
+    })      
+}) 
+}
+
+const localPasswordCheckerPROMISE = () => {            
+    if (/\d+/g.test(SIGNUP_PASSWORD_INPUT) && PASSWORD_NUMBER_CHAR === false) {
+        // if (PASSWORD_NUMBER_CHAR === false) {
+            dispatch(TOGGLE_PASSWORD_NUMBER_CHAR())
+            // }
+        }
+        else if (PASSWORD_NUMBER_CHAR === true && !/\d+/g.test(SIGNUP_PASSWORD_INPUT)) {
+        dispatch(TOGGLE_PASSWORD_NUMBER_CHAR())
+    }
+    
+    if (/[A-Z\s]/g.test(SIGNUP_PASSWORD_INPUT) && PASSWORD_UPPERCASE === false) {
+        dispatch(TOGGLE_PASSWORD_UPPERCASE())
+    } else if (!/[A-Z\s]/g.test(SIGNUP_PASSWORD_INPUT) && PASSWORD_UPPERCASE === true) {
+        dispatch(TOGGLE_PASSWORD_UPPERCASE())
+    }
+    
+    if (/[!@#$%^&()*?<>,.=+-]/g.test(SIGNUP_PASSWORD_INPUT) && PASSWORD_SPECIAL_CHAR === false) {
+        dispatch(TOGGLE_PASSWORD_SPECIAL_CHAR())
+    } else if (!/[!@#$%^&()*?<>,.=+-]/g.test(SIGNUP_PASSWORD_INPUT) && PASSWORD_SPECIAL_CHAR === true ){
+        dispatch(TOGGLE_PASSWORD_SPECIAL_CHAR())
+    }            
+}
 
         const value = {
             iPROMISEcookies,
@@ -177,6 +251,10 @@ export function PromiseProvider({children}:Props) {
             deleteEndpointsPROMISE,
             strainIndexIncrementPROMISE,
             strainClickPROMISE,
+
+            // SIGNUP INPUT FUNCTIONS!
+            passwordWordMatchPROMISE,
+            localPasswordCheckerPROMISE
         }        
 
 
