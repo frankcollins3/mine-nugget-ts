@@ -24,40 +24,102 @@ import prisma from "prisma/prismaClient"
 
 const allstrainsDB = prisma.strains.findMany
 const allminersDB = prisma.miners.findMany
+const allMinersOnStrainsDB = prisma.MinersOnStrains.findMany
 
 
+// strains redis functions
+const strainsRedisCheck = async () => { return redis.get("strains", (error, strains) => { return error ? error : strains }) }
+const minersRedisCheck = async () => { return redis.get("miners", (error, miners) => { return miners ? miners : error })}
 
-const strainsRedisCheck = async () => {
-  return redis.get("strains", (error, strains) => {
-    if (error) return error
-    return strains
-  })
+// MinersOnStrains redis functions
+const deleteMinersOnStrainsRedis = async () => { return redis.del("MinersOnStrains") }
+
+const addMinersOnStrainsToRedis = async () => {
+  await deleteMinersOnStrainsRedis()
+  const allMinersOnStrains = await allMinersOnStrainsDB()
+  const stringifyMinersOnStrains = JSON.stringify(allMinersOnStrains)
+  await redis.set("MinersOnStrains", stringifyMinersOnStrains)
 }
+
+
+// const strainsRedisCheck = async () => {
+//   return redis.get("strains", (error, strains) => {
+//     if (error) return error
+//     return strains
+//   })
+// }
 
 
 export const resolvers = {
     Query: {
     allStrainsGET: async () => { 
       console.log("hey were here in the server")
-
+  // strainRedisCheck is a cb()  ^ ^ that returns error if there is no redis.get("strains") very easy to check in redis-cli. same command: redis.get('strains')
       let checkStrainsRedis = await strainsRedisCheck() 
+      // if redis.get('strains') returns string data from the cache then this condition will validate
       if (checkStrainsRedis) {
+        // JSON.parse because, like localStorage.setItem(""), the cache needs stringified values. So returning them so they have usable endpoints requires JSON.parse(redisData)
         const redisParseStr = JSON.parse(checkStrainsRedis)
-        // const redisParseStr = jsonPARSE(checkStrainsRedis)
         console.log("we are in the redis cache!", redisParseStr)
+  // the condition wrapping these very expressions, again indicates populated redis cache. return the redis cache data which would be identical to prisma.strains.findMany() without query DB x 2
         return redisParseStr
       } else {
+  // the else block is run if:  strainsRedisCheck() returns err indicating no cache data from redis.get('strains'). so create cache to satisfy if condition next time & return DB data this time
         console.log("no redis cache!")
+        // prisma.strains.findMany() for postgres ----> data.tablestrains
         const allStrains = await allstrainsDB()  
+        // stringify the returned DB data so next time the if condition runs, returning cached data, relieving psql & prisma of unneeded work, making the app more performant.
         const redisStringifyObj = JSON.stringify(allStrains)
-        // const redisStringifyObj = jsonSTRINGIFY(allStrains)
+        //  same statement from redis-cli       set the strains to be equal to the stringified object, again, as would be done for localStorage.setItem('strains', strainString)
         await redis.set("strains", redisStringifyObj)  
         console.log('allStrains server', allStrains)
+        // could return the cache data here but returning the DB data since we already used prisma. too late to spare DB & ORM the need to perform. 
         return allStrains
-
       }
     },    
-    },  
+    allMinersGET: async () => {
+      let checkMinersRedis = await minersRedisCheck()
+      if (checkMinersRedis) {
+        const redisParseStr = JSON.parse(checkMinersRedis)
+        console.log("in the redisParseStr", redisParseStr)
+        return redisParseStr
+      } else {
+        console.log("we are not in the redis block!!!!")
+        const allMiners = await allminersDB()
+        const redisStringifyObj = JSON.stringify(allMiners)
+        await redis.set("miners", redisStringifyObj)
+        return allMiners
+      }
+    },
+
+    },  // query bracket end 
+
+    Mutation: {
+        addMinersOnStrains: async (parent, args) => {
+          const { minersId, strainsid } = args
+          console.log('minersId server', minersId)
+          console.log('strainsid server', strainsid)
+
+          return prisma.minersOnStrains.create({
+              data: {
+                minersId: 1,
+                strainsid: 1
+                // minersId: minersId,
+                // strainsid: strainsid
+              }
+          }).then(async(newUserStrain) => {
+            console.log(newUserStrain)
+            addMinersOnStrainsToRedis()
+            return newUserStrain
+          })
+          // .catch( (error) => {
+          //   return { minersId: 0, strainsid: 0 }
+          // })
+
+        }
+
+
+    } // mutation bracket end
 }
 
 /*
