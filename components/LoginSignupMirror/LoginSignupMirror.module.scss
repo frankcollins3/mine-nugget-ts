@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@1,100&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Moon+Dance&display=swap');
+
+#Cont {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: fit-content;
+}
+
+#rowCont {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    // padding: 0 30%;
+    width: stretch;
+}
+
+.columnCont {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#mirror {
+    margin-top: 0.5em;
+    height: 300px;
+    width: 300px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    // border: 5px solid hotpink;
+    background-image: url('/img/mirror.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
