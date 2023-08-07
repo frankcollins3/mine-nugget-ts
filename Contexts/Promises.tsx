@@ -6,9 +6,16 @@ import axios from "axios"
 // @redux/toolkit global state management
 import {RootState} from "redux/store/rootReducer"
 import {useSelector, useDispatch} from "react-redux"
-import { SET_VIEW_SELECTED_STRAIN_KEY, SET_VIEW_SELECTED_STRAIN_VALUE, SET_VIEW_SELECTED_STRAIN_INDEX, SET_VIEW_SELECTED_STRAIN, TOGGLE_SELECTED_STRAIN_SAVE_OR_NOT } from "redux/main/mainSlice"
+import { 
+    SET_VIEW_SELECTED_STRAIN_KEY, SET_VIEW_SELECTED_STRAIN_VALUE, SET_VIEW_SELECTED_STRAIN_INDEX, SET_VIEW_SELECTED_STRAIN, TOGGLE_SELECTED_STRAIN_SAVE_OR_NOT,
+    SET_ALL_STRAINS, SET_ALL_USERS, SET_ALL_USERNAMES, SET_ALL_EMAILS,
+} from "redux/main/mainSlice"
 
-import { TOGGLE_PASSWORD_TOO_EZ, TOGGLE_PASSWORD_NUMBER_CHAR, TOGGLE_PASSWORD_SPECIAL_CHAR, TOGGLE_PASSWORD_UPPERCASE } from "redux/loginSignup/loginSignupSlice";
+import { 
+    TOGGLE_PASSWORD_TOO_EZ, TOGGLE_PASSWORD_LENGTH_PASS, TOGGLE_PASSWORD_NUMBER_CHAR, TOGGLE_PASSWORD_SPECIAL_CHAR, TOGGLE_PASSWORD_UPPERCASE,
+    TOGGLE_EMAIL_EXTENSION, TOGGLE_EMAIL_UNIQUE, SET_EMAIL_EXTENSION_UI,
+    TOGGLE_USERNAME_UNIQUE, TOGGLE_USERNAME_LENGTH,
+ } from "redux/loginSignup/loginSignupSlice";
 // import { SET_CURRENT_USER, SET_NON_GOOGLE_IMG_URL  } from "redux/logInOutGoogle/logInOutGoogleSlice"
 
 // utils
@@ -16,13 +23,16 @@ import { strainsINTERFACE } from "utility/InterfaceTypes";
 import { keysAndValuesFromStrain, nonGenericKeysAndValuesFromStrain, findStrainFromAllStrains } from "utility/utilityValues"
 
 // queries
-import { allStrainsGETquery } from "graphql/queries";
+import { allStrainsGETquery, allMinersGETquery } from "graphql/queries";
+import GoldRequestQL from "utility/GoldRequestQL";
+import { rejects } from "assert";
 
 
 type PromiseTypes = {
 
     iPROMISEcookies: () => any;
     setallstrainsPROMISE: () => any;
+    setallminersPROMISE: () => any;
     deleteEndpointsPROMISE: (strain:any) => any;
     strainIndexIncrementPROMISE: () => any;
 
@@ -30,18 +40,23 @@ type PromiseTypes = {
     
     // SIGNUP INPUT FUNCTIONS!
     passwordWordMatchPROMISE: () => any;
+    emailInputPROMISE: () => any;
+    usernameInputPROMISE: () => any;
     localPasswordCheckerPROMISE: () => any;
 }   
 
 const PromiseDefaults = {
     iPROMISEcookies: () => {},
     setallstrainsPROMISE: () => {},
+    setallminersPROMISE: () => {},
     deleteEndpointsPROMISE: (strain:any) => {},
     strainIndexIncrementPROMISE: () => {}, // strainIndexIncrementPROMISE: (index, strain) => {},
     strainClickPROMISE: (strain:string) => {},
 
     // SIGNUP INPUT FUNCTIONS!
     passwordWordMatchPROMISE: () => {},
+    emailInputPROMISE: () => {},
+    usernameInputPROMISE: () => {},
     localPasswordCheckerPROMISE: () => {},
 }
 
@@ -58,23 +73,34 @@ export function PromiseProvider({children}:Props) {
     const dispatch = useDispatch()
 
     // regex expressions since this is in Contexts which won't have access to Contexts/Regex
-    const RhasNums = /[0-9]/g
-    // regex 
 
     // state from mainSlice
     const VIEW_SELECTED_STRAIN = useSelector( (state:RootState) => state.main.VIEW_SELECTED_STRAIN)
     const VIEW_SELECTED_STRAIN_INDEX = useSelector( (state:RootState) => state.main.VIEW_SELECTED_STRAIN_INDEX)
     const ALL_STRAINS = useSelector( (state:RootState) => state.main.ALL_STRAINS)
     const SELECTED_STRAIN_SAVE_OR_NOT = useSelector( (state:RootState) => state.main.SELECTED_STRAIN_SAVE_OR_NOT)        
+    const ALL_EMAILS = useSelector( (state:RootState) => state.main.ALL_EMAILS)        
+    const ALL_USERNAMES = useSelector( (state:RootState) => state.main.ALL_USERNAMES)        
 
     // state from loginSignupSlice
     const PASSWORD_UPPERCASE = useSelector( (state:RootState) => state.loginSignup.PASSWORD_UPPERCASE)
+    const PASSWORD_LENGTH_PASS = useSelector( (state:RootState) => state.loginSignup.PASSWORD_LENGTH_PASS)
     const PASSWORD_NUMBER_CHAR = useSelector( (state:RootState) => state.loginSignup.PASSWORD_NUMBER_CHAR)
     const PASSWORD_SPECIAL_CHAR = useSelector( (state:RootState) => state.loginSignup.PASSWORD_SPECIAL_CHAR)
 
     const SIGNUP_PASSWORD_INPUT = useSelector( (state:RootState) => state.loginSignup.SIGNUP_PASSWORD_INPUT)
     const PASSWORD_TOO_EZ = useSelector( (state:RootState) => state.loginSignup.PASSWORD_TOO_EZ)
     const PASSWORD_TOO_EZ_BANK = useSelector( (state:RootState) => state.loginSignup.PASSWORD_TOO_EZ_BANK)
+
+    const SIGNUP_EMAIL_INPUT = useSelector( (state:RootState) => state.loginSignup.SIGNUP_EMAIL_INPUT)
+    const EMAIL_EXTENSION = useSelector( (state:RootState) => state.loginSignup.EMAIL_EXTENSION)
+    const EMAIL_UNIQUE = useSelector( (state:RootState) => state.loginSignup.EMAIL_UNIQUE)
+    
+    const SIGNUP_USERNAME_INPUT = useSelector( (state:RootState) => state.loginSignup.SIGNUP_USERNAME_INPUT)
+    const USERNAME_LENGTH = useSelector( (state:RootState) => state.loginSignup.USERNAME_LENGTH)
+    const USERNAME_UNIQUE = useSelector( (state:RootState) => state.loginSignup.USERNAME_UNIQUE)
+
+
 
     // main app and user PROMISES
     function iPROMISEcookies() {
@@ -98,10 +124,11 @@ export function PromiseProvider({children}:Props) {
 
     function setallstrainsPROMISE() {
         return new Promise( (resolve:any, reject:any) => {
-            return axios.post('/api/graphql', { query: `${allStrainsGETquery}`})
+            return GoldRequestQL(`${allStrainsGETquery}`)
             .then((response:any) => {
               let strains:strainsINTERFACE = response.data
               strains = response.data.data.allStrainsGET
+              dispatch(SET_ALL_STRAINS(strains))
               resolve(strains)
             })
             .catch((error) => {
@@ -109,6 +136,36 @@ export function PromiseProvider({children}:Props) {
             });
         })
     }
+
+
+    function setallminersPROMISE() {
+        return GoldRequestQL(`${allMinersGETquery}`)
+        .then( (response:any) => {
+            console.log('response in promise', response)
+            const miners = response.data.data.allMinersGET
+
+            let allusernames = miners.map(users => users.username)
+            let allemails = miners.map(users => users.email)
+            dispatch(SET_ALL_USERNAMES(allusernames))
+            dispatch(SET_ALL_EMAILS(allemails))
+            return miners
+
+        }).catch( (err) => {
+            console.log('err', err)
+        })
+    }
+
+    // GoldRequestQL(`${allMinersGETquery}`)
+    //     .then( (data:any) => {
+    //         console.log('client data', data)
+    //         const miners = data.data.data.allMinersGET
+    //         let allusernames = miners.map(users => users.username)
+    //         let allemails = miners.map(users => users.email)
+    //         console.log('allusernames', allusernames)
+    //         console.log('allemails', allemails)
+    //     })
+
+
 
     function deleteEndpointsPROMISE(strain:any) {   // cant do generic because the endpoints cant be deleted and won't change returned data from generics because different components need it.
         return new Promise( (resolve:any, reject:any) => {
@@ -225,13 +282,17 @@ export function PromiseProvider({children}:Props) {
 const localPasswordCheckerPROMISE = () => {            
     if (/\d+/g.test(SIGNUP_PASSWORD_INPUT) && PASSWORD_NUMBER_CHAR === false) {
         // if (PASSWORD_NUMBER_CHAR === false) {
-            dispatch(TOGGLE_PASSWORD_NUMBER_CHAR())
-            // }
-        }
+            dispatch(TOGGLE_PASSWORD_NUMBER_CHAR())            
+    } else if (SIGNUP_PASSWORD_INPUT.length) {
+            if (SIGNUP_PASSWORD_INPUT.length >= 8 && PASSWORD_LENGTH_PASS === false) {
+                dispatch(TOGGLE_PASSWORD_LENGTH_PASS())
+            } else if (SIGNUP_PASSWORD_INPUT.length < 8 && PASSWORD_LENGTH_PASS === true) {
+                dispatch(TOGGLE_PASSWORD_LENGTH_PASS())
+            }
+    }
         else if (PASSWORD_NUMBER_CHAR === true && !/\d+/g.test(SIGNUP_PASSWORD_INPUT)) {
         dispatch(TOGGLE_PASSWORD_NUMBER_CHAR())
     }
-    
     if (/[A-Z\s]/g.test(SIGNUP_PASSWORD_INPUT) && PASSWORD_UPPERCASE === false) {
         dispatch(TOGGLE_PASSWORD_UPPERCASE())
     } else if (!/[A-Z\s]/g.test(SIGNUP_PASSWORD_INPUT) && PASSWORD_UPPERCASE === true) {
@@ -245,16 +306,71 @@ const localPasswordCheckerPROMISE = () => {
     }            
 }
 
+const emailInputPROMISE = () => {
+    if (ALL_EMAILS.includes(SIGNUP_EMAIL_INPUT) && EMAIL_UNIQUE === false) {
+        dispatch(TOGGLE_EMAIL_UNIQUE())
+    } else if (!ALL_EMAILS.includes(SIGNUP_EMAIL_INPUT) && EMAIL_UNIQUE === true) {
+        dispatch(TOGGLE_EMAIL_UNIQUE())            
+    }
+
+    let emailExtension:any = SIGNUP_EMAIL_INPUT.match(/(\.\w+)$/)
+    if (emailExtension) {
+        emailExtension = emailExtension[1]
+        console.log('emailExtension', emailExtension)
+        console.log('length', emailExtension.length)
+        if (emailExtension.length === 4) {
+            if (emailExtension === ".com" || emailExtension === ".org" || emailExtension === ".net") {
+                if (EMAIL_EXTENSION === false) {
+                    dispatch(TOGGLE_EMAIL_EXTENSION())
+                    dispatch(SET_EMAIL_EXTENSION_UI(emailExtension))
+                }
+            }
+        } else if (emailExtension.length < 4) {
+            if (EMAIL_EXTENSION === true) {
+                dispatch(TOGGLE_EMAIL_EXTENSION())
+                dispatch(SET_EMAIL_EXTENSION_UI(''))
+            }
+        }
+    } else {
+        console.log("no email extension")
+        if (EMAIL_EXTENSION === true) {
+            dispatch(TOGGLE_EMAIL_EXTENSION)
+        }
+    }
+}
+
+const usernameInputPROMISE = () => {
+    console.log('ALL_USERNAMES', ALL_USERNAMES)
+
+    if (SIGNUP_USERNAME_INPUT.length >= 5 && SIGNUP_USERNAME_INPUT.length < 18) {
+        if (USERNAME_LENGTH === false) { dispatch(TOGGLE_USERNAME_LENGTH()) }
+    } else {
+        if (USERNAME_LENGTH === true) { dispatch(TOGGLE_USERNAME_LENGTH())}
+    }
+
+    if (ALL_USERNAMES.includes(SIGNUP_USERNAME_INPUT) && USERNAME_UNIQUE === false) {
+        console.log("username includes it!")
+        dispatch(TOGGLE_USERNAME_UNIQUE())
+    } else if (!ALL_USERNAMES.includes(SIGNUP_USERNAME_INPUT) && USERNAME_UNIQUE === true) {            
+        dispatch(TOGGLE_USERNAME_UNIQUE())
+    }
+}
+
+
+
         const value = {
             iPROMISEcookies,
             setallstrainsPROMISE,
+            setallminersPROMISE,
             deleteEndpointsPROMISE,
             strainIndexIncrementPROMISE,
             strainClickPROMISE,
 
             // SIGNUP INPUT FUNCTIONS!
             passwordWordMatchPROMISE,
-            localPasswordCheckerPROMISE
+            localPasswordCheckerPROMISE,
+            emailInputPROMISE,
+            usernameInputPROMISE
         }        
 
 
