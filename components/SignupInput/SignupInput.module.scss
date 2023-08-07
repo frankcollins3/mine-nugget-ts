@@ -1,0 +1,26 @@
+.input {
+    background: transparent;
+    outline: none;
+    border: none;
+    color: #A41648;
+    font-family: Moon Dance;
+    width: 40%;   
+    margin-top: 0.05em;
+  }
+  
+  .input:hover { border: 2px solid papayawhip; }
+  
+  .input:focus { 
+      outline: none; 
+      border: none;
+  }
+
+
+
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
