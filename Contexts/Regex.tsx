@@ -10,16 +10,7 @@ type RegexContextType = {
     RreturnNumbers: RegExp;
     RhasCaps: RegExp;
     RhasNums: RegExp;
-    RdotAtEscape: RegExp;
-    RnoWhiteSpace: RegExp;
-    RnoBackslash: RegExp;
-    RcolonSandwichInt: RegExp;
-    MsplitAtDot: RegExp;
-    McharAfterComma: RegExp;
-    McharBeforeAt: RegExp;
-    MprePng: RegExp;
-    MreturnAlphaChar: RegExp;
-    MimgSrc: RegExp;
+    RhasSpecialChar: RegExp;
   }
   
   type RegexDefaults = {
@@ -29,16 +20,7 @@ type RegexContextType = {
     RreturnNumbers: RegExp;
     RhasCaps: RegExp;
     RhasNums: RegExp
-    RdotAtEscape: RegExp;
-    RnoWhiteSpace: RegExp;
-    RnoBackslash: RegExp;
-    RcolonSandwichInt: RegExp;
-    MsplitAtDot: RegExp;
-    McharAfterComma: RegExp;
-    McharBeforeAt: RegExp;
-    MprePng: RegExp
-    MreturnAlphaChar: RegExp;
-    MimgSrc: RegExp;
+    RhasSpecialChar: RegExp;
   }
   
   const regexDefaults: RegexDefaults = {
@@ -46,18 +28,9 @@ type RegexContextType = {
     RreturnLettersAthruZ: /[a\-z]/g,
     RreturnAlphaChar: /[A-Za-z]+/g,
     RreturnNumbers: /[0\-9]/g,
-    RcolonSandwichInt: /:(.*?):/,    // string.replace(/:(.*?):/, ':');
     RhasCaps: /[A-Z]/g,
     RhasNums: /[0-9]/g,
-    RdotAtEscape: /[\@\.]/g,
-    RnoWhiteSpace: /\s/g,
-    RnoBackslash: /\//g,
-    MsplitAtDot: /@([^.]*)\./,        
-    McharAfterComma: /,(.*)/,
-    McharBeforeAt: /^(.*?)@/,
-    MprePng: /(.+)\.png/,
-    MreturnAlphaChar: /[A-Za-z]+/g,
-    MimgSrc: /\/water_img\/(.+)/,
+    RhasSpecialChar: /[!@#$%^&*()?<>,.=+-]/g,
   };
 
       const RegexContext = createContext<RegexContextType>(regexDefaults)
@@ -77,16 +50,8 @@ type RegexContextType = {
         const [RreturnNumbers, setReturnNumbers] = useState<RegExp>(/[0\-9]/g)                       // replace
         const [RhasCaps, setHasCaps] = useState<RegExp>(/[A-Z]/g)                                    // replace
         const [RhasNums, setHasNums] = useState<RegExp>(/[0-9]/g)                                    // replace
-        const [RdotAtEscape, setRDotAtEscape] = useState<RegExp>(/[\@\.]/g)      // match          if (splitEmail !== null) {       const matchedValue = splitEmail[0];      }
-        const [RnoWhiteSpace, setNoWhiteSpace] = useState<RegExp>(/\s/g)                             // replace
-        const [RcolonSandwichInt, setRColonSandwichInt] = useState<RegExp>(/:(.*?):/)
-        const [RnoBackslash, setRNoBackslash] = useState<RegExp>(/\//g)                             // replace
-        const [MsplitAtDot, setSplitAtDot] = useState<RegExp>(/@([^.]*)\./)      // match
-        const [McharAfterComma, setMCharAfterComma] = useState<RegExp>(/,(.*)/)      // match          if (splitEmail !== null) {       const matchedValue = splitEmail[0];      }
-        const [McharBeforeAt, setMCharBeforeAt] = useState<RegExp>(/^(.*?)@/)
-        const [MprePng, setMPrePng] = useState<RegExp>(/(.+)\.png/)
-        const [MreturnAlphaChar, setMReturnAlphaChar] = useState<RegExp>(/[A-Za-z]+/g)
-        const [MimgSrc, setMImgSrc] = useState<RegExp>(/\/water_img\/(.+)/)         // this matches the characters including "/water_img" and the folliwing characters which would be the image path.
+        const [RhasSpecialChar, setHasSpecialChar] = useState<RegExp>(/[!@#$%^&*()?<>,.=+-]/g)                                    // replace
+
                             
         const value = {
             RstringAfterPeriod,
@@ -95,17 +60,7 @@ type RegexContextType = {
             RreturnAlphaChar,
             RhasCaps,
             RhasNums,
-            RdotAtEscape,
-            RnoWhiteSpace,
-            RnoBackslash,
-            RcolonSandwichInt,
-            MsplitAtDot,       
-            McharAfterComma,
-            McharBeforeAt,
-            MprePng,
-            MreturnAlphaChar,
-            MimgSrc,
-
+            RhasSpecialChar
         };
 
         return (
