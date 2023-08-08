@@ -37,6 +37,7 @@ type imgContextType = {
     goldcursor1: string;
     goldcursor2: string;
     kiss: string;
+    luckypull: string;
 };
 
 // define values which will remain static
@@ -76,6 +77,7 @@ const imgDefaults: imgContextType = {
     goldcursor1: 'img/goldcursor1.png',
     goldcursor2: 'img/goldcursor2.png',
     kiss: `img/kiss.png`    
+    luckypull: `img/luckypull.png`
 };
 
 // createContext
@@ -125,6 +127,7 @@ export function ImgProvider({ children }: Props) {
     const [goldcursor1, setgoldcursor1] = useState<string>(`img/goldcursor1.png`);
     const [goldcursor2, setgoldcursor2] = useState<string>(`img/goldcursor2.png`);
     const [kiss, setKiss] = useState<string>(`img/kiss.png`);
+    const [luckypull, setLuckypull] = useState<string>(`img/luckypull.png`);
     
     
         // * user functionality ends above
@@ -163,7 +166,8 @@ export function ImgProvider({ children }: Props) {
         watch,
         goldcursor1,
         goldcursor2,
-        kiss
+        kiss,
+        luckypull
     };
 
     return (
