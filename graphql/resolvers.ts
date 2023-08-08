@@ -107,13 +107,8 @@ export const resolvers = {
           })({ body: { email, password } });
         });
 
-        // crpyto.randomBytes.toString('hex') return(string)... this secures the JWT.
         const SECRET_KEY = await JWTsecretKeyMaker() 
-        const token=`weToken${SECRET_KEY}`     
-        
-  // generate token.      also: concatenate the user.id onto the end of the token string so that when:   user logs in -> page nav -> .getCookieToken() -> regexIdFromToken -> fetchDB(user.id)
-        // const token = jwt.sign({ id: user.id }, SECRET_KEY); 
-        // const tokenWithId = `${token}***${user.id}`              
+        const token=`weToken${SECRET_KEY}`           
         
         return {
           id: user.id,
@@ -126,6 +121,20 @@ export const resolvers = {
       } catch (error) {
         throw new Error('An error occurred during login. Please try again.');
       }
+    },
+
+    getUserWithId: async (parent, args) => {
+      const {id} = args
+      return prisma.miners.findUnique({
+        where: {
+            id: id
+        }
+      }).then( (user) => {
+        console.log("getUserWithId", user)
+        return user
+      }).catch( (err) => {
+        throw new Error("An error occurred while retrieving user. Please try again!")
+      })
     },
 
     },  // query bracket end 
