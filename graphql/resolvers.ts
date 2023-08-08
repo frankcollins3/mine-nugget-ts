@@ -1,8 +1,8 @@
 import axios from 'axios'
 import bcrypt from "bcryptjs"
 import Redis from 'ioredis'
-import {strainsINTERFACE} from "utility/InterfaceTypes"
-import { jsonSTRINGIFY, jsonPARSE } from 'utility/utilityValues'
+import passport from "utility/passport"
+import { JWTsecretKeyMaker } from 'utility/utilityValues'
 // 
 
 // import { hashPasser, SERIALIZESTRING, PARSESERIALIZEDSTRING } from 'utility/UtilityValues';
@@ -81,14 +81,50 @@ export const resolvers = {
       let checkMinersRedis = await minersRedisCheck()
       if (checkMinersRedis) {
         const redisParseStr = JSON.parse(checkMinersRedis)
-        console.log("in the redisParseStr", redisParseStr)
+        // console.log("in the redisParseStr", redisParseStr)
         return redisParseStr
       } else {
-        console.log("we are not in the redis block!!!!")
+        // console.log("we are not in the redis block!!!!")
         const allMiners = await allminersDB()
         const redisStringifyObj = JSON.stringify(allMiners)
         await redis.set("miners", redisStringifyObj)
         return allMiners
+      }
+    },
+    userLogin: async (parent, args) => {
+      const { email, password } = args
+      let res = {...args}
+    // userLogin: async (parent, args, {res}) => {
+      try {
+        // promise with standard passport.authenticate to hit localDB only. resolve the user or reject with the error
+        const user:any = await new Promise((resolve, reject) => {
+          passport.authenticate('local', { session: false }, (err, user, info) => {
+            if (err || !user) {
+              return reject(info ? new Error(info.message) : err);
+            }
+            console.log('user in the server!!!!', user)
+            resolve(user);
+          })({ body: { email, password } });
+        });
+
+        // crpyto.randomBytes.toString('hex') return(string)... this secures the JWT.
+        const SECRET_KEY = await JWTsecretKeyMaker() 
+        const token=`weToken${SECRET_KEY}`     
+        
+  // generate token.      also: concatenate the user.id onto the end of the token string so that when:   user logs in -> page nav -> .getCookieToken() -> regexIdFromToken -> fetchDB(user.id)
+        // const token = jwt.sign({ id: user.id }, SECRET_KEY); 
+        // const tokenWithId = `${token}***${user.id}`              
+        
+        return {
+          id: user.id,
+          username: user.username,
+          password: user.password,
+          email: user.email,
+          age: user.age,
+          token: token,   
+        };
+      } catch (error) {
+        throw new Error('An error occurred during login. Please try again.');
       }
     },
 
