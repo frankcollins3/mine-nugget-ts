@@ -111,12 +111,31 @@ export const resolvers = {
             console.log(newUserStrain)
             addMinersOnStrainsToRedis()
             return newUserStrain
-          })
-          // .catch( (error) => {
-          //   return { minersId: 0, strainsid: 0 }
-          // })
+          })          
+        },
+        userSignup: async (parent, args) => {
+          const { username, password, email, age } = args;
 
+          const allminers = await allminersDB()
+          const length = allminers.length
+
+          const saltRounds = 13
+          const tableSalt = bcrypt.genSaltSync(saltRounds)
+          const passHasher = bcrypt.hashSync(password, tableSalt)
+
+          return await prisma.miners.create({
+            data: {
+              id: length + 1,
+              username: username,
+              password: passHasher,
+              email: email,
+              age: age
+            }
+          }).then(async(u) => {
+            return u
+          })        
         }
+
 
 
     } // mutation bracket end
