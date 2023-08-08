@@ -1,4 +1,4 @@
-   // axios.post('/api/graphql', { query: `query { allStrainsGET { strain, strainid, dominant, funfact, parents, taste, smell, gold, nugget, thc, cbd } }`})
+// axios.post('/api/graphql', { query: `query { allStrainsGET { strain, strainid, dominant, funfact, parents, taste, smell, gold, nugget, thc, cbd } }`})
 
 export const allMinersGETquery = `query { allMinersGET { username, password, email, age } }`
 
@@ -28,6 +28,7 @@ export const userSignupQueryStringFunc = (username:string, email:string, age:any
   return query
 }
 
+
 export const userLoginQueryStringFunc = (email:string, password:string) => {
    const query = `
    query { userLogin(email: "${email}", password: "${password}") {
@@ -42,6 +43,13 @@ export const userLoginQueryStringFunc = (email:string, password:string) => {
      `
    return query
 }
+
+export const getUserWithIdStringFunc = (id:number|string) => {
+   const query = `query { getUserWithId(id: ${id}) { username, password, email, age, } }`
+   return query
+}
+
+
 
 // axios.post('/api/graphql', { 
 //    query: 
