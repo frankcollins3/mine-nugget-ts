@@ -19,14 +19,12 @@ import {
 // import { SET_CURRENT_USER, SET_NON_GOOGLE_IMG_URL  } from "redux/logInOutGoogle/logInOutGoogleSlice"
 
 // utils
-import { strainsINTERFACE } from "utility/InterfaceTypes";
+import { strainsINTERFACE, minersINTERFACE } from "utility/InterfaceTypes";
 import { keysAndValuesFromStrain, nonGenericKeysAndValuesFromStrain, findStrainFromAllStrains } from "utility/utilityValues"
 
 // queries
-import { allStrainsGETquery, allMinersGETquery } from "graphql/queries";
+import { allStrainsGETquery, allMinersGETquery, userSignupQueryStringFunc, userLoginQueryStringFunc } from "graphql/queries";
 import GoldRequestQL from "utility/GoldRequestQL";
-import { rejects } from "assert";
-
 
 type PromiseTypes = {
 
@@ -43,6 +41,8 @@ type PromiseTypes = {
     emailInputPROMISE: () => any;
     usernameInputPROMISE: () => any;
     localPasswordCheckerPROMISE: () => any;
+    userSignupPROMISE: () => any;
+    userLoginPROMISE: () => any;
 }   
 
 const PromiseDefaults = {
@@ -58,6 +58,8 @@ const PromiseDefaults = {
     emailInputPROMISE: () => {},
     usernameInputPROMISE: () => {},
     localPasswordCheckerPROMISE: () => {},
+    userSignupPROMISE: () => {},
+    userLoginPROMISE: () => {},
 }
 
 const PromiseContext = createContext<PromiseTypes>(PromiseDefaults)
@@ -99,7 +101,11 @@ export function PromiseProvider({children}:Props) {
     const SIGNUP_USERNAME_INPUT = useSelector( (state:RootState) => state.loginSignup.SIGNUP_USERNAME_INPUT)
     const USERNAME_LENGTH = useSelector( (state:RootState) => state.loginSignup.USERNAME_LENGTH)
     const USERNAME_UNIQUE = useSelector( (state:RootState) => state.loginSignup.USERNAME_UNIQUE)
+    
+    const SIGNUP_AGE_INPUT = useSelector( (state:RootState) => state.loginSignup.SIGNUP_AGE_INPUT)
 
+    const LOGIN_EMAIL_INPUT = useSelector( (state:RootState) => state.loginSignup.LOGIN_EMAIL_INPUT)
+    const LOGIN_PASSWORD_INPUT = useSelector( (state:RootState) => state.loginSignup.LOGIN_PASSWORD_INPUT)
 
 
     // main app and user PROMISES
@@ -154,18 +160,6 @@ export function PromiseProvider({children}:Props) {
             console.log('err', err)
         })
     }
-
-    // GoldRequestQL(`${allMinersGETquery}`)
-    //     .then( (data:any) => {
-    //         console.log('client data', data)
-    //         const miners = data.data.data.allMinersGET
-    //         let allusernames = miners.map(users => users.username)
-    //         let allemails = miners.map(users => users.email)
-    //         console.log('allusernames', allusernames)
-    //         console.log('allemails', allemails)
-    //     })
-
-
 
     function deleteEndpointsPROMISE(strain:any) {   // cant do generic because the endpoints cant be deleted and won't change returned data from generics because different components need it.
         return new Promise( (resolve:any, reject:any) => {
@@ -332,7 +326,6 @@ const emailInputPROMISE = () => {
             }
         }
     } else {
-        console.log("no email extension")
         if (EMAIL_EXTENSION === true) {
             dispatch(TOGGLE_EMAIL_EXTENSION)
         }
@@ -340,7 +333,6 @@ const emailInputPROMISE = () => {
 }
 
 const usernameInputPROMISE = () => {
-    console.log('ALL_USERNAMES', ALL_USERNAMES)
 
     if (SIGNUP_USERNAME_INPUT.length >= 5 && SIGNUP_USERNAME_INPUT.length < 18) {
         if (USERNAME_LENGTH === false) { dispatch(TOGGLE_USERNAME_LENGTH()) }
@@ -357,6 +349,30 @@ const usernameInputPROMISE = () => {
 }
 
 
+const userSignupPROMISE = () => {
+    const queryStr = userSignupQueryStringFunc(`${SIGNUP_USERNAME_INPUT}`, `${SIGNUP_EMAIL_INPUT}`, `${SIGNUP_AGE_INPUT}`, `${SIGNUP_PASSWORD_INPUT}`)
+    // const queryStr = userSignupQueryStringFunc("chasethrillz", "cgoode@jodo.com", 30, "chase123")
+    return axios.post('/api/graphql', {query:`${queryStr}`})
+        .then( (userSignup) => {
+            console.log('signed up', userSignup)
+            let user:minersINTERFACE = userSignup.data.data.userSignup
+            return user
+        })
+}
+
+const userLoginPROMISE = () => {
+    // GoldRequestQL(query)
+    const query = userLoginQueryStringFunc(LOGIN_EMAIL_INPUT, LOGIN_PASSWORD_INPUT)
+    axios.post('/api/graphql', {query:`${query}`})
+    .then( (userLogin:any) => {
+        console.log('userLogin', userLogin)
+        userLogin = userLogin.data.data.userLogin
+        // document.cookie = `token=${userLogin.token}; max-age=${7 * 24 * 60 * 60}; path=/;`;                                
+        document.cookie = `token=${userLogin.token}; max-age=${7 * 24 * 60 * 60}; path=/;`;  
+        document.cookie = `id=${userLogin.id}; max-age=${7 * 24 * 60 * 60}; path=/;`;  
+    })
+}
+    
 
         const value = {
             iPROMISEcookies,
@@ -370,7 +386,9 @@ const usernameInputPROMISE = () => {
             passwordWordMatchPROMISE,
             localPasswordCheckerPROMISE,
             emailInputPROMISE,
-            usernameInputPROMISE
+            usernameInputPROMISE,
+            userSignupPROMISE,
+            userLoginPROMISE
         }        
 
 
