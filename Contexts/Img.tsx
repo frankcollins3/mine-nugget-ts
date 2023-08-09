@@ -40,6 +40,16 @@ type imgContextType = {
     luckypull: string;
     yesCursor: string;
     noCursor: string;
+
+    // findmine playing gcard game
+    king: string;
+    queen: string;
+    joker: string;
+    kingspades: string;
+    queenspades: string;
+    cards: string;
+    blackjack: string;
+    navbardice: string;
 };
 
 // define values which will remain static
@@ -82,6 +92,16 @@ const imgDefaults: imgContextType = {
     luckypull: `img/luckypull.png`,
     yesCursor: `img/yesCursor.png`,
     noCursor: `img/noCursor.png`,
+
+    // findmine playing gcard game
+    king: `img/king.png`,
+    queen: `img/queen.png`,
+    joker: `img/joker.png`,
+    kingspades: `img/kingspades.png`,
+    queenspades: `img/queenspades.png`,
+    cards: `img/cards.png`,
+    blackjack: `img/blackjack.png`,
+    navbardice: `img/navbardice.png`
     
 };
 
@@ -135,9 +155,16 @@ export function ImgProvider({ children }: Props) {
     const [luckypull, setLuckypull] = useState<string>(`img/luckypull.png`);
     const [yesCursor, setyesCursor] = useState<string>(`img/yesCursor.png`);
     const [noCursor, setnoCursor] = useState<string>(`img/noCursor.png`);
-    
-    
-        // * user functionality ends above
+
+    // findmine playing card game 
+    const [king, setking] = useState<string>(`img/king.png`);
+    const [queen, setqueen] = useState<string>(`img/queen.png`);
+    const [joker, setjoker] = useState<string>(`img/joker.png`);
+    const [kingspades, setkingspades] = useState<string>(`img/kingspades.png`);
+    const [queenspades, setqueenspades] = useState<string>(`img/queenspades.png`);
+    const [cards, setcards] = useState<string>(`img/cards.png`);
+    const [blackjack, setblackjack] = useState<string>(`img/blackjack.png`);
+    const [navbardice, setnavbardice] = useState<string>(`img/navbardice.png`);
         
     const value = {
         barrel, 
@@ -176,7 +203,18 @@ export function ImgProvider({ children }: Props) {
         kiss,
         luckypull,
         yesCursor,
-        noCursor
+        noCursor,
+
+        // findmine playing card game
+        king,
+        queen,
+        joker,
+        kingspades,
+        queenspades,
+        cards,
+        blackjack,
+        navbardice
+
     };
 
     return (
