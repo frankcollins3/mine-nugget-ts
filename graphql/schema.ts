@@ -4,39 +4,80 @@ import {gql} from 'apollo-server-micro';
 
 // id | strain | strainId | dominant | funfact | parents | taste | smell | gold | nugget | thc | cbd
 
+//  id |   username   | password | age |         email      
+
 export const typeDefs = gql`
 
+    type Miners {
+        username: String!
+        password: String!
+        age: Int!
+        email: String!
+    }
+
+    type MinersLogin {
+        id: Int!
+        username: String!
+        password: String!
+        age: Int!
+        email: String!
+        token: String!
+    }
+
     type Strains {
-        id Int
-        strain String!
-        strainId
-        dominant String!
-        funfact String!
-        parents String!
-        taste String!
-        smell String!
-        gold String!
-        nugget String!
-        thc String!
-        cbd String!
+        strain: String!
+        strainid: Int!
+        dominant: String!
+        funfact: String!
+        parents: String!
+        taste: String!
+        smell: String!
+        gold: String!
+        nugget: String!
+        thc: String!
+        cbd: String!
+    }
+
+    type MinersOnStrains {
+        minersId: Int!
+        strainsid: Int!
     }
 
     type Query {
         allStrainsGET: [Strains]!
+        allMinersGET: [Miners]!
+
+        userLogin(
+        email: String!
+        password: String!
+        ): MinersLogin
+
+        getUserWithId(id: Int!): Miners
     }
 
-    `
-    // 
-    
-    /*      MinersOnStrains includes strains.id and users.id
     type Mutation {
-        addMinersOnStrains(
-        
-        ): MinersOnStrains
-    }
-    */
 
-// getDailyData(users_id: Int!): Data               // (users_id: Int!) these are the args don't forget. Don't load them with all endpoints if they only need ID
-        
-    // * * * * *  allDBsettings: [Settings] * * * * *  new GraphQLList(Settings)
-    //     type Query { }     // reads This is saying return the resolver "links" with array of [Link]
+        addMinersOnStrains(
+            username: String! 
+            strain: String!
+        ): MinersOnStrains
+
+        userSignup(
+            username: String!
+            password: String!
+            age: Int!
+            email: String!
+        ): Miners
+    }
+    `
+
+    // addMinersOnStrains(
+    //     minersId: Int! 
+    //     strainsid: Int!
+    // ): MinersOnStrains
+    
+// query 
+        // allMinersOnStrainsGET
+        // myMinersOnStrainsGET
+
+// query 
