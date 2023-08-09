@@ -38,6 +38,8 @@ type imgContextType = {
     goldcursor2: string;
     kiss: string;
     luckypull: string;
+    yesCursor: string;
+    noCursor: string;
 };
 
 // define values which will remain static
@@ -76,8 +78,11 @@ const imgDefaults: imgContextType = {
     watch: 'img/watch.png',
     goldcursor1: 'img/goldcursor1.png',
     goldcursor2: 'img/goldcursor2.png',
-    kiss: `img/kiss.png`    
-    luckypull: `img/luckypull.png`
+    kiss: `img/kiss.png`,
+    luckypull: `img/luckypull.png`,
+    yesCursor: `img/yesCursor.png`,
+    noCursor: `img/noCursor.png`,
+    
 };
 
 // createContext
@@ -128,6 +133,8 @@ export function ImgProvider({ children }: Props) {
     const [goldcursor2, setgoldcursor2] = useState<string>(`img/goldcursor2.png`);
     const [kiss, setKiss] = useState<string>(`img/kiss.png`);
     const [luckypull, setLuckypull] = useState<string>(`img/luckypull.png`);
+    const [yesCursor, setyesCursor] = useState<string>(`img/yesCursor.png`);
+    const [noCursor, setnoCursor] = useState<string>(`img/noCursor.png`);
     
     
         // * user functionality ends above
@@ -167,7 +174,9 @@ export function ImgProvider({ children }: Props) {
         goldcursor1,
         goldcursor2,
         kiss,
-        luckypull
+        luckypull,
+        yesCursor,
+        noCursor
     };
 
     return (
