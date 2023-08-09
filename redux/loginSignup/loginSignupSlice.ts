@@ -8,6 +8,7 @@ interface LoginSignupSliceState {
 
   LOGIN_EMAIL_INPUT: string;
   LOGIN_PASSWORD_INPUT: string;
+  LOGIN_PASSWORD_INPUT_SEE_TEXT: boolean;
 
   SIGNUP_USERNAME_INPUT: string;
   SIGNUP_EMAIL_INPUT: string;
@@ -30,6 +31,10 @@ interface LoginSignupSliceState {
   USERNAME_UNIQUE: boolean;
   USERNAME_LENGTH: boolean;
 
+  SUCCESSFUL_LOGIN: boolean;
+  REMEMBER_ME_USER: boolean;
+  INCORRECT_LOGIN_ATTEMPT: number
+
 
   //  const passworduppercase = false; const specialchar = false; const numberchar = false;
 
@@ -40,6 +45,7 @@ const initialState: LoginSignupSliceState = {
 
   LOGIN_EMAIL_INPUT: '@',
   LOGIN_PASSWORD_INPUT: '* * * * *',
+  LOGIN_PASSWORD_INPUT_SEE_TEXT: false,
 
   SIGNUP_USERNAME_INPUT: 'username',
   SIGNUP_EMAIL_INPUT: '@',
@@ -65,6 +71,11 @@ const initialState: LoginSignupSliceState = {
 
   USERNAME_UNIQUE: false,
   USERNAME_LENGTH: false,
+
+  SUCCESSFUL_LOGIN: false,
+  REMEMBER_ME_USER: false,
+  INCORRECT_LOGIN_ATTEMPT: 0
+
 };
 
                                     
@@ -75,6 +86,7 @@ const loginSignupSlice = createSlice({
     SET_SEE_LOGIN_OR_SIGNUP: (state, action) => { state.SEE_LOGIN_OR_SIGNUP = action.payload },
     SET_LOGIN_PASSWORD_INPUT: (state, action) => { state.LOGIN_PASSWORD_INPUT = action.payload },
     SET_LOGIN_EMAIL_INPUT: (state, action) => { state.LOGIN_EMAIL_INPUT = action.payload },
+    TOGGLE_LOGIN_PASSWORD_INPUT_SEE_TEXT: (state) => { state.LOGIN_PASSWORD_INPUT_SEE_TEXT = !state.LOGIN_PASSWORD_INPUT_SEE_TEXT},
 
     SET_SIGNUP_USERNAME_INPUT: (state, action) => { state.SIGNUP_USERNAME_INPUT = action.payload },
     SET_SIGNUP_EMAIL_INPUT: (state, action) => { state.SIGNUP_EMAIL_INPUT = action.payload },
@@ -94,21 +106,25 @@ const loginSignupSlice = createSlice({
     
     TOGGLE_USERNAME_UNIQUE: (state) => { state.USERNAME_UNIQUE = !state.USERNAME_UNIQUE },
     TOGGLE_USERNAME_LENGTH: (state) => { state.USERNAME_LENGTH = !state.USERNAME_LENGTH },
-    
-    
+    TOGGLE_SUCCESSFUL_LOGIN: (state) => { state.SUCCESSFUL_LOGIN = !state.SUCCESSFUL_LOGIN },
+    TOGGLE_REMEMBER_ME_USER: (state) => { state.REMEMBER_ME_USER = !state.REMEMBER_ME_USER},
+    INCREMENT_INCORRECT_LOGIN_ATTEMPT: (state) => { state.INCORRECT_LOGIN_ATTEMPT = state.INCORRECT_LOGIN_ATTEMPT + 1 },
+    RESET_INCORRECT_LOGIN_ATTEMPT: (state) => { state.INCORRECT_LOGIN_ATTEMPT = 0 }
+        
   },
 });
 
 export const 
 { 
- SET_SEE_LOGIN_OR_SIGNUP, SET_LOGIN_EMAIL_INPUT, SET_LOGIN_PASSWORD_INPUT,
+ SET_SEE_LOGIN_OR_SIGNUP, SET_LOGIN_EMAIL_INPUT, SET_LOGIN_PASSWORD_INPUT, TOGGLE_LOGIN_PASSWORD_INPUT_SEE_TEXT,
  SET_SIGNUP_USERNAME_INPUT, SET_SIGNUP_EMAIL_INPUT, SET_SIGNUP_AGE_INPUT, SET_SIGNUP_PASSWORD_INPUT, SET_CHECKED,
  TOGGLE_PASSWORD_UPPERCASE, TOGGLE_PASSWORD_SPECIAL_CHAR, TOGGLE_PASSWORD_NUMBER_CHAR, TOGGLE_PASSWORD_LENGTH_PASS, TOGGLE_PASSWORD_TOO_EZ,
- TOGGLE_SIGNUP_PASSWORD_SEE,
+ TOGGLE_SIGNUP_PASSWORD_SEE, TOGGLE_SUCCESSFUL_LOGIN,
 
  TOGGLE_EMAIL_UNIQUE, TOGGLE_EMAIL_EXTENSION, SET_EMAIL_EXTENSION_UI,
 
- TOGGLE_USERNAME_UNIQUE, TOGGLE_USERNAME_LENGTH
+ TOGGLE_USERNAME_UNIQUE, TOGGLE_USERNAME_LENGTH, TOGGLE_REMEMBER_ME_USER,
+  INCREMENT_INCORRECT_LOGIN_ATTEMPT, RESET_INCORRECT_LOGIN_ATTEMPT
   
 } = loginSignupSlice.actions;
 
