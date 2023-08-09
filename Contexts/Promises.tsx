@@ -20,10 +20,10 @@ import {
 
 // utils
 import { strainsINTERFACE, minersINTERFACE } from "utility/InterfaceTypes";
-import { keysAndValuesFromStrain, nonGenericKeysAndValuesFromStrain, findStrainFromAllStrains } from "utility/utilityValues"
+import { getCookie, nonGenericKeysAndValuesFromStrain, findStrainFromAllStrains } from "utility/utilityValues"
 
 // queries
-import { allStrainsGETquery, allMinersGETquery, userSignupQueryStringFunc, userLoginQueryStringFunc } from "graphql/queries";
+import { allStrainsGETquery, allMinersGETquery, userSignupQueryStringFunc, userLoginQueryStringFunc, getUserWithIdStringFunc } from "graphql/queries";
 import GoldRequestQL from "utility/GoldRequestQL";
 
 type PromiseTypes = {
@@ -43,6 +43,7 @@ type PromiseTypes = {
     localPasswordCheckerPROMISE: () => any;
     userSignupPROMISE: () => any;
     userLoginPROMISE: () => any;
+    rememberMeCookiePROMISE: () => any;
 }   
 
 const PromiseDefaults = {
@@ -60,6 +61,8 @@ const PromiseDefaults = {
     localPasswordCheckerPROMISE: () => {},
     userSignupPROMISE: () => {},
     userLoginPROMISE: () => {},
+    rememberMeCookiePROMISE: () => {},
+
 }
 
 const PromiseContext = createContext<PromiseTypes>(PromiseDefaults)
@@ -106,6 +109,8 @@ export function PromiseProvider({children}:Props) {
 
     const LOGIN_EMAIL_INPUT = useSelector( (state:RootState) => state.loginSignup.LOGIN_EMAIL_INPUT)
     const LOGIN_PASSWORD_INPUT = useSelector( (state:RootState) => state.loginSignup.LOGIN_PASSWORD_INPUT)
+
+    const REMEMBER_ME_USER = useSelector( (state:RootState) => state.loginSignup.REMEMBER_ME_USER)
 
 
     // main app and user PROMISES
@@ -361,15 +366,47 @@ const userSignupPROMISE = () => {
 }
 
 const userLoginPROMISE = () => {
+    // const query = userLoginQueryStringFunc(LOGIN_EMAIL_INPUT, LOGIN_PASSWORD_INPUT)
     // GoldRequestQL(query)
     const query = userLoginQueryStringFunc(LOGIN_EMAIL_INPUT, LOGIN_PASSWORD_INPUT)
-    axios.post('/api/graphql', {query:`${query}`})
+    return axios.post('/api/graphql', {query:`${query}`})
     .then( (userLogin:any) => {
         console.log('userLogin', userLogin)
         userLogin = userLogin.data.data.userLogin
+        if (userLogin) {
+            document.cookie = `token=${userLogin.token}; max-age=${7 * 24 * 60 * 60}; path=/;`;  
+            document.cookie = `id=${userLogin.id}; max-age=${7 * 24 * 60 * 60}; path=/;`;  
+            return new Promise( (resolve:any, reject:any) => {
+                resolve(userLogin)
+            })
+        } 
         // document.cookie = `token=${userLogin.token}; max-age=${7 * 24 * 60 * 60}; path=/;`;                                
-        document.cookie = `token=${userLogin.token}; max-age=${7 * 24 * 60 * 60}; path=/;`;  
-        document.cookie = `id=${userLogin.id}; max-age=${7 * 24 * 60 * 60}; path=/;`;  
+    })
+}
+
+
+const rememberMeCookiePROMISE = () => {
+    return new Promise( (resolve:any, reject:any) => {
+        // from devTools -> application -> cookies ------------> id   	4   	localhost
+        const cookie = getCookie()
+            resolve(cookie)
+            reject('')
+    }).then( (cookie:any) => {
+            if (cookie[1]) {
+                // if the cookie is returned, perform a regex to return the characters after equal sign: 
+                const cookieCrumbs = cookie[0].slice(3)
+                // const cookieCrumbs = cookie[1].match(/id=(\d+)/)
+                if (cookieCrumbs) {                
+                    const query = getUserWithIdStringFunc(cookieCrumbs)
+                    return axios.post('/api/graphql', {query:`${query}`})
+                    .then( (userWithId:any) => {
+                        console.log('promise user', userWithId)
+                        return userWithId
+                    })
+                } else {
+                    return 'milk'
+                }
+            }
     })
 }
     
@@ -388,7 +425,8 @@ const userLoginPROMISE = () => {
             emailInputPROMISE,
             usernameInputPROMISE,
             userSignupPROMISE,
-            userLoginPROMISE
+            userLoginPROMISE,
+            rememberMeCookiePROMISE,
         }        
 
 
