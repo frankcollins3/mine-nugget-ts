@@ -141,16 +141,30 @@ export const resolvers = {
 
     Mutation: {
         addMinersOnStrains: async (parent, args) => {
-          const { minersId, strainsid } = args
-          console.log('minersId server', minersId)
-          console.log('strainsid server', strainsid)
+          const { username,  strain } = args
+          // const { minersId, strainsid } = args
+          // console.log('minersId server', minersId)
+          // console.log('strainsid server', strainsid)
+
+          const allusers = await allminersDB()
+          const allstrains = await allstrainsDB()
+
+          const me = allusers.find(user => user.username === username)
+          const findStrain = allstrains.find(strains => strains.strain === strain)
+
+          console.log('me server', me)
+          console.log('findStrain server', findStrain)
+
+          const meID = me.id
+          const strainID = findStrain.id
 
           return prisma.minersOnStrains.create({
               data: {
-                minersId: 1,
-                strainsid: 1
-                // minersId: minersId,
-                // strainsid: strainsid
+                minersId: meID,
+                strainsid: strainID
+                // minersId: 1,
+                // strainsid: 1
+                
               }
           }).then(async(newUserStrain) => {
             console.log(newUserStrain)
