@@ -40,7 +40,7 @@ type imgContextType = {
     luckypull: string;
     yesCursor: string;
     noCursor: string;
-
+        
     // findmine playing gcard game
     king: string;
     queen: string;
@@ -50,6 +50,18 @@ type imgContextType = {
     cards: string;
     blackjack: string;
     navbardice: string;
+
+    wincards: string;
+    upsidedowncard: string;
+    deckcards: string;
+    goldenticket: string;
+    winoneheart: string;
+    winthreecards: string;
+    howmanywinsprofile: string;
+    kingqueensplit: string;
+
+    // trophy room
+    trophyroom6333icons: string; // /pages/trophyroom.tsx -> 6333 icons easter egg from flaticon. this img src accompanies that easter egg display to theme it up.
 };
 
 // define values which will remain static
@@ -101,8 +113,16 @@ const imgDefaults: imgContextType = {
     queenspades: `img/queenspades.png`,
     cards: `img/cards.png`,
     blackjack: `img/blackjack.png`,
-    navbardice: `img/navbardice.png`
-    
+    navbardice: `img/navbardice.png`,
+    wincards: `img/wincards.png`,
+    upsidedowncard: `img/upsidedowncard.png`,
+    deckcards: `img/deckcards.png`,
+    goldenticket: `img/goldenticket.png`,
+    winoneheart: `img/winoneheart.png`,
+    winthreecards: `img/winthreecards.png`,
+    howmanywinsprofile: `img/howmanywinsprofile.png`,
+    kingqueensplit: `img/kingqueensplit.png`,        
+    trophyroom6333icons: `img/trophyroom6333icons.png`
 };
 
 // createContext
@@ -165,6 +185,16 @@ export function ImgProvider({ children }: Props) {
     const [cards, setcards] = useState<string>(`img/cards.png`);
     const [blackjack, setblackjack] = useState<string>(`img/blackjack.png`);
     const [navbardice, setnavbardice] = useState<string>(`img/navbardice.png`);
+    const [wincards, setwincards] = useState<string>(`img/wincards.png`);
+    const [upsidedowncard, setupsidedowncard] = useState<string>(`img/upsidedowncard.png`);
+    const [deckcards, setdeckcards] = useState<string>(`img/deckcards.png`);
+    const [goldenticket, setgoldenticket] = useState<string>(`img/goldenticket.png`);
+    const [winoneheart, setwinoneheart] = useState<string>(`img/winoneheart.png`);
+    const [winthreecards, setwinthreecards] = useState<string>(`img/winthreecards.png`);
+    const [kingqueensplit, setkingqueensplit] = useState<string>(`img/kingqueensplit.png`);
+
+    const [howmanywinsprofile, sethowmanywinsprofile] = useState<string>(`img/howmanywinsprofile.png`);
+    const [trophyroom6333icons, settrophyroom6333icons] = useState<string>(`img/trophyroom6333icons.png`);    
         
     const value = {
         barrel, 
@@ -213,7 +243,16 @@ export function ImgProvider({ children }: Props) {
         queenspades,
         cards,
         blackjack,
-        navbardice
+        navbardice,
+        wincards,
+        upsidedowncard,
+        deckcards,
+        goldenticket,
+        winoneheart,
+        winthreecards,
+        howmanywinsprofile,
+        kingqueensplit,
+        trophyroom6333icons
 
     };
 
