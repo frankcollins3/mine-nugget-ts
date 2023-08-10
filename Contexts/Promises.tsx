@@ -16,11 +16,19 @@ import {
     TOGGLE_EMAIL_EXTENSION, TOGGLE_EMAIL_UNIQUE, SET_EMAIL_EXTENSION_UI,
     TOGGLE_USERNAME_UNIQUE, TOGGLE_USERNAME_LENGTH,
  } from "redux/loginSignup/loginSignupSlice";
-// import { SET_CURRENT_USER, SET_NON_GOOGLE_IMG_URL  } from "redux/logInOutGoogle/logInOutGoogleSlice"
+ 
+ import { 
+    TOGGLE_PLAYING, SET_PLAYING_STRAIN, SET_PLAYING_PARENT_KING, SET_PLAYING_PARENT_QUEEN,
+    SET_PLAYING_GUESS_RIGHT, SET_PLAYING_GUESS_WRONG_1, SET_PLAYING_GUESS_WRONG_2, SET_PLAYING_GUESS_WRONG_3
+ } from "redux/familyTree/familyTreeSlice"
+//  TOGGLE_PLAYING, SET_PLAYING_STRAIN, SET_PLAYING_PARENT_KING, SET_PLAYING_PARENT_QUEEN, 
+//  SET_PLAYING_GUESS_RIGHT, SET_PLAYING_GUESS_WRONG_1, SET_PLAYING_GUESS_WRONG_2, SET_PLAYING_GUESS_WRONG_3
+
+ 
 
 // utils
 import { strainsINTERFACE, minersINTERFACE } from "utility/InterfaceTypes";
-import { getCookie, nonGenericKeysAndValuesFromStrain, findStrainFromAllStrains } from "utility/utilityValues"
+import { getCookie, nonGenericKeysAndValuesFromStrain, findStrainFromAllStrains, randomValueFromArray } from "utility/utilityValues"
 
 // queries
 import { allStrainsGETquery, allMinersGETquery, userSignupQueryStringFunc, userLoginQueryStringFunc, getUserWithIdStringFunc } from "graphql/queries";
@@ -44,6 +52,7 @@ type PromiseTypes = {
     userSignupPROMISE: () => any;
     userLoginPROMISE: () => any;
     rememberMeCookiePROMISE: () => any;
+    familyTreeStrainsPROMISE: () => any;
 }   
 
 const PromiseDefaults = {
@@ -62,7 +71,7 @@ const PromiseDefaults = {
     userSignupPROMISE: () => {},
     userLoginPROMISE: () => {},
     rememberMeCookiePROMISE: () => {},
-
+    familyTreeStrainsPROMISE: () => {},
 }
 
 const PromiseContext = createContext<PromiseTypes>(PromiseDefaults)
@@ -386,29 +395,63 @@ const userLoginPROMISE = () => {
 
 
 const rememberMeCookiePROMISE = () => {
-    return new Promise( (resolve:any, reject:any) => {
+    return new Promise(async(resolve:any, reject:any) => {
         // from devTools -> application -> cookies ------------> id   	4   	localhost
-        const cookie = getCookie()
-            resolve(cookie)
-            reject('')
-    }).then( (cookie:any) => {
-            if (cookie[1]) {
-                // if the cookie is returned, perform a regex to return the characters after equal sign: 
-                const cookieCrumbs = cookie[0].slice(3)
-                // const cookieCrumbs = cookie[1].match(/id=(\d+)/)
-                if (cookieCrumbs) {                
-                    const query = getUserWithIdStringFunc(cookieCrumbs)
+            const cookie = await getCookie()
+            if (cookie) {                
+                let id = cookie[0].replace(/\D+/g, '');
+                if (id) {                
+                    const query = getUserWithIdStringFunc(id)
                     return axios.post('/api/graphql', {query:`${query}`})
                     .then( (userWithId:any) => {
-                        console.log('promise user', userWithId)
-                        return userWithId
+                    userWithId = userWithId.data.data.getUserWithId
+                    resolve(userWithId)
+                    reject('milk')
+                    // console.log('userWithId', userWithId)
+                    // dispatch(SET_CURRENT_USER(userWithId))
+                    // dispatch(TOGGLE_REMEMBER_ME_USER())
                     })
-                } else {
-                    return 'milk'
                 }
             }
-    })
-}
+        })
+    }
+
+    // FamilyTree guessing game PROMISES:
+    const familyTreeStrainsPROMISE = () => {
+        return setallstrainsPROMISE()
+        .then( (strains:any) => {
+            // const randomStrain = strains[Math.floor(Math.random() * strains.length )]
+            const randomStrain = randomValueFromArray(strains)
+
+            const alreadyPicked:string[] = []
+
+            const parents = randomStrain.parents.split(',')
+            const king = parents[0].trim()
+            const queen = parents[1].trim()
+            const correctAnswer = randomStrain.strain
+            alreadyPicked.push(correctAnswer)
+
+            const wrongAnswer = strains.find(strainIndex => strainIndex.strain !== correctAnswer)
+            // const wrongAnswer = strains.find(strainIndex => strainIndex.strain !== correctAnswer)
+            
+            console.log('king', king)
+            console.log('queen', queen)
+            console.log('correctAnswer', correctAnswer)
+            console.log('parents from promise', parents)
+
+            console.log('wrongAnswer', wrongAnswer)
+            alreadyPicked.push(wrongAnswer.strain)
+
+
+
+            dispatch(SET_PLAYING_STRAIN(randomStrain))
+
+
+            return randomStrain || strains
+
+        })
+    }
+
     
 
         const value = {
@@ -427,6 +470,7 @@ const rememberMeCookiePROMISE = () => {
             userSignupPROMISE,
             userLoginPROMISE,
             rememberMeCookiePROMISE,
+            familyTreeStrainsPROMISE
         }        
 
 
