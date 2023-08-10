@@ -28,7 +28,7 @@ import {
 
 // utils
 import { strainsINTERFACE, minersINTERFACE } from "utility/InterfaceTypes";
-import { getCookie, nonGenericKeysAndValuesFromStrain, findStrainFromAllStrains, randomValueFromArray } from "utility/utilityValues"
+import { getCookie, nonGenericKeysAndValuesFromStrain, findStrainFromAllStrains, randomValueFromArray, shuffleArray, shuffleArrayOfObjects } from "utility/utilityValues"
 
 // queries
 import { allStrainsGETquery, allMinersGETquery, userSignupQueryStringFunc, userLoginQueryStringFunc, getUserWithIdStringFunc } from "graphql/queries";
@@ -52,7 +52,10 @@ type PromiseTypes = {
     userSignupPROMISE: () => any;
     userLoginPROMISE: () => any;
     rememberMeCookiePROMISE: () => any;
+
+    // FamilyTree guessing game Data:
     familyTreeStrainsPROMISE: () => any;
+    familyTreeWrongGuessPROMISE: () => any;
 }   
 
 const PromiseDefaults = {
@@ -71,7 +74,10 @@ const PromiseDefaults = {
     userSignupPROMISE: () => {},
     userLoginPROMISE: () => {},
     rememberMeCookiePROMISE: () => {},
+
+    // FamilyTree guessing game Data:
     familyTreeStrainsPROMISE: () => {},
+    familyTreeWrongGuessPROMISE: () => {},
 }
 
 const PromiseContext = createContext<PromiseTypes>(PromiseDefaults)
@@ -121,6 +127,15 @@ export function PromiseProvider({children}:Props) {
 
     const REMEMBER_ME_USER = useSelector( (state:RootState) => state.loginSignup.REMEMBER_ME_USER)
 
+    // Family Tree 
+    const PLAYING_STRAIN = useSelector( (state:RootState) => state.familyTree.PLAYING_STRAIN)
+    const PLAYING_PARENT_KING = useSelector( (state:RootState) => state.familyTree.PLAYING_PARENT_KING)
+    const PLAYING_PARENT_QUEEN = useSelector( (state:RootState) => state.familyTree.PLAYING_PARENT_QUEEN)
+    const PLAYING_GUESS_RIGHT = useSelector( (state:RootState) => state.familyTree.PLAYING_GUESS_RIGHT)
+    const PLAYING_GUESS_WRONG_1 = useSelector( (state:RootState) => state.familyTree.PLAYING_GUESS_WRONG_1)
+    const PLAYING_GUESS_WRONG_2 = useSelector( (state:RootState) => state.familyTree.PLAYING_GUESS_WRONG_2)
+    const PLAYING_GUESS_WRONG_3 = useSelector( (state:RootState) => state.familyTree.PLAYING_GUESS_WRONG_3)
+        
 
     // main app and user PROMISES
     function iPROMISEcookies() {
@@ -417,40 +432,188 @@ const rememberMeCookiePROMISE = () => {
     }
 
     // FamilyTree guessing game PROMISES:
-    const familyTreeStrainsPROMISE = () => {
+    const familyTreeStrainsPROMISE = async () => {
         return setallstrainsPROMISE()
-        .then( (strains:any) => {
+        .then(async(strains:any) => {
             // const randomStrain = strains[Math.floor(Math.random() * strains.length )]
-            const randomStrain = randomValueFromArray(strains)
 
-            const alreadyPicked:string[] = []
-
-            const parents = randomStrain.parents.split(',')
-            const king = parents[0].trim()
-            const queen = parents[1].trim()
-            const correctAnswer = randomStrain.strain
-            alreadyPicked.push(correctAnswer)
-
-            const wrongAnswer = strains.find(strainIndex => strainIndex.strain !== correctAnswer)
-            // const wrongAnswer = strains.find(strainIndex => strainIndex.strain !== correctAnswer)
+            // const randomStrain = randomValueFromArray(strains)
+            console.log('strains from promise', strains)
             
-            console.log('king', king)
-            console.log('queen', queen)
-            console.log('correctAnswer', correctAnswer)
-            console.log('parents from promise', parents)
+            const shuffledStrains = shuffleArrayOfObjects(strains)
+            console.log('strains', strains)
+            console.log('shuffledStrains', shuffledStrains)
 
-            console.log('wrongAnswer', wrongAnswer)
-            alreadyPicked.push(wrongAnswer.strain)
+            const correctAnswerFunction = async () => {
+                const correctAnswer = shuffledStrains[shuffledStrains.length-1]
+                console.log('correctAnswer', correctAnswer)
+                const parents = correctAnswer.parents.split(',')
+                console.log('parents', parents)
+                const king = parents[0].trim()
+                console.log('king', king)
+                const queen = parents[1].trim()
+                console.log('queen', queen)
+                dispatch(SET_PLAYING_STRAIN(correctAnswer))   
+                dispatch(SET_PLAYING_PARENT_KING(king))
+                dispatch(SET_PLAYING_PARENT_QUEEN(queen))
+                dispatch(SET_PLAYING_GUESS_RIGHT(correctAnswer.strain))
+                shuffledStrains.pop()
+            }
+
+            
+// this function is behaving weird and even chatGPT is having trouble getting it working so this code does repeat itself and use explicitly defined functions that do same thing but without reusability
+            const wrongAnswerFunc1 = () => {
+                let strainsLength = shuffledStrains.length
+                console.log('shuffledStrains after pop 1', shuffledStrains)
+                const wrongAnswer1 = shuffledStrains[strainsLength-1]
+                dispatch(SET_PLAYING_GUESS_WRONG_1(wrongAnswer1.strain))
+                // dispatch(SET_PLAYING_GUESS_WRONG_1(wrongAnswer1))
+                console.log('wrongAnswer1', wrongAnswer1)
+                shuffledStrains.pop()
+            }
+
+            const wrongAnswerFunc2 = () => {
+                let strainsLen = shuffledStrains.length
+                console.log('shuffledStrains after pop2', shuffledStrains)
+                const wrongAnswer2 = shuffledStrains[strainsLen-1]
+                dispatch(SET_PLAYING_GUESS_WRONG_2(wrongAnswer2.strain))
+                // dispatch(SET_PLAYING_GUESS_WRONG_2(wrongAnswer2))
+                console.log('wrongAnswer2', wrongAnswer2)
+                shuffledStrains.pop()
+            }
+
+            const wrongAnswerFunc3 = () => {
+                let len = shuffledStrains.length
+                console.log('shuffldStrains after pop3', shuffledStrains)
+                    const wrongAnswer3 = shuffledStrains[len-1]
+                    dispatch(SET_PLAYING_GUESS_WRONG_3(wrongAnswer3.strain))
+                    // dispatch(SET_PLAYING_GUESS_WRONG_3(wrongAnswer3))
+                    console.log('wrongAnswer3', wrongAnswer3)
+                    shuffledStrains.pop()
+            }
+
+            const functionsFunction = async () => {
+                await correctAnswerFunction()
+                await wrongAnswerFunc1()
+                await wrongAnswerFunc2()
+                await wrongAnswerFunc3()
+            }
+
+            functionsFunction()
+
+            // await shuffledStrains.pop()
 
 
+            // const wrongAnswer1 = shuffledStrains[shuffledStrains.length-1]
+            // console.log('wrong answer1', wrongAnswer1)
+            
+            // await shuffledStrains.pop()
+            
+            // const wrongAnswer2 = shuffledStrains[shuffledStrains.length-1]
+            // console.log('wrong answer2', wrongAnswer2)
 
-            dispatch(SET_PLAYING_STRAIN(randomStrain))
+            // await shuffledStrains.pop()
+
+            // const wrongAnswer3 = shuffledStrains[shuffledStrains.length-1]
+            // console.log('wrongAnswer3', wrongAnswer3)
+
+            // dispatch(SET_PLAYING_STRAIN(correctAnswer))
+            // dispatch(SET_PLAYING_PARENT_KING(king))
+            // dispatch(SET_PLAYING_PARENT_QUEEN(queen))
+            // dispatch(SET_PLAYING_GUESS_RIGHT(correctAnswer.strain))
+            // dispatch(SET_PLAYING_GUESS_WRONG_1(wrongAnswer1))
+            // dispatch(SET_PLAYING_GUESS_WRONG_2(wrongAnswer2))
+            // dispatch(SET_PLAYING_GUESS_WRONG_3(wrongAnswer3))
+            
+            
+            // const returnObject = { preShuffled: strains, shuffled: shuffledStrains }
+            // console.log('return Object', returnObject)
+            // return returnObject
+            
+
+            // const shuffledStrains = shuffleArray(strains)
+            // console.log('shuffled', shuffledStrains)
+            // return { strains: strains, shuffled: shuffledStrains }
 
 
-            return randomStrain || strains
+            // const alreadyPicked:string[] = []
+
+            // const parents = randomStrain.parents.split(',')
+            // const king = parents[0].trim()
+            // const queen = parents[1].trim()
+            // const correctAnswer = randomStrain.strain
+
+            // const wrongAnswer = strains.find(strainIndex => strainIndex.strain !== correctAnswer)
+
+            // dispatch(SET_PLAYING_STRAIN(randomStrain))
+            // dispatch(SET_PLAYING_PARENT_KING(king))
+            // dispatch(SET_PLAYING_PARENT_QUEEN(queen))
+            // dispatch(SET_PLAYING_GUESS_RIGHT(correctAnswer))
+            // dispatch(SET_PLAYING_GUESS_WRONG_1(wrongAnswer.strain))            
+            // return randomStrain || strains
 
         })
     }
+
+    // const familyTreeWrongGuessPROMISE = () => {
+    //     console.log('strain object', PLAYING_STRAIN)
+    //     console.log('parent 1 king', PLAYING_PARENT_KING)
+    //     console.log('parent 2 queen', PLAYING_PARENT_QUEEN)
+    //     console.log('correct guess', PLAYING_GUESS_RIGHT)
+    //     console.log('incorrect guess 1', PLAYING_GUESS_WRONG_1)
+
+    //     return setallstrainsPROMISE()
+    //     .then ( (strains:any) => {
+    //         console.log('strains in the wrong answer', strains)
+    //         const wrongGuessPromise1 = new Promise( (resolve:any, reject:any) => {
+    //             const wrongGuess2 = strains.find(strains => strains.strain !== PLAYING_GUESS_RIGHT && strains.strain !== PLAYING_GUESS_WRONG_1 && strains.strain !== PLAYING_GUESS_WRONG_2)
+    //             dispatch(SET_PLAYING_GUESS_WRONG_2(wrongGuess2.strain))
+    //             resolve(wrongGuess2)
+    //         })
+    //         return  wrongGuessPromise1
+    //         .then( (wrongGuess2) => {
+    //     const wrongGuess3 = strains.find(strains => strains.strain !== PLAYING_GUESS_RIGHT && strains.strain !== PLAYING_GUESS_WRONG_1 && strains.strain !== PLAYING_GUESS_WRONG_2)
+    //             dispatch(SET_PLAYING_GUESS_WRONG_3(wrongGuess3.strain))
+    //             return wrongGuess3
+    //         })
+    //     })
+    // }
+
+    const familyTreeWrongGuessPROMISE = () => {
+        return setallstrainsPROMISE().then((strains: any) => {
+          const incorrectGuessesPool = strains.filter(
+            (strain) =>
+              strain.strain !== PLAYING_GUESS_RIGHT &&
+              strain.strain !== PLAYING_GUESS_WRONG_1
+            //   strain.strain !== PLAYING_GUESS_WRONG_1 &&
+            //   strain.strain !== PLAYING_GUESS_WRONG_2
+          );
+      
+          if (incorrectGuessesPool.length < 2) {
+            // Handle the case where there are not enough incorrect guesses available
+            return Promise.reject("Not enough incorrect guesses available");
+          }
+      
+          const wrongGuess2Index = Math.floor(
+            Math.random() * incorrectGuessesPool.length
+          );
+          const wrongGuess2 = incorrectGuessesPool[wrongGuess2Index];
+      
+          let wrongGuess3Index;
+          do {
+            wrongGuess3Index = Math.floor(
+              Math.random() * incorrectGuessesPool.length
+            );
+          } while (wrongGuess3Index === wrongGuess2Index);
+          const wrongGuess3 = incorrectGuessesPool[wrongGuess3Index];
+      
+          dispatch(SET_PLAYING_GUESS_WRONG_2(wrongGuess2.strain));
+        //   dispatch(SET_PLAYING_GUESS_WRONG_3(wrongGuess3.strain));
+      
+          return [wrongGuess2];
+        //   return [wrongGuess2, wrongGuess3];
+        });
+      };
 
     
 
@@ -470,7 +633,10 @@ const rememberMeCookiePROMISE = () => {
             userSignupPROMISE,
             userLoginPROMISE,
             rememberMeCookiePROMISE,
-            familyTreeStrainsPROMISE
+
+            // FamilyTree Strains Guessing PROMISE
+            familyTreeStrainsPROMISE,
+            familyTreeWrongGuessPROMISE
         }        
 
 
