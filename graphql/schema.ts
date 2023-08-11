@@ -13,6 +13,8 @@ export const typeDefs = gql`
         password: String!
         age: Int!
         email: String!
+        icon: String
+        wins: Int
     }
 
     type MinersLogin {
@@ -22,6 +24,8 @@ export const typeDefs = gql`
         age: Int!
         email: String!
         token: String!
+        icon: String
+        wins: Int
     }
 
     type Strains {
