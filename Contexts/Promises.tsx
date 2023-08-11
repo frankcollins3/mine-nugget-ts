@@ -24,7 +24,7 @@ import {
     SET_WRONG_RIGHT_OPTION_BUCKET, 
     TOGGLE_TERNARY_RENDER_OPTION_0, TOGGLE_TERNARY_RENDER_OPTION_1, TOGGLE_TERNARY_RENDER_OPTION_2, TOGGLE_TERNARY_RENDER_OPTION_3,
     TOGGLE_DRAGGED_OPTION_0, TOGGLE_DRAGGED_OPTION_1, TOGGLE_DRAGGED_OPTION_2, TOGGLE_DRAGGED_OPTION_3,
-    SET_GAME_TITLE, SET_GAME_TEXT, DECREMENT_GAME_LIVES, RESET_GAME_LIVES, TOGGLE_GAME_OVER
+    SET_GAME_TITLE, SET_GAME_TEXT, DECREMENT_GAME_LIVES, RESET_GAME_LIVES, SET_GAME_OVER
 
  } from "redux/familyTree/familyTreeSlice"
 
@@ -61,6 +61,7 @@ type PromiseTypes = {
     familyTreeStrainsPROMISE: () => any;
     familyTreeWrongGuessPROMISE: () => any;
     guessCardPROMISE: (card:any) => any;
+    resetCardGamePROMISE: () => any;
 }   
 
 const PromiseDefaults = {
@@ -84,6 +85,7 @@ const PromiseDefaults = {
     familyTreeStrainsPROMISE: () => {},
     familyTreeWrongGuessPROMISE: () => {},
     guessCardPROMISE: (card:any) => {},
+    resetCardGamePROMISE: () => {},
 }
 
 const PromiseContext = createContext<PromiseTypes>(PromiseDefaults)
@@ -575,6 +577,7 @@ const rememberMeCookiePROMISE = () => {
           } else {
             if (card === PLAYING_GUESS_RIGHT) {
               // CURRENT_USER.username || card wins!
+              dispatch(SET_GAME_OVER("win"))
               dispatch(SET_GAME_TEXT(`Royal Flush! ${CURRENT_USER.username || card} Wins!`))
             } else {
               dispatch(DECREMENT_GAME_LIVES())
@@ -590,6 +593,7 @@ const rememberMeCookiePROMISE = () => {
             } else {
               if (card === PLAYING_GUESS_RIGHT) {
                 // CURRENT_USER.username || card wins!
+                dispatch(SET_GAME_OVER("win"))
                 dispatch(SET_GAME_TEXT(`Royal Flush! ${CURRENT_USER.username || card} Wins!`))
               } else {
                 console.log("else block should lose lives")
@@ -606,6 +610,7 @@ const rememberMeCookiePROMISE = () => {
           } else {
             if (card === PLAYING_GUESS_RIGHT) {
               // CURRENT_USER.username || card wins!
+              dispatch(SET_GAME_OVER("win"))
               dispatch(SET_GAME_TEXT(`Royal Flush! ${CURRENT_USER.username || card} Wins!`))
             } else {
               console.log("else block should lose lives")
@@ -622,6 +627,7 @@ const rememberMeCookiePROMISE = () => {
           } else {
             if (card === PLAYING_GUESS_RIGHT) {
               // CURRENT_USER.username || card wins!
+              dispatch(SET_GAME_OVER("win"))
               dispatch(SET_GAME_TEXT(`Royal Flush! ${CURRENT_USER.username || card} Wins!`))
             } else {
               console.log("else block should lose lives")
@@ -632,6 +638,19 @@ const rememberMeCookiePROMISE = () => {
         }           
 
       }
+
+    const resetCardGamePROMISE = async () => {
+        dispatch(RESET_GAME_LIVES())
+      dispatch(SET_GAME_OVER(""))
+
+      if (DRAGGED_OPTION_0) dispatch(TOGGLE_DRAGGED_OPTION_0)
+      if (DRAGGED_OPTION_1) dispatch(TOGGLE_DRAGGED_OPTION_1)
+      if (DRAGGED_OPTION_2) dispatch(TOGGLE_DRAGGED_OPTION_2)
+      if (DRAGGED_OPTION_3) dispatch(TOGGLE_DRAGGED_OPTION_3)
+
+      dispatch(SET_GAME_TEXT(''))
+      await familyTreeStrainsPROMISE()
+    }
     
 
         const value = {
@@ -654,7 +673,8 @@ const rememberMeCookiePROMISE = () => {
             // FamilyTree Strains Guessing PROMISE
             familyTreeStrainsPROMISE,
             familyTreeWrongGuessPROMISE,
-            guessCardPROMISE
+            guessCardPROMISE,
+            resetCardGamePROMISE
         }        
 
 
