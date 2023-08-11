@@ -10,6 +10,9 @@ interface familyTreeSliceState {
     // strain.parents split. 2nd parent shown
     PLAYING_PARENT_QUEEN: string;
 
+    GAME_TITLE: string;
+    GAME_TEXT: string;
+
 // The "Child" of the KING & QUEEN. child strain can be seen on page 1 but parents can't. Guessing game based on providing parents. guessing child.
     PLAYING_GUESS_RIGHT: string;
 
@@ -26,6 +29,13 @@ interface familyTreeSliceState {
     TERNARY_RENDER_OPTION_2: boolean,
     TERNARY_RENDER_OPTION_3: boolean,
     TERNARY_RENDER_OPTION_4: boolean,
+
+    DRAGGED_OPTION_1: boolean;
+    DRAGGED_OPTION_2: boolean;
+    DRAGGED_OPTION_3: boolean;
+    DRAGGED_OPTION_4: boolean;
+
+
     
 }
 
@@ -34,6 +44,9 @@ const initialState: familyTreeSliceState = {
     PLAYING_STRAIN: { strainid: 0, strain: '', dominant: '', funfact: '', gold: '', nugget: '', parents: '', smell: '', taste: '', thc: '', cbd: '' },
     PLAYING_PARENT_KING: '',
     PLAYING_PARENT_QUEEN: '',
+
+    GAME_TITLE: '',
+    GAME_TEXT: '',
 
     PLAYING_GUESS_RIGHT: '',
     PLAYING_GUESS_WRONG_1: '',
@@ -47,6 +60,11 @@ const initialState: familyTreeSliceState = {
     TERNARY_RENDER_OPTION_2: false,
     TERNARY_RENDER_OPTION_3: false,
     TERNARY_RENDER_OPTION_4: false,
+
+    DRAGGED_OPTION_1: false,
+    DRAGGED_OPTION_2: false,
+    DRAGGED_OPTION_3: false,
+    DRAGGED_OPTION_4: false,
   };
 
                                     
@@ -75,6 +93,14 @@ const familyTreeSlice = createSlice({
     TOGGLE_TERNARY_RENDER_OPTION_2: (state) => { state.TERNARY_RENDER_OPTION_2 = !state.TERNARY_RENDER_OPTION_2 },
     TOGGLE_TERNARY_RENDER_OPTION_3: (state) => { state.TERNARY_RENDER_OPTION_3 = !state.TERNARY_RENDER_OPTION_3 },
     TOGGLE_TERNARY_RENDER_OPTION_4: (state) => { state.TERNARY_RENDER_OPTION_4 = !state.TERNARY_RENDER_OPTION_4 },
+
+    TOGGLE_DRAGGED_OPTION_1: (state) => { state.DRAGGED_OPTION_1 = !state.DRAGGED_OPTION_1 },
+    TOGGLE_DRAGGED_OPTION_2: (state) => { state.DRAGGED_OPTION_2 = !state.DRAGGED_OPTION_2 },
+    TOGGLE_DRAGGED_OPTION_3: (state) => { state.DRAGGED_OPTION_3 = !state.DRAGGED_OPTION_3 },
+    TOGGLE_DRAGGED_OPTION_4: (state) => { state.DRAGGED_OPTION_4 = !state.DRAGGED_OPTION_4 },
+
+    SET_GAME_TITLE: (state, action) => { state.GAME_TITLE = action.payload },
+    SET_GAME_TEXT: (state, action) => { state.GAME_TITLE = action.payload }
         
   },
 });
@@ -85,7 +111,9 @@ export const
  SET_PLAYING_GUESS_RIGHT, SET_PLAYING_GUESS_WRONG_1, SET_PLAYING_GUESS_WRONG_2, SET_PLAYING_GUESS_WRONG_3,
 
  SET_WRONG_RIGHT_OPTION_BUCKET, WRONG_RIGHT_OPTION_BUCKET_POP,
- TOGGLE_TERNARY_RENDER_KING, TOGGLE_TERNARY_RENDER_OPTION_1, TOGGLE_TERNARY_RENDER_OPTION_2, TOGGLE_TERNARY_RENDER_OPTION_3, TOGGLE_TERNARY_RENDER_OPTION_4, 
+ TOGGLE_TERNARY_RENDER_KING, TOGGLE_TERNARY_RENDER_QUEEN, TOGGLE_TERNARY_RENDER_OPTION_1, TOGGLE_TERNARY_RENDER_OPTION_2, TOGGLE_TERNARY_RENDER_OPTION_3, TOGGLE_TERNARY_RENDER_OPTION_4, 
+ TOGGLE_DRAGGED_OPTION_1, TOGGLE_DRAGGED_OPTION_2, TOGGLE_DRAGGED_OPTION_3, TOGGLE_DRAGGED_OPTION_4,
+ SET_GAME_TITLE, SET_GAME_TEXT
   
 } = familyTreeSlice.actions;
 
