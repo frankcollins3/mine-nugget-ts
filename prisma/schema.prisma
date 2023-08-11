@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("NEXT_PUBLIC_DATABASE_URL")
+}
+
+model SequelizeMeta {
+  name String @id @db.VarChar(255)
+}
+
+model digs {
+  id        Int      @id @default(autoincrement())
+  userId    Int?
+  strain    strains  @relation(fields: [strainid], references: [id])
+  strainid  Int      @unique
+  into_it   Boolean?  
+}
+
+
+model mines {
+  id        Int      @id @default(autoincrement())
+  strain    strains @relation(fields: [strainid], references: [id])
+  strainid  Int     @unique
+  review    String?
+  title     String?  @db.VarChar(255)  
+}
+
+model strains {
+  id        Int      @id @default(autoincrement())
+  strain    String   @db.VarChar(255)
+  strainid  Int      @unique
+  dominant  String   @db.VarChar(255)
+  funfact   String   @db.VarChar(255)
+  parents   String   @db.VarChar(255)
+  taste     String   @db.VarChar(255)
+  smell     String   @db.VarChar(255)
+  gold      String   @db.VarChar(255)
+  nugget    String   @db.VarChar(255)
+  thc       String   @db.VarChar(255)
+  cbd       String   @db.VarChar(255)
+  mines     mines[]
+  digs      digs []
+  miners    MinersOnStrains[]
+}
+
+model MinersOnStrains {
+  miner       miners     @relation(fields: [minersId], references: [id])
+  minersId    Int
+  strain    strains @relation(fields: [strainsid], references: [id])    
+  strainsid  Int
+  @@id([minersId, strainsid])
+}
+
+model miners {
+  id        Int      @id @default(autoincrement())
+  username  String?  @db.VarChar(255)
+  password  String?  @db.VarChar(255)
+  age       Int?
+  email     String?  @db.VarChar(255)
+  wins      Int?
+  icon      String?
+  strains   MinersOnStrains[]
+}
