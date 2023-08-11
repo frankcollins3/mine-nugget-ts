@@ -585,6 +585,8 @@ const rememberMeCookiePROMISE = () => {
                     userupdate = userupdate.data.data.incrementUserWins
                     if (userupdate.wins === 1) {
                         dispatch(SET_GAME_TEXT(`You can now select icon ${CURRENT_USER.username}`))
+                    } else if(userupdate.wins ===3) {
+                        dispatch(SET_GAME_TEXT(`You unlocked the Trophy Room ${CURRENT_USER.username}!`))                        
                     } else {
                         dispatch(SET_GAME_TEXT(`${CURRENT_USER.username} has ${userupdate.wins} Wins!`))
                     }
@@ -615,6 +617,8 @@ const rememberMeCookiePROMISE = () => {
                     userupdate = userupdate.data.data.incrementUserWins
                     if (userupdate.wins === 1) {
                         dispatch(SET_GAME_TEXT(`You can now select icon ${CURRENT_USER.username}`))
+                    } else if(userupdate.wins ===3) {
+                        dispatch(SET_GAME_TEXT(`You unlocked the Trophy Room ${CURRENT_USER.username}!`))                        
                     } else {
                         dispatch(SET_GAME_TEXT(`${CURRENT_USER.username} has ${userupdate.wins} Wins!`))
                     }
@@ -648,6 +652,8 @@ const rememberMeCookiePROMISE = () => {
                 userupdate = userupdate.data.data.incrementUserWins
                 if (userupdate.wins === 1) {
                     dispatch(SET_GAME_TEXT(`You can now select icon ${CURRENT_USER.username}`))
+                } else if(userupdate.wins ===3) {
+                    dispatch(SET_GAME_TEXT(`You unlocked the Trophy Room ${CURRENT_USER.username}!`))                        
                 } else {
                     dispatch(SET_GAME_TEXT(`${CURRENT_USER.username} has ${userupdate.wins} Wins!`))
                 }
@@ -680,6 +686,8 @@ const rememberMeCookiePROMISE = () => {
                 userupdate = userupdate.data.data.incrementUserWins
                 if (userupdate.wins === 1) {
                     dispatch(SET_GAME_TEXT(`You can now select icon ${CURRENT_USER.username}`))
+                } else if(userupdate.wins ===3) {
+                    dispatch(SET_GAME_TEXT(`You unlocked the Trophy Room ${CURRENT_USER.username}!`))                        
                 } else {
                     dispatch(SET_GAME_TEXT(`${CURRENT_USER.username} has ${userupdate.wins} Wins!`))
                 }
