@@ -72,6 +72,10 @@ export const typeDefs = gql`
             age: Int!
             email: String!
         ): Miners
+
+        incrementUserWins(
+            username: String!
+        ): Miners
     }
     `
 
