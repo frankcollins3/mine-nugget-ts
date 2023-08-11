@@ -6,6 +6,7 @@
   import { 
     TOGGLE_PLAYING, TOGGLE_TERNARY_RENDER_KING, TOGGLE_TERNARY_RENDER_QUEEN, SET_WRONG_RIGHT_OPTION_BUCKET, 
     TOGGLE_TERNARY_RENDER_OPTION_1, TOGGLE_TERNARY_RENDER_OPTION_2, TOGGLE_TERNARY_RENDER_OPTION_3, TOGGLE_TERNARY_RENDER_OPTION_4,
+    TOGGLE_DRAGGED_OPTION_1, TOGGLE_DRAGGED_OPTION_2, TOGGLE_DRAGGED_OPTION_3, TOGGLE_DRAGGED_OPTION_4,
   } from "redux/familyTree/familyTreeSlice"
   
   // components and styles
@@ -41,6 +42,12 @@
     const TERNARY_RENDER_OPTION_2 = useSelector( (state:RootState) => state.familyTree.TERNARY_RENDER_OPTION_2)
     const TERNARY_RENDER_OPTION_3 = useSelector( (state:RootState) => state.familyTree.TERNARY_RENDER_OPTION_3)
     const TERNARY_RENDER_OPTION_4 = useSelector( (state:RootState) => state.familyTree.TERNARY_RENDER_OPTION_4)
+    
+    const DRAGGED_OPTION_1 = useSelector( (state:RootState) => state.familyTree.DRAGGED_OPTION_1)
+    const DRAGGED_OPTION_2 = useSelector( (state:RootState) => state.familyTree.DRAGGED_OPTION_2)
+    const DRAGGED_OPTION_3 = useSelector( (state:RootState) => state.familyTree.DRAGGED_OPTION_3)
+    const DRAGGED_OPTION_4 = useSelector( (state:RootState) => state.familyTree.DRAGGED_OPTION_4)
+    
 
     const { king, queen, upsidedowncard, deckcards, kingqueensplit, goldcursor2 } = useImage()  
 
@@ -59,8 +66,21 @@
         
     },[])
 
-    const forceHand = () => {
-      console.log('just dropping by!')
+    const forceHand = (card:any) => {
+      card = card.card
+
+      console.log('card after endpoints', card)
+      if (card === WRONG_RIGHT_OPTION_BUCKET[0]) {
+        console.log("we are in this block here!")
+        dispatch(TOGGLE_DRAGGED_OPTION_1())
+      }
+    }
+
+    const test = () => {
+      console.log(WRONG_RIGHT_OPTION_BUCKET[0])
+      console.log(WRONG_RIGHT_OPTION_BUCKET[1])
+      console.log(WRONG_RIGHT_OPTION_BUCKET[2])
+      console.log(WRONG_RIGHT_OPTION_BUCKET[3])
     }
     
         return (
@@ -76,7 +96,7 @@
           </Container>
 
           <Container className={styles.cardColumn}>
-          <img className={styles.kingQueenCard} src={queen}/>
+          <img onClick={test} className={styles.kingQueenCard} src={queen}/>
           <pre className={styles.cardText}> {PLAYING_PARENT_QUEEN} </pre>
           </Container>
 
@@ -91,48 +111,44 @@
           <img id={styles.table} src={kingqueensplit}/>
           </Droppable>
 
-                <Droppable types={['card']} onDrop={forceHand}>
-                <h1 style={{ color: 'white' }} className="Smoothie"> smoothie </h1>
-            </Droppable>
-
 
           <Container id={styles.cardRow}>
             <pre className={styles.ghost}> filler </pre>
 
-          {/* <Draggable type="fruit" data="banana"><li>Banana</li></Draggable> */}
-
-            {/* <Droppable
-                types={['fruit']} // <= allowed drop types
-                onDrop={this.onDrop.bind(this)}>
-                <ul className="Smoothie"></ul>
-            </Droppable> */}
-
           <Container className={styles.cardColumn}>
 
-          <Draggable type="card" data={WRONG_RIGHT_OPTION_BUCKET[0]}> 
-          <img style={{ border: '5px solid papayawhip'}} onMouseEnter={() => dispatch(TOGGLE_TERNARY_RENDER_OPTION_1())} onMouseLeave={() => dispatch(TOGGLE_TERNARY_RENDER_OPTION_1())} className={styles.card} src={upsidedowncard}/>
+          <Draggable type={DRAGGED_OPTION_1 ? "nocard" : "card"} data={WRONG_RIGHT_OPTION_BUCKET[0]}> 
+          <img onMouseEnter={() => dispatch(TOGGLE_TERNARY_RENDER_OPTION_1())} onMouseLeave={() => dispatch(TOGGLE_TERNARY_RENDER_OPTION_1())} className={styles.card} src={upsidedowncard}/>
           </Draggable>
-          
+
   {TERNARY_RENDER_OPTION_1 && <pre style={{ fontSize: '14px' }} className={styles.cardText}> {WRONG_RIGHT_OPTION_BUCKET[0]} </pre>  }
           </Container>
 
           <Container className={styles.cardColumn}>
+            <Draggable type="card" data={WRONG_RIGHT_OPTION_BUCKET[1]}> 
           <img onMouseEnter={() => dispatch(TOGGLE_TERNARY_RENDER_OPTION_2())} onMouseLeave={() => dispatch(TOGGLE_TERNARY_RENDER_OPTION_2())} className={styles.card} src={upsidedowncard}/>
+          </Draggable>
           { TERNARY_RENDER_OPTION_2 && <pre style={{ fontSize: '14px' }} className={styles.cardText}> {WRONG_RIGHT_OPTION_BUCKET[1]} </pre> }
           </Container>
 
           <Container className={styles.cardColumn}>
+          <Draggable type="card" data={WRONG_RIGHT_OPTION_BUCKET[2]}> 
           <img onMouseEnter={() => dispatch(TOGGLE_TERNARY_RENDER_OPTION_3())} onMouseLeave={() => dispatch(TOGGLE_TERNARY_RENDER_OPTION_3())} className={styles.card} src={upsidedowncard}/>
           { TERNARY_RENDER_OPTION_3 && <pre style={{ fontSize: '14px' }} className={styles.cardText}> {WRONG_RIGHT_OPTION_BUCKET[2]} </pre> }
+          </Draggable>
           </Container>
 
           <Container className={styles.cardColumn}>
+          <Draggable type="card" data={WRONG_RIGHT_OPTION_BUCKET[3]}> 
           <img onMouseEnter={() => dispatch(TOGGLE_TERNARY_RENDER_OPTION_4())} onMouseLeave={() => dispatch(TOGGLE_TERNARY_RENDER_OPTION_4())} className={styles.card} src={upsidedowncard}/>
           { TERNARY_RENDER_OPTION_4 && <pre style={{ fontSize: '14px' }} className={styles.cardText}> {WRONG_RIGHT_OPTION_BUCKET[3]} </pre> }
+          </Draggable>
           </Container>
 
           <pre className={styles.ghost}> filler </pre>
           </Container>
+
+          <h6 id={styles.gameText}> Hey Guys  </h6>
     
           </Container>
         )
