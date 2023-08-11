@@ -152,9 +152,6 @@ export const resolvers = {
           const me = allusers.find(user => user.username === username)
           const findStrain = allstrains.find(strains => strains.strain === strain)
 
-          console.log('me server', me)
-          console.log('findStrain server', findStrain)
-
           const meID = me.id
           const strainID = findStrain.id
 
@@ -172,6 +169,25 @@ export const resolvers = {
             return newUserStrain
           })          
         },
+        incrementUserWins: async (parent, args) => {
+          const {username} = args;
+
+          const allminers = await allminersDB()
+          const me = allminers.find(user => user.username === username)
+
+          console.log('me', me)
+
+          return await prisma.miners.update({
+            where: { id: me.id },
+            data: { 
+              wins: me.wins ? me.wins + 1 : 1              
+            }
+          }).then( (updatedUser) =>  {
+            return updatedUser
+          })        
+        },
+
+
         userSignup: async (parent, args) => {
           const { username, password, email, age } = args;
 
@@ -188,12 +204,15 @@ export const resolvers = {
               username: username,
               password: passHasher,
               email: email,
-              age: age
+              age: age,
+              wins: 0,
+              icon: ''
             }
           }).then(async(u) => {
             return u
           })        
-        }
+        },
+      
 
 
 
