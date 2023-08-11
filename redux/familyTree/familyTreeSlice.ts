@@ -10,8 +10,11 @@ interface familyTreeSliceState {
     // strain.parents split. 2nd parent shown
     PLAYING_PARENT_QUEEN: string;
 
+    GAME_PLAYED: string;
     GAME_TITLE: string;
     GAME_TEXT: string;
+    GAME_LIVES: any[];   // :number[] doesn't allow for .pop()
+    GAME_OVER: string,
 
 // The "Child" of the KING & QUEEN. child strain can be seen on page 1 but parents can't. Guessing game based on providing parents. guessing child.
     PLAYING_GUESS_RIGHT: string;
@@ -25,15 +28,15 @@ interface familyTreeSliceState {
     // this code triggers the ternary to render UI. was considering just local state
     TERNARY_RENDER_KING: boolean,
     TERNARY_RENDER_QUEEN: boolean,
+    TERNARY_RENDER_OPTION_0: boolean,
     TERNARY_RENDER_OPTION_1: boolean,
     TERNARY_RENDER_OPTION_2: boolean,
     TERNARY_RENDER_OPTION_3: boolean,
-    TERNARY_RENDER_OPTION_4: boolean,
 
+    DRAGGED_OPTION_0: boolean;
     DRAGGED_OPTION_1: boolean;
     DRAGGED_OPTION_2: boolean;
     DRAGGED_OPTION_3: boolean;
-    DRAGGED_OPTION_4: boolean;
 
 
     
@@ -45,8 +48,11 @@ const initialState: familyTreeSliceState = {
     PLAYING_PARENT_KING: '',
     PLAYING_PARENT_QUEEN: '',
 
+    GAME_PLAYED: '',
     GAME_TITLE: '',
     GAME_TEXT: '',
+    GAME_LIVES: [1, 1, 2, 3, 4, 7,],
+    GAME_OVER: '',
 
     PLAYING_GUESS_RIGHT: '',
     PLAYING_GUESS_WRONG_1: '',
@@ -56,15 +62,15 @@ const initialState: familyTreeSliceState = {
 
     TERNARY_RENDER_KING: false,
     TERNARY_RENDER_QUEEN: false,
+    TERNARY_RENDER_OPTION_0: false,
     TERNARY_RENDER_OPTION_1: false,
     TERNARY_RENDER_OPTION_2: false,
     TERNARY_RENDER_OPTION_3: false,
-    TERNARY_RENDER_OPTION_4: false,
 
+    DRAGGED_OPTION_0: false,
     DRAGGED_OPTION_1: false,
     DRAGGED_OPTION_2: false,
     DRAGGED_OPTION_3: false,
-    DRAGGED_OPTION_4: false,
   };
 
                                     
@@ -89,18 +95,23 @@ const familyTreeSlice = createSlice({
 
     TOGGLE_TERNARY_RENDER_KING: (state) => { state.TERNARY_RENDER_KING = !state.TERNARY_RENDER_KING },
     TOGGLE_TERNARY_RENDER_QUEEN: (state) => { state.TERNARY_RENDER_QUEEN = !state.TERNARY_RENDER_QUEEN },
+    TOGGLE_TERNARY_RENDER_OPTION_0: (state) => { state.TERNARY_RENDER_OPTION_0 = !state.TERNARY_RENDER_OPTION_0 },
     TOGGLE_TERNARY_RENDER_OPTION_1: (state) => { state.TERNARY_RENDER_OPTION_1 = !state.TERNARY_RENDER_OPTION_1 },
     TOGGLE_TERNARY_RENDER_OPTION_2: (state) => { state.TERNARY_RENDER_OPTION_2 = !state.TERNARY_RENDER_OPTION_2 },
     TOGGLE_TERNARY_RENDER_OPTION_3: (state) => { state.TERNARY_RENDER_OPTION_3 = !state.TERNARY_RENDER_OPTION_3 },
-    TOGGLE_TERNARY_RENDER_OPTION_4: (state) => { state.TERNARY_RENDER_OPTION_4 = !state.TERNARY_RENDER_OPTION_4 },
 
+    TOGGLE_DRAGGED_OPTION_0: (state) => { state.DRAGGED_OPTION_0 = !state.DRAGGED_OPTION_0 },
     TOGGLE_DRAGGED_OPTION_1: (state) => { state.DRAGGED_OPTION_1 = !state.DRAGGED_OPTION_1 },
     TOGGLE_DRAGGED_OPTION_2: (state) => { state.DRAGGED_OPTION_2 = !state.DRAGGED_OPTION_2 },
     TOGGLE_DRAGGED_OPTION_3: (state) => { state.DRAGGED_OPTION_3 = !state.DRAGGED_OPTION_3 },
-    TOGGLE_DRAGGED_OPTION_4: (state) => { state.DRAGGED_OPTION_4 = !state.DRAGGED_OPTION_4 },
-
+    
+    SET_GAME_PLAYED: (state, action) => { state.GAME_PLAYED = action.payload },
     SET_GAME_TITLE: (state, action) => { state.GAME_TITLE = action.payload },
-    SET_GAME_TEXT: (state, action) => { state.GAME_TITLE = action.payload }
+    SET_GAME_TEXT: (state, action) => { state.GAME_TEXT= action.payload },
+    DECREMENT_GAME_LIVES: (state) => { state.GAME_LIVES.pop() && state.GAME_LIVES.pop() },
+    // DECREMENT_GAME_LIVES: (state) => { state.GAME_LIVES = state.GAME_LIVES.pop() && state.GAME_LIVES.pop() },
+    RESET_GAME_LIVES: (state) => { state.GAME_LIVES = [1,2]},
+    SET_GAME_OVER: (state, action) => { state.GAME_OVER = action.payload }
         
   },
 });
@@ -111,9 +122,10 @@ export const
  SET_PLAYING_GUESS_RIGHT, SET_PLAYING_GUESS_WRONG_1, SET_PLAYING_GUESS_WRONG_2, SET_PLAYING_GUESS_WRONG_3,
 
  SET_WRONG_RIGHT_OPTION_BUCKET, WRONG_RIGHT_OPTION_BUCKET_POP,
- TOGGLE_TERNARY_RENDER_KING, TOGGLE_TERNARY_RENDER_QUEEN, TOGGLE_TERNARY_RENDER_OPTION_1, TOGGLE_TERNARY_RENDER_OPTION_2, TOGGLE_TERNARY_RENDER_OPTION_3, TOGGLE_TERNARY_RENDER_OPTION_4, 
- TOGGLE_DRAGGED_OPTION_1, TOGGLE_DRAGGED_OPTION_2, TOGGLE_DRAGGED_OPTION_3, TOGGLE_DRAGGED_OPTION_4,
- SET_GAME_TITLE, SET_GAME_TEXT
+ TOGGLE_TERNARY_RENDER_KING, TOGGLE_TERNARY_RENDER_QUEEN, TOGGLE_TERNARY_RENDER_OPTION_0, TOGGLE_TERNARY_RENDER_OPTION_1, TOGGLE_TERNARY_RENDER_OPTION_2, TOGGLE_TERNARY_RENDER_OPTION_3, 
+ TOGGLE_DRAGGED_OPTION_0, TOGGLE_DRAGGED_OPTION_1, TOGGLE_DRAGGED_OPTION_2, TOGGLE_DRAGGED_OPTION_3,
+ SET_GAME_PLAYED, SET_GAME_TITLE, SET_GAME_TEXT,
+ DECREMENT_GAME_LIVES, RESET_GAME_LIVES, SET_GAME_OVER
   
 } = familyTreeSlice.actions;
 
