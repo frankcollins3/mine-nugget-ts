@@ -583,7 +583,11 @@ const rememberMeCookiePROMISE = () => {
                     .then( (userupdate:any) => {
                     console.log('userupdate', userupdate)
                     userupdate = userupdate.data.data.incrementUserWins
-                    dispatch(SET_GAME_TEXT(`${CURRENT_USER.username} has ${userupdate.wins} Wins!`))
+                    if (userupdate.wins === 1) {
+                        dispatch(SET_GAME_TEXT(`You can now select icon ${CURRENT_USER.username}`))
+                    } else {
+                        dispatch(SET_GAME_TEXT(`${CURRENT_USER.username} has ${userupdate.wins} Wins!`))
+                    }
                 })
             } else {
                 dispatch(SET_GAME_TEXT(`Royal Flush! ${CURRENT_USER.username || card} Wins!`))
@@ -609,7 +613,11 @@ const rememberMeCookiePROMISE = () => {
                     .then( (userupdate:any) => {
                     console.log('userupdate', userupdate)
                     userupdate = userupdate.data.data.incrementUserWins
-                    dispatch(SET_GAME_TEXT(`${CURRENT_USER.username} has ${userupdate.wins} Wins!`))
+                    if (userupdate.wins === 1) {
+                        dispatch(SET_GAME_TEXT(`You can now select icon ${CURRENT_USER.username}`))
+                    } else {
+                        dispatch(SET_GAME_TEXT(`${CURRENT_USER.username} has ${userupdate.wins} Wins!`))
+                    }
                 })    
                 } else {
                     dispatch(SET_GAME_TEXT(`Royal Flush! ${CURRENT_USER.username || card} Wins!`))
@@ -638,8 +646,11 @@ const rememberMeCookiePROMISE = () => {
                 .then( (userupdate:any) => {
                 console.log('userupdate', userupdate)
                 userupdate = userupdate.data.data.incrementUserWins
-                dispatch(SET_GAME_TEXT(`${CURRENT_USER.username} has ${userupdate.wins} Wins!`))
-
+                if (userupdate.wins === 1) {
+                    dispatch(SET_GAME_TEXT(`You can now select icon ${CURRENT_USER.username}`))
+                } else {
+                    dispatch(SET_GAME_TEXT(`${CURRENT_USER.username} has ${userupdate.wins} Wins!`))
+                }
                 })
             } else {
                 dispatch(SET_GAME_TEXT(`Royal Flush! ${CURRENT_USER.username || card} Wins!`))
@@ -667,7 +678,11 @@ const rememberMeCookiePROMISE = () => {
                 .then( (userupdate:any) => {
                 console.log('userupdate', userupdate)
                 userupdate = userupdate.data.data.incrementUserWins
-                dispatch(SET_GAME_TEXT(`${CURRENT_USER.username} has ${userupdate.wins} Wins!`))
+                if (userupdate.wins === 1) {
+                    dispatch(SET_GAME_TEXT(`You can now select icon ${CURRENT_USER.username}`))
+                } else {
+                    dispatch(SET_GAME_TEXT(`${CURRENT_USER.username} has ${userupdate.wins} Wins!`))
+                }
                 })
             } else {
                 dispatch(SET_GAME_TEXT(`Royal Flush! ${CURRENT_USER.username || card} Wins!`))
