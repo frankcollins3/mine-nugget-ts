@@ -1,4 +1,13 @@
 
+// @reduxjs/toolkit
+import {RootState} from "redux/store/rootReducer"
+import {useSelector, useDispatch} from "react-redux"
+// import { 
+//     SET_VIEW_SELECTED_STRAIN_KEY, SET_VIEW_SELECTED_STRAIN_VALUE, SET_VIEW_SELECTED_STRAIN_INDEX, SET_VIEW_SELECTED_STRAIN, TOGGLE_SELECTED_STRAIN_SAVE_OR_NOT,
+//     SET_ALL_USERS, SET_ALL_USERNAMES, SET_ALL_EMAILS,
+// } from "redux/main/mainSlice"
+
+
 // components and styles
 import Container from "react-bootstrap/Container"
 import styles from "./Navbar.module.scss"
@@ -11,17 +20,26 @@ export default function Navbar() {
 }
 
 function RENDER() {
-    const { magnify, gold, cactus, mine } = useImage()
+    const ALL_USERNAMES = useSelector( (state:RootState) => state.main.ALL_USERNAMES)
+    const ALL_EMAILS = useSelector( (state:RootState) => state.main.ALL_EMAILS)
+    const CURRENT_PAGE = useSelector( (state:RootState) => state.main.CURRENT_PAGE)
+
+    const { magnify, gold, cactus, mine, navbardice } = useImage()
 
     const goldClick = () => {
         window.location.href = "/strain"
+    }
+
+    const test = () => {
+        console.log('ALL_USERNAMES', ALL_USERNAMES)
+        console.log('ALL_EMAILS', ALL_EMAILS)
     }
 
     return (
         <Container id={styles.Cont}>
 
             <Container>
-                <img id={styles.mine} className={styles.img} src={mine}/>
+                <img onClick={test} id={styles.mine} className={styles.img} src={CURRENT_PAGE === "/familytree" ? navbardice : mine}/>
             </Container>
 
             <Container id={styles.multiIconCont}>
