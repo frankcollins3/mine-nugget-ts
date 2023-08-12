@@ -32,6 +32,7 @@ type imgContextType = {
     ring: string;
     shovel: string;
     signUpSigns: string;
+    vest: string;
     trophy: string;
     unLitPaper: string;
     watch: string;
@@ -79,6 +80,7 @@ const imgDefaults: imgContextType = {
     cart: 'img/cart.png',
     coin: 'img/coin.png',
     coneHat: 'img/cone_hat.png',
+    vest: 'img/vest.png',
     desert: 'img/desert.png',
     dynamite: 'img/dynamite.png',
     edit: 'img/edit.png',
@@ -157,6 +159,7 @@ export function ImgProvider({ children }: Props) {
     const [cart, setcart] = useState<string>(`img/cart.png`);
     const [coin, setcoin] = useState<string>(`img/coin.png`);
     const [coneHat, setconeHat] = useState<string>(`img/cone_hat.png`);
+    const [vest, setVest] = useState<string>(`img/vest.png`);
     const [desert, setdesert] = useState<string>(`img/desert.png`);
     const [dynamite, setdynamite] = useState<string>(`img/dynamite.png`);
     const [edit, setedit] = useState<string>(`img/edit.png`);
@@ -221,6 +224,7 @@ export function ImgProvider({ children }: Props) {
         cart,
         coin,
         coneHat,
+        vest,
         desert,
         dynamite,
         edit,
