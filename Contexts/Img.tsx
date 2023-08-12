@@ -23,6 +23,7 @@ type imgContextType = {
     litPaper: string;
     magnify: string;
     magnify2: string;
+    magnify3: string;
     mine: string;
     mineCart: string;
     mirror: string;
@@ -60,6 +61,10 @@ type imgContextType = {
     howmanywinsprofile: string;
     kingqueensplit: string;
 
+    // findmine 
+    ilink: string;
+    welink: string;
+
     // trophy room
     trophyroom6333icons: string; // /pages/trophyroom.tsx -> 6333 icons easter egg from flaticon. this img src accompanies that easter egg display to theme it up.
 };
@@ -87,6 +92,7 @@ const imgDefaults: imgContextType = {
     litPaper: 'img/litPaper.png',
     magnify: 'img/magnify.png',
     magnify2: 'img/magnify2.png',
+    magnify3: 'img/magnify3.png',
     mine: 'img/mine.png',
     mineCart: 'img/mineart.png',
     mirror: 'img/mirror.png',
@@ -122,6 +128,12 @@ const imgDefaults: imgContextType = {
     winthreecards: `img/winthreecards.png`,
     howmanywinsprofile: `img/howmanywinsprofile.png`,
     kingqueensplit: `img/kingqueensplit.png`,        
+
+    // findmine 
+    ilink: `img/ilink.png`,
+    welink: `img/welink.png`,
+    
+    // trophy room
     trophyroom6333icons: `img/trophyroom6333icons.png`
 };
 
@@ -158,6 +170,7 @@ export function ImgProvider({ children }: Props) {
     const [litPaper, setlitPaper] = useState<string>(`img/litpaper.png`);
     const [magnify, setmagnify] = useState<string>(`img/magnify.png`);
     const [magnify2, setmagnify2] = useState<string>(`img/magnify2.png`);
+    const [magnify3, setmagnify3] = useState<string>(`img/magnify3.png`);
     const [mine, setmine] = useState<string>(`img/mine.png`);
     const [mineCart, setmineCart] = useState<string>(`img/mineCart.png`);
     const [mirror, setmirror] = useState<string>(`img/mirror.png`);
@@ -194,6 +207,10 @@ export function ImgProvider({ children }: Props) {
     const [kingqueensplit, setkingqueensplit] = useState<string>(`img/kingqueensplit.png`);
 
     const [howmanywinsprofile, sethowmanywinsprofile] = useState<string>(`img/howmanywinsprofile.png`);
+    
+    const [ilink, setilink] = useState<string>(`img/ilink.png`);
+    const [welink, setwelink] = useState<string>(`img/welink.png`);
+
     const [trophyroom6333icons, settrophyroom6333icons] = useState<string>(`img/trophyroom6333icons.png`);    
         
     const value = {
@@ -217,6 +234,7 @@ export function ImgProvider({ children }: Props) {
         litPaper,
         magnify,
         magnify2,
+        magnify3,
         mine,
         mineCart,
         mirror,
@@ -235,7 +253,7 @@ export function ImgProvider({ children }: Props) {
         yesCursor,
         noCursor,
 
-        // findmine playing card game
+        // familytree playing card game
         king,
         queen,
         joker,
@@ -252,6 +270,10 @@ export function ImgProvider({ children }: Props) {
         winthreecards,
         howmanywinsprofile,
         kingqueensplit,
+
+        // findmine        
+        ilink,
+        welink,
         trophyroom6333icons
 
     };
