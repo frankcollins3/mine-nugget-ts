@@ -57,6 +57,8 @@ export const typeDefs = gql`
         ): MinersLogin
 
         getUserWithId(id: Int!): Miners
+
+        getMyMinersOnStrains(username: String!): [MinersOnStrains]!
     }
 
     type Mutation {
@@ -75,7 +77,7 @@ export const typeDefs = gql`
 
         incrementUserWins(
             username: String!
-        ): Miners
+            ): Miners
     }
     `
 
