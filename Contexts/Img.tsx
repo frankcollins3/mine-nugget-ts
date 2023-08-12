@@ -9,6 +9,7 @@ type imgContextType = {
     cactus: string;
     cart: string;
     coin: string;
+    caution: string;
     coneHat: string;
     desert: string;
     dynamite: string;
@@ -79,6 +80,7 @@ const imgDefaults: imgContextType = {
     cactus: 'img/cactus.png',
     cart: 'img/cart.png',
     coin: 'img/coin.png',
+    caution: 'img/caution.png',
     coneHat: 'img/cone_hat.png',
     vest: 'img/vest.png',
     desert: 'img/desert.png',
@@ -158,6 +160,7 @@ export function ImgProvider({ children }: Props) {
     const [cactus, setcactus] = useState<string>(`img/cactus.png`);
     const [cart, setcart] = useState<string>(`img/cart.png`);
     const [coin, setcoin] = useState<string>(`img/coin.png`);
+    const [caution, setCaution] = useState<string>(`img/caution.png`);
     const [coneHat, setconeHat] = useState<string>(`img/cone_hat.png`);
     const [vest, setVest] = useState<string>(`img/vest.png`);
     const [desert, setdesert] = useState<string>(`img/desert.png`);
@@ -223,6 +226,7 @@ export function ImgProvider({ children }: Props) {
         cactus,
         cart,
         coin,
+        caution,
         coneHat,
         vest,
         desert,
