@@ -6,7 +6,7 @@ import React, { useEffect, useState, useContext, createContext } from 'react'
 // @reduxjs/toolkit global state management
 import {useSelector, useDispatch} from 'react-redux'
 import { RootState } from 'redux/store/rootReducer';
-import { SET_VIEW_SELECTED_STRAIN, SET_CURRENT_USER } from 'redux/main/mainSlice';
+import { SET_VIEW_SELECTED_STRAIN, SET_CURRENT_USER, SET_CURRENT_PAGE } from 'redux/main/mainSlice';
 
 // components and styles
 import Container from 'react-bootstrap/Container';
@@ -37,6 +37,7 @@ export default function Main ( props:any, context ) {
     const readyToSave = true
 
     useEffect( () => {
+      dispatch(SET_CURRENT_PAGE('/strain'))
       // const tryToRememberMe = () => {
         // only reason this function is abstract and not set as a modular function in Contexts/Promises.tsx is that the index of either cookie[id] or cookie[token] kept switching orders
         console.log("trying hard")
