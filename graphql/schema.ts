@@ -59,6 +59,7 @@ export const typeDefs = gql`
         getUserWithId(id: Int!): Miners
 
         getMyMinersOnStrains(username: String!): [MinersOnStrains]!
+        allMinersOnStrains: [MinersOnStrains]!
     }
 
     type Mutation {
