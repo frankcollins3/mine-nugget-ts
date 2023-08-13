@@ -1,8 +1,8 @@
    // axios.post('/api/graphql', { query: `query { allStrainsGET { strain, strainid, dominant, funfact, parents, taste, smell, gold, nugget, thc, cbd } }`})
 
 export const allMinersGETquery = `query { allMinersGET { username, password, email, age } }`
-
 export const allStrainsGETquery = `query { allStrainsGET { strain, strainid, dominant, funfact, parents, taste, smell, gold, nugget, thc, cbd } }`
+export const allMinersOnStrainsQuery = `query { allMinersOnStrains { minersId, strainsid } }`
 
 export const addMinersOnStrainsQueryStringFunc = (minersId: number, strainsid: number) => {
    const query = `
