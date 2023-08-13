@@ -30,6 +30,7 @@ const allMinersOnStrainsDB = prisma.MinersOnStrains.findMany
 // strains redis functions
 const strainsRedisCheck = async () => { return redis.get("strains", (error, strains) => { return error ? error : strains }) }
 const minersRedisCheck = async () => { return redis.get("miners", (error, miners) => { return miners ? miners : error })}
+// const myMinersOnStrainsRedisCheck = async (userId:any) => { return redis.get(`myMinersOnStrains${userId}`, (error, myMinersOnStrains) => { return myMinersOnStrains ? myMinersOnStrains : error })}
 
 // MinersOnStrains redis functions
 const deleteMinersOnStrainsRedis = async () => { return redis.del("MinersOnStrains") }
@@ -40,6 +41,20 @@ const addMinersOnStrainsToRedis = async () => {
   const stringifyMinersOnStrains = JSON.stringify(allMinersOnStrains)
   await redis.set("MinersOnStrains", stringifyMinersOnStrains)
 }
+
+const myMinersOnStrainsRedisCheck = async (userId:any) => {
+  return redis.get(`myMinersOnStrains${userId}`, (error, myMinersOnStrains) => {
+  // const redisCheck = redis.get(`myMinersOnStrains${meID}`, (myMinersOnStrains, error) => {
+    if (error) { 
+      console.log('error in redis.get()', error)
+    } else if (myMinersOnStrains) {
+      console.log("myMinersOnStrains in the redis cache!!", myMinersOnStrains)
+      return myMinersOnStrains
+    }
+  })
+}
+
+
 
 
 // const strainsRedisCheck = async () => {
@@ -137,8 +152,79 @@ export const resolvers = {
       })
     },
 
-    },  // query bracket end 
+    getMyMinersOnStrains: async (parent, args) => {
+      const {username} = args;
+      const allminers = await allminersDB()
+      const me = allminers.find(user => user.username === username)
+      console.log('me in getMyMinersOnStrains', me)
+      const meID = me.id
 
+      let redisCheck = await myMinersOnStrainsRedisCheck(meID)
+      if (redisCheck) {
+        const myMinersOnStrainsCache = await JSON.parse(redisCheck)
+        console.log("we are in the redis cache!", myMinersOnStrainsCache)
+        return myMinersOnStrainsCache
+      } else {
+
+        const allMinersOnStrains = await allMinersOnStrainsDB()
+        const myMinersOnStrains = allMinersOnStrains.filter(userStrains => userStrains.minersId === meID)
+        console.log('myMinersStrains we are NOT NOT NOT in the redis cache!!!', myMinersOnStrains)
+        if (myMinersOnStrains.length > 0) {
+  
+          if (myMinersOnStrains.length === 1) {          
+            await redis.set(`myMinersOnStrains${meID}`, JSON.stringify(myMinersOnStrains))
+            await myMinersOnStrains.push({minersId: 0, strainsid: 0})
+            return myMinersOnStrains
+          }
+          redis.set(`myMinersOnStrains${meID}`, JSON.stringify(myMinersOnStrains))
+  
+          return myMinersOnStrains
+        } else {
+          return {minersId: 0, strainsid: 0}
+        }
+
+      }
+      
+
+    },
+
+    // getMyMinersOnStrains: async (parent, args) => {
+    //   const {username} = args;
+    //   const allminers = await allminersDB()
+    //   const me = allminers.find(user => user.username === username)
+    //   console.log('me in getMyMinersOnStrains', me)
+    //   const meID = me.id
+
+    //   let myUserStrainsRedisCheck:any =  await myMinersOnStrainsRedisCheck(meID)
+    //   if (myUserStrainsRedisCheck) {
+    //     const redisParseStr = JSON.parse(myUserStrainsRedisCheck)
+    //     console.log("we are in the redis minersOnStrains Block", redisParseStr)
+    //     return redisParseStr
+    //   } else {
+    //     const allMinersOnStrains = await allMinersOnStrainsDB()
+    //     const myMinersOnStrains = allMinersOnStrains.filter(userStrains => userStrains.minersId === meID)
+    //     console.log('NOT DOING IT!!!!! myMinersStrains', myMinersOnStrains)        
+    //     if (myMinersOnStrains.length > 0) {          
+    //       const resetMinersOnStrainsRedis = (id:number) => {
+    //         redis.del(`myMinersOnStrains${id}`)
+    //         const redisStringifyObj = JSON.stringify(myMinersOnStrains)
+    //         redis.set(`myMinersOnStrains${id}`, redisStringifyObj)            
+    //       }
+
+    //       if (myMinersOnStrains.length === 1) {
+    //         resetMinersOnStrainsRedis(meID)
+    //         await myMinersOnStrains.push({minersId: 0, strainsid: 0})
+    //         return myMinersOnStrains
+    //       }                  
+    //       resetMinersOnStrainsRedis(meID)
+    //       return myMinersOnStrains
+    //     } else {
+    //       return {minersId: 0, strainsid: 0}
+    //     }
+    //   }
+    // }
+
+    },  // query bracket end 
     Mutation: {
         addMinersOnStrains: async (parent, args) => {
           const { username,  strain } = args
