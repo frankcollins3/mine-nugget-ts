@@ -54,8 +54,7 @@ const myMinersOnStrainsRedisCheck = async (userId:any) => {
   })
 }
 
-
-
+const allMinersOnStrainsRedisCheck = async () => { return redis.get('minersOnStrains', (error, minersOnStrains) => { return error ? error : minersOnStrains} ) }
 
 // const strainsRedisCheck = async () => {
 //   return redis.get("strains", (error, strains) => {
@@ -63,7 +62,6 @@ const myMinersOnStrainsRedisCheck = async (userId:any) => {
 //     return strains
 //   })
 // }
-
 
 export const resolvers = {
     Query: {
@@ -137,7 +135,6 @@ export const resolvers = {
         throw new Error('An error occurred during login. Please try again.');
       }
     },
-
     getUserWithId: async (parent, args) => {
       const {id} = args
       return prisma.miners.findUnique({
@@ -150,6 +147,22 @@ export const resolvers = {
       }).catch( (err) => {
         throw new Error("An error occurred while retrieving user. Please try again!")
       })
+    },
+
+    allMinersOnStrains: async (parent, args) => {
+        const userStrainsRedisCheck = await allMinersOnStrainsRedisCheck()
+        if (userStrainsRedisCheck) {
+          let userStrainsFromCache = await JSON.parse(userStrainsRedisCheck)
+          console.log("guys were in the redis cache for userstrains", userStrainsFromCache)
+          return userStrainsFromCache
+        } else {
+          console.log("were not in the user cache!")
+          const allUserStrains = await allMinersOnStrainsDB()
+          const stringifyUserStrainsForRedis = JSON.stringify(allUserStrains)
+          await redis.del("minersOnStrains")
+          await redis.set("minersOnStrains", stringifyUserStrainsForRedis)
+          return allUserStrains          
+        }
     },
 
     getMyMinersOnStrains: async (parent, args) => {
