@@ -43,7 +43,8 @@ import { getCookie, nonGenericKeysAndValuesFromStrain, findStrainFromAllStrains,
 // queries
 import { 
     allStrainsGETquery, allMinersGETquery, userSignupQueryStringFunc, userLoginQueryStringFunc,
-     getUserWithIdStringFunc, getMyStrainsStringFunc, allMinersOnStrainsQuery, addStrainLikeStringFunc
+     getUserWithIdStringFunc, getMyStrainsStringFunc, allMinersOnStrainsQuery, 
+     addStrainLikeStringFunc, removeStrainLikeStringFunc,
 } from "graphql/queries";
 import GoldRequestQL from "utility/GoldRequestQL";
 
@@ -77,6 +78,7 @@ type PromiseTypes = {
     setCurrentUserStrainsPROMISE: (username:string) => any;
     setAllUserStrainsPROMISE: () => any;
     addLikePROMISE: (username: string, strainid: number, like:boolean) => any;
+    removeLikePROMISE: (username: string, strainid: number, like:boolean) => any;
     // const query = addStrainLikeStringFunc(CURRENT_USER.username, NO_FEED_SELECTED_STRAIN.id, true)
 }   
 
@@ -107,6 +109,7 @@ const PromiseDefaults = {
     setCurrentUserStrainsPROMISE: (username:string) => {},
     setAllUserStrainsPROMISE: () => {},
     addLikePROMISE: (username: string, strainid: number, like:boolean) => {},
+    removeLikePROMISE: (username: string, strainid: number, like:boolean) => {},
 }
 
 const PromiseContext = createContext<PromiseTypes>(PromiseDefaults)
@@ -797,12 +800,12 @@ const rememberMeCookiePROMISE = () => {
     // username: string, strainid: number, like:boolean
     const addLikePROMISE = (username: string, strainid: number, like:boolean) => {
         const query = addStrainLikeStringFunc(username, strainid, like)
-            return GoldRequestQL(query)
-            // return axios.post('/api/graphql', { query: `${query}`})
-            // .then( (newLike:any) => {
-            //     console.log('newLike', newLike)
-            //     return newLike = newLike.data.data.addStrainDig
-            // })
+            return GoldRequestQL(query)            
+    }
+
+    const removeLikePROMISE = (username: string, strainid: number, like:boolean) => {
+        const query = removeStrainLikeStringFunc(username, strainid, like)
+            return GoldRequestQL(query)            
     }
 
     
@@ -834,7 +837,8 @@ const rememberMeCookiePROMISE = () => {
             // FindMine
             setCurrentUserStrainsPROMISE,
             setAllUserStrainsPROMISE,
-            addLikePROMISE
+            addLikePROMISE,
+            removeLikePROMISE
         }        
 
 
