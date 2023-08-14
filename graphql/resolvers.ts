@@ -25,6 +25,7 @@ import prisma from "prisma/prismaClient"
 const allstrainsDB = prisma.strains.findMany
 const allminersDB = prisma.miners.findMany
 const allMinersOnStrainsDB = prisma.MinersOnStrains.findMany
+const alldigsDB = prisma.digs.findMany
 
 
 // strains redis functions
@@ -55,6 +56,23 @@ const myMinersOnStrainsRedisCheck = async (userId:any) => {
 }
 
 const allMinersOnStrainsRedisCheck = async () => { return redis.get('minersOnStrains', (error, minersOnStrains) => { return error ? error : minersOnStrains} ) }
+
+const myLikesRedisCheck = async (userId:any) => {
+  return redis.get(`myDigs${userId}`, (error, myDigs) => {
+    if (error) {
+      console.log(`error in redis.get()`, error)
+    } else if (myDigs) {
+      return myDigs
+    }
+  })
+}
+
+const updateMyLikesRedisCheck = async (userId:any) => {
+  await redis.del(`myDigs${userId}`)
+  const alldigs = await alldigsDB()
+  const stringifyUserLikesStrain = JSON.stringify(alldigs)
+  await redis.set(`myDigs${userId}`, stringifyUserLikesStrain)
+}
 
 // const strainsRedisCheck = async () => {
 //   return redis.get("strains", (error, strains) => {
@@ -185,11 +203,13 @@ export const resolvers = {
         if (myMinersOnStrains.length > 0) {
   
           if (myMinersOnStrains.length === 1) {          
+            await redis.del(`myMinersOnStrains${meID}`)
             await redis.set(`myMinersOnStrains${meID}`, JSON.stringify(myMinersOnStrains))
             await myMinersOnStrains.push({minersId: 0, strainsid: 0})
             return myMinersOnStrains
           }
-          redis.set(`myMinersOnStrains${meID}`, JSON.stringify(myMinersOnStrains))
+          await redis.del(`myMinersOnStrains${meID}`)
+          await redis.set(`myMinersOnStrains${meID}`, JSON.stringify(myMinersOnStrains))
   
           return myMinersOnStrains
         } else {
@@ -201,41 +221,6 @@ export const resolvers = {
 
     },
 
-    // getMyMinersOnStrains: async (parent, args) => {
-    //   const {username} = args;
-    //   const allminers = await allminersDB()
-    //   const me = allminers.find(user => user.username === username)
-    //   console.log('me in getMyMinersOnStrains', me)
-    //   const meID = me.id
-
-    //   let myUserStrainsRedisCheck:any =  await myMinersOnStrainsRedisCheck(meID)
-    //   if (myUserStrainsRedisCheck) {
-    //     const redisParseStr = JSON.parse(myUserStrainsRedisCheck)
-    //     console.log("we are in the redis minersOnStrains Block", redisParseStr)
-    //     return redisParseStr
-    //   } else {
-    //     const allMinersOnStrains = await allMinersOnStrainsDB()
-    //     const myMinersOnStrains = allMinersOnStrains.filter(userStrains => userStrains.minersId === meID)
-    //     console.log('NOT DOING IT!!!!! myMinersStrains', myMinersOnStrains)        
-    //     if (myMinersOnStrains.length > 0) {          
-    //       const resetMinersOnStrainsRedis = (id:number) => {
-    //         redis.del(`myMinersOnStrains${id}`)
-    //         const redisStringifyObj = JSON.stringify(myMinersOnStrains)
-    //         redis.set(`myMinersOnStrains${id}`, redisStringifyObj)            
-    //       }
-
-    //       if (myMinersOnStrains.length === 1) {
-    //         resetMinersOnStrainsRedis(meID)
-    //         await myMinersOnStrains.push({minersId: 0, strainsid: 0})
-    //         return myMinersOnStrains
-    //       }                  
-    //       resetMinersOnStrainsRedis(meID)
-    //       return myMinersOnStrains
-    //     } else {
-    //       return {minersId: 0, strainsid: 0}
-    //     }
-    //   }
-    // }
 
     },  // query bracket end 
     Mutation: {
@@ -311,46 +296,32 @@ export const resolvers = {
             return u
           })        
         },
+
+        addStrainDig: async (parent, args) => {
+          const { userId, strainid, into_it } = args
+          const alldigs = await alldigsDB()
+          const alldigsLength:number = alldigs.length
+
+          return prisma.digs.create({
+            data: {
+              id: alldigsLength + 1,
+              userId: userId,
+              strainid: strainid,
+              into_it: into_it 
+            }
+          }).then(async(newLike) => {
+            console.log('newLike serverside', newLike)
+          
+            await updateMyLikesRedisCheck(userId)
+            return newLike
+          }).catch( (error:any) => {
+            return error
+            // return { userId: 0, strainid: 0, into_it: 0}
+          })
+        }
       
 
 
 
     } // mutation bracket end
 }
-
-/*
-    Mutation: {
-//     addUserSettings: async (parent, args) => {
-//         const { age, height, weight, start_time, end_time, reminder, activity, users_id } = args;
-//         // const { id, age, height, weight, start_time, end_time, reminder, activity, users_id } = args;
-//         // check if there are already settings that correspond to user ID
-//         let allSettings = await allsettingsDB()
-//         let mySettings = allSettings.find(settings => settings.users_id === users_id)
-//         // let mySettings = allSettings.filter(settings => settings.users_id === users_id)
-        
-//         // mySettings = mySettings[0]        
-//         if (mySettings) { await deleteSettingsWithId(mySettings.id) } // await prisma.settings.delete({ where: { id: mySettings.id } })
-        
-//         let allSettingsForLength = await allsettingsDB()
-//         let allSettingsLength = allSettingsForLength.length + 1
-//         // this works. the above code hasn't been checked yet.
-//         return await prisma.settings.create({
-//           data: {
-//             id: allSettingsLength + 1, 
-//             age,
-//             height,
-//             weight,
-//             start_time,
-//             end_time,
-//             reminder,
-//             activity,
-//             users_id
-//           }
-//         }).then(async(addedSettings:SettingsInterface) => {
-//           let s = addedSettings
-
-//   return { age: s.age, height: s.height, weight: s.weight, start_time: s.start_time, end_time: s.end_time, reminder: s.reminder, activity: s.activity, users_id: s.users_id }
-//         })
-//     },
-    }
-*/
