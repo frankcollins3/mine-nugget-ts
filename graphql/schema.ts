@@ -47,6 +47,12 @@ export const typeDefs = gql`
         strainsid: Int!
     }
 
+    type Digs {
+        userId: Int!
+        strainid: Int!
+        into_it: Boolean!
+    }
+
     type Query {
         allStrainsGET: [Strains]!
         allMinersGET: [Miners]!
@@ -79,8 +85,23 @@ export const typeDefs = gql`
         incrementUserWins(
             username: String!
             ): Miners
+
+        addStrainDig(
+            userId: Int!
+            strainid: Int!
+            into_it: Boolean!
+        ): Digs
+
+        removeStrainDig(
+            userId: Int!
+            strainid: Int!
+            into_it: Boolean!
+        ): Digs
     }
     `
+
+    // id | userId | strainid | into_it 
+
 
     // addMinersOnStrains(
     //     minersId: Int! 
