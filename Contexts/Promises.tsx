@@ -6,17 +6,20 @@ import axios from "axios"
 // @redux/toolkit global state management
 import {RootState} from "redux/store/rootReducer"
 import {useSelector, useDispatch} from "react-redux"
+// MAIN
 import { 
     SET_VIEW_SELECTED_STRAIN_KEY, SET_VIEW_SELECTED_STRAIN_VALUE, SET_VIEW_SELECTED_STRAIN_INDEX, SET_VIEW_SELECTED_STRAIN, TOGGLE_SELECTED_STRAIN_SAVE_OR_NOT,
-    SET_ALL_STRAINS, SET_ALL_USERS, SET_ALL_USERNAMES, SET_ALL_EMAILS,
+    SET_ALL_STRAINS, SET_ALL_USERS, SET_ALL_USERNAMES, SET_ALL_EMAILS, SET_CURRENT_USER
 } from "redux/main/mainSlice"
 
+// LOGIN SIGNUP
 import { 
     TOGGLE_PASSWORD_TOO_EZ, TOGGLE_PASSWORD_LENGTH_PASS, TOGGLE_PASSWORD_NUMBER_CHAR, TOGGLE_PASSWORD_SPECIAL_CHAR, TOGGLE_PASSWORD_UPPERCASE,
     TOGGLE_EMAIL_EXTENSION, TOGGLE_EMAIL_UNIQUE, SET_EMAIL_EXTENSION_UI,
     TOGGLE_USERNAME_UNIQUE, TOGGLE_USERNAME_LENGTH,
- } from "redux/loginSignup/loginSignupSlice";
- 
+} from "redux/loginSignup/loginSignupSlice";
+
+// FAMILY TREE
  import { 
     TOGGLE_PLAYING, SET_PLAYING_STRAIN, SET_PLAYING_PARENT_KING, SET_PLAYING_PARENT_QUEEN,
     SET_PLAYING_GUESS_RIGHT, SET_PLAYING_GUESS_WRONG_1, SET_PLAYING_GUESS_WRONG_2, SET_PLAYING_GUESS_WRONG_3,
@@ -28,19 +31,26 @@ import {
 
  } from "redux/familyTree/familyTreeSlice"
 
+ // FINDMINE
+
+ import { SET_CURRENT_USER_STRAINS, SET_ALL_USER_STRAINS } from "redux/findMine/findMineSlice";
  
 
 // utils
-import { strainsINTERFACE, minersINTERFACE } from "utility/InterfaceTypes";
+import { strainsINTERFACE, minersINTERFACE, minersOnStrainsINTERFACE } from "utility/InterfaceTypes";
 import { getCookie, nonGenericKeysAndValuesFromStrain, findStrainFromAllStrains, randomValueFromArray, shuffleArray, shuffleArrayOfObjects } from "utility/utilityValues"
 
 // queries
-import { allStrainsGETquery, allMinersGETquery, userSignupQueryStringFunc, userLoginQueryStringFunc, getUserWithIdStringFunc } from "graphql/queries";
+import { 
+    allStrainsGETquery, allMinersGETquery, userSignupQueryStringFunc, userLoginQueryStringFunc,
+     getUserWithIdStringFunc, getMyStrainsStringFunc, allMinersOnStrainsQuery, addStrainLikeStringFunc
+} from "graphql/queries";
 import GoldRequestQL from "utility/GoldRequestQL";
 
 type PromiseTypes = {
 
     iPROMISEcookies: () => any;
+    cookieFunc: () => any;
     setallstrainsPROMISE: () => any;
     setallminersPROMISE: () => any;
     deleteEndpointsPROMISE: (strain:any) => any;
@@ -62,10 +72,17 @@ type PromiseTypes = {
     familyTreeWrongGuessPROMISE: () => any;
     guessCardPROMISE: (card:any) => any;
     resetCardGamePROMISE: () => any;
+
+    // FindMine Promises:
+    setCurrentUserStrainsPROMISE: (username:string) => any;
+    setAllUserStrainsPROMISE: () => any;
+    addLikePROMISE: (username: string, strainid: number, like:boolean) => any;
+    // const query = addStrainLikeStringFunc(CURRENT_USER.username, NO_FEED_SELECTED_STRAIN.id, true)
 }   
 
 const PromiseDefaults = {
     iPROMISEcookies: () => {},
+    cookieFunc: () => {},
     setallstrainsPROMISE: () => {},
     setallminersPROMISE: () => {},
     deleteEndpointsPROMISE: (strain:any) => {},
@@ -86,6 +103,10 @@ const PromiseDefaults = {
     familyTreeWrongGuessPROMISE: () => {},
     guessCardPROMISE: (card:any) => {},
     resetCardGamePROMISE: () => {},
+
+    setCurrentUserStrainsPROMISE: (username:string) => {},
+    setAllUserStrainsPROMISE: () => {},
+    addLikePROMISE: (username: string, strainid: number, like:boolean) => {},
 }
 
 const PromiseContext = createContext<PromiseTypes>(PromiseDefaults)
@@ -162,6 +183,9 @@ export function PromiseProvider({children}:Props) {
     const GAME_TEXT = useSelector( (state:RootState) => state.familyTree.GAME_TEXT)
     const GAME_LIVES = useSelector( (state:RootState) => state.familyTree.GAME_LIVES)
     const GAME_OVER = useSelector( (state:RootState) => state.familyTree.GAME_OVER)
+
+    // FindMine State!
+    const NO_FEED_SELECTED_STRAIN = useSelector( (state:RootState) => state.findMine.NO_FEED_SELECTED_STRAIN)
         
 
     // main app and user PROMISES
@@ -183,6 +207,35 @@ export function PromiseProvider({children}:Props) {
             }
         })
     }
+
+    const cookieFunc = async () => {
+        const cookie = await getCookie()
+        console.log('cookie', cookie)
+        if (cookie[0] && cookie[1]) {                
+            let id
+            id = cookie[0].length > cookie[1].length ? cookie[1].replace(/\D+/g, '') : cookie[0].replace(/\D+/g, '')
+            console.log('id', id)
+            if (id) {                
+                const query = getUserWithIdStringFunc(id)
+                return axios.post('/api/graphql', {query:`${query}`})
+                .then( (userWithId:any) => {
+                // const statePROMISE = new Promise( (resolve:any, reject:any) => {
+                    return new Promise( (resolve:any, reject:any) => {
+                        console.log('userWithId', userWithId)
+                        userWithId = userWithId.data.data.getUserWithId
+                        dispatch(SET_CURRENT_USER(userWithId))
+                        resolve(userWithId)
+                        // resolve(CURRENT_USER)
+                        // reject('no user')
+                    })
+                    // resolve(CURRENT_USER)
+                // })
+
+                
+                })
+            } 
+        } else { return }
+      }
 
     function setallstrainsPROMISE() {
         return new Promise( (resolve:any, reject:any) => {
@@ -703,8 +756,8 @@ const rememberMeCookiePROMISE = () => {
             dispatch(TOGGLE_DRAGGED_OPTION_3())
           }   
         }           
+    }
 
-      }
 
     const resetCardGamePROMISE = async () => {
         dispatch(RESET_GAME_LIVES())
@@ -718,10 +771,45 @@ const rememberMeCookiePROMISE = () => {
       dispatch(SET_GAME_TEXT(''))
       await familyTreeStrainsPROMISE()
     }
+
+
+    const setCurrentUserStrainsPROMISE = (username:string) => {
+        const query = getMyStrainsStringFunc(username)
+    // axios.post('/api/graphql', { query: `query { getMyMinersOnStrains(username: "${CURRENT_USER.username}") { minersId, strainsid } }`})
+    axios.post('/api/graphql', { query: `${query}` })
+        .then( (myStrains:any) => {
+            console.log('myStrains before endpoints!', myStrains)
+            const myUserStrains:minersOnStrainsINTERFACE = myStrains.data.data.getMyMinersOnStrains
+            console.log('myUserStrains', myUserStrains)
+            dispatch(SET_CURRENT_USER_STRAINS(myUserStrains))
+        })                                                                                                                
+    }
+
+
+    const setAllUserStrainsPROMISE = () => {
+        axios.post('/api/graphql', { query: `${allMinersOnStrainsQuery}`})
+        .then( (allUserStrains:any) => {
+            allUserStrains = allUserStrains.data.data.allMinersOnStrains
+            dispatch(SET_ALL_USER_STRAINS(allUserStrains))     
+        })        
+    }     
+    
+    // username: string, strainid: number, like:boolean
+    const addLikePROMISE = (username: string, strainid: number, like:boolean) => {
+        const query = addStrainLikeStringFunc(username, strainid, like)
+            return GoldRequestQL(query)
+            // return axios.post('/api/graphql', { query: `${query}`})
+            // .then( (newLike:any) => {
+            //     console.log('newLike', newLike)
+            //     return newLike = newLike.data.data.addStrainDig
+            // })
+    }
+
     
 
         const value = {
             iPROMISEcookies,
+            cookieFunc,
             setallstrainsPROMISE,
             setallminersPROMISE,
             deleteEndpointsPROMISE,
@@ -741,7 +829,12 @@ const rememberMeCookiePROMISE = () => {
             familyTreeStrainsPROMISE,
             familyTreeWrongGuessPROMISE,
             guessCardPROMISE,
-            resetCardGamePROMISE
+            resetCardGamePROMISE,
+
+            // FindMine
+            setCurrentUserStrainsPROMISE,
+            setAllUserStrainsPROMISE,
+            addLikePROMISE
         }        
 
 
