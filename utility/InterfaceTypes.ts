@@ -66,3 +66,5 @@ export interface SignupInterface { inputType: string }
 
 // findmine
 export interface noFeedSelectedStrainINTERFACE { id: number, strain: string };
+export interface noFeedNoStrainMsgsINTERFACE { err: boolean, msg: string };
+// NO_FEED_NO_STRAIN_MSGS: { err: boolean, msg: string};
