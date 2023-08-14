@@ -59,3 +59,10 @@ export interface SeeAndSaveStrainProps {
     strain: string
     key: string 
 }
+
+export interface LoginInterface { inputType: string }
+export interface SignupInterface { inputType: string }
+
+
+// findmine
+export interface noFeedSelectedStrainINTERFACE { id: number, strain: string };
