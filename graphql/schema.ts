@@ -87,13 +87,13 @@ export const typeDefs = gql`
             ): Miners
 
         addStrainDig(
-            userId: Int!
+            username: String!
             strainid: Int!
             into_it: Boolean!
         ): Digs
 
         removeStrainDig(
-            userId: Int!
+            username: String!
             strainid: Int!
             into_it: Boolean!
         ): Digs
