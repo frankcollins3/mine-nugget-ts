@@ -215,11 +215,31 @@ export const resolvers = {
         } else {
           return {minersId: 0, strainsid: 0}
         }
-
-      }
-      
-
+      }      
     },
+
+    getMyLikes: async (parent, args) => {
+      const { username } = args;
+      // const myLikesRedisCheck = async (userId:any) => {        
+        const allusers = await allminersDB()
+        const me = allusers.find(users => users.username === username)
+        const meID = me.id
+        const myRedisLikes = await myLikesRedisCheck(meID)
+
+        if (myRedisLikes) {
+          const likesFromRedis = JSON.parse(myRedisLikes)
+          console.log('redis caching likes!', likesFromRedis)
+          return likesFromRedis
+        } else {
+          const allDigs = await alldigsDB()
+          const myLikes = allDigs.filter(likes => likes.userId === meID)
+          updateMyLikesRedisCheck(meID)
+          console.log('NOT DOING THE CACHING!!! myLikes in the server', myLikes)
+          return myLikes
+        }
+
+    }
+      
 
 
     },  // query bracket end 
@@ -298,9 +318,13 @@ export const resolvers = {
         },
 
         addStrainDig: async (parent, args) => {
-          const { userId, strainid, into_it } = args
+          const { username, strainid, into_it } = args
           const alldigs = await alldigsDB()
           const alldigsLength:number = alldigs.length
+
+          const allusers = await allminersDB()
+          const me = allusers.find(user => user.username === username)
+          const userId = me.id
 
           return prisma.digs.create({
             data: {
@@ -318,6 +342,28 @@ export const resolvers = {
             return error
             // return { userId: 0, strainid: 0, into_it: 0}
           })
+        },
+
+        removeStrainDig: async (parent, args) => {
+          const { username, strainid } = args;
+          const alldigs = await alldigsDB()
+          const allusers = await allminersDB()
+          const me = allusers.find(user => user.username === username)
+          const userId = me.id
+          const findLike = alldigs.find(likes => likes.userId === userId && likes.strainid === strainid)
+          console.log('findLike in the server', findLike)
+
+          const likeID = findLike.id
+
+          await prisma.digs.delete({
+            where: { id: likeID }
+          }).then(async(noLike) => {
+            await updateMyLikesRedisCheck(userId)
+            return { userId: 0, strainid: 0, into_it: false}
+          }).catch( (error) => {
+            return error
+          })
+
         }
       
 
