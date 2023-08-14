@@ -54,6 +54,19 @@ export const getMyStrainsStringFunc = (username:string) => {
    return query;
 }
 
+export const addStrainLikeStringFunc = (userId: number, strainid: number, into_it: boolean) => {
+   // `mutation { addStrainDig(userId: 3, strainid: 2, into_it: true) { userId, strainid, into_it } }`
+   const query = `mutation { addStrainDig(userId: ${userId}, strainid: ${strainid}, into_it: ${into_it}) { userId, strainid, into_it } }`
+   return query
+}
+
+export const removeStrainLikeStringFunc = (userId: number, strainid: number, into_it: boolean) => {
+   const query = `mutation { removeStrainDig(userId: ${userId}, strainid: ${strainid}, into_it: ${into_it}) { userId, strainid, into_it } }`
+   return query
+}
+
+// `mutation { addStrainDig(userId: 3, strainid: 2, into_it: true) { userId, strainid, into_it } }`
+
 
 
 // axios.post('/api/graphql', { 
