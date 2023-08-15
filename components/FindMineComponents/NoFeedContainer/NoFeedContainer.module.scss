@@ -1,0 +1,251 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@1,100&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Moon+Dance&display=swap');
+
+$whip: papayawhip;
+$puregold: rgb(247, 208, 36);
+
+@mixin scrollbar {
+  ::-webkit-scrollbar {
+    width: 10px;
+    } 
+    
+    /* Track */
+    ::-webkit-scrollbar-track {
+      box-shadow: inset 2px 3px 2px orange;
+    border-radius: 10px;
+      // box-shadow: inset 5px 9px 5px grey;
+    }
+    
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+    background: papayawhip;
+    border-radius: 10px;
+    }
+}
+
+
+#Page_1 {
+    min-height: 40.5vh;
+    // height: 100%;
+  // background: $dedede;
+    // border: 5px solid orangered;
+    display: grid;
+    justify-content: center;
+    // align-items: center;
+    grid-template-columns: 1.30fr 0.7fr;
+    grid-template-rows: 1fr;
+    gap: 0px 0px;
+    grid-template-areas: 'primary panel';
+  }
+  
+  .primary {    
+    display: grid;
+    justify-content: center;
+    align-items: space-between; 
+    // grid-area: primary;    
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+    // flex-flow: column wrap;    
+    // position: relative;  
+    // border-right: 8px solid $whip;  
+    // height: 100%;
+  }
+
+  // .primary {    
+  //   grid-area: primary;    
+  //   display: flex;
+  //   justify-content: center;
+  //   align-items: center;
+  //   flex-flow: row wrap;    
+  //   position: relative;  
+  //   border-right: 8px solid $whip;  
+  //   height: 100%;
+  // }
+  
+  .panel {
+    width: 100%;
+    text-align: center;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    grid-area: panel;
+    // overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden; 
+    position: relative;
+    @include scrollbar;
+    border-left: 8px solid $whip;
+    margin: 0 0.0em;
+    // @include ghost-scrollbar;
+    // left: 2px; 
+  }
+
+  #noSelectedStrainMine, #selectedStrainGoldBar {
+    height: 200px;
+    width: 200px;    
+  }
+
+  #selectedStrainColumn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    // border: 5px solid orange;
+    align-self: center; 
+  }
+
+  .coinColumn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .currentUserStrainCoin {
+    height: 50px; 
+    width: 50px;
+  }
+
+  .coinText {
+    font-family: Josefin Sans;
+    color: $puregold;
+    color: 18px;
+  }
+
+  .digDeleteMine {
+    color: $puregold;    
+  }
+
+  .shovelDynamiteMine {
+    height: 45px;
+    width: 45px;
+  }
+
+  #selectedStrainText {
+    color: $puregold;
+    font-size: 18px;
+  }
+
+  .currentUserStrainCoin:hover { cursor: pointer; }
+
+  #editGlassesEraserCont {
+    // border: 5px solid purple;
+    display: flex;
+    justify-content: space-between;
+    min-width: 50vw;
+    align-self: flex-end;
+    position: relative;
+    top: 0.5em;
+  }
+
+  #shovelMineCont {
+    display: flex;
+    justify-content: space-between;    
+    // border: 5px solid hotpink; 
+    min-width: 50vw;
+    align-self: flex-end;
+    position: relative;
+    top: -1.5em;
+  }
+
+  #shovelMintCont > #mine:hover, #shovel:hover, #dynamite:hover { cursor: pointer; }
+
+  #mine { border-radius: 50%; } 
+  #mine:hover { cursor: pointer; }
+  #shovel:hover {  border-bottom: 2px dashed $puregold; }
+  // #dynamite:hover { border-radius: 50%; box-shadow: 12px 12px 22px red; }
+  #mine:hover { border-radius: 50%; box-shadow: 2px 4px 6px $whip;  }
+
+  .ghost { opacity: 0.0; }
+
+  #reviewForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    // display: grid;
+    // justify-content: center;
+    // align-items: center;
+    // position: relative;
+    min-height: 20vh;
+    min-width: 20vw;
+    // border: 5px solid green;
+    top: 50px;
+  }
+
+  .mineInputs {
+    background-color: moccasin;
+    border: 3px solid rgba(255, 228, 181, 0.924);
+    box-shadow: 4px 4px 4px $puregold;
+    width: 8em;
+  }
+
+  .mineInputs:focus { outline: none; } .mineInputs:hover { box-shadow: 4px 4px 4px $whip; }
+
+  .inputLabel {
+    font-family: Josefin Sans;
+    color: $puregold; 
+    margin-top: 0.25em;
+  }
+
+
+  @media only screen and (max-width: 600px) {
+    .currentUserStrainCoin {
+      height: 35px; 
+      width: 35px;
+    }
+
+    .coinText {
+      font-size: 12px; 
+    }
+
+    .shovelDynamiteMine {
+      height: 35px;
+      width: 35px;
+    }
+
+    #selectedStrainText {
+      font-size: 14px;
+    }
+
+  }
+
+  @media only screen and (max-width: 350px) {
+      #noSelectedStrainMine, #selectedStrainGoldBar {
+        height: 85px; 
+        width: 85px; 
+      }
+
+      .currentUserStrainCoin {
+        height: 25px; 
+        width: 25px;
+      }
+
+      .coinText {
+        font-size: 9px; 
+      }
+
+      .shovelDynamiteMine {
+        height: 25px; 
+        width: 25px;
+      }
+
+      #selectedStrainText {
+        font-size: 12px;
+      }
+
+      #reviewForm {
+        display: grid;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        top: 40px;
+      }
+
+      #submitGold {
+        position: relative;
+        left: 47px; 
+      }
+  }
