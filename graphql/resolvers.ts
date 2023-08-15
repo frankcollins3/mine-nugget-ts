@@ -385,23 +385,54 @@ export const resolvers = {
         addMineReview: async (parent, args) => {
           const {username, strainid, title, review} = args      
           const allusers = await allminersDB()
-          const usersLength = allusers.length
+          const allmines = await allminesDB();
+          let minesLength = allmines.length
           const myid = await getUserIdWithUsername(username)
           console.log('myid in server', myid)
 
+          console.log('username', username)
+          console.log('strainid', strainid)
+          console.log('title', title)
+          console.log('review', review)
+
+          const checkstrain = allmines.find(reviews => reviews.strainid === strainid && reviews.userId === myid)
+          if (checkstrain) {
+            console.log("checkstrain from server", checkstrain)
+            return prisma.mines.update({
+              where: {               
+                id: checkstrain.id
+              },
+              data: {
+                title: title,
+                review: review,                
+              },
+            }).then(async(updatedReview) => {
+              console.log("were in the update")
+              // const updateMyReviewsRedis = async (userId:any) => {
+              await updateMyReviewsRedis(myid)               
+              return updatedReview
+            }).catch( (err) => {
+              console.log('err', err)
+              return { userId: 0, strainid: 0, title: "update", review: "update"}              
+            })
+          }
+
           return prisma.mines.create({
             data: {
-              id: usersLength + 1,
+              id: minesLength + 1,
               userId: myid,
               strainid: strainid,
-              title: title,
+              title: `${title}`,
               review: review
             }
-          }).then( (addedReview:any) => {
-            updateMyReviewsRedis(myid)
-            return addedReview
+          }).then(async(addedReview:any) => {
+            await updateMyReviewsRedis(myid)
+            let m = addedReview
+            return { userId: m.userId, strainid: m.strainid, title: m.title, review: m.review}
+            // return addedReview
           }).catch( (err) => {
-            return 
+            console.log('err', err)
+            return { userId: 0, strainid: 0, title: "yeah", review: "yeah"}
           })
           // const getUserIdWithUsername = async (username:string) => {
         },
