@@ -8,7 +8,10 @@ import Primary from "components/FindMineComponents/NoFeedContainer/Primary"
 // @reduxjs/toolkit
 import {RootState} from "redux/store/rootReducer"
 import {useSelector, useDispatch} from "react-redux"
-import { SET_NO_FEED_SELECTED_STRAIN, TOGGLE_NO_FEED_SHOW_MINE, SET_NO_FEED_NO_STRAIN_MSGS, TOGGLE_TRIGGER_LIKE_EFFECT, TOGGLE_USER_LIKES_SELECTED_STRAIN } from "redux/findMine/findMineSlice"
+import { 
+    SET_NO_FEED_SELECTED_STRAIN, TOGGLE_NO_FEED_SHOW_MINE, SET_NO_FEED_NO_STRAIN_MSGS, TOGGLE_TRIGGER_LIKE_EFFECT, TOGGLE_USER_LIKES_SELECTED_STRAIN,
+    SET_MINE_REVIEW_INPUT_VAL, SET_MINE_TITLE_INPUT_VAL, TOGGLE_READY_TO_EDIT,
+ } from "redux/findMine/findMineSlice"
 // utils
 import {useImage} from "Contexts/Img"
 
@@ -22,6 +25,7 @@ function RENDER() {
     const USER_LIKES_SELECTED_STRAIN = useSelector( (state:RootState) => state.findMine.USER_LIKES_SELECTED_STRAIN)
     const NO_FEED_SELECTED_STRAIN = useSelector( (state:RootState) => state.findMine.NO_FEED_SELECTED_STRAIN)
     const NO_FEED_SHOW_MINE = useSelector( (state:RootState) => state.findMine.NO_FEED_SHOW_MINE)
+    const READY_TO_EDIT = useSelector( (state:RootState) => state.findMine.READY_TO_EDIT)
 
     const [showDigText, setShowDigText] = useState(false)
     const [showDeleteText, setShowDeleteText] = useState(false)
@@ -30,6 +34,8 @@ function RENDER() {
     const dispatch = useDispatch()
 
     const { coin, mine, gold, shovel, dynamite, edit, eraser, glasses  } = useImage()
+
+    // const query =  addMineReviewStringFunc(CURRENT_USER.username, MINE_REVIEW_INPUT_VAL, MINE_TITLE_INPUT_VAL, NO_FEED_SELECTED_STRAIN.id)
 
     const setCoin = (item:any) => {
         console.log('item', item)
@@ -43,6 +49,13 @@ function RENDER() {
             id === 7 ? {id: 7, strain: "pineapple express"} : ""
         ))
         dispatch(TOGGLE_TRIGGER_LIKE_EFFECT())
+        dispatch(SET_MINE_REVIEW_INPUT_VAL(''))
+        dispatch(SET_MINE_TITLE_INPUT_VAL(''))
+
+        if (READY_TO_EDIT === true) { dispatch(TOGGLE_READY_TO_EDIT()) }
+
+        // if ()
+
     }
 
     const reset = () => {
