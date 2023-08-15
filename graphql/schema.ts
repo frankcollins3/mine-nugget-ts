@@ -4,7 +4,7 @@ import {gql} from 'apollo-server-micro';
 
 // id | strain | strainId | dominant | funfact | parents | taste | smell | gold | nugget | thc | cbd
 
-//  id |   username   | password | age |         email      
+// id | userId | strainid | review | title  
 
 export const typeDefs = gql`
 
@@ -47,6 +47,13 @@ export const typeDefs = gql`
         strainsid: Int!
     }
 
+    type MineReviews {
+        userId: Int!
+        strainid: Int!
+        review: String!
+        title: String!
+    }
+
     type Digs {
         userId: Int!
         strainid: Int!
@@ -66,6 +73,8 @@ export const typeDefs = gql`
 
         getMyMinersOnStrains(username: String!): [MinersOnStrains]!
         allMinersOnStrains: [MinersOnStrains]!
+
+        getMyLikes(username: String!): [Digs]!
     }
 
     type Mutation {
@@ -97,10 +106,24 @@ export const typeDefs = gql`
             strainid: Int!
             into_it: Boolean!
         ): Digs
+
+        addMineReview(
+            username: String!
+            strainid: Int!
+            review: String!
+            title: String!
+        ): MineReviews
+            
+        removeMineReview(
+            username: String!
+            strainid: Int!
+            review: String!
+            title: String!
+        ): MineReviews
+
     }
     `
-
-    // id | userId | strainid | into_it 
+    
 
 
     // addMinersOnStrains(
