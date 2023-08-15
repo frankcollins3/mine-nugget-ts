@@ -25,7 +25,21 @@ import prisma from "prisma/prismaClient"
 const allstrainsDB = prisma.strains.findMany
 const allminersDB = prisma.miners.findMany
 const allMinersOnStrainsDB = prisma.MinersOnStrains.findMany
+
+const allminesDB = prisma.mines.findMany
 const alldigsDB = prisma.digs.findMany
+
+const getUserIdWithUsername = async (username:string) => {
+  const allusers = await allminersDB()
+  const me = allusers.find(user => user.username === username)
+  return me.id
+}
+
+const getMyReviews = async(userId:any) => {
+  const allReviews = await allminesDB()
+  const myReviews = allReviews.filter(reviews => reviews.userId === userId)
+  return myReviews
+}
 
 
 // strains redis functions
@@ -67,19 +81,22 @@ const myLikesRedisCheck = async (userId:any) => {
   })
 }
 
-const updateMyLikesRedisCheck = async (userId:any) => {
+const updateMyLikesRedis = async (userId:any) => {
   await redis.del(`myDigs${userId}`)
   const alldigs = await alldigsDB()
-  const stringifyUserLikesStrain = JSON.stringify(alldigs)
+  const myDigs = alldigs.filter(likes => likes.userId === userId)
+  const stringifyUserLikesStrain = JSON.stringify(myDigs)
   await redis.set(`myDigs${userId}`, stringifyUserLikesStrain)
 }
 
-// const strainsRedisCheck = async () => {
-//   return redis.get("strains", (error, strains) => {
-//     if (error) return error
-//     return strains
-//   })
-// }
+const updateMyReviewsRedis = async (userId:any) => {
+  await redis.del(`myMines${userId}`)
+  const allmines = await allminesDB()
+  const myReviews = allmines.filter(reviews => reviews.userId === userId)
+  const stringifyUserMines = JSON.stringify(myReviews)
+  await redis.set(`myMines${userId}`, stringifyUserMines)
+}
+
 
 export const resolvers = {
     Query: {
@@ -233,7 +250,7 @@ export const resolvers = {
         } else {
           const allDigs = await alldigsDB()
           const myLikes = allDigs.filter(likes => likes.userId === meID)
-          updateMyLikesRedisCheck(meID)
+          updateMyLikesRedis(meID)
           console.log('NOT DOING THE CACHING!!! myLikes in the server', myLikes)
           return myLikes
         }
@@ -336,7 +353,7 @@ export const resolvers = {
           }).then(async(newLike) => {
             console.log('newLike serverside', newLike)
           
-            await updateMyLikesRedisCheck(userId)
+            await updateMyLikesRedis(userId)
             return newLike
           }).catch( (error:any) => {
             return error
@@ -358,13 +375,51 @@ export const resolvers = {
           await prisma.digs.delete({
             where: { id: likeID }
           }).then(async(noLike) => {
-            await updateMyLikesRedisCheck(userId)
+            await updateMyLikesRedis(userId)
             return { userId: 0, strainid: 0, into_it: false}
           }).catch( (error) => {
             return error
           })
+        },
 
+        addMineReview: async (parent, args) => {
+          const {username, strainid, title, review} = args      
+          const allusers = await allminersDB()
+          const usersLength = allusers.length
+          const myid = await getUserIdWithUsername(username)
+          console.log('myid in server', myid)
+
+          return prisma.mines.create({
+            data: {
+              id: usersLength + 1,
+              userId: myid,
+              strainid: strainid,
+              title: title,
+              review: review
+            }
+          }).then( (addedReview:any) => {
+            updateMyReviewsRedis(myid)
+            return addedReview
+          }).catch( (err) => {
+            return 
+          })
+          // const getUserIdWithUsername = async (username:string) => {
+        },
+
+        removeMineReview: async (parent, args) => {
+          const { username, strainid, title, review} = args
+          const myid = await getUserIdWithUsername(username)
+          const myReviews = await getMyReviews(myid)
+          console.log('myReviews serverside', myReviews)
+          const findReview = myReviews.find(mines => mines.strainid === strainid && mines.title === title && mines.review === review)
+          console.log('findReview', findReview)
+          await prisma.mines.delete({
+            where: { id: findReview.id }
+          }).then( (deleted) => {
+            return deleted
+          })
         }
+
       
 
 
