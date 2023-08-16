@@ -75,6 +75,8 @@ export const typeDefs = gql`
         allMinersOnStrains: [MinersOnStrains]!
 
         getMyLikes(username: String!): [Digs]!
+
+        getMyMines(username: String!): [MineReviews]!
     }
 
     type Mutation {
@@ -82,6 +84,11 @@ export const typeDefs = gql`
         addMinersOnStrains(
             username: String! 
             strain: String!
+        ): MinersOnStrains
+
+        removeMinersOnStrains(
+            username: String!
+            strainid: Int!
         ): MinersOnStrains
 
         userSignup(
@@ -116,9 +123,7 @@ export const typeDefs = gql`
             
         removeMineReview(
             username: String!
-            strainid: Int!
-            review: String!
-            title: String!
+            strainid: Int!            
         ): MineReviews
 
     }
