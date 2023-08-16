@@ -33,7 +33,7 @@ import {
 
  // FINDMINE
 
- import { SET_CURRENT_USER_STRAINS, SET_ALL_USER_STRAINS, TOGGLE_READY_TO_EDIT } from "redux/findMine/findMineSlice";
+ import { SET_CURRENT_USER_STRAINS, SET_ALL_USER_STRAINS, TOGGLE_READY_TO_EDIT, TOGGLE_USER_LIKES_SELECTED_STRAIN } from "redux/findMine/findMineSlice";
  
 
 // utils
@@ -44,7 +44,7 @@ import { getCookie, nonGenericKeysAndValuesFromStrain, findStrainFromAllStrains,
 import { 
     allStrainsGETquery, allMinersGETquery, userSignupQueryStringFunc, userLoginQueryStringFunc,
      getUserWithIdStringFunc, getMyStrainsStringFunc, allMinersOnStrainsQuery, 
-     addStrainLikeStringFunc, removeStrainLikeStringFunc,
+     addStrainLikeStringFunc, removeStrainLikeStringFunc, getMyLikesStringFunc,
 } from "graphql/queries";
 import GoldRequestQL from "utility/GoldRequestQL";
 
@@ -79,6 +79,8 @@ type PromiseTypes = {
     setAllUserStrainsPROMISE: () => any;
     addLikePROMISE: (username: string, strainid: number, like:boolean) => any;
     removeLikePROMISE: (username: string, strainid: number, like:boolean) => any;
+    getMyLikesPROMISE: (username: string) => any;
+
     addMinePROMISE: (query:string) => any;
     // const query = addStrainLikeStringFunc(CURRENT_USER.username, NO_FEED_SELECTED_STRAIN.id, true)
 }   
@@ -111,6 +113,8 @@ const PromiseDefaults = {
     setAllUserStrainsPROMISE: () => {},
     addLikePROMISE: (username: string, strainid: number, like:boolean) => {},
     removeLikePROMISE: (username: string, strainid: number, like:boolean) => {},
+    getMyLikesPROMISE: (username:string) => {},
+
     addMinePROMISE: (query:string) => {},
 }
 
@@ -192,6 +196,7 @@ export function PromiseProvider({children}:Props) {
     // FindMine State!
     const NO_FEED_SELECTED_STRAIN = useSelector( (state:RootState) => state.findMine.NO_FEED_SELECTED_STRAIN)
     const READY_TO_EDIT = useSelector( (state:RootState) => state.findMine.READY_TO_EDIT)
+    const USER_LIKES_SELECTED_STRAIN = useSelector( (state:RootState) => state.findMine.USER_LIKES_SELECTED_STRAIN)
         
 
     // main app and user PROMISES
@@ -811,6 +816,29 @@ const rememberMeCookiePROMISE = () => {
             return GoldRequestQL(query)            
     }
 
+    const getMyLikesPROMISE = (username:string) => {
+        const query = getMyLikesStringFunc(username)
+        // axios.post('/api/graphql', { query: `query {getMyLikes(username: "${CURRENT_USER.username}"), { userId, strainid, into_it } } `})
+        axios.post('/api/graphql', { query: `${query}` })
+        .then( (likes:any) => {
+            console.log('likes', likes)
+            likes = likes.data.data.getMyLikes
+            
+            console.log('typeof', typeof NO_FEED_SELECTED_STRAIN.id)
+
+            likes.forEach( (like, index) => {
+                if (like.strainid === NO_FEED_SELECTED_STRAIN.id) {
+                    console.log('like loop', like)
+                    if (USER_LIKES_SELECTED_STRAIN === false) {
+
+                        dispatch(TOGGLE_USER_LIKES_SELECTED_STRAIN())
+                    }
+                }
+            })
+        })       
+    }
+
+
     const addMinePROMISE = (query:string) => {
         axios.post('/api/graphql', { query: `${query}` })
   .then( (addedMine:any) => {
@@ -820,6 +848,7 @@ const rememberMeCookiePROMISE = () => {
         if (READY_TO_EDIT === true) { dispatch(TOGGLE_READY_TO_EDIT()) }
     })
     }
+
 
     
 
@@ -852,6 +881,8 @@ const rememberMeCookiePROMISE = () => {
             setAllUserStrainsPROMISE,
             addLikePROMISE,
             removeLikePROMISE,
+            getMyLikesPROMISE,
+
             addMinePROMISE
         }        
 
