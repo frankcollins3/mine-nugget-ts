@@ -60,17 +60,21 @@ export const addStrainLikeStringFunc = (username: string, strainid: number, into
    return query
 }
 
+export const getMyLikesStringFunc = (username:string) => {
+   const query = `query {getMyLikes(username: "${username}"), { userId, strainid, into_it } }`
+   return query
+}
+// axios.post('/api/graphql', { query: `query {getMyLikes(username: "${CURRENT_USER.username}"), { userId, strainid, into_it } } `})
+
 export const removeStrainLikeStringFunc = (username: string, strainid: number, into_it: boolean) => {
    const query = `mutation { removeStrainDig(username: "${username}", strainid: ${strainid}, into_it: ${into_it}) { userId, strainid, into_it } }`
    return query
 }
 
 export const addMineReviewStringFunc = (username:string, review:string, title:string, strainid: any) => {
-   const query = `mutation { addMineReview(username: "${username}", review: "${review}", title: "${title}", strainid: ${parseInt(strainid)}) { userId, strainid, review, title } }`
+   const query = `mutation  { addMineReview(username: "${username}", review: "${review}", title: "${title}", strainid: ${parseInt(strainid)}) { userId, strainid, review, title } }`
    return query
 }
-// mutation { addStrainDig(userId: 3, strainid: 2, into_it: true) { userId, strainid, into_it } }`
-
 
 
 
