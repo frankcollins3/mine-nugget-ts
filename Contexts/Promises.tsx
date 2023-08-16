@@ -33,7 +33,9 @@ import {
 
  // FINDMINE
 
- import { SET_CURRENT_USER_STRAINS, SET_ALL_USER_STRAINS, TOGGLE_READY_TO_EDIT, TOGGLE_USER_LIKES_SELECTED_STRAIN } from "redux/findMine/findMineSlice";
+ import { 
+    SET_CURRENT_USER_STRAINS, SET_ALL_USER_STRAINS, TOGGLE_READY_TO_EDIT, TOGGLE_USER_LIKES_SELECTED_STRAIN, SET_NO_FEED_NO_STRAIN_MSGS,
+ } from "redux/findMine/findMineSlice";
  
 
 // utils
@@ -82,6 +84,7 @@ type PromiseTypes = {
     getMyLikesPROMISE: (username: string) => any;
 
     addMinePROMISE: (query:string) => any;
+    removeMinePROMISE: (query:string) => any;
     // const query = addStrainLikeStringFunc(CURRENT_USER.username, NO_FEED_SELECTED_STRAIN.id, true)
 }   
 
@@ -116,6 +119,7 @@ const PromiseDefaults = {
     getMyLikesPROMISE: (username:string) => {},
 
     addMinePROMISE: (query:string) => {},
+    removeMinePROMISE: (query:string) => {},
 }
 
 const PromiseContext = createContext<PromiseTypes>(PromiseDefaults)
@@ -819,35 +823,59 @@ const rememberMeCookiePROMISE = () => {
     const getMyLikesPROMISE = (username:string) => {
         const query = getMyLikesStringFunc(username)
         // axios.post('/api/graphql', { query: `query {getMyLikes(username: "${CURRENT_USER.username}"), { userId, strainid, into_it } } `})
-        axios.post('/api/graphql', { query: `${query}` })
+
+        // axios.post('/api/graphql', { query: `${query}` })
+        GoldRequestQL(query)
         .then( (likes:any) => {
             console.log('likes', likes)
-            likes = likes.data.data.getMyLikes
-            
-            console.log('typeof', typeof NO_FEED_SELECTED_STRAIN.id)
-
-            likes.forEach( (like, index) => {
-                if (like.strainid === NO_FEED_SELECTED_STRAIN.id) {
-                    console.log('like loop', like)
-                    if (USER_LIKES_SELECTED_STRAIN === false) {
-
-                        dispatch(TOGGLE_USER_LIKES_SELECTED_STRAIN())
+            if (likes.data) {
+                likes = likes.data.data.getMyLikes
+                
+                console.log('typeof', typeof NO_FEED_SELECTED_STRAIN.id)
+    
+                likes.forEach( (like, index) => {
+                    if (like.strainid === NO_FEED_SELECTED_STRAIN.id) {
+                        console.log('like loop', like)
+                        if (USER_LIKES_SELECTED_STRAIN === false) {
+    
+                            dispatch(TOGGLE_USER_LIKES_SELECTED_STRAIN())
+                        }
                     }
-                }
-            })
+                })
+            }
         })       
     }
 
 
     const addMinePROMISE = (query:string) => {
-        axios.post('/api/graphql', { query: `${query}` })
-  .then( (addedMine:any) => {
+        // axios.post('/api/graphql', { query: `${query}` })
+        // const query =  addMineReviewStringFunc(CURRENT_USER.username, MINE_REVIEW_INPUT_VAL, MINE_TITLE_INPUT_VAL, NO_FEED_SELECTED_STRAIN.id)
+    GoldRequestQL(query)
+    .then( (addedMine:any) => {
       console.log('addedMine', addedMine)
       if (READY_TO_EDIT === true) { dispatch(TOGGLE_READY_TO_EDIT()) }
     }).catch( () => {
         if (READY_TO_EDIT === true) { dispatch(TOGGLE_READY_TO_EDIT()) }
     })
     }
+
+    const removeMinePROMISE = (query:string) => {
+        GoldRequestQL(query)
+        .then( (removeMine:any) => {
+            console.log('removeMine', removeMine)
+            if (removeMine.data.errors[0]) {
+                dispatch(SET_NO_FEED_NO_STRAIN_MSGS({err: true, msg: `${NO_FEED_SELECTED_STRAIN.strain} wasn't mine.`}))
+                setTimeout( () => dispatch(SET_NO_FEED_NO_STRAIN_MSGS({err: false, msg: ''})), 1250)
+            } else {
+                dispatch(SET_NO_FEED_NO_STRAIN_MSGS({err: true, msg: `don't pay ${NO_FEED_SELECTED_STRAIN.strain} no mind.`}))
+                setTimeout( () => dispatch(SET_NO_FEED_NO_STRAIN_MSGS({err: false, msg: ''})), 1250)
+            }
+        })
+    }
+
+
+
+    
 
 
     
@@ -883,7 +911,8 @@ const rememberMeCookiePROMISE = () => {
             removeLikePROMISE,
             getMyLikesPROMISE,
 
-            addMinePROMISE
+            addMinePROMISE,
+            removeMinePROMISE
         }        
 
 
