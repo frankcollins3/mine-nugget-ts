@@ -33,7 +33,7 @@ import {
 
  // FINDMINE
 
- import { SET_CURRENT_USER_STRAINS, SET_ALL_USER_STRAINS } from "redux/findMine/findMineSlice";
+ import { SET_CURRENT_USER_STRAINS, SET_ALL_USER_STRAINS, TOGGLE_READY_TO_EDIT } from "redux/findMine/findMineSlice";
  
 
 // utils
@@ -79,6 +79,7 @@ type PromiseTypes = {
     setAllUserStrainsPROMISE: () => any;
     addLikePROMISE: (username: string, strainid: number, like:boolean) => any;
     removeLikePROMISE: (username: string, strainid: number, like:boolean) => any;
+    addMinePROMISE: (query:string) => any;
     // const query = addStrainLikeStringFunc(CURRENT_USER.username, NO_FEED_SELECTED_STRAIN.id, true)
 }   
 
@@ -110,6 +111,7 @@ const PromiseDefaults = {
     setAllUserStrainsPROMISE: () => {},
     addLikePROMISE: (username: string, strainid: number, like:boolean) => {},
     removeLikePROMISE: (username: string, strainid: number, like:boolean) => {},
+    addMinePROMISE: (query:string) => {},
 }
 
 const PromiseContext = createContext<PromiseTypes>(PromiseDefaults)
@@ -189,6 +191,7 @@ export function PromiseProvider({children}:Props) {
 
     // FindMine State!
     const NO_FEED_SELECTED_STRAIN = useSelector( (state:RootState) => state.findMine.NO_FEED_SELECTED_STRAIN)
+    const READY_TO_EDIT = useSelector( (state:RootState) => state.findMine.READY_TO_EDIT)
         
 
     // main app and user PROMISES
@@ -808,6 +811,16 @@ const rememberMeCookiePROMISE = () => {
             return GoldRequestQL(query)            
     }
 
+    const addMinePROMISE = (query:string) => {
+        axios.post('/api/graphql', { query: `${query}` })
+  .then( (addedMine:any) => {
+      console.log('addedMine', addedMine)
+      if (READY_TO_EDIT === true) { dispatch(TOGGLE_READY_TO_EDIT()) }
+    }).catch( () => {
+        if (READY_TO_EDIT === true) { dispatch(TOGGLE_READY_TO_EDIT()) }
+    })
+    }
+
     
 
         const value = {
@@ -838,7 +851,8 @@ const rememberMeCookiePROMISE = () => {
             setCurrentUserStrainsPROMISE,
             setAllUserStrainsPROMISE,
             addLikePROMISE,
-            removeLikePROMISE
+            removeLikePROMISE,
+            addMinePROMISE
         }        
 
 
