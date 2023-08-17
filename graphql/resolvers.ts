@@ -30,6 +30,8 @@ const allMinersOnStrainsDB = prisma.MinersOnStrains.findMany
 const allminesDB = prisma.mines.findMany
 const alldigsDB = prisma.digs.findMany
 
+
+
 const getUserIdWithUsername = async (username:string) => {
   const allusers = await allminersDB()
   const me = allusers.find(user => user.username === username)
@@ -41,7 +43,6 @@ const getMyReviews = async(userId:any) => {
   const myReviews = allReviews.filter(reviews => reviews.userId === userId)
   return myReviews
 }
-
 
 // strains redis functions
 const strainsRedisCheck = async () => { return redis.get("strains", (error, strains) => { return error ? error : strains }) }
@@ -58,6 +59,9 @@ const addMinersOnStrainsToRedis = async () => {
   await redis.set("MinersOnStrains", stringifyMinersOnStrains)
 }
 
+// redis checking functions. if the redis cache is there, don't use prisma to execute DB query, return the cache and spare the need to make prisma/psql perform 
+
+
 const myMinersOnStrainsRedisCheck = async (userId:any) => {
   return redis.get(`myStrains${userId}`, (error, myMinersOnStrains) => {
   // const redisCheck = redis.get(`myMinersOnStrains${meID}`, (myMinersOnStrains, error) => {
@@ -72,12 +76,32 @@ const myMinersOnStrainsRedisCheck = async (userId:any) => {
 
 const allMinersOnStrainsRedisCheck = async () => { return redis.get('minersOnStrains', (error, minersOnStrains) => { return error ? error : minersOnStrains} ) }
 
+const allLikesRedisCheck = async () => {
+  return redis.get('digs', (error, digs) => {
+    if (error) { 
+      console.log("error in digs/likes redis check");
+    } else if (digs) {
+      return digs
+    }
+  })
+}
+
 const myLikesRedisCheck = async (userId:any) => {
   return redis.get(`myDigs${userId}`, (error, myDigs) => {
     if (error) {
       console.log(`error in redis.get()`, error)
     } else if (myDigs) {
       return myDigs
+    }
+  })
+}
+
+const allReviewsRedisCheck = async () => {
+  return redis.get(`mines`, (error, mines) => {
+    if (error) {
+      console.log('error when going for the all Reviews redis check')
+    } else if (mines) {
+      return mines
     }
   })
 }
@@ -91,6 +115,8 @@ const myMinesRedisCheck = async (userId:any) => {
     }
   })
 }
+
+// redis checking functions. if the redis cache is there, don't use prisma to execute DB query, return the cache and spare the need to make prisma/psql perform
 
 const updateAllUsersRedis = async () => {
   await redis.del('miners')
@@ -106,12 +132,26 @@ const updateAllMinersOnStrainsRedis = async () => {
   await redis.set(`minersOnStrains`, stringifyUserStrains)
 }
 
+const updateAllLikesRedis = async () => {
+  await redis.del(`digs`)
+  const allLikes = await alldigsDB()
+  const stringifyLikes = JSON.stringify(allLikes)
+  await redis.set(`digs`, stringifyLikes)
+}
+
 const updateMyLikesRedis = async (userId:any) => {
   await redis.del(`myDigs${userId}`)
   const alldigs = await alldigsDB()
   const myDigs = alldigs.filter(likes => likes.userId === userId)
   const stringifyUserLikesStrain = JSON.stringify(myDigs)
   await redis.set(`myDigs${userId}`, stringifyUserLikesStrain)
+}
+
+const updateAllReviewsRedis = async () => {
+  await redis.del(`mines`)
+  const allReviews = await allminesDB()
+  const stringifyAllReviews = JSON.stringify(allReviews)
+  await redis.set(`mines`, stringifyAllReviews)
 }
 
 const updateMyReviewsRedis = async (userId:any) => {
@@ -176,7 +216,7 @@ export const resolvers = {
         return allMiners
       }
     },
-    userLogin: async (parent, args:userLoginINTERFACE) => {
+    userLogin: async (_, args:userLoginINTERFACE) => {
     // userLogin: async (parent, args) => {
       const { email, password } = args
       let res = {...args}
@@ -208,7 +248,7 @@ export const resolvers = {
         throw new Error('An error occurred during login. Please try again.');
       }
     },
-    getUserWithId: async (parent, args) => {
+    getUserWithId: async (_, args) => {
       const {id} = args
       return prisma.miners.findUnique({
         where: {
@@ -278,6 +318,20 @@ export const resolvers = {
       }      
     },
 
+    getAllLikes: async () => { //getAllLikes: async (_, _) => {
+      await updateAllLikesRedis()
+      const allRedisLikes = await allLikesRedisCheck()
+      if (allRedisLikes) {
+        return JSON.parse(allRedisLikes)
+      } else {
+        const allLikes = await alldigsDB()
+        const stringifyLikesForRedis = JSON.stringify(allLikes)
+        await redis.set('digs', stringifyLikesForRedis)
+        return allLikes
+      }
+    },
+
+
     getMyLikes: async (parent, args) => {
       const { username } = args;
       // const myLikesRedisCheck = async (userId:any) => {        
@@ -297,6 +351,21 @@ export const resolvers = {
           console.log('NOT DOING THE CACHING!!! myLikes in the server', myLikes)
           return myLikes
         }
+      },
+
+      getAllReviews: async () =>{
+        await updateAllReviewsRedis()
+        const allReviewsFromRedis = await allReviewsRedisCheck()
+        if (allReviewsFromRedis) {
+          const reviewsFromRedis = JSON.parse(allReviewsFromRedis)
+          return reviewsFromRedis
+        } else {
+          const allReviews = await allminesDB()
+          const stringifyReviewsForRedis = await JSON.stringify(allReviews)
+          await redis.set(`mines`, stringifyReviewsForRedis)
+          return allReviews
+        }
+
       },
 
       getMyMines: async (_, args) => {
