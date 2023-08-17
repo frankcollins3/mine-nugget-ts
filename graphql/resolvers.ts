@@ -58,7 +58,7 @@ const addMinersOnStrainsToRedis = async () => {
 }
 
 const myMinersOnStrainsRedisCheck = async (userId:any) => {
-  return redis.get(`myMinersOnStrains${userId}`, (error, myMinersOnStrains) => {
+  return redis.get(`myStrains${userId}`, (error, myMinersOnStrains) => {
   // const redisCheck = redis.get(`myMinersOnStrains${meID}`, (myMinersOnStrains, error) => {
     if (error) { 
       console.log('error in redis.get()', error)
@@ -81,6 +81,23 @@ const myLikesRedisCheck = async (userId:any) => {
   })
 }
 
+const myMinesRedisCheck = async (userId:any) => {
+  return redis.get(`myMines${userId}`, (error, myMineReviews) => {
+    if (error) {
+      console.log('error in myMinesRedis Check')
+    } else if (myMineReviews) {
+      return myMineReviews
+    }
+  })
+}
+
+const updateAllMinersOnStrainsRedis = async () => {
+  await redis.del(`minersOnStrains`)
+  const allUserStrains = await allMinersOnStrainsDB()
+  const stringifyUserStrains = JSON.stringify(allUserStrains)
+  await redis.set(`minersOnStrains`, stringifyUserStrains)
+}
+
 const updateMyLikesRedis = async (userId:any) => {
   await redis.del(`myDigs${userId}`)
   const alldigs = await alldigsDB()
@@ -90,11 +107,21 @@ const updateMyLikesRedis = async (userId:any) => {
 }
 
 const updateMyReviewsRedis = async (userId:any) => {
+  console.log("userId in the redis update!")
   await redis.del(`myMines${userId}`)
   const allmines = await allminesDB()
   const myReviews = allmines.filter(reviews => reviews.userId === userId)
   const stringifyUserMines = JSON.stringify(myReviews)
   await redis.set(`myMines${userId}`, stringifyUserMines)
+}
+
+const updateMyStrainsRedis = async (userId:any) => {
+  await redis.del(`myStrains${userId}`)
+  const allUserStrains = await allMinersOnStrainsDB()
+  const myStrains = allUserStrains.filter(userStrains => userStrains.minersId === userId)
+  console.log('myStrains in updateMyStrainsRedis', myStrains)
+  const stringifyMyStrains = JSON.stringify(myStrains)
+  await redis.set(`myStrains${userId}`, stringifyMyStrains)
 }
 
 
@@ -207,6 +234,9 @@ export const resolvers = {
       console.log('me in getMyMinersOnStrains', me)
       const meID = me.id
 
+      // await updateMyStrainsRedis(meID)
+      await updateAllMinersOnStrainsRedis()
+
       let redisCheck = await myMinersOnStrainsRedisCheck(meID)
       if (redisCheck) {
         const myMinersOnStrainsCache = await JSON.parse(redisCheck)
@@ -254,12 +284,30 @@ export const resolvers = {
           console.log('NOT DOING THE CACHING!!! myLikes in the server', myLikes)
           return myLikes
         }
+      },
 
-    }
-      
-
+      getMyMines: async (_, args) => {
+        const { username } = args;
+        const allusers = await allminersDB()
+        const myid = await getUserIdWithUsername(username)
+        const myReviewsFromCache = await myMinesRedisCheck(myid)
+        if (myReviewsFromCache) {
+          updateMyReviewsRedis(myid)
+          const myReviewsFromRedis = JSON.parse(myReviewsFromCache)
+          console.log("redis cache for mineReviews", myReviewsFromRedis)
+          return myReviewsFromRedis
+        } else {
+          const allMineReviews =  await allminesDB()
+          const myMineReviews = allMineReviews.filter(reviews => reviews.userId === myid)
+          console.log("not in cache for reviews", myMineReviews)
+          await updateMyReviewsRedis(myid)
+          return myMineReviews
+        }
+      }
 
     },  // query bracket end 
+
+
     Mutation: {
         addMinersOnStrains: async (parent, args) => {
           const { username,  strain } = args
@@ -290,6 +338,21 @@ export const resolvers = {
             return newUserStrain
           })          
         },
+
+        removeMinersOnStrains: async (parent, args) => {
+          const { username, strainid } = args
+          const myid = await getUserIdWithUsername(username)
+                                
+          await prisma.MinersOnStrains.deleteMany({
+            where: { minersId: myid, strainsid: strainid }
+          }).then(async(strain) => {
+            await updateMyStrainsRedis(myid)
+            return { minersId: 777, strainid: 777 }
+          }).catch( (error) => {
+            return error
+          })
+        },
+
         incrementUserWins: async (parent, args) => {
           const {username} = args;
 
@@ -389,12 +452,7 @@ export const resolvers = {
           let minesLength = allmines.length
           const myid = await getUserIdWithUsername(username)
           console.log('myid in server', myid)
-
-          console.log('username', username)
-          console.log('strainid', strainid)
-          console.log('title', title)
-          console.log('review', review)
-
+          
           const checkstrain = allmines.find(reviews => reviews.strainid === strainid && reviews.userId === myid)
           if (checkstrain) {
             console.log("checkstrain from server", checkstrain)
@@ -438,15 +496,16 @@ export const resolvers = {
         },
 
         removeMineReview: async (parent, args) => {
-          const { username, strainid, title, review} = args
+          const { username, strainid } = args
           const myid = await getUserIdWithUsername(username)
           const myReviews = await getMyReviews(myid)
           console.log('myReviews serverside', myReviews)
-          const findReview = myReviews.find(mines => mines.strainid === strainid && mines.title === title && mines.review === review)
+          const findReview = myReviews.find(mines => mines.strainid === strainid && mines.userId === myid)
           console.log('findReview', findReview)
           await prisma.mines.delete({
             where: { id: findReview.id }
-          }).then( (deleted) => {
+          }).then(async(deleted:any) => {
+            await updateMyReviewsRedis(myid)
             return deleted
           })
         }
