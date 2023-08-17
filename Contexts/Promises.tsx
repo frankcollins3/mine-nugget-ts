@@ -34,7 +34,7 @@ import {
  // FINDMINE
 
  import { 
-    SET_CURRENT_USER_STRAINS, SET_ALL_USER_STRAINS, TOGGLE_READY_TO_EDIT, TOGGLE_USER_LIKES_SELECTED_STRAIN, SET_NO_FEED_NO_STRAIN_MSGS,
+    SET_CURRENT_USER_STRAINS, SET_ALL_USER_STRAINS, TOGGLE_READY_TO_EDIT, TOGGLE_USER_LIKES_SELECTED_STRAIN, SET_NO_FEED_NO_STRAIN_MSGS, SET_CURRENT_USER_REVIEWS,
  } from "redux/findMine/findMineSlice";
  
 
@@ -46,7 +46,8 @@ import { getCookie, nonGenericKeysAndValuesFromStrain, findStrainFromAllStrains,
 import { 
     allStrainsGETquery, allMinersGETquery, userSignupQueryStringFunc, userLoginQueryStringFunc,
      getUserWithIdStringFunc, getMyStrainsStringFunc, allMinersOnStrainsQuery, 
-     addStrainLikeStringFunc, removeStrainLikeStringFunc, getMyLikesStringFunc,
+     addStrainLikeStringFunc, removeStrainLikeStringFunc, getMyLikesStringFunc, getMyMinesStringFunc,
+     allLikesGETquery, allReviewsGETquery,
 } from "graphql/queries";
 import GoldRequestQL from "utility/GoldRequestQL";
 
@@ -79,12 +80,16 @@ type PromiseTypes = {
     // FindMine Promises:
     setCurrentUserStrainsPROMISE: (username:string) => any;
     setAllUserStrainsPROMISE: () => any;
+
+    allLikePROMISE: () => any;
     addLikePROMISE: (username: string, strainid: number, like:boolean) => any;
     removeLikePROMISE: (username: string, strainid: number, like:boolean) => any;
     getMyLikesPROMISE: (username: string) => any;
 
+    allMinePROMISE: () => any;
     addMinePROMISE: (query:string) => any;
     removeMinePROMISE: (query:string) => any;
+    getMyMinesPROMISE: (username:string) => any;
     // const query = addStrainLikeStringFunc(CURRENT_USER.username, NO_FEED_SELECTED_STRAIN.id, true)
 }   
 
@@ -114,12 +119,16 @@ const PromiseDefaults = {
 
     setCurrentUserStrainsPROMISE: (username:string) => {},
     setAllUserStrainsPROMISE: () => {},
+
+    allLikePROMISE: () => {},
     addLikePROMISE: (username: string, strainid: number, like:boolean) => {},
     removeLikePROMISE: (username: string, strainid: number, like:boolean) => {},
     getMyLikesPROMISE: (username:string) => {},
 
+    allMinePROMISE: () => {},
     addMinePROMISE: (query:string) => {},
     removeMinePROMISE: (query:string) => {},
+    getMyMinesPROMISE: (query:string) => {},
 }
 
 const PromiseContext = createContext<PromiseTypes>(PromiseDefaults)
@@ -797,7 +806,9 @@ const rememberMeCookiePROMISE = () => {
             const myUserStrains:minersOnStrainsINTERFACE = myStrains.data.data.getMyMinersOnStrains
             console.log('myUserStrains', myUserStrains)
             dispatch(SET_CURRENT_USER_STRAINS(myUserStrains))
-        })                                                                                                                
+        }).catch( (err:any) => {
+            return
+        })                                                                                                             
     }
 
 
@@ -810,6 +821,10 @@ const rememberMeCookiePROMISE = () => {
     }     
     
     // username: string, strainid: number, like:boolean
+
+    const allLikePROMISE = () => { return GoldRequestQL(allLikesGETquery) }
+        // axios.post('/api/graphql', { query: `${allLikesGETquery}`})
+
     const addLikePROMISE = (username: string, strainid: number, like:boolean) => {
         const query = addStrainLikeStringFunc(username, strainid, like)
             return GoldRequestQL(query)            
@@ -823,21 +838,16 @@ const rememberMeCookiePROMISE = () => {
     const getMyLikesPROMISE = (username:string) => {
         const query = getMyLikesStringFunc(username)
         // axios.post('/api/graphql', { query: `query {getMyLikes(username: "${CURRENT_USER.username}"), { userId, strainid, into_it } } `})
-
-        // axios.post('/api/graphql', { query: `${query}` })
         GoldRequestQL(query)
         .then( (likes:any) => {
             console.log('likes', likes)
             if (likes.data) {
-                likes = likes.data.data.getMyLikes
-                
-                console.log('typeof', typeof NO_FEED_SELECTED_STRAIN.id)
-    
+                likes = likes.data.data.getMyLikes                
+                console.log('typeof', typeof NO_FEED_SELECTED_STRAIN.id)    
                 likes.forEach( (like, index) => {
                     if (like.strainid === NO_FEED_SELECTED_STRAIN.id) {
                         console.log('like loop', like)
                         if (USER_LIKES_SELECTED_STRAIN === false) {
-    
                             dispatch(TOGGLE_USER_LIKES_SELECTED_STRAIN())
                         }
                     }
@@ -846,14 +856,18 @@ const rememberMeCookiePROMISE = () => {
         })       
     }
 
+    const allMinePROMISE = () => { return GoldRequestQL(allReviewsGETquery) }
 
     const addMinePROMISE = (query:string) => {
         // axios.post('/api/graphql', { query: `${query}` })
         // const query =  addMineReviewStringFunc(CURRENT_USER.username, MINE_REVIEW_INPUT_VAL, MINE_TITLE_INPUT_VAL, NO_FEED_SELECTED_STRAIN.id)
+        console.log('no feed strain before changes', NO_FEED_SELECTED_STRAIN)
     GoldRequestQL(query)
     .then( (addedMine:any) => {
       console.log('addedMine', addedMine)
       if (READY_TO_EDIT === true) { dispatch(TOGGLE_READY_TO_EDIT()) }
+        dispatch(SET_NO_FEED_NO_STRAIN_MSGS({err: false, msg: `click the specs to see the sights!`}))
+        setTimeout( () => dispatch(SET_NO_FEED_NO_STRAIN_MSGS({err: false, msg: ''})), 1250)
     }).catch( () => {
         if (READY_TO_EDIT === true) { dispatch(TOGGLE_READY_TO_EDIT()) }
     })
@@ -863,13 +877,26 @@ const rememberMeCookiePROMISE = () => {
         GoldRequestQL(query)
         .then( (removeMine:any) => {
             console.log('removeMine', removeMine)
-            if (removeMine.data.errors[0]) {
+            if (removeMine.data.errors) {
+            // if (removeMine.data.errors[0]) {
                 dispatch(SET_NO_FEED_NO_STRAIN_MSGS({err: true, msg: `${NO_FEED_SELECTED_STRAIN.strain} wasn't mine.`}))
                 setTimeout( () => dispatch(SET_NO_FEED_NO_STRAIN_MSGS({err: false, msg: ''})), 1250)
             } else {
                 dispatch(SET_NO_FEED_NO_STRAIN_MSGS({err: true, msg: `don't pay ${NO_FEED_SELECTED_STRAIN.strain} no mind.`}))
                 setTimeout( () => dispatch(SET_NO_FEED_NO_STRAIN_MSGS({err: false, msg: ''})), 1250)
             }
+        })
+    }
+
+    const getMyMinesPROMISE = (username:string) => {
+        const query = getMyMinesStringFunc(username)
+        GoldRequestQL(query)
+        .then( (mymines:any) => {
+            if (mymines.data) {
+                mymines = mymines.data.data.getMyMines
+                dispatch(SET_CURRENT_USER_REVIEWS(mymines))
+            }
+            console.log('mymines', mymines)
         })
     }
 
@@ -907,12 +934,16 @@ const rememberMeCookiePROMISE = () => {
             // FindMine
             setCurrentUserStrainsPROMISE,
             setAllUserStrainsPROMISE,
+
+            allLikePROMISE,
             addLikePROMISE,
             removeLikePROMISE,
             getMyLikesPROMISE,
 
+            allMinePROMISE,
             addMinePROMISE,
-            removeMinePROMISE
+            removeMinePROMISE,
+            getMyMinesPROMISE
         }        
 
 
