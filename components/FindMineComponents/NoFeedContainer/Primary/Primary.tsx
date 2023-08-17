@@ -9,13 +9,13 @@ import styles from "../NoFeedContainer.module.scss"
 // @reduxjs/toolkit
 import {RootState} from "redux/store/rootReducer"
 import {useSelector, useDispatch} from "react-redux"
-import { SET_NO_FEED_SELECTED_STRAIN, TOGGLE_NO_FEED_SHOW_MINE, TOGGLE_TRIGGER_LIKE_EFFECT, TOGGLE_USER_LIKES_SELECTED_STRAIN, TOGGLE_READY_TO_EDIT,
-    SET_NO_FEED_NO_STRAIN_MSGS, SET_CURRENT_USER_LIKES, SET_MINE_TITLE_INPUT_VAL, SET_MINE_REVIEW_INPUT_VAL } from "redux/findMine/findMineSlice"
+import { SET_NO_FEED_SELECTED_STRAIN, TOGGLE_NO_FEED_SHOW_MINE, TOGGLE_USER_LIKES_SELECTED_STRAIN, TOGGLE_READY_TO_EDIT, TOGGLE_TRIGGER_USER_STRAINS_EFFECT,
+    SET_NO_FEED_NO_STRAIN_MSGS, SET_MINE_TITLE_INPUT_VAL, SET_MINE_REVIEW_INPUT_VAL, TOGGLE_TRIGGER_MINE_EFFECT, TOGGLE_DONT_RUN_USER_STRAINS_EFFECT_PROMISE } from "redux/findMine/findMineSlice"
 
 // utils
 import {useImage} from "Contexts/Img"
 import {usePromise} from "Contexts/Promises"
-import { addStrainLikeStringFunc, removeStrainLikeStringFunc } from 'graphql/queries'
+import { addStrainLikeStringFunc, removeStrainLikeStringFunc, addMineReviewStringFunc, getMyLikesStringFunc, removeMineReviewStringFunc } from 'graphql/queries'
 import { nothing } from 'utility/utilityValues'
 
 
@@ -37,6 +37,10 @@ function RENDER() {
     const NO_FEED_SHOW_MINE = useSelector( (state:RootState) => state.findMine.NO_FEED_SHOW_MINE)
     const MINE_TITLE_INPUT_VAL = useSelector( (state:RootState) => state.findMine.MINE_TITLE_INPUT_VAL)
     const MINE_REVIEW_INPUT_VAL = useSelector( (state:RootState) => state.findMine.MINE_REVIEW_INPUT_VAL)
+    const CURRENT_USER_REVIEWS = useSelector( (state:RootState) => state.findMine.CURRENT_USER_REVIEWS)
+    const DONT_RUN_USER_STRAINS_EFFECT_PROMISE = useSelector( (state:RootState) => state.findMine.DONT_RUN_USER_STRAINS_EFFECT_PROMISE)
+
+    const TRIGGER_MINE_EFFECT = useSelector( (state:RootState) => state.findMine.TRIGGER_MINE_EFFECT)
 
 
     const READY_TO_EDIT = useSelector( (state:RootState) => state.findMine.READY_TO_EDIT)
@@ -48,31 +52,22 @@ function RENDER() {
     const dispatch = useDispatch()
 
     const { coin, mine, gold, shovel, dynamite, edit, eraser, glasses, goldBars  } = useImage()
-    const { addLikePROMISE, removeLikePROMISE } = usePromise() 
+    const { addLikePROMISE, removeLikePROMISE, addMinePROMISE, removeMinePROMISE, getMyLikesPROMISE, getMyMinesPROMISE } = usePromise() 
 
     useEffect( () => {
         // getMyLikes
-        axios.post('/api/graphql', { query: `query {getMyLikes(username: "${CURRENT_USER.username}"), { userId, strainid, into_it } } `})
-        .then( (likes:any) => {
-            console.log('likes', likes)
-            likes = likes.data.data.getMyLikes
-            console.log('likes', likes)
-            console.log('like Effect strain', NO_FEED_SELECTED_STRAIN)
-            console.log('typeof', typeof NO_FEED_SELECTED_STRAIN.id)
-
-            likes.forEach( (like, index) => {
-                if (like.strainid === NO_FEED_SELECTED_STRAIN.id) {
-                    console.log('like loop', like)
-                    if (USER_LIKES_SELECTED_STRAIN === false) {
-
-                        dispatch(TOGGLE_USER_LIKES_SELECTED_STRAIN())
-                    }
-                }
-            })
-            // dispatch(SET_CURRENT_USER_LIKES(likes))
-        })        
+        if (CURRENT_USER.username) { getMyLikesPROMISE(CURRENT_USER.username) } 
+        // else { return } || else { redirect ? }
 
     }, [TRIGGER_LIKE_EFFECT])
+
+    useEffect( () => {
+
+        if (CURRENT_USER.username) { getMyMinesPROMISE(CURRENT_USER.username) }
+
+
+
+    }, [TRIGGER_MINE_EFFECT])
 
 
     const shovelClick = async () => {
@@ -83,28 +78,28 @@ function RENDER() {
             if (NO_FEED_SELECTED_STRAIN.strain.length > 1) {
             
             if (USER_LIKES_SELECTED_STRAIN) {
-                console.log("user likes selected strain")
+                console.log("user likes selected strain before clicking so this handles the dislike")
                 removeLikePROMISE(CURRENT_USER.username, NO_FEED_SELECTED_STRAIN.id, true)
                 .then( (addedLike:any) => {
                     if (addedLike.data) {
                         addedLike = addedLike.data.data.addStrainDig
                         console.log("addedLike", addedLike)
-                        dispatch
-                        dispatch(SET_NO_FEED_NO_STRAIN_MSGS({err: false, msg: `don't like: ${NO_FEED_SELECTED_STRAIN.strain}`}))
-                        if (USER_LIKES_SELECTED_STRAIN === true) {
+                        dispatch(SET_NO_FEED_NO_STRAIN_MSGS({err: false, msg: `doesn't like ${NO_FEED_SELECTED_STRAIN.strain} anymore`}))
+                        setTimeout( () => dispatch(SET_NO_FEED_NO_STRAIN_MSGS({err: false, msg: ''})), 1250)
+                        if (USER_LIKES_SELECTED_STRAIN === true) {                            
                             dispatch(TOGGLE_USER_LIKES_SELECTED_STRAIN())
                         }
                     }
                 })
             } else {
-                console.log("user doesn't like the strain!")
+                console.log("user doesn't like the strain before clicking. so we like it!")
                 addLikePROMISE(CURRENT_USER.username, NO_FEED_SELECTED_STRAIN.id, true)
                 .then( (addedLike:any) => {
                     if (addedLike.data) {
                         addedLike = addedLike.data.data.addStrainDig
                         console.log("addedLike", addedLike)
-                        dispatch
                         dispatch(SET_NO_FEED_NO_STRAIN_MSGS({err: false, msg: `${CURRENT_USER.username} digs ${NO_FEED_SELECTED_STRAIN.strain}`}))
+                        setTimeout( () => dispatch(SET_NO_FEED_NO_STRAIN_MSGS({err: false, msg: ''})), 1250)
                         if (USER_LIKES_SELECTED_STRAIN === false) {
                             dispatch(TOGGLE_USER_LIKES_SELECTED_STRAIN())
                         }
@@ -124,11 +119,15 @@ function RENDER() {
         if (NO_FEED_SELECTED_STRAIN && NO_FEED_SELECTED_STRAIN.strain.length > 3) {
             dispatch(TOGGLE_NO_FEED_SHOW_MINE())
             if (READY_TO_EDIT === true) dispatch(TOGGLE_READY_TO_EDIT())
+            if (NO_FEED_NO_STRAIN_MSGS.msg && NO_FEED_NO_STRAIN_MSGS.msg.length) {
+                // setTimeout( () => dispatch(SET_NO_FEED_NO_STRAIN_MSGS({err: false, msg: ''})), 1250)    
+            }
+
         } else {
             dispatch(SET_NO_FEED_NO_STRAIN_MSGS({err: true, msg: 'no strain selected'}))
             setTimeout( () => dispatch(SET_NO_FEED_NO_STRAIN_MSGS({err: false, msg: ''})), 1250)
         }
-
+         
     }
 
     const titleInputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -139,14 +138,66 @@ function RENDER() {
         dispatch(SET_MINE_REVIEW_INPUT_VAL(event.target.value))
     };
 
-    const submit = () => {
-        console.log(CURRENT_USER.username)
-        console.log()
-        console.log(MINE_TITLE_INPUT_VAL)
-        console.log(MINE_REVIEW_INPUT_VAL)
-
+    const submit = async () => {
+    const query =  addMineReviewStringFunc(CURRENT_USER.username, MINE_REVIEW_INPUT_VAL, MINE_TITLE_INPUT_VAL, NO_FEED_SELECTED_STRAIN.id)
+    addMinePROMISE(query)
     }
 
+    const deleteSelectedStrainUserReview = async () => {
+        console.log("theres a good way to find it");
+            if (CURRENT_USER.username && NO_FEED_SELECTED_STRAIN.id) {
+                const query = removeMineReviewStringFunc(CURRENT_USER.username, NO_FEED_SELECTED_STRAIN.id)
+                await removeMinePROMISE(query)   
+                dispatch(TOGGLE_TRIGGER_MINE_EFFECT())             
+            }
+            // return query
+         }       
+         
+    const checkSelectedStrainUserReview = async () => {
+        if (CURRENT_USER.username) { await getMyMinesPROMISE(CURRENT_USER.username) }
+        if (CURRENT_USER.username && NO_FEED_SELECTED_STRAIN.id) {
+            console.log(CURRENT_USER_REVIEWS)
+            
+            let review:any|null = CURRENT_USER_REVIEWS.find(reviews => reviews.strainid === NO_FEED_SELECTED_STRAIN.id)
+            console.log('review', review)
+            if (review === null || review === undefined) {
+                dispatch(SET_NO_FEED_NO_STRAIN_MSGS({err: true, msg: 'not mine'}));
+                setTimeout( () => dispatch(SET_NO_FEED_NO_STRAIN_MSGS({err: false, msg: ''})), 1250)
+            } else {
+                if (NO_FEED_NO_STRAIN_MSGS.msg === `${review!.title}: ${review!.review}`) {
+                    console.log("lets see whats up!")
+                    dispatch(SET_NO_FEED_NO_STRAIN_MSGS({err: false, msg: ''}))
+                    // dispatch(SET_NO_FEED_NO_STRAIN_MSGS({err: false, msg: `this works but not the empty string somehow`}))
+                } else if (review!.title) {
+                    console.log('review', review)
+                    // if (review?.title.length >= 1) {
+                        dispatch(SET_NO_FEED_NO_STRAIN_MSGS({err: false, msg: `${review!.title}: ${review!.review}`}))
+                }
+            }
+
+        }
+    }
+
+    const deleteUserStrain = () => {
+        console.log(CURRENT_USER.username)
+        console.log('no feed strain', NO_FEED_SELECTED_STRAIN)
+        if (NO_FEED_SELECTED_STRAIN.strain === '') {
+            dispatch(SET_NO_FEED_NO_STRAIN_MSGS({err: true, msg: `no selected strain to delete`}))
+            setTimeout( () => dispatch(SET_NO_FEED_NO_STRAIN_MSGS({err: false, msg: ''})), 1250)
+        } else {
+        // axios.post("/api/graphql", { query: `mutation { removeMinersOnStrains(username: "${CURRENT_USER.username}", strainid: ${NO_FEED_SELECTED_STRAIN.id} ), { minersId, strainid }`})
+        axios.post('/api/graphql', { query: `mutation { removeMinersOnStrains(username: "${CURRENT_USER.username}", strainid: ${NO_FEED_SELECTED_STRAIN.id}) { minersId, strainsid } }`})
+            .then( (deletedStrain) => {
+                console.log('deletedStrain', deletedStrain)
+                if (DONT_RUN_USER_STRAINS_EFFECT_PROMISE === true) {
+                    dispatch(TOGGLE_DONT_RUN_USER_STRAINS_EFFECT_PROMISE())
+                }
+                dispatch(TOGGLE_TRIGGER_USER_STRAINS_EFFECT())
+            })
+        }
+
+    }
+    
 
         return (
 
@@ -161,8 +212,8 @@ function RENDER() {
                                 ?
                                 <Container id={styles.editGlassesEraserCont}>
                                     <img style={{ cursor: 'pointer' }} onClick={() => dispatch(TOGGLE_READY_TO_EDIT())} src={edit}/>
-                                    <img style={{ cursor: 'pointer' }} src={glasses}/>
-                                    <img style={{ cursor: 'pointer' }} src={eraser}/>
+                                    <img onClick={checkSelectedStrainUserReview} style={{ cursor: 'pointer' }} src={glasses}/>
+                                    <img onClick={deleteSelectedStrainUserReview} style={{ cursor: 'pointer' }} src={eraser}/>
                                 </Container>
                                 :
                     <pre className={styles.ghost}> this is crazy </pre>
@@ -207,7 +258,7 @@ function RENDER() {
                         </Container>
 
                         <Container style={{ padding: '0', margin: '0'}} className={styles.coinColumn}>
-                        <img id={styles.dynamite} className={styles.shovelDynamiteMine} src={dynamite}/>                        
+                        <img onClick={deleteUserStrain} id={styles.dynamite} className={styles.shovelDynamiteMine} src={dynamite}/>                        
                         {/* { showDeleteText && <pre className={styles.digDeleteMine}> delete </pre> } */}
                         </Container>
 
@@ -233,22 +284,3 @@ function RENDER() {
         )
 }
 
-    // const imageTextCheck = (event:any, setState:any) => {
-    // // const imageTextCheck = (event:any) => {
-    //     console.log('event', event)
-    //     let src:string = event.target.src
-    //     console.log('src', src)
-    //     if (src.includes('shovel')) {
-    //         console.log('weve got the shovel');
-    //         setShowDigText(true)
-    //         setTimeout( () => setShowDigText(false), 4000)
-    //     }
-    //     if (src.includes("dynamite")) {
-    //         setShowDeleteText(true)
-    //         setTimeout( () => setShowDeleteText(false), 4000)            
-    //     }
-    //     if (src.includes("mine")) {
-    //         setShowMineText(true)
-    //         setTimeout( () => setShowMineText(false), 4000)            
-    //     }
-    // }
