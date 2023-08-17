@@ -67,4 +67,9 @@ export interface SignupInterface { inputType: string }
 // findmine
 export interface noFeedSelectedStrainINTERFACE { id: number, strain: string };
 export interface noFeedNoStrainMsgsINTERFACE { err: boolean, msg: string };
+
+// export interface noFeedNoStrainMsgsINTERFACE { err: (boolean|null), msg: (string|null) };
 // NO_FEED_NO_STRAIN_MSGS: { err: boolean, msg: string};
+
+// graphQL resolver interfaces
+export interface usernameStrainidINTERFACE { username: string, strainid: number }
