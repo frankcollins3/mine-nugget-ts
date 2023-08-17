@@ -2,6 +2,8 @@
 
 export const allMinersGETquery = `query { allMinersGET { username, password, email, age } }`
 export const allStrainsGETquery = `query { allStrainsGET { strain, strainid, dominant, funfact, parents, taste, smell, gold, nugget, thc, cbd } }`
+export const allLikesGETquery = `query { getAllLikes { userId, strainid, into_it } }`
+export const allReviewsGETquery = `query { getAllReviews { userId, strainid, title, review } }`
 export const allMinersOnStrainsQuery = `query { allMinersOnStrains { minersId, strainsid } }`
 
 export const addMinersOnStrainsQueryStringFunc = (minersId: number, strainsid: number) => {
@@ -60,14 +62,14 @@ export const addStrainLikeStringFunc = (username: string, strainid: number, into
    return query
 }
 
-export const getMyLikesStringFunc = (username:string) => {
-   const query = `query {getMyLikes(username: "${username}"), { userId, strainid, into_it } }`
-   return query
-}
 // axios.post('/api/graphql', { query: `query {getMyLikes(username: "${CURRENT_USER.username}"), { userId, strainid, into_it } } `})
-
 export const removeStrainLikeStringFunc = (username: string, strainid: number, into_it: boolean) => {
    const query = `mutation { removeStrainDig(username: "${username}", strainid: ${strainid}, into_it: ${into_it}) { userId, strainid, into_it } }`
+   return query
+}
+
+export const getMyLikesStringFunc = (username:string) => {
+   const query = `query {getMyLikes(username: "${username}"), { userId, strainid, into_it } }`
    return query
 }
 
@@ -76,17 +78,13 @@ export const addMineReviewStringFunc = (username:string, review:string, title:st
    return query
 }
 
+export const removeMineReviewStringFunc = (username:string, strainid: any) => {
+   const query = `mutation  { removeMineReview(username: "${username}", strainid: ${parseInt(strainid)}) { userId, strainid, review, title } }`
+   return query
+}
 
-
-// axios.post('/api/graphql', { 
-//    query: 
-//    `
-//    mutation { addMinersOnStrains(minersId: 1, strainsid: 1) {
-//        minersId,
-//        strainsid
-//          } 
-//    }
-//    `
-// }).then( (savedStrain) => {
-//    console.log('savedStrain', savedStrain)
-// })
+export const getMyMinesStringFunc = (username:string) => {
+   const query = `query {getMyMines(username: "${username}"), { userId, strainid, review, title } }`
+   return query
+   // axios.post('/api/graphql', { query: `query {getMyMines(username: "${CURRENT_USER.username}"), { userId, strainid, review, title } }`})
+}
