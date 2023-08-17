@@ -17,8 +17,8 @@ import {TOGGLE_SHOW_FEED, SET_CURRENT_USER_STRAINS, TOGGLE_DONT_RUN_USER_STRAINS
 // utils
 import {useImage} from "Contexts/Img"
 import {usePromise} from "Contexts/Promises"
-import { allMinersGETquery, } from "graphql/queries"
-import { getCookie, nothing, ReturnUrl } from "utility/utilityValues"
+import {  allMinersOnStrainsQuery, allMinersGETquery, allLikesGETquery, allReviewsGETquery } from "graphql/queries"
+import { getCookie, nothing, ReturnUrl, ThrowErrIfNoData } from "utility/utilityValues"
 
 import { minersOnStrainsINTERFACE } from "utility/InterfaceTypes"
 
@@ -187,18 +187,52 @@ export async function getServerSideProps(context:any) {
         body: JSON.stringify({ query: `${allMinersGETquery}` }),
         // body: JSON.stringify({ query: `query { allMinersOnStrains { minersId, strainsid } }` }),
       });
+
+      let allStrainsForAllUsers = await fetch(`${url}/api/graphql`, {
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ query: `${allMinersOnStrainsQuery}` })
+      })
+
+      let allLikesFromAllUsers = await fetch(`${url}/api/graphql`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ query: `${allLikesGETquery}` })
+      })
+
+      let allReviewsFromAllUsers = await fetch(`${url}/api/graphql`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ query: `${allReviewsGETquery}` })
+      })
   
-      if (!allUsers) {
-        throw new Error('Failed to fetch data from the GraphQL endpoint');
-      }
+Promise.all([
+    ThrowErrIfNoData(allUsers, 'allUsers'), ThrowErrIfNoData(allStrainsForAllUsers, 'allStrainsForAllUsers'), 
+    ThrowErrIfNoData(allLikesFromAllUsers, 'allLikesFromAllUsers'), ThrowErrIfNoData(allReviewsFromAllUsers, 'allReviewFromallUsers')
+])
   
-      const data = await allUsers.json();
-      allUsers = data.data.allMinersGET;
-    
-  
+      const predataUsers = await allUsers.json();
+      allUsers = predataUsers.data.allMinersGET;
+
+      const predataUserStrains = await allStrainsForAllUsers.json()
+      allStrainsForAllUsers = predataUserStrains.data.allMinersOnStrains
+
+      const predataLikes = await allLikesFromAllUsers.json()
+      allLikesFromAllUsers = predataLikes.data.getAllLikes
+
+
+      const predataReviews = await allReviewsFromAllUsers.json()
+      allReviewsFromAllUsers = predataReviews.data.getAllReviews
+      
       return {
         props: {
-          allUsers,
+          allUsers, allStrainsForAllUsers, allLikesFromAllUsers, allReviewsFromAllUsers
         },
       };
     } catch (error) {
