@@ -74,8 +74,10 @@ export const typeDefs = gql`
         getMyMinersOnStrains(username: String!): [MinersOnStrains]!
         allMinersOnStrains: [MinersOnStrains]!
 
+        getAllLikes: [Digs]!
+        getAllReviews: [MineReviews]!
+        
         getMyLikes(username: String!): [Digs]!
-
         getMyMines(username: String!): [MineReviews]!
     }
 
@@ -129,7 +131,8 @@ export const typeDefs = gql`
     }
     `
     
-
+    // getAllLikes(): [Digs]!
+    // getAllReviews(): [MineReviews]!
 
     // addMinersOnStrains(
     //     minersId: Int! 
