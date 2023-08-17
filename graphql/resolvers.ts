@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs"
 import Redis from 'ioredis'
 import passport from "utility/passport"
 import { JWTsecretKeyMaker } from 'utility/utilityValues'
+import { usernameStrainidINTERFACE, userLoginINTERFACE } from 'utility/InterfaceTypes'
 // 
 
 // import { hashPasser, SERIALIZESTRING, PARSESERIALIZEDSTRING } from 'utility/UtilityValues';
@@ -91,6 +92,13 @@ const myMinesRedisCheck = async (userId:any) => {
   })
 }
 
+const updateAllUsersRedis = async () => {
+  await redis.del('miners')
+  const allUsers = await allminersDB()
+  const stringifyUsers = JSON.stringify(allUsers)
+  await redis.set('miners', stringifyUsers)
+}
+
 const updateAllMinersOnStrainsRedis = async () => {
   await redis.del(`minersOnStrains`)
   const allUserStrains = await allMinersOnStrainsDB()
@@ -153,7 +161,9 @@ export const resolvers = {
       }
     },    
     allMinersGET: async () => {
+      await updateAllUsersRedis()
       let checkMinersRedis = await minersRedisCheck()
+
       if (checkMinersRedis) {
         const redisParseStr = JSON.parse(checkMinersRedis)
         // console.log("in the redisParseStr", redisParseStr)
@@ -166,7 +176,8 @@ export const resolvers = {
         return allMiners
       }
     },
-    userLogin: async (parent, args) => {
+    userLogin: async (parent, args:userLoginINTERFACE) => {
+    // userLogin: async (parent, args) => {
       const { email, password } = args
       let res = {...args}
     // userLogin: async (parent, args, {res}) => {
@@ -211,7 +222,9 @@ export const resolvers = {
       })
     },
 
-    allMinersOnStrains: async (parent, args) => {
+    allMinersOnStrains: async (_, args) => {
+      // const updateAllMinersOnStrainsRedis = async () => {
+        await updateAllMinersOnStrainsRedis()
         const userStrainsRedisCheck = await allMinersOnStrainsRedisCheck()
         if (userStrainsRedisCheck) {
           let userStrainsFromCache = await JSON.parse(userStrainsRedisCheck)
@@ -234,8 +247,8 @@ export const resolvers = {
       console.log('me in getMyMinersOnStrains', me)
       const meID = me.id
 
-      // await updateMyStrainsRedis(meID)
-      await updateAllMinersOnStrainsRedis()
+      await updateMyStrainsRedis(meID)
+      // await updateAllMinersOnStrainsRedis()
 
       let redisCheck = await myMinersOnStrainsRedisCheck(meID)
       if (redisCheck) {
@@ -339,7 +352,7 @@ export const resolvers = {
           })          
         },
 
-        removeMinersOnStrains: async (parent, args) => {
+        removeMinersOnStrains: async (_, args:usernameStrainidINTERFACE) => {
           const { username, strainid } = args
           const myid = await getUserIdWithUsername(username)
                                 
