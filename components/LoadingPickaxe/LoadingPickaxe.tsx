@@ -1,3 +1,4 @@
+import {useState} from 'react'
 
 // components and styles
 import Container from "react-bootstrap/Container"
@@ -12,13 +13,14 @@ export default function LoadingPickaxe() {
 }
 
 function RENDER() {
+    const [contHover, setContHover] = useState(false)
     const { pickaxe, goldenTriangle } = useImage()
 
     return (
-        <Container id={styles.cont}>
+        <Container onMouseEnter={() => setContHover(true)} onMouseLeave={() => setContHover(false)} id={styles.cont}>
 
-        <img id={styles.pickaxe} src={pickaxe}/>
-        <img id={styles.gold} src={goldenTriangle}/>
+        <img className={contHover ? styles.pickFast : styles.pick} id={styles.pickaxe} src={pickaxe}/>
+        <img className={contHover ? styles.goldFast : styles.gold} id={styles.gold} src={goldenTriangle}/>
         </Container>
     )
 }
