@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@1,100&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Moon+Dance&display=swap');
+
+$whip: papayawhip;
+$puregold: rgb(247, 208, 36);
+
+#cont {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    // border-radius: 20%;
+    // background-color: $whip;
+}
+
+#gold {
+    height: 10px;
+    width:  30px;
+    align-self: flex-end;
+    opacity: 0.0;
+    animation-name: flash;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+}
+    
+
+#pickaxe {
+    height: 75px;
+    width: 75px;
+    animation-name: pick;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes pick {
+    0% {
+    
+    }
+    20% {
+        transform: rotate(30deg);
+    }    
+}
+
+@keyframes flash {
+    0% { 
+        opacity: 0.0;
+    }
+    15% {
+        opacity: 1.0;
+    }
+    50% {
+        opacity: 0.0;
+    }
+}
+
