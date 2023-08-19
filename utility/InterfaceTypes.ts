@@ -22,6 +22,7 @@ export interface minersOnStrainsINTERFACE {
 
 // id | username | password | age | email
 export interface minersINTERFACE {
+    id: number | undefined,
     username: string,
     password: string,
     age: number,
