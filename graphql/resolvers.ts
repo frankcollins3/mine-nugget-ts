@@ -249,6 +249,7 @@ export const resolvers = {
       }
     },
     getUserWithId: async (_, args) => {
+      await updateAllUsersRedis()
       const {id} = args
       return prisma.miners.findUnique({
         where: {
