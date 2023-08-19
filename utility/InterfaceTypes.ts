@@ -26,8 +26,14 @@ export interface minersINTERFACE {
     password: string,
     age: number,
     email: string,
-    strains: minersOnStrainsINTERFACE[] | undefined
+    strains: minersOnStrainsINTERFACE[] | undefined,
+
+    // might delete.
+    wins: number | undefined,
+    icon: number | undefined
 }
+
+// id |  username  | password | age | email | wins | icon 
 
 export interface strainsINTERFACE { 
     strain: string,
@@ -68,8 +74,18 @@ export interface SignupInterface { inputType: string }
 export interface noFeedSelectedStrainINTERFACE { id: number, strain: string };
 export interface noFeedNoStrainMsgsINTERFACE { err: boolean, msg: string };
 
+export interface showFeedINTERFACE { 
+    allUsers: minersINTERFACE[], allStrainsForAllUsers:  minersOnStrainsINTERFACE[]
+    allReviewsFromAllUsers: minesINTERFACE[], allLikesFromAllUsers: digsINTERFACE[],
+    // allMinersOnStrains: minersOnStrainsINTERFACE[], 
+ }
+// allUsers, allMinersOnStrains, allReviewsFromAllUsers, allLikesFromAllUsers
+
 // export interface noFeedNoStrainMsgsINTERFACE { err: (boolean|null), msg: (string|null) };
 // NO_FEED_NO_STRAIN_MSGS: { err: boolean, msg: string};
 
 // graphQL resolver interfaces
 export interface usernameStrainidINTERFACE { username: string, strainid: number }
+
+export interface userLoginINTERFACE { email: string, password: string }
+// const { email, password } = args
