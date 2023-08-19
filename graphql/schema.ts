@@ -9,6 +9,7 @@ import {gql} from 'apollo-server-micro';
 export const typeDefs = gql`
 
     type Miners {
+        id: Int
         username: String!
         password: String!
         age: Int!
