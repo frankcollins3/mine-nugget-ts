@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@1,100&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Moon+Dance&display=swap');
+
+$whip: papayawhip;
+$puregold: rgb(247, 208, 36);
+
+@mixin scrollbar {
+  ::-webkit-scrollbar {
+    width: 10px;
+    } 
+    
+    /* Track */
+    ::-webkit-scrollbar-track {
+      box-shadow: inset 2px 3px 2px orange;
+    border-radius: 10px;
+      // box-shadow: inset 5px 9px 5px grey;
+    }
+    
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+    background: papayawhip;
+    border-radius: 10px;
+    }
+}
+
+
+#Page_1 {
+    min-height: 40.5vh;
+    // height: 100%;
+  // background: $dedede;
+    // border: 5px solid orangered;
+    display: grid;
+    justify-content: center;
+    // align-items: center;
+    grid-template-columns: 1.30fr 0.7fr;
+    grid-template-rows: 1fr;
+    gap: 0px 0px;
+    grid-template-areas: 'primary panel';
+  }
+  
+  .primary {    
+    // display: grid;
+    // justify-content: center;
+    // align-items: space-between; 
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .panel {
+    grid-area: panel;
+    width: 100%;
+
+    // display: grid;
+    // text-align: center;
+    // justify-content: center;
+    // align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: space-between;
+
+
+    overflow-y: scroll;
+    overflow-x: hidden; 
+    position: relative;
+    @include scrollbar;
+    border-left: 8px solid $whip;
+    margin: 0 0.0em;
+    // @include ghost-scrollbar;
+    // left: 2px; 
+  }
+
+  #panelInputCont {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    // align-self: flex-start;
+  }
+
+  #helmet {
+    height: 150px;
+    width: 150px;
+  }
+
+  .ghost { opacity: 0.0; }
+
+  @media only screen and (max-width: 800px) {
+    #helmet {
+        height: 125px;
+        width: 125px; 
+    }
+  }
+
+  @media only screen and (max-width: 400px) {
+    // #helmet {
+    //     height: 85px;
+    //     width: 85px; 
+    // }
+  }
