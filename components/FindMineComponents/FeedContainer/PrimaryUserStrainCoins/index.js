@@ -1,0 +1,2 @@
+import PrimaryUserStrainCoins from "./PrimaryUserStrainCoins"
+export default PrimaryUserStrainCoins
