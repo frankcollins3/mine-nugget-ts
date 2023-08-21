@@ -1,5 +1,6 @@
 import React, { createContext, useContext, ReactNode, useState } from "react";
 import axios from "axios"
+import $ from 'jquery'
 
 // components and styles.
 
@@ -27,14 +28,14 @@ import {
     SET_WRONG_RIGHT_OPTION_BUCKET, 
     TOGGLE_TERNARY_RENDER_OPTION_0, TOGGLE_TERNARY_RENDER_OPTION_1, TOGGLE_TERNARY_RENDER_OPTION_2, TOGGLE_TERNARY_RENDER_OPTION_3,
     TOGGLE_DRAGGED_OPTION_0, TOGGLE_DRAGGED_OPTION_1, TOGGLE_DRAGGED_OPTION_2, TOGGLE_DRAGGED_OPTION_3,
-    SET_GAME_TITLE, SET_GAME_TEXT, DECREMENT_GAME_LIVES, RESET_GAME_LIVES, SET_GAME_OVER
+    SET_GAME_TITLE, SET_GAME_TEXT, DECREMENT_GAME_LIVES, RESET_GAME_LIVES, SET_GAME_OVER,
 
  } from "redux/familyTree/familyTreeSlice"
 
  // FINDMINE
 
  import { 
-    SET_CURRENT_USER_STRAINS, SET_ALL_USER_STRAINS, TOGGLE_READY_TO_EDIT, TOGGLE_USER_LIKES_SELECTED_STRAIN, SET_NO_FEED_NO_STRAIN_MSGS, SET_CURRENT_USER_REVIEWS,
+    SET_CURRENT_USER_STRAINS, SET_ALL_USER_STRAINS, TOGGLE_READY_TO_EDIT, TOGGLE_USER_LIKES_SELECTED_STRAIN, SET_NO_FEED_NO_STRAIN_MSGS, SET_CURRENT_USER_REVIEWS, SET_COIN_HOVER_STRAIN
  } from "redux/findMine/findMineSlice";
  
 
@@ -85,8 +86,9 @@ type PromiseTypes = {
     addLikePROMISE: (username: string, strainid: number, like:boolean) => any;
     removeLikePROMISE: (username: string, strainid: number, like:boolean) => any;
     getMyLikesPROMISE: (username: string) => any;
+    userLikeOrNotPROMISE: (event, strainid:number, allLikes:any) => any;
 
-    allMinePROMISE: () => any;
+    allReviewPROMISE: () => any;
     addMinePROMISE: (query:string) => any;
     removeMinePROMISE: (query:string) => any;
     getMyMinesPROMISE: (username:string) => any;
@@ -124,8 +126,9 @@ const PromiseDefaults = {
     addLikePROMISE: (username: string, strainid: number, like:boolean) => {},
     removeLikePROMISE: (username: string, strainid: number, like:boolean) => {},
     getMyLikesPROMISE: (username:string) => {},
+    userLikeOrNotPROMISE: (event, strainid:number, allLikes:any) => {},
 
-    allMinePROMISE: () => {},
+    allReviewPROMISE: () => {},
     addMinePROMISE: (query:string) => {},
     removeMinePROMISE: (query:string) => {},
     getMyMinesPROMISE: (query:string) => {},
@@ -210,6 +213,7 @@ export function PromiseProvider({children}:Props) {
     const NO_FEED_SELECTED_STRAIN = useSelector( (state:RootState) => state.findMine.NO_FEED_SELECTED_STRAIN)
     const READY_TO_EDIT = useSelector( (state:RootState) => state.findMine.READY_TO_EDIT)
     const USER_LIKES_SELECTED_STRAIN = useSelector( (state:RootState) => state.findMine.USER_LIKES_SELECTED_STRAIN)
+    const FEED_SELECTED_USER = useSelector( (state:RootState) => state.findMine.FEED_SELECTED_USER)
         
 
     // main app and user PROMISES
@@ -856,7 +860,38 @@ const rememberMeCookiePROMISE = () => {
         })       
     }
 
-    const allMinePROMISE = () => { return GoldRequestQL(allReviewsGETquery) }
+    const userLikeOrNotPROMISE = (event, strainid:number, allLikes:any) => {
+        const checkLikePROMISE = new Promise( (resolve:any, reject:any) => {
+            const myLike = allLikes.find(like => like.strainid === FEED_SELECTED_USER.id && like.strainid === strainid )
+            resolve(myLike);
+        })
+        checkLikePROMISE
+        .then( (like:any) => {
+            console.log('like', like)
+            if (like) {
+                let likeStrain:boolean = like.into_it
+                console.log('likeStrain', likeStrain)
+                dispatch(SET_COIN_HOVER_STRAIN(
+                    strainid === 1 ? {strainid: 1, strain: "wedding cake", like: true} : strainid === 2 ? { strainid: 2, strain: "GorillaGlue#4", like: true} : strainid === 3 ? {strainid: 3, strain: "Do-Si-Dos", like: true} : 
+                    strainid === 4 ? {strainid: 4, strain: "mimosa", like: true} : strainid === 5 ? {strainid: 5, strain: "cherry pie", like: true} : strainid === 6 ? {strainid: 6, strain: "white wstrainidow", like: true} : 
+                    strainid === 7 ? {strainid: 7, strain: "pineapple express", like: true} : ""
+                ))
+
+            $(event.target).css('box-shadow', '5px 5px 5px rgb(247, 208, 36)')
+            } else {
+                dispatch(SET_COIN_HOVER_STRAIN(
+                    strainid === 1 ? {strainid: 1, strain: "wedding cake", like: false} : strainid === 2 ? { strainid: 2, strain: "GorillaGlue#4", like: false} : strainid === 3 ? {strainid: 3, strain: "Do-Si-Dos", like: false} : 
+                    strainid === 4 ? {strainid: 4, strain: "mimosa", like: false} : strainid === 5 ? {strainid: 5, strain: "cherry pie", like: false} : strainid === 6 ? {strainid: 6, strain: "white wstrainidow", like: false} : 
+                    strainid === 7 ? {strainid: 7, strain: "pineapple express", like: false} : ""
+                ))
+            }
+        })
+
+    }
+
+
+    const allReviewPROMISE = () => { return GoldRequestQL(allReviewsGETquery) }
+    // const allMinePROMISE = () => { return GoldRequestQL(allReviewsGETquery) }
 
     const addMinePROMISE = (query:string) => {
         // axios.post('/api/graphql', { query: `${query}` })
@@ -900,13 +935,6 @@ const rememberMeCookiePROMISE = () => {
         })
     }
 
-
-
-    
-
-
-    
-
         const value = {
             iPROMISEcookies,
             cookieFunc,
@@ -939,8 +967,9 @@ const rememberMeCookiePROMISE = () => {
             addLikePROMISE,
             removeLikePROMISE,
             getMyLikesPROMISE,
+            userLikeOrNotPROMISE,
 
-            allMinePROMISE,
+            allReviewPROMISE,
             addMinePROMISE,
             removeMinePROMISE,
             getMyMinesPROMISE
