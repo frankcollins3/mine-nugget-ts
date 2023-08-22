@@ -47,7 +47,7 @@ export const userLoginQueryStringFunc = (email:string, password:string) => {
 }
 
 export const getUserWithIdStringFunc = (id:number|string) => {
-   const query = `query { getUserWithId(id: ${id}) { username, password, email, age, } }`
+   const query = `query { getUserWithId(id: ${id}) { username, password, email, age, wins, icon } }`
    return query
 }
 
