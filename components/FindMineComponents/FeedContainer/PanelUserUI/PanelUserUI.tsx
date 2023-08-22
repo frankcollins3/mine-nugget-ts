@@ -23,13 +23,8 @@ export default function PanelUserUI ( {userData, index} ) {
     const username = userData[index].username
 
     useEffect( () => {
-        // console.log('feed search term', FEED_SEARCH_TERM)
         const searchTermLen = FEED_SEARCH_TERM.length
-        const usernameIndex = username[searchTermLen - 1]
-        // console.log('searchTermLen', searchTermLen)
-
-        // console.log('username', username)
-        // console.log('username index', usernameIndex)
+        const usernameIndex = username[searchTermLen - 1]        
         if (searchTermLen === 0) {
             setLocalStateHide(false)
         } else {
@@ -44,8 +39,6 @@ export default function PanelUserUI ( {userData, index} ) {
 
     }, [FEED_SEARCH_TERM] )
 
-    // pretty sure this has to be local because if it's redux state then it's global and there's only 1 boolean state. with this being dynamic UI there is local state for every component.
-
     const dispatch = useDispatch()
     const { helmet } = useImage()
 
@@ -56,29 +49,15 @@ export default function PanelUserUI ( {userData, index} ) {
         dispatch(SET_FEED_SELECTED_USER(clickData))
     }
 
-    return (
-        // <p> hey </p>
+    return (        
         
-        
-        <Container onClick={selectUser} id={styles.cont}>            
-
-        {
-            CURRENT_USER.username !== userData[index].username && localStateHide === false
-            // CURRENT_USER.username !== userData[index].username            
-                                &&
-                                <>
+        <Container style={{ display: CURRENT_USER.username !== userData[index].username && localStateHide === false ? "" : "none" }} onClick={selectUser} id={styles.cont}>            
+            <>
             { FEED_SELECTED_USER.username !== userData[index].username && <img id={styles.img} src={userData[index].icon || helmet }/> }
             { FEED_SELECTED_USER.username !== userData[index].username && <pre id={styles.userNameText}> {username} </pre> }
-                                </>
-        }
-
-
+            </>
         
         </Container>
     )
 
 }
-
-        {/* {
-            !FEED_SELECTED_USER.username.length > 3 ? <pre id={styles.userNameText}> {userData[index].username} </pre> : <pre> "" </pre>
-        } */}
