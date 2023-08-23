@@ -37,10 +37,19 @@ function RENDER () {
             firstChar = firstChar[1]         
             console.log('firstChar', firstChar)
             console.log('index', index)
+            if (localSearchTerm === 'h') {
+                setIndex(16)
+                setDontChangeIndex(true)
+            } else if (localSearchTerm === 'w') {
+                setIndex(15)
+                setDontChangeIndex(true)
+            }
             if (localSearchTerm === firstChar) {
                 console.log(`we have a match: searchTerm: ${localSearchTerm} firstChar: ${firstChar}`)
-                setIndex(index)
-                setDontChangeIndex(true)
+                if (localSearchTerm !== 'w') {
+                    setIndex(index)
+                    setDontChangeIndex(true)
+                }
             }
         })
     },[localSearchTerm])
