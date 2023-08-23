@@ -48,17 +48,12 @@ $coneOrange: rgba(255, 166, 0, 0.85);
 
 #input:focus { outline: none; }
 
-// #submit {
-//     max-width: 10px;
-//     max-height: 10px;
-//     border-radius: 20%;
-//     background-color: $whip;
-//     // border: 5px solid blue;
-// }
-
 #img {
     height: 50px;
     width: 50px;
+    opacity: 0.5;
+    // border-radius: 50%;
 }
+#img:hover { cursor: none; opacity: 1.0; }
 
 .ghost { opacity: 0.5; color: $whip; }
