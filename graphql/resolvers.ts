@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs"
 import Redis from 'ioredis'
 import passport from "utility/passport"
 import { JWTsecretKeyMaker } from 'utility/utilityValues'
-import { usernameStrainidINTERFACE, userLoginINTERFACE } from 'utility/InterfaceTypes'
+import { usernameStrainidINTERFACE, userLoginINTERFACE, updateUserIconINTERFACE } from 'utility/InterfaceTypes'
 // 
 
 // import { hashPasser, SERIALIZESTRING, PARSESERIALIZEDSTRING } from 'utility/UtilityValues';
@@ -436,6 +436,21 @@ export const resolvers = {
           })
         },
 
+        updateUserIcon: async (_, args:updateUserIconINTERFACE) => {
+          const { username, icon } = args;
+            const allusers = await allminersDB()
+            const me = allusers.find(user => user.username === username)
+
+            return await prisma.miners.update({
+              where: { id: me.id },
+              data: { 
+                icon: icon       
+              }
+            }).then( (updatedUser) =>  {
+              return updatedUser
+            })        
+          },
+
         incrementUserWins: async (parent, args) => {
           const {username} = args;
 
@@ -480,18 +495,29 @@ export const resolvers = {
           })        
         },
 
-        addStrainDig: async (parent, args) => {
+        addStrainDig: async (_, args) => {
           const { username, strainid, into_it } = args
           const alldigs = await alldigsDB()
+
+          const largestID = alldigs.reduce((maxId, dig) => Math.max(maxId, dig.id), 0);
           const alldigsLength:number = alldigs.length
+          console.log('alldigsLength', alldigsLength)
 
           const allusers = await allminersDB()
           const me = allusers.find(user => user.username === username)
+          console.log('me', me)
+
           const userId = me.id
+
+          console.log('strainid', strainid)
+          console.log('into_it', into_it)
+
+          // find the biggest piece of data in the dataset 
 
           return prisma.digs.create({
             data: {
-              id: alldigsLength + 1,
+              id: largestID + 1,
+              // id: alldigsLength + 1,
               userId: userId,
               strainid: strainid,
               into_it: into_it 
@@ -502,6 +528,7 @@ export const resolvers = {
             await updateMyLikesRedis(userId)
             return newLike
           }).catch( (error:any) => {
+            console.log('error', error)
             return error
             // return { userId: 0, strainid: 0, into_it: 0}
           })
