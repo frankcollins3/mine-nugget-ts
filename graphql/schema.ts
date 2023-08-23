@@ -105,6 +105,11 @@ export const typeDefs = gql`
             username: String!
             ): Miners
 
+        updateUserIcon(
+            username: String!
+            icon: String!
+        ): Miners
+
         addStrainDig(
             username: String!
             strainid: Int!
@@ -131,17 +136,3 @@ export const typeDefs = gql`
 
     }
     `
-    
-    // getAllLikes(): [Digs]!
-    // getAllReviews(): [MineReviews]!
-
-    // addMinersOnStrains(
-    //     minersId: Int! 
-    //     strainsid: Int!
-    // ): MinersOnStrains
-    
-// query 
-        // allMinersOnStrainsGET
-        // myMinersOnStrainsGET
-
-// query 
