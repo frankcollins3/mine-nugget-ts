@@ -51,6 +51,11 @@ export const getUserWithIdStringFunc = (id:number|string) => {
    return query
 }
 
+export const getUpdateUserIconStringFunc = (username: string, icon: string) => {
+   const query = `mutation { updateUserIcon(username: "${username}", icon: "${icon}") { username, password, email, age, icon, wins} }`
+   return query
+}
+
 export const getMyStrainsStringFunc = (username:string) => {
    const query = `query { getMyMinersOnStrains(username: "${username}") { minersId, strainsid } }`;
    return query;
