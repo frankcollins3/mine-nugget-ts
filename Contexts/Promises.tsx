@@ -241,18 +241,19 @@ export function PromiseProvider({children}:Props) {
 
     const cookieFunc = async () => {
         const cookie = await getCookie()
-        console.log('cookie', cookie)
+        // console.log('cookie', cookie)
         if (cookie[0] && cookie[1]) {                
             let id
             id = cookie[0].length > cookie[1].length ? cookie[1].replace(/\D+/g, '') : cookie[0].replace(/\D+/g, '')
-            console.log('id', id)
+            // console.log('id', id)
             if (id) {                
+                // console.log('id in the Promise', id)
                 const query = getUserWithIdStringFunc(id)
                 return axios.post('/api/graphql', {query:`${query}`})
                 .then( (userWithId:any) => {
                 // const statePROMISE = new Promise( (resolve:any, reject:any) => {
                     return new Promise( (resolve:any, reject:any) => {
-                        console.log('userWithId', userWithId)
+                        // console.log('userWithId', userWithId)
                         userWithId = userWithId.data.data.getUserWithId
                         dispatch(SET_CURRENT_USER(userWithId))
                         resolve(userWithId)
@@ -260,9 +261,7 @@ export function PromiseProvider({children}:Props) {
                         // reject('no user')
                     })
                     // resolve(CURRENT_USER)
-                // })
-
-                
+                // })                
                 })
             } 
         } else { return }
@@ -543,66 +542,68 @@ const rememberMeCookiePROMISE = () => {
     }
 
     // FamilyTree guessing game PROMISES:
+
     const familyTreeStrainsPROMISE = async () => {
-        return setallstrainsPROMISE()
-        .then(async(strains:any) => {            
-            
-            const shuffledStrains = shuffleArrayOfObjects(strains)
-
-            const correctAnswerFunction = async () => {
-                const correctAnswer = shuffledStrains[shuffledStrains.length-1]
-                const parents = correctAnswer.parents.split(',')
-                const king = parents[0].trim()
-                const queen = parents[1].trim()
-                dispatch(SET_PLAYING_STRAIN(correctAnswer))   
-                dispatch(SET_PLAYING_PARENT_KING(king))
-                dispatch(SET_PLAYING_PARENT_QUEEN(queen))
-                dispatch(SET_PLAYING_GUESS_RIGHT(correctAnswer.strain))
-                shuffledStrains.pop()
-            }
-
-            
-// this function is behaving weird and even chatGPT is having trouble getting it working so this code does repeat itself and use explicitly defined functions that do same thing but without reusability
-            const wrongAnswerFunc1 = () => {
-                let strainsLength = shuffledStrains.length
-                console.log('shuffledStrains after pop 1', shuffledStrains)
-                const wrongAnswer1 = shuffledStrains[strainsLength-1]
-                dispatch(SET_PLAYING_GUESS_WRONG_1(wrongAnswer1.strain))
-                // dispatch(SET_PLAYING_GUESS_WRONG_1(wrongAnswer1))
-                console.log('wrongAnswer1', wrongAnswer1)
-                shuffledStrains.pop()
-            }
-
-            const wrongAnswerFunc2 = () => {
-                let strainsLen = shuffledStrains.length
-                console.log('shuffledStrains after pop2', shuffledStrains)
-                const wrongAnswer2 = shuffledStrains[strainsLen-1]
-                dispatch(SET_PLAYING_GUESS_WRONG_2(wrongAnswer2.strain))
-                // dispatch(SET_PLAYING_GUESS_WRONG_2(wrongAnswer2))
-                console.log('wrongAnswer2', wrongAnswer2)
-                shuffledStrains.pop()
-            }
-
-            const wrongAnswerFunc3 = () => {
-                let len = shuffledStrains.length
-                console.log('shuffldStrains after pop3', shuffledStrains)
-                    const wrongAnswer3 = shuffledStrains[len-1]
-                    dispatch(SET_PLAYING_GUESS_WRONG_3(wrongAnswer3.strain))
-                    // dispatch(SET_PLAYING_GUESS_WRONG_3(wrongAnswer3))
-                    console.log('wrongAnswer3', wrongAnswer3)
-                    shuffledStrains.pop()
-            }
-
-            const functionsFunction = async () => {
-                await correctAnswerFunction()
-                await wrongAnswerFunc1()
-                await wrongAnswerFunc2()
-                await wrongAnswerFunc3()
-            }
-            functionsFunction()
+        setallstrainsPROMISE()
+        .then( (strains) => {
+          console.log('strains', strains)
+          let shuffled = shuffleArrayOfObjects(strains)
+          console.log('shuffled', shuffled)
+          const correctAnswerPROMISE = new Promise( (resolve:any, reject:any) => {
+            let correctAnswer = shuffled[shuffled.length-1]
+            console.log('correctAnswer', correctAnswer)
+            shuffled.pop()
+            resolve({ correctAnswer: correctAnswer, shuffled: shuffled})
+          })
+          correctAnswerPROMISE
+          .then( (obj:any) => {
+            console.log('obj', obj)
+    
+            const wrongAnswer1PROMISE = new Promise( (resolve:any, reject:any) => {
+              let wrongAnswer1 = obj.shuffled[shuffled.length-1]
+              console.log('wrongAnswer1', wrongAnswer1)
+              obj.shuffled.pop()
+              resolve({ correctAnswer: obj.correctAnswer, wrongAnswer1: wrongAnswer1, shuffled: obj.shuffled})
+            })
+            wrongAnswer1PROMISE
+            .then( (obj2:any) => {
+              console.log('obj2', obj2)
+              const wrongAnswer2PROMISE = new Promise( (resolve:any, reject:any) => {
+                const wrongAnswer2 = obj.shuffled[shuffled.length-1]
+                obj2.shuffled.pop()
+                resolve({correctAnswer: obj2.correctAnswer, wrongAnswer1: obj2.wrongAnswer1, wrongAnswer2: wrongAnswer2, shuffled: obj2.shuffled})
+              })
+              wrongAnswer2PROMISE
+              .then( (obj3:any) => {
+                console.log('obj3', obj3)
+                const wrongAnswer3PROMISE = new Promise( (resolve:any, reject:any) => {
+                  const wrongAnswer3 = obj3.shuffled[shuffled.length-1]
+                  resolve({correctAnswer: obj3.correctAnswer, wrongAnswer1: obj3.wrongAnswer1, wrongAnswer2: obj3.wrongAnswer2, wrongAnswer3: wrongAnswer3})
+                })
+                wrongAnswer3PROMISE
+                .then( (obj4:any) => {
+                  console.log('obj4', obj4)
+    
+                  const parents = obj4.correctAnswer.parents.split(',')
+                    const king = parents[0].trim()
+                    const queen = parents[1].trim()
+                    // dispatch(SET_PLAYING_STRAIN(obj4.correctAnswer))   
+                    dispatch(SET_PLAYING_PARENT_KING(king))
+                    dispatch(SET_PLAYING_PARENT_QUEEN(queen))
+                    dispatch(SET_PLAYING_GUESS_RIGHT(obj4.correctAnswer.strain))
+    
+                    dispatch(SET_PLAYING_GUESS_WRONG_1(obj4.wrongAnswer1.strain))
+                    dispatch(SET_PLAYING_GUESS_WRONG_2(obj4.wrongAnswer2.strain))
+                    dispatch(SET_PLAYING_GUESS_WRONG_3(obj4.wrongAnswer3.strain))
+                    dispatch(SET_PLAYING_GUESS_WRONG_3(obj4.wrongAnswer3.strain))
+                })
+              })
+            })
+          })
         })
     }
 
+    
     const familyTreeWrongGuessPROMISE = () => {
         return setallstrainsPROMISE().then((strains: any) => {
           const incorrectGuessesPool = strains.filter(
