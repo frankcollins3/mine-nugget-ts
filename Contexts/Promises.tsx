@@ -48,7 +48,7 @@ import {
     allStrainsGETquery, allMinersGETquery, userSignupQueryStringFunc, userLoginQueryStringFunc,
      getUserWithIdStringFunc, getMyStrainsStringFunc, allMinersOnStrainsQuery, 
      addStrainLikeStringFunc, removeStrainLikeStringFunc, getMyLikesStringFunc, getMyMinesStringFunc,
-     allLikesGETquery, allReviewsGETquery,
+     allLikesGETquery, allReviewsGETquery, getUpdateUserIconStringFunc
 } from "graphql/queries";
 import GoldRequestQL from "utility/GoldRequestQL";
 
@@ -86,12 +86,14 @@ type PromiseTypes = {
     addLikePROMISE: (username: string, strainid: number, like:boolean) => any;
     removeLikePROMISE: (username: string, strainid: number, like:boolean) => any;
     getMyLikesPROMISE: (username: string) => any;
-    userLikeOrNotPROMISE: (event, strainid:number, allLikes:any) => any;
+    userLikeOrNotPROMISE: (event, id:number, allLikes:any) => any;
 
     allReviewPROMISE: () => any;
     addMinePROMISE: (query:string) => any;
     removeMinePROMISE: (query:string) => any;
     getMyMinesPROMISE: (username:string) => any;
+
+    updateUserIconPROMISE: (icon:string) => any;
     // const query = addStrainLikeStringFunc(CURRENT_USER.username, NO_FEED_SELECTED_STRAIN.id, true)
 }   
 
@@ -126,12 +128,13 @@ const PromiseDefaults = {
     addLikePROMISE: (username: string, strainid: number, like:boolean) => {},
     removeLikePROMISE: (username: string, strainid: number, like:boolean) => {},
     getMyLikesPROMISE: (username:string) => {},
-    userLikeOrNotPROMISE: (event, strainid:number, allLikes:any) => {},
+    userLikeOrNotPROMISE: (event, id:number, allLikes:any) => {},
 
     allReviewPROMISE: () => {},
     addMinePROMISE: (query:string) => {},
     removeMinePROMISE: (query:string) => {},
     getMyMinesPROMISE: (query:string) => {},
+    updateUserIconPROMISE: (icon:string) => {},
 }
 
 const PromiseContext = createContext<PromiseTypes>(PromiseDefaults)
@@ -860,9 +863,10 @@ const rememberMeCookiePROMISE = () => {
         })       
     }
 
-    const userLikeOrNotPROMISE = (event, strainid:number, allLikes:any) => {
+    const userLikeOrNotPROMISE = (event, id:number, allLikes:any) => {
+
         const checkLikePROMISE = new Promise( (resolve:any, reject:any) => {
-            const myLike = allLikes.find(like => like.strainid === FEED_SELECTED_USER.id && like.strainid === strainid )
+            const myLike = allLikes.find(like => like.userId === FEED_SELECTED_USER.id && like.strainid === id )
             resolve(myLike);
         })
         checkLikePROMISE
@@ -872,17 +876,17 @@ const rememberMeCookiePROMISE = () => {
                 let likeStrain:boolean = like.into_it
                 console.log('likeStrain', likeStrain)
                 dispatch(SET_COIN_HOVER_STRAIN(
-                    strainid === 1 ? {strainid: 1, strain: "wedding cake", like: true} : strainid === 2 ? { strainid: 2, strain: "GorillaGlue#4", like: true} : strainid === 3 ? {strainid: 3, strain: "Do-Si-Dos", like: true} : 
-                    strainid === 4 ? {strainid: 4, strain: "mimosa", like: true} : strainid === 5 ? {strainid: 5, strain: "cherry pie", like: true} : strainid === 6 ? {strainid: 6, strain: "white wstrainidow", like: true} : 
-                    strainid === 7 ? {strainid: 7, strain: "pineapple express", like: true} : ""
+                    id === 1 ? {id: 1, strain: "wedding cake", like: true} : id === 2 ? { id: 2, strain: "GorillaGlue#4", like: true} : id === 3 ? {id: 3, strain: "Do-Si-Dos", like: true} : 
+                    id === 4 ? {id: 4, strain: "mimosa", like: true} : id === 5 ? {id: 5, strain: "cherry pie", like: true} : id === 6 ? {id: 6, strain: "white widow", like: true} : 
+                    id === 7 ? {id: 7, strain: "pineapple express", like: true} : ""
                 ))
-
+    
             $(event.target).css('box-shadow', '5px 5px 5px rgb(247, 208, 36)')
             } else {
                 dispatch(SET_COIN_HOVER_STRAIN(
-                    strainid === 1 ? {strainid: 1, strain: "wedding cake", like: false} : strainid === 2 ? { strainid: 2, strain: "GorillaGlue#4", like: false} : strainid === 3 ? {strainid: 3, strain: "Do-Si-Dos", like: false} : 
-                    strainid === 4 ? {strainid: 4, strain: "mimosa", like: false} : strainid === 5 ? {strainid: 5, strain: "cherry pie", like: false} : strainid === 6 ? {strainid: 6, strain: "white wstrainidow", like: false} : 
-                    strainid === 7 ? {strainid: 7, strain: "pineapple express", like: false} : ""
+                    id === 1 ? {id: 1, strain: "wedding cake", like: false} : id === 2 ? { id: 2, strain: "GorillaGlue#4", like: false} : id === 3 ? {id: 3, strain: "Do-Si-Dos", like: false} : 
+                    id === 4 ? {id: 4, strain: "mimosa", like: false} : id === 5 ? {id: 5, strain: "cherry pie", like: false} : id === 6 ? {id: 6, strain: "white widow", like: false} : 
+                    id === 7 ? {id: 7, strain: "pineapple express", like: false} : ""
                 ))
             }
         })
@@ -935,6 +939,11 @@ const rememberMeCookiePROMISE = () => {
         })
     }
 
+    const updateUserIconPROMISE = (icon:string) => {
+        const query = getUpdateUserIconStringFunc(CURRENT_USER.username, icon)
+        return GoldRequestQL(query)
+    }
+
         const value = {
             iPROMISEcookies,
             cookieFunc,
@@ -972,7 +981,8 @@ const rememberMeCookiePROMISE = () => {
             allReviewPROMISE,
             addMinePROMISE,
             removeMinePROMISE,
-            getMyMinesPROMISE
+            getMyMinesPROMISE,
+            updateUserIconPROMISE
         }        
 
 
