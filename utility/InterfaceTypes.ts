@@ -9,6 +9,7 @@ export interface digsINTERFACE {
 
 // id | strainid | review | title
 export interface  minesINTERFACE {
+    userId: number | undefined,
     strainid: number,
     review: string,
     title: string
@@ -73,6 +74,8 @@ export interface SignupInterface { inputType: string }
 
 // findmine
 export interface noFeedSelectedStrainINTERFACE { id: number, strain: string };
+export interface feedSelectedStrainINTERFACE { id: number, strain: string, like:boolean };        // sorry for no DRY code lol
+
 export interface noFeedNoStrainMsgsINTERFACE { err: boolean, msg: string };
 
 export interface showFeedINTERFACE { 
@@ -89,4 +92,6 @@ export interface showFeedINTERFACE {
 export interface usernameStrainidINTERFACE { username: string, strainid: number }
 
 export interface userLoginINTERFACE { email: string, password: string }
+
+export interface updateUserIconINTERFACE { username: string, icon: string }
 // const { email, password } = args
