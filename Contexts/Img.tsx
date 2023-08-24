@@ -74,6 +74,9 @@ type imgContextType = {
     cinemaRopes: string;
     photos: string;
     film: string;
+    curtain: string;
+    redCarpetHome: string;
+    winsCeremony: string;
 
 };
 
@@ -146,10 +149,14 @@ const imgDefaults: imgContextType = {
     // trophy room
     trophyroom6333icons: `img/trophyroom6333icons.png`,
     moviesPopcorn: `img/moviesPopcorn.png`,
-    redCarpet: `img/redCarpet.png`,
+    redCarpet: `img/red-carpet.png`,
     cinemaRopes: `img/cinemaRopes.png`,
     photos: `img/photos.png`,
     film: `img/film.png`,
+    curtain: `img/curtain.png`,
+    redCarpetHome: `img/redCarpetHome.png`,
+    winsCeremony: `img/winsCeremony.png`,
+    
 };
 
 // createContext
@@ -231,10 +238,13 @@ export function ImgProvider({ children }: Props) {
     // trophy room extra page 
     const [trophyroom6333icons, settrophyroom6333icons] = useState<string>(`img/trophyroom6333icons.png`);    
     const [moviesPopcorn, setmoviesPopcorn] = useState<string>(`img/moviesPopcorn.png`);    
-    const [redCarpet, setredCarpet] = useState<string>(`img/redCarpet.png`);    
+    const [redCarpet, setredCarpet] = useState<string>(`img/red-carpet.png`);    
     const [cinemaRopes, setcinemaRopes] = useState<string>(`img/cinemaRopes.png`);    
     const [photos, setPhotos] = useState<string>(`img/photos.png`);    
     const [film, setfilm] = useState<string>(`img/film.png`);    
+    const [curtain, setcurtain] = useState<string>(`img/curtain.png`);    
+    const [redCarpetHome, setredCarpetHome] = useState<string>(`img/redCarpetHome.png`);    
+    const [winsCeremony, setwinsCeremony] = useState<string>(`img/winsCeremony.png`);    
         
     const value = {
         barrel, 
@@ -306,8 +316,10 @@ export function ImgProvider({ children }: Props) {
         redCarpet,
         cinemaRopes,
         photos,
-        film    
-
+        film,
+        curtain,
+        redCarpetHome,
+        winsCeremony
     };
 
     return (
