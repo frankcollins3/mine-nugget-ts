@@ -69,6 +69,12 @@ type imgContextType = {
 
     // trophy room
     trophyroom6333icons: string; // /pages/trophyroom.tsx -> 6333 icons easter egg from flaticon. this img src accompanies that easter egg display to theme it up.
+    moviesPopcorn: string;
+    redCarpet: string;
+    cinemaRopes: string;
+    photos: string;
+    film: string;
+
 };
 
 // define values which will remain static
@@ -138,7 +144,12 @@ const imgDefaults: imgContextType = {
     welink: `img/welink.png`,
     
     // trophy room
-    trophyroom6333icons: `img/trophyroom6333icons.png`
+    trophyroom6333icons: `img/trophyroom6333icons.png`,
+    moviesPopcorn: `img/moviesPopcorn.png`,
+    redCarpet: `img/redCarpet.png`,
+    cinemaRopes: `img/cinemaRopes.png`,
+    photos: `img/photos.png`,
+    film: `img/film.png`,
 };
 
 // createContext
@@ -169,7 +180,7 @@ export function ImgProvider({ children }: Props) {
     const [eraser, seteraser] = useState<string>(`img/eraser.png`);
     const [firetag, setfiretag] = useState<string>(`img/firetag.png`);
     const [glasses, setglasses] = useState<string>(`img/glasses.png`);
-    const [goldBars, setgoldBars] = useState<string>(`img/goldBars.png`);
+    const [goldBars, setgoldBars] = useState<string>(`img/gold-bars.png`);
     const [gold, setgold] = useState<string>(`img/gold.png`);
     const [goldenTriangle, setgoldenTriangle] = useState<string>(`img/goldentriangle.png`);
     const [helmet, sethelmet] = useState<string>(`img/helmet.png`);
@@ -217,7 +228,13 @@ export function ImgProvider({ children }: Props) {
     const [ilink, setilink] = useState<string>(`img/ilink.png`);
     const [welink, setwelink] = useState<string>(`img/welink.png`);
 
+    // trophy room extra page 
     const [trophyroom6333icons, settrophyroom6333icons] = useState<string>(`img/trophyroom6333icons.png`);    
+    const [moviesPopcorn, setmoviesPopcorn] = useState<string>(`img/moviesPopcorn.png`);    
+    const [redCarpet, setredCarpet] = useState<string>(`img/redCarpet.png`);    
+    const [cinemaRopes, setcinemaRopes] = useState<string>(`img/cinemaRopes.png`);    
+    const [photos, setPhotos] = useState<string>(`img/photos.png`);    
+    const [film, setfilm] = useState<string>(`img/film.png`);    
         
     const value = {
         barrel, 
@@ -282,7 +299,14 @@ export function ImgProvider({ children }: Props) {
         // findmine        
         ilink,
         welink,
-        trophyroom6333icons
+
+        // trophy room
+        trophyroom6333icons,
+        moviesPopcorn,
+        redCarpet,
+        cinemaRopes,
+        photos,
+        film    
 
     };
 
