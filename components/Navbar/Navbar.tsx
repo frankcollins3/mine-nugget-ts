@@ -9,6 +9,7 @@ import {useSelector, useDispatch} from "react-redux"
 //     SET_ALL_USERS, SET_ALL_USERNAMES, SET_ALL_EMAILS,
 // } from "redux/main/mainSlice"
 import { TOGGLE_SHOW_ICONS } from 'redux/findMine/findMineSlice'
+import { SET_CURTAIN_IMAGE_CLICK, SET_OUTER_PHOTO_INDEX, NESTED_PHOTO_RESET, PHOTO_ARRAY_INDEX_VISITED_RESET  } from 'redux/trophyRoom/trophyRoomSlice'
 
 
 // components and styles
@@ -19,6 +20,7 @@ import styles from "./Navbar.module.scss"
 
 // utils
 import {useImage} from "Contexts/Img"
+import {usePromise} from "Contexts/Promises"
 
 export default function Navbar() {
     return <RENDER></RENDER>
@@ -35,7 +37,12 @@ function RENDER() {
     const CURRENT_USER_STRAINS = useSelector( (state:RootState) => state.findMine.CURRENT_USER_STRAINS)
     const SHOW_ICONS = useSelector( (state:RootState) => state.findMine.SHOW_ICONS)
 
-    const { magnify, gold, cactus, mine, navbardice, vest, signUpSigns} = useImage()
+    const WALK_INTO_TROPHY_ROOM = useSelector( (state:RootState) => state.trophyRoom.WALK_INTO_TROPHY_ROOM)
+    const CURTAIN_IMAGE_CLICK = useSelector( (state:RootState) => state.trophyRoom.CURTAIN_IMAGE_CLICK)
+
+    const { magnify, gold, cactus, mine, navbardice, vest, signUpSigns, redCarpetHome, curtain, magnify3 } = useImage()
+
+    const { curtainResetPROMISE } = usePromise()
 
     
     useEffect( () => {
@@ -66,15 +73,18 @@ function RENDER() {
         }
     }
 
+    const toggleBackToCurtain = () => { curtainResetPROMISE() }
+
     return (
         
         <Container id={styles.Cont}>
 
             <Container>
                 
-                { CURRENT_PAGE === "/" || CURRENT_PAGE === "/strain" && <img style={{ cursor: 'pointer' }} className={styles.img} id={styles.mine} src={mine}/> }
-                { CURRENT_PAGE === "/familytree" && <img style={{ cursor: 'pointer' }} className={styles.img} id={styles.mine} src={navbardice}/> }
-                { CURRENT_PAGE === "/findmine" && <img id="iconVest" onClick={findMineClickForIcons} style={{ cursor: 'pointer', borderRadius: '0%' }} className={styles.img} src={CURRENT_USER_STRAINS.length > 1 ? vest : signUpSigns}/> }
+            { CURRENT_PAGE !== "/familytree" && CURRENT_PAGE !== "/findmine" && CURRENT_PAGE !== "/trophyroom" && <img style={{ cursor: 'pointer' }} className={styles.img} id={styles.mine} src={mine}/> }
+            {/* { CURRENT_PAGE === "/" || CURRENT_PAGE === "/strain" && <img style={{ cursor: 'pointer' }} className={styles.img} id={styles.mine} src={mine}/> } */}
+            { CURRENT_PAGE === "/familytree" && <img style={{ cursor: 'pointer' }} className={styles.img} id={styles.mine} src={navbardice}/> }
+            { CURRENT_PAGE === "/findmine" && <img id="iconVest" onClick={findMineClickForIcons} style={{ cursor: 'pointer', borderRadius: '0%' }} className={styles.img} src={CURRENT_USER_STRAINS.length > 1 ? vest : signUpSigns}/> }
 
             </Container>
 
@@ -83,17 +93,31 @@ function RENDER() {
                     ?
                 <UserIcons/>                    
                     :
+                CURRENT_PAGE === "/trophyroom"
+                ?
+                WALK_INTO_TROPHY_ROOM &&
+                <>
+                {CURTAIN_IMAGE_CLICK !== "" && <img onClick={toggleBackToCurtain} className={styles.img} src={curtain}/>}
+                <img className={styles.img} src={redCarpetHome}/>
+                </>
+                // WALK_INTO_TROPHY_ROOM && <img className={styles.img} src={redCarpetHome}/>
+                :                
                 <Container id={styles.multiIconCont}>
-                <img onClick={goldClick} className={styles.img} src={gold}/>
-                <img className={styles.img} src={cactus}/>
-                <img className={styles.img} src={magnify}/>
-            </Container>
-            }
-            
+                <img style={{ order: CURRENT_PAGE === "/strain" ? 3 : "initial" }} onClick={goldClick} className={styles.img} src={gold}/>
+                <img style={{ order: CURRENT_PAGE === "/familytree" ? 3 : "initial" }} className={styles.img} src={cactus}/>
+                <img style={{ order: CURRENT_PAGE === "/findmine" ? 3 : "initial" }} className={styles.img} src={CURRENT_PAGE === "/findmine" ? magnify3 : magnify}/>
+                </Container>
+            }            
         </Container>
-
     )
 }
+
+{/* <Container id={styles.Cont}>
+            {WALK_INTO_TROPHY_ROOM && <img className={styles.img} src={redCarpetHome}/>}
+            <Container id={styles.multiIconCont}>
+            {WALK_INTO_TROPHY_ROOM && <p> hey </p>}
+            </Container>
+            </Container> */}
 
 // interface IconVestElement extends HTMLElement {
 //     onClick: (event: MouseEvent) => void;
