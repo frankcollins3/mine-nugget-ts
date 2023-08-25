@@ -38,7 +38,10 @@ import {
     SET_CURRENT_USER_STRAINS, SET_ALL_USER_STRAINS, TOGGLE_READY_TO_EDIT, TOGGLE_USER_LIKES_SELECTED_STRAIN, SET_NO_FEED_NO_STRAIN_MSGS, SET_CURRENT_USER_REVIEWS, SET_COIN_HOVER_STRAIN
  } from "redux/findMine/findMineSlice";
 
- import { SET_CURTAIN_IMAGE_CLICK, SET_OUTER_PHOTO_INDEX, NESTED_PHOTO_RESET, PHOTO_ARRAY_INDEX_VISITED_RESET } from "redux/trophyRoom/trophyRoomSlice" 
+ import { 
+    SET_CURTAIN_IMAGE_CLICK, SET_OUTER_PHOTO_INDEX, NESTED_PHOTO_RESET, PHOTO_ARRAY_INDEX_VISITED_RESET, 
+    NESTED_PHOTO_INCREMENT, NESTED_PHOTO_DECREMENT, PHOTO_ARRAY_INDEX_PUSH, NESTED_PHOTO_LENGTH_END
+} from "redux/trophyRoom/trophyRoomSlice" 
 
 // utils
 import { strainsINTERFACE, minersINTERFACE, minersOnStrainsINTERFACE } from "utility/InterfaceTypes";
@@ -98,6 +101,8 @@ type PromiseTypes = {
     
     // trophy room promises
     curtainResetPROMISE: () => any;
+    clickLeftPhotoArrayDecrement: () => any;
+    clickRightPhotoArrayIncrement: () => any;
 
 }   
 
@@ -140,6 +145,8 @@ const PromiseDefaults = {
     getMyMinesPROMISE: (query:string) => {},
     updateUserIconPROMISE: (icon:string) => {},
     curtainResetPROMISE: () => {},
+    clickLeftPhotoArrayDecrement: () => {},
+    clickRightPhotoArrayIncrement: () => {}
     
 }
 
@@ -223,6 +230,12 @@ export function PromiseProvider({children}:Props) {
     const READY_TO_EDIT = useSelector( (state:RootState) => state.findMine.READY_TO_EDIT)
     const USER_LIKES_SELECTED_STRAIN = useSelector( (state:RootState) => state.findMine.USER_LIKES_SELECTED_STRAIN)
     const FEED_SELECTED_USER = useSelector( (state:RootState) => state.findMine.FEED_SELECTED_USER)
+
+    // TrophyRoomState
+    const PHOTOS_ARRAY = useSelector( (state:RootState) => state.trophyRoom.PHOTOS_ARRAY)
+    const OUTER_PHOTO_INDEX = useSelector( (state:RootState) => state.trophyRoom.OUTER_PHOTO_INDEX)
+    const NESTED_PHOTO_INDEX = useSelector( (state:RootState) => state.trophyRoom.NESTED_PHOTO_INDEX)
+    const PHOTO_ARRAY_INDEX_VISITED = useSelector( (state:RootState) => state.trophyRoom.PHOTO_ARRAY_INDEX_VISITED)
         
 
     // main app and user PROMISES
@@ -960,6 +973,40 @@ const rememberMeCookiePROMISE = () => {
         // yeah this isn't a promise but still...
     }
 
+    const clickLeftPhotoArrayDecrement = () => {
+        const length: number = PHOTOS_ARRAY[OUTER_PHOTO_INDEX].length - 1
+        if (NESTED_PHOTO_INDEX > 0) {
+            dispatch(NESTED_PHOTO_DECREMENT())
+            console.log('outerphoto index', NESTED_PHOTO_INDEX)
+            const index = NESTED_PHOTO_INDEX - 1 
+            if (!PHOTO_ARRAY_INDEX_VISITED[OUTER_PHOTO_INDEX].includes(index)) {                    
+                dispatch(PHOTO_ARRAY_INDEX_PUSH({outerindex: OUTER_PHOTO_INDEX, innerindex: index}))
+            }
+        } else {                
+            let currentPhotoIndexLength = PHOTOS_ARRAY[OUTER_PHOTO_INDEX].length
+            if (!PHOTO_ARRAY_INDEX_VISITED[OUTER_PHOTO_INDEX].includes(currentPhotoIndexLength)) {                    
+                dispatch(PHOTO_ARRAY_INDEX_PUSH({outerindex: OUTER_PHOTO_INDEX, innerindex: currentPhotoIndexLength }))
+            }
+            dispatch(NESTED_PHOTO_LENGTH_END(length))
+        }
+    }
+
+    const clickRightPhotoArrayIncrement = () => {
+        
+        let length:number = PHOTOS_ARRAY[OUTER_PHOTO_INDEX].length - 1
+        console.log('length of nested array', length)        
+        
+        if (NESTED_PHOTO_INDEX < length) {
+                dispatch(NESTED_PHOTO_INCREMENT())
+                const index = NESTED_PHOTO_INDEX + 1 
+                if (!PHOTO_ARRAY_INDEX_VISITED[OUTER_PHOTO_INDEX].includes(index)) {                    
+                    dispatch(PHOTO_ARRAY_INDEX_PUSH({outerindex: OUTER_PHOTO_INDEX, innerindex: index}))
+                }
+        } else {
+            dispatch(NESTED_PHOTO_RESET())
+        }
+    }
+
         const value = {
             iPROMISEcookies,
             cookieFunc,
@@ -1001,7 +1048,9 @@ const rememberMeCookiePROMISE = () => {
             updateUserIconPROMISE,
 
             // TrophyRoom promises
-            curtainResetPROMISE
+            curtainResetPROMISE,
+            clickLeftPhotoArrayDecrement,
+            clickRightPhotoArrayIncrement
         }        
 
 
