@@ -37,7 +37,8 @@ import {
  import { 
     SET_CURRENT_USER_STRAINS, SET_ALL_USER_STRAINS, TOGGLE_READY_TO_EDIT, TOGGLE_USER_LIKES_SELECTED_STRAIN, SET_NO_FEED_NO_STRAIN_MSGS, SET_CURRENT_USER_REVIEWS, SET_COIN_HOVER_STRAIN
  } from "redux/findMine/findMineSlice";
- 
+
+ import { SET_CURTAIN_IMAGE_CLICK, SET_OUTER_PHOTO_INDEX, NESTED_PHOTO_RESET, PHOTO_ARRAY_INDEX_VISITED_RESET } from "redux/trophyRoom/trophyRoomSlice" 
 
 // utils
 import { strainsINTERFACE, minersINTERFACE, minersOnStrainsINTERFACE } from "utility/InterfaceTypes";
@@ -94,7 +95,10 @@ type PromiseTypes = {
     getMyMinesPROMISE: (username:string) => any;
 
     updateUserIconPROMISE: (icon:string) => any;
-    // const query = addStrainLikeStringFunc(CURRENT_USER.username, NO_FEED_SELECTED_STRAIN.id, true)
+    
+    // trophy room promises
+    curtainResetPROMISE: () => any;
+
 }   
 
 const PromiseDefaults = {
@@ -135,6 +139,8 @@ const PromiseDefaults = {
     removeMinePROMISE: (query:string) => {},
     getMyMinesPROMISE: (query:string) => {},
     updateUserIconPROMISE: (icon:string) => {},
+    curtainResetPROMISE: () => {},
+    
 }
 
 const PromiseContext = createContext<PromiseTypes>(PromiseDefaults)
@@ -945,6 +951,15 @@ const rememberMeCookiePROMISE = () => {
         return GoldRequestQL(query)
     }
 
+    // Trophy Room Promises / modular functions
+    const curtainResetPROMISE = () => {
+        dispatch(SET_CURTAIN_IMAGE_CLICK(''))
+        dispatch(SET_OUTER_PHOTO_INDEX(0))
+        dispatch(NESTED_PHOTO_RESET())   
+        dispatch(PHOTO_ARRAY_INDEX_VISITED_RESET())     
+        // yeah this isn't a promise but still...
+    }
+
         const value = {
             iPROMISEcookies,
             cookieFunc,
@@ -983,7 +998,10 @@ const rememberMeCookiePROMISE = () => {
             addMinePROMISE,
             removeMinePROMISE,
             getMyMinesPROMISE,
-            updateUserIconPROMISE
+            updateUserIconPROMISE,
+
+            // TrophyRoom promises
+            curtainResetPROMISE
         }        
 
 
