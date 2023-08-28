@@ -94,4 +94,22 @@ export function ReturnUrl (context:any) {
     }
 } 
 
+export function ThrowErrIfNoData (data:any, dataName:string) {
+  if (!data) {
+    throw new Error(`There is no ${dataName} error`)
+  } else {
+    return
+  }
+}
+
+export const videoSrcArray:string[] = [
+  'vids/allAppImages.mp4',
+  'vids/familytreePairents.mp4',
+  'vids/hiddenIconSelection.mp4',
+  'vids/loginCapptcha.mp4',
+  'vids/signupCapptcha.mp4',
+  'vids/rememberMeFunctionality.mp4',
+  'vids/socialFeed.mp4',
+]
+
 // document.cookie = `token=${userLogin.token}; max-age=${7 * 24 * 60 * 60}; path=/;`;
