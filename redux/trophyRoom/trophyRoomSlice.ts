@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { minersINTERFACE } from 'utility/InterfaceTypes';
 // import {useImage} from "Contexts/Img"    // have to hard code the string values 
 
 
@@ -8,10 +9,16 @@ interface TrophyRoomSliceState {
   WALK_INTO_TROPHY_ROOM: boolean;
   WHICH_IMAGE_ARRAY: string[]
   WHICH_IMAGE_INDEX: number;
-  CURTAIN_IMAGE_CLICK: string,
+  CURTAIN_IMAGE_CLICK: string;
 
-  PHOTOS_ARRAY: any[]
-  WHICH_PHOTO_INDEX: number;
+  PHOTOS_ARRAY: any[];
+  OUTER_PHOTO_INDEX: number;
+  NESTED_PHOTO_INDEX: number;
+  PHOTO_ARRAY_INDEX_VISITED: any[];
+  STARS_RANDOM_USER: any;
+  // STARS_RANDOM_USER: minersINTERFACE;
+  STARS_ARRAY: [];
+  VIDEO_SRC_ARRAY_INDEX: number;
 }
 
 const initialState: TrophyRoomSliceState = {
@@ -25,47 +32,43 @@ const initialState: TrophyRoomSliceState = {
   PHOTOS_ARRAY: [
     // strains
     [
-      '/img/trophyroom6333.png', '/img/barrel.png', '/img/barrels.png', '/img/barrier.png', '/img/cart.png', '/img/minecart.png', '/img/caution.png', 
-      '/img/cone_hat.png', '/img/pick.png',
+      '/img/pick.png', '/img/barrel.png', '/img/barrels.png', '/img/barrier.png', '/img/cart.png', '/img/minecart.png', '/img/caution.png', 
+      '/img/cone_hat.png',  '/img/kiss.png', '/img/gold.png',
     ],
     // strains
-
-    // findmine
-    [
-      '/img/dynamite.png', '/img/firetag.png', '/img/edit.png', '/img/eraser.png', '/img/glasses.png', '/img/gold.png', '/img/gold-bars.png', 
-      '/img/magnify.png', '/img/magnify2.png', '/img/search.png', '/img/mine.png', '/img/pickaxe.png', '/img/shovel.png',
-      '/img/vest.png', '/img/signupsigns.png', '/img/helmet.png', '/img/coin.png', '/img/ilink.png', '/img/welink.png', '/img/navbardice.png', 
-    ],
-    // findmine
-
+    
     // familytree    
     [
       '/img/ring.png', '/img/watch.png',
-      '/img/cactus.png', '/img/kiss.png', '/img/luckypull.png',
+      '/img/cactus.png', '/img/luckypull.png',
       '/img/king.png', '/img/queen.png', '/img/joker.png', '/img/kingspades.png', '/img/queenspades.png', '/img/cards.png', '/img/blackjack.png',
-    '/img/wincards.png', '/img/upsidedowncard.png', '/img/deckcards.png', '/img/goldenticket.png', '/img/winoneheart.png', '/img/winthreehearts.png',
-    '/img/kingqueensplit.png', 
+      '/img/wincards.png', '/img/upsidedowncard.png', '/img/deckcards.png', '/img/goldenticket.png', '/img/winthreehearts.png',
+      '/img/kingqueensplit.png', '/img/winoneheart.png',
+    ],
+
+    // findmine
+    [
+      '/img/gold-bars.png', '/img/dynamite.png', '/img/firetag.png', '/img/edit.png', '/img/eraser.png', '/img/glasses.png', '/img/gold.png', 
+      '/img/magnify.png', '/img/magnify2.png', '/img/search.png', '/img/mine.png', '/img/pickaxe.png', '/img/shovel.png',
+      '/img/vest.png', '/img/signupsigns.png', '/img/helmet.png', '/img/ilink.png', '/img/welink.png', '/img/navbardice.png', '/img/coin.png',
     ],
     // familytree
-    
+
     // trophyroom
     [
-      '/img/moviesPopcorn.png', '/img/red-carpet.png', '/img/cinemaRopes.png', '/img/photos.png', '/img/film.png', '/img/curtain.png', '/img/redCarpetHome.png',
+     '/img/star.png', '/img/royalflush6333.png', '/img/moviesPopcorn.png', '/img/red-carpet.png', '/img/cinemaRopes.png', '/img/photos.png', '/img/film.png', '/img/curtain.png', '/img/redCarpetHome.png',
       '/img/winsCeremony.png', '/img/moviereel.png', '/img/frame.png',
     ]
     // trophyroom
   ],
-  WHICH_PHOTO_INDEX: 0,
-    
+  OUTER_PHOTO_INDEX: 0,
+  NESTED_PHOTO_INDEX: 0,
+  PHOTO_ARRAY_INDEX_VISITED: [ [0], [0], [0], [] ],
+  STARS_RANDOM_USER: { username: '', password: '', email: '', age: 0, wins: 0, icon: '', strains: [] },
+  // STARS_RANDOM_USER: { username: '', password: '', email: '', age: 0, password: '', wins: 0, icon: '', strains: [] },
 
-  /* 
-barrel,  barrels, barrier, cactus, cart, coin, caution, coneHat, vest, desert, dynamite, edit, eraser, firetag, glasses,
-goldBars,gold, goldenTriangle, helmet, litPaper, magnify, magnify2, magnify3, mine, mineCart, mirror, pick, pickaxe, ring, shovel, signUpSigns, trophy, unLitPaper, 
-watch, goldcursor1, goldcursor2, kiss, luckypull,
-
-king, queen, joker, kingspades, queenspades, cards, blackjack, navbardice, wincards, upsidedowncard, deckcards, goldenticket, winoneheart, winthreecards, howmanywinsprofile, kingqueensplit, ilink, welink,
-trophyroom6333icons, moviesPopcorn, redCarpet, cinemaRopes, photos, film, curtain, redCarpetHome, winsCeremony, movieReel, frame
-*/
+  STARS_ARRAY: [],
+  VIDEO_SRC_ARRAY_INDEX: 0,
 
 };
                                       
@@ -80,15 +83,32 @@ const trophyRoomSlice = createSlice({
     SET_CURTAIN_IMAGE_CLICK: (state, action) => { state.CURTAIN_IMAGE_CLICK = action.payload; },
     
     // photo footer
-    WHICH_PHOTO_INCREMENT: (state) => { state.WHICH_PHOTO_INDEX = state.WHICH_PHOTO_INDEX + 1 },
-    WHICH_PHOTO_DECREMENT: (state) => { state.WHICH_PHOTO_INDEX = state.WHICH_PHOTO_INDEX - 1 },    
-  
+    SET_OUTER_PHOTO_INDEX: (state, action) => { state.OUTER_PHOTO_INDEX = action.payload },
+    NESTED_PHOTO_INCREMENT: (state) => { state.NESTED_PHOTO_INDEX = state.NESTED_PHOTO_INDEX + 1 },
+    NESTED_PHOTO_DECREMENT: (state) => { state.NESTED_PHOTO_INDEX = state.NESTED_PHOTO_INDEX - 1 },    
+    NESTED_PHOTO_RESET: (state) => { state.NESTED_PHOTO_INDEX = 0 },    
+    NESTED_PHOTO_LENGTH_END: (state, action) => { state.NESTED_PHOTO_INDEX = action.payload },
+    
+    PHOTO_ARRAY_INDEX_PUSH: (state, action) => { state.PHOTO_ARRAY_INDEX_VISITED[action.payload.outerindex].push(action.payload.innerindex)},
+    PHOTO_ARRAY_INDEX_VISITED_RESET: (state) => { state.PHOTO_ARRAY_INDEX_VISITED = [ [0], [0], [0], [] ] }, 
+    SET_STARS_RANDOM_USER: (state, action) => { state.STARS_RANDOM_USER = action.payload },
+    SET_STARS_ARRAY: (state, action) => { state.STARS_ARRAY = action.payload },
+    RESET_STARS_ARRAY: (state) => { state.STARS_ARRAY = [] },
+
+    INCREMENT_VIDEO_SRC_ARRAY: (state) => { state.VIDEO_SRC_ARRAY_INDEX = state.VIDEO_SRC_ARRAY_INDEX + 1 },
+    // INCREMENT_VIDEO_SRC_ARRAY: (state) => { state.VIDEO_SRC_ARRAY_INDEX = state.VIDEO_SRC_ARRAY_INDEX + 1 },
+    RESET_VIDEO_SRC_ARRAY: (state) => { state.VIDEO_SRC_ARRAY_INDEX = 0 },
+
   },
 });
 
 export const 
 { 
-  SET_VIEW_SELECTED_STRAIN, TOGGLE_WALK_INTO_TROPHY_ROOM, WHICH_IMAGE_INCREMENT, WHICH_IMAGE_DECREMENT, SET_CURTAIN_IMAGE_CLICK, WHICH_PHOTO_INCREMENT, WHICH_PHOTO_DECREMENT
+  SET_VIEW_SELECTED_STRAIN, TOGGLE_WALK_INTO_TROPHY_ROOM, WHICH_IMAGE_INCREMENT, WHICH_IMAGE_DECREMENT, SET_CURTAIN_IMAGE_CLICK,
+  SET_OUTER_PHOTO_INDEX, NESTED_PHOTO_INCREMENT, NESTED_PHOTO_DECREMENT, NESTED_PHOTO_RESET, NESTED_PHOTO_LENGTH_END, PHOTO_ARRAY_INDEX_PUSH, PHOTO_ARRAY_INDEX_VISITED_RESET,
+
+  SET_STARS_RANDOM_USER, SET_STARS_ARRAY, RESET_STARS_ARRAY,
+  INCREMENT_VIDEO_SRC_ARRAY, RESET_VIDEO_SRC_ARRAY
 } = trophyRoomSlice.actions;
 
 export default trophyRoomSlice.reducer;
