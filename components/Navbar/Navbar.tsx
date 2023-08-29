@@ -40,12 +40,19 @@ function RENDER() {
     const WALK_INTO_TROPHY_ROOM = useSelector( (state:RootState) => state.trophyRoom.WALK_INTO_TROPHY_ROOM)
     const CURTAIN_IMAGE_CLICK = useSelector( (state:RootState) => state.trophyRoom.CURTAIN_IMAGE_CLICK)
 
-    const { magnify, gold, cactus, mine, navbardice, vest, signUpSigns, redCarpetHome, curtain, magnify3 } = useImage()
+    const { magnify, gold, cactus, mine, navbardice, vest, signUpSigns, redCarpetHome, curtain, magnify3, spotlight } = useImage()
 
-    const { curtainResetPROMISE } = usePromise()
+    const { curtainResetPROMISE, cookieFunc } = usePromise()
+
+    useEffect( () => {
+        cookieFunc() 
+        .then( (currentuser) => {
+            console.log('currentuser', currentuser)
+        })
+    }, [])
 
     
-    useEffect( () => {
+    useEffect( () => {    
         console.log("useEffect and currentPage", CURRENT_PAGE)
         if (CURRENT_PAGE === '/findmine' && CURRENT_USER.age > 0) {
 // there is a CSS function in util/utilValues. I don't want to use it because it seems more performance sparing to not have to import the function?  Jquery would need to be imported either way.
@@ -55,7 +62,11 @@ function RENDER() {
     }, [CURRENT_USER])
 
     const goldClick = () => {
-        window.location.href = "/strain"
+        if (CURRENT_USER && CURRENT_USER.id) {
+            window.location.href = "/strain"
+        } else {
+            window.location.href = "/"
+        }
     }
 
     const test = () => {
@@ -73,6 +84,20 @@ function RENDER() {
         }
     }
 
+    const goHome = () => {
+        window.location.href = "/"
+    }
+
+    const playCards = () => {
+        window.location.href = "/familytree"
+    }
+
+    const findMine = () => {
+        window.location.href = "/findmine"
+    }
+
+    
+
     const toggleBackToCurtain = () => { curtainResetPROMISE() }
 
     return (
@@ -80,7 +105,7 @@ function RENDER() {
         <Container id={styles.Cont}>
 
             <Container>
-                
+            { CURRENT_PAGE === "/trophyroom" && CURTAIN_IMAGE_CLICK === "popcorn" && <img className={styles.img} src={spotlight}/> }
             { CURRENT_PAGE !== "/familytree" && CURRENT_PAGE !== "/findmine" && CURRENT_PAGE !== "/trophyroom" && <img style={{ cursor: 'pointer' }} className={styles.img} id={styles.mine} src={mine}/> }
             {/* { CURRENT_PAGE === "/" || CURRENT_PAGE === "/strain" && <img style={{ cursor: 'pointer' }} className={styles.img} id={styles.mine} src={mine}/> } */}
             { CURRENT_PAGE === "/familytree" && <img style={{ cursor: 'pointer' }} className={styles.img} id={styles.mine} src={navbardice}/> }
@@ -95,17 +120,17 @@ function RENDER() {
                     :
                 CURRENT_PAGE === "/trophyroom"
                 ?
-                WALK_INTO_TROPHY_ROOM &&
+                WALK_INTO_TROPHY_ROOM && CURTAIN_IMAGE_CLICK !== "wins" &&
                 <>
                 {CURTAIN_IMAGE_CLICK !== "" && <img onClick={toggleBackToCurtain} className={styles.img} src={curtain}/>}
-                <img className={styles.img} src={redCarpetHome}/>
+                <img onClick={goHome} className={styles.img} src={redCarpetHome}/>
                 </>
-                // WALK_INTO_TROPHY_ROOM && <img className={styles.img} src={redCarpetHome}/>
+                                
                 :                
                 <Container id={styles.multiIconCont}>
                 <img style={{ order: CURRENT_PAGE === "/strain" ? 3 : "initial" }} onClick={goldClick} className={styles.img} src={gold}/>
-                <img style={{ order: CURRENT_PAGE === "/familytree" ? 3 : "initial" }} className={styles.img} src={cactus}/>
-                <img style={{ order: CURRENT_PAGE === "/findmine" ? 3 : "initial" }} className={styles.img} src={CURRENT_PAGE === "/findmine" ? magnify3 : magnify}/>
+                <img onClick={playCards} style={{ order: CURRENT_PAGE === "/familytree" ? 3 : "initial" }} className={styles.img} src={cactus}/>
+                <img onClick={findMine} style={{ order: CURRENT_PAGE === "/findmine" ? 3 : "initial" }} className={styles.img} src={CURRENT_PAGE === "/findmine" ? magnify3 : magnify}/>
                 </Container>
             }            
         </Container>
