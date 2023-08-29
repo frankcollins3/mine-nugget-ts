@@ -1,0 +1,37 @@
+#photoBooth {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2em 1em 2em;
+    transform: scale(0.75);
+}
+
+// background: url('/img/gold.png') no-repeat center/cover;
+
+.frame {
+    background: url('/img/frame2.png') no-repeat center/cover;
+    height: 85px;
+    width: 85px;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
+
+.img {
+    height: 50px;
+    width: 50px;
+}
+.img:hover { cursor: pointer; }
+
+#coin {
+    height: 40px;
+    width: 40px; 
+}
+#coin:hover { cursor: pointer; }
+
+@media only screen and (max-width: 300px) {
+    #photoBooth { padding: 0 0.5em 0.25em 1em; }
+    // .frame { transform: scale(0.75); }
+    .frame { transform: scale(0.50); }
+}
+
