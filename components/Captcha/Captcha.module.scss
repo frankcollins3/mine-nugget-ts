@@ -1,0 +1,8 @@
+#cont {
+    border: 5px solid salmon;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-content: center;
+    align-items: center;
+}
