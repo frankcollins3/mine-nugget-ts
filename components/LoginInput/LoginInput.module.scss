@@ -1,0 +1,29 @@
+.input {
+    background: transparent;
+    outline: none;
+    border: none;
+    color: #B31B38;
+    // color: #CD2527;
+    // color: #A41648;
+    font-family: Moon Dance;
+    width: 40%;   
+    margin-top: 0.05em;
+    font-size: 18px;
+  }
+  
+  .input:hover { border: 2px solid papayawhip; }
+  
+  .input:focus { 
+      outline: none; 
+      border: none;
+  }
+
+
+
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
