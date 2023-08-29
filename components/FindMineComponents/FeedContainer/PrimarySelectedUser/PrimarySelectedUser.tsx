@@ -38,7 +38,7 @@ function RENDER() {
                 <img id={styles.icon} src={FEED_SELECTED_USER.icon}/>
                     {
                         COIN_HOVER_STRAIN.id > 0 
-                    ? <pre onClick={test} id={styles.usernameText}> {`${FEED_SELECTED_USER.username} ${COIN_HOVER_STRAIN.like ? "likes" : "doesn't like"} ${COIN_HOVER_STRAIN.strain}`} </pre>
+                    ? <pre onClick={test} id={styles.usernameText}> {`${FEED_SELECTED_USER.username} ${COIN_HOVER_STRAIN.like ? "likes" : "&"} ${COIN_HOVER_STRAIN.strain}`} </pre>
                     : <pre onClick={test} id={styles.usernameText}> {FEED_SELECTED_USER.username || ""} </pre>
                     }
                     
@@ -47,18 +47,12 @@ function RENDER() {
                         :
                         <>
                 <img id={styles.icon} src={helmet}/>
-
-                {/* {
-                    COIN_HOVER_STRAIN 
-                    ?   
-                    <pre id={styles.usernameText}> 'hey guys' </pre>
-
-                    : <pre onClick={test} id={styles.usernameText}> {FEED_SELECTED_USER.username || ""} </pre>
-                } */}
-
-                    {/* <pre id={styles.usernameText}> {FEED_SELECTED_USER.username || ""} </pre> */}
+                {
+                    COIN_HOVER_STRAIN.id > 0
+                    ?<pre onClick={test} id={styles.usernameText}> {`${FEED_SELECTED_USER.username} ${COIN_HOVER_STRAIN.like ? "likes" : "&"} ${COIN_HOVER_STRAIN.strain}`} </pre>
+                    : <pre onClick={test} id={styles.usernameText}> {FEED_SELECTED_USER.username || ""} </pre>                
+                }
                         </>
-
                 : 
                 <LoadingPickaxe/>
                 
