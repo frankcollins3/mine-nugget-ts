@@ -1,5 +1,5 @@
 # to do:
-YOU'll BLOW UP ONE DAY!!
+dynamite themed error message component: YOU'll BLOW UP ONE DAY!!
 
 # <stars>/stars.js ----->  shooting star. grab a random star, give it a class with @Keyframe to make it shoot. different keyframes different directions. timeout remove animation.
 <!-- no search bar there are a few search bars already that's enough lol. it's an extra page have a little fun. -->
