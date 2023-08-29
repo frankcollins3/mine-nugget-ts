@@ -77,6 +77,15 @@ type imgContextType = {
     curtain: string;
     redCarpetHome: string;
     winsCeremony: string;
+    movieReel: string;
+    tripleReel: string;
+    singleReel: string;
+    spotlight: string;
+    ticket: string;
+    frame: string;
+    frame2: string;
+    star: string;
+    twinkle: string;
 
 };
 
@@ -105,7 +114,7 @@ const imgDefaults: imgContextType = {
     litPaper: 'img/litPaper.png',
     magnify: 'img/magnify.png',
     magnify2: 'img/magnify2.png',
-    magnify3: 'img/magnify3.png',
+    magnify3: 'img/search.png',
     mine: 'img/mine.png',
     mineCart: 'img/mineart.png',
     mirror: 'img/mirror.png',
@@ -156,6 +165,15 @@ const imgDefaults: imgContextType = {
     curtain: `img/curtain.png`,
     redCarpetHome: `img/redCarpetHome.png`,
     winsCeremony: `img/winsCeremony.png`,
+    movieReel: `img/moviereel.png`,
+    tripleReel: `img/triplereel.png`,
+    singleReel: `img/singlereel.png`,
+    ticket: `img/ticket.png`,
+    spotlight: `img/spotlight.png`,    
+    frame: `img/frame.png`,
+    frame2: `img/frame2.png`,
+    star: `img/star.png`,
+    twinkle: `img/twinkle.png`,
     
 };
 
@@ -194,7 +212,7 @@ export function ImgProvider({ children }: Props) {
     const [litPaper, setlitPaper] = useState<string>(`img/litpaper.png`);
     const [magnify, setmagnify] = useState<string>(`img/magnify.png`);
     const [magnify2, setmagnify2] = useState<string>(`img/magnify2.png`);
-    const [magnify3, setmagnify3] = useState<string>(`img/magnify3.png`);
+    const [magnify3, setmagnify3] = useState<string>(`img/search.png`);
     const [mine, setmine] = useState<string>(`img/mine.png`);
     const [mineCart, setmineCart] = useState<string>(`img/mineCart.png`);
     const [mirror, setmirror] = useState<string>(`img/mirror.png`);
@@ -245,6 +263,15 @@ export function ImgProvider({ children }: Props) {
     const [curtain, setcurtain] = useState<string>(`img/curtain.png`);    
     const [redCarpetHome, setredCarpetHome] = useState<string>(`img/redCarpetHome.png`);    
     const [winsCeremony, setwinsCeremony] = useState<string>(`img/winsCeremony.png`);    
+    const [movieReel, setmovieReel] = useState<string>(`img/moviereel.png`);    
+    const [tripleReel, settripleReel] = useState<string>(`img/triplereel.png`);    
+    const [singleReel, setSingleReel] = useState<string>(`img/singlereel.png`);    
+    const [ticket, setTicket] = useState<string>(`img/ticket.png`);    
+    const [spotlight, setSpotlight] = useState<string>(`img/spotlight.png`);    
+    const [frame, setframe] = useState<string>(`img/frame.png`);    
+    const [frame2, setframe2] = useState<string>(`img/frame2.png`);    
+    const [star, setstar] = useState<string>(`img/star.png`);    
+    const [twinkle, settwinkle] = useState<string>(`img/twinkle.png`);    
         
     const value = {
         barrel, 
@@ -319,7 +346,16 @@ export function ImgProvider({ children }: Props) {
         film,
         curtain,
         redCarpetHome,
-        winsCeremony
+        winsCeremony, 
+        movieReel,
+        tripleReel,
+        singleReel,
+        ticket,
+        spotlight,
+        frame,
+        frame2,
+        star,
+        twinkle
     };
 
     return (
