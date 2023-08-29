@@ -1,0 +1,146 @@
+$puregold: rgb(247, 208, 32);
+$whip: papayawhip;
+$milk: 'Lemon-Milk';
+$dance: 'Moon Dance', cursive;
+$ugg: moccasin;
+
+#constraintGrid {
+    margin-top: 0.25em;
+    align-self: center;
+    height: 6em;
+    // width: 300px;
+    width: 18em;
+
+    border: 4px solid $puregold; 
+    background-color: $whip;
+    // padding: 0.25em;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    grid-template-areas:
+    "radiobuttonbox"
+    "constraintText"
+}
+
+#constraintA {
+    grid-area: radiobuttonbox;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row; 
+    // border: 5px solid hotpink;
+    width: 18em;   
+    margin-top: 0.5em;
+}
+
+#constraintB {
+    // height: 100vh;
+    // min-height: 100px;
+    // min-height: 4em;
+    // border: 4px solid $puregold;
+    grid-area: constraintText;
+    border-top: 13px dotted $ugg;
+    // border-bottom: 13px dotted $ugg;
+    border-left: none;
+    border-right: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row; 
+}
+
+.constraintText {
+    font-weight: 'bold';
+    font-size: '10px';
+    
+    // margin: 0.25em 1em 0 1em;
+}
+
+.checkboxcontainer {
+    display: flex;
+    margin: 0 1em;
+    // border: 5px solid hotpink;
+}
+
+.checkboxcontainer label {
+    cursor: pointer;
+    display: flex;
+
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 14px;
+    color: rgb(62, 50, 32);
+    font-family: 'Josefin Sans', sans-serif;
+    text-align: center;
+
+}
+
+.checkboxcontainer input[type='checkbox'] {
+    cursor: pointer;
+    opacity: 0;
+    position: absolute;
+}
+
+.checkboxcontainer label::before {
+    content: '';
+    width: 1em;
+    height: 1em;
+    border: 0.125em solid rgb(247, 208, 32);
+    border-radius: 0.125em;
+}
+
+.checkboxcontainer label:hover::before {
+    content: '';
+    width: 1em;
+    height: 1em;
+    border: 0.125em solid rgb(247, 208, 32);
+    border-radius: 0.125em;
+}
+
+
+.checkboxcontainer input[type='checkbox']:disabled + label,
+.checkboxcontainer input[type='checkbox']:disabled {
+    background-color: moccasin;
+    -webkit-clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+            clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+
+.checkboxcontainer input[type='checkbox']:checked + label::before {
+    content: '\002714';
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgb(247, 208, 36);
+}
+
+.BeMine {
+    margin-top: 0.125em;
+    font-family: $dance;    
+    font-size: 22px;
+    color: $ugg;
+    // border: 5px solid hotpink;
+    span {
+        // border: 5px solid hotpink;
+        margin: 0 1em;
+    }
+    // text-decoration: underline overline dotted $goldrgb;  
+    
+}
+// * checkbox code!!!!
+
+@media only screen and (max-width: 400px) {
+
+    #constraintGrid {        
+        width: 15em;
+
+    }
+    
+    #constraintA {
+        width: 15em;
+    }
+
+}
