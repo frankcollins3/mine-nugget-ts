@@ -1,0 +1,13 @@
+
+
+#blackjack {
+    min-height: 300px;
+    min-width: 300px;
+}
+
+@media only screen and (max-width: 300px) {
+    #blackjack {
+        min-height: 200px;
+        min-width: 200px;
+    }    
+}
