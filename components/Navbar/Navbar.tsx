@@ -40,7 +40,7 @@ function RENDER() {
     const WALK_INTO_TROPHY_ROOM = useSelector( (state:RootState) => state.trophyRoom.WALK_INTO_TROPHY_ROOM)
     const CURTAIN_IMAGE_CLICK = useSelector( (state:RootState) => state.trophyRoom.CURTAIN_IMAGE_CLICK)
 
-    const { magnify, gold, cactus, mine, navbardice, vest, signUpSigns, redCarpetHome, curtain, magnify3, spotlight } = useImage()
+    const { magnify, gold, cactus, mine, navbardice, vest, signUpSigns, redCarpetHome, curtain, magnify3, spotlight, trophy } = useImage()
 
     const { curtainResetPROMISE, cookieFunc } = usePromise()
 
@@ -96,6 +96,16 @@ function RENDER() {
         window.location.href = "/findmine"
     }
 
+    const leftIconClick = (event:any) => {
+        const src:string = event.target.src
+        console.log('src', src)
+        if (src.includes("trophy")) {
+            window.location.href = "/trophyroom"
+        } else {
+            console.log("nothing");
+        }
+    }
+
     
 
     const toggleBackToCurtain = () => { curtainResetPROMISE() }
@@ -108,7 +118,7 @@ function RENDER() {
             { CURRENT_PAGE === "/trophyroom" && CURTAIN_IMAGE_CLICK === "popcorn" && <img className={styles.img} src={spotlight}/> }
             { CURRENT_PAGE !== "/familytree" && CURRENT_PAGE !== "/findmine" && CURRENT_PAGE !== "/trophyroom" && <img style={{ cursor: 'pointer' }} className={styles.img} id={styles.mine} src={mine}/> }
             {/* { CURRENT_PAGE === "/" || CURRENT_PAGE === "/strain" && <img style={{ cursor: 'pointer' }} className={styles.img} id={styles.mine} src={mine}/> } */}
-            { CURRENT_PAGE === "/familytree" && <img style={{ cursor: 'pointer' }} className={styles.img} id={styles.mine} src={navbardice}/> }
+            { CURRENT_PAGE === "/familytree" && <img onClick={leftIconClick} style={{ cursor: 'pointer' }} className={styles.img} id={styles.mine} src={CURRENT_USER.wins && CURRENT_USER.wins > 2 ? trophy : navbardice}/> }
             { CURRENT_PAGE === "/findmine" && <img id="iconVest" onClick={findMineClickForIcons} style={{ cursor: 'pointer', borderRadius: '0%' }} className={styles.img} src={CURRENT_USER_STRAINS.length > 1 ? vest : signUpSigns}/> }
 
             </Container>
