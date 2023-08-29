@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@1,100&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Moon+Dance&display=swap');
+
+#Cont {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: fit-content;
+}
+
+#rowCont {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    // padding: 0 30%;
+    width: stretch;
+}
+
+.columnCont {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#mirror {
+    margin-top: 0.5em;
+    height: 300px;
+    width: 300px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-image: url('/img/mirror.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.bighelmet {
+    transform: scale(3.0);
+}
+
+#helmet {
+    height: 25px; 
+    width: 25px;
+}
+
+#helmet:hover { cursor: pointer;}
+
+@media only screen and (max-height: 750px) {
+    #mirror { height: 250px; width: 250px;  }
+}
+
+@media only screen and (max-width: 400px) {
+    // #mirror { height: 200px; }
+    #mirror { height: 200px; width: 200px;  }
+}
