@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@1,100&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Moon+Dance&display=swap');
+
+$whip: papayawhip;
+$puregold: rgb(247, 208, 36);
+$brownzer: rgb(62, 50, 32);
+
+#navColumn {
+    display: flex;    
+    flex-direction: column
+}
+
+#Cont {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    padding: 0 2em;
+    position: relative; 
+    top: 1em;
+}
+
+#multiIconCont {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.img {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    margin: 0 1.25em;
+}
+
+.img:hover { cursor: pointer; }
+
+#mine { box-shadow: 2px 2px 2px $whip; }
+#mine:hover { background-color: $whip; box-shadow: 4px 4px 4px $puregold; cursor: none; }
+
+@media only screen and (max-width: 450px) {
+    .img { height: 35px; width: 50px; margin: 0 0.5em; }
+
+    // #navbar2 { top: 25px; }
+}
+
+@media only screen and (max-width: 350px) {
+    .img { height: 25px; width: 25px; margin: 0 0.25em; }
+}
+    
