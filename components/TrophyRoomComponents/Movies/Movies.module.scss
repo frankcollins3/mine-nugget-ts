@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@1,100&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Moon+Dance&display=swap');
+
+$whip: papayawhip;
+$puregold: rgb(247, 208, 36);
+
+#reelCont {
+    min-height: 60vh !important;
+    min-width: 50vw !important;
+    display: grid;
+    grid-area: main; 
+    justify-content: center;
+    align-items: center;
+
+    background: url('/img/moviereel.png') no-repeat center/cover;
+    // background-image: url('/img/triplereel.png');
+    // background-image: url('/img/moviereel.png');
+    background-size: cover;
+    box-shadow: 10px 20px 30px $whip;
+    // background-size: cover;
+}
+
+#singleReelCont {
+    background: url('/img/singlereel.png') no-repeat center/cover;
+    height: 400px;
+    width: 400px;
+    box-shadow: 10px 20px 30px $puregold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+}
+
+#text {
+    color: $whip;
+    font-size: 30px;
+}
+
+@media only screen and (max-width: 600px) {
+    #singleReelCont { height: 225px; width: 225px; }
+}
+
+@media only screen and (max-width: 400px) {
+    #singleReelCont { height: 175px; width: 175px; }
+}
