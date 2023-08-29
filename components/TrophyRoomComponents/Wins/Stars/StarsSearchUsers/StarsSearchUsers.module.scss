@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@1,100&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Moon+Dance&display=swap');
+
+$whip: papayawhip;
+$puregold: rgb(247, 208, 36);
+
+#cont {
+    background-color: transparent;
+    height: 50px; 
+    overflow-y: scroll;
+    margin-top: 2em;
+}
+
+.pre {
+    font-family: Josefin Sans;
+    color: black;
+    font-weight: bolder;
+    background-color: $whip;
+}
+
+.pre:hover { border: 2px solid $puregold; }
