@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@1,100&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Moon+Dance&display=swap');
+
+$whip: papayawhip;
+$puregold: rgb(247, 208, 36);
+
+#input {
+    height: 30px; 
+    width: 100px;
+    margin-top: 0.5em;
+    border: 2px solid $puregold; 
+    background-color: transparent;
+    color: $whip;
+    font-weight: bolder;
+    font-family: Josefin Sans; 
+    border-radius: 10%;
+}
+
+#input:focus { outline: none; box-shadow: 10px 10px 10px $puregold; }
