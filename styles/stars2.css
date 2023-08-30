@@ -1,0 +1,122 @@
+@import url(https://fonts.googleapis.com/css?family=Press+Start+2P);
+
+* {
+  box-sizing: content-box;
+}
+
+html,
+body {
+  background-color: #373c93;
+  font-family:'Press Start 2P';
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+/*** Background ***/
+.night {
+  /* background: -webkit-radial-gradient(bottom, rgb(0, 0, 0) 50%, rgb(25, 19, 39)80%, rgb(33, 32, 72)); */
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  overflow: hidden;  
+}
+
+.constellation {
+  background-attachment: scroll;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  animation: rotate 600s infinite linear;
+  
+}
+
+.star {
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  animation-name: star;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;  
+  transform: scale(2.0);
+}
+
+.star:hover { cursor: pointer; }
+
+.star.style1 {
+  animation-duration: 0.5s;
+  animation-name: star;
+}
+
+.star.style3 {
+  animation-duration: 1.5s;
+  animation-name: star;
+}
+
+.star.style4 {
+  animation-duration: 2s;
+  animation-name: starFeat;
+}
+
+.star.tam1 {
+  width: 1px;
+  height: 1px;
+}
+
+.star.tam2 {
+  width: 2px;
+  height: 2px;
+}
+
+.star.tam3 {
+  width: 3px;
+  height: 3px;
+}
+
+.star.opacity1 {
+  opacity: 1;
+}
+
+.star.opacity2 {
+  opacity: .5;
+}
+
+.star.opacity3 {
+  opacity: .1;
+}
+
+@keyframes star {
+  0% {
+    box-shadow: 0 0 10px 0px rgba(255, 255, 255, 0.05);
+  }
+  50% {
+    box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 10px 0px rgba(255, 255, 255, 0.05);
+  }
+}
+
+@keyframes starFeat {
+  0% {
+    background-color: #FFFFFF;
+    box-shadow: 0 0 10px 0px rgba(255, 255, 255, 1);
+  }
+  20% {
+    background-color: #FFC4C4;
+    box-shadow: 0 0 10px 0px rgb(255, 196, 196, 1);
+  }
+  80% {
+    background-color: #C4CFFF;
+    box-shadow: 0 0 10px 0px rgb(196, 207, 255, 1);
+  }
+  100% {
+    background-color: #FFFFFF;
+    box-shadow: 0 0 10px 0px rgba(255, 255, 255, 0.2);
+  }
+}
+
