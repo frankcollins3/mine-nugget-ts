@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@1,100&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Moon+Dance&display=swap');
+
+$whip: papayawhip;
+$puregold: rgb(247, 208, 36);
+
+#cont {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;    
+    // border: 5px solid yellow; 
+    width: 90%;
+}
+
+
+#img {
+    height: 50px;
+    width: 50px; 
+    border-radius: 50%;
+}
+#img:hover { box-shadow: 4px 4px 4px $whip; }
+
+
+#span {
+    font-size: 22px;
+    font-family: Josefin Sans;
+    font-weight: bolder;
+}
+
+#text {
+    font-size: 18px;
+    color: $puregold;
+    font-family: Josefin Sans;
+}
+
+#noReviewSpan {
+    font-size: 22px;
+    color: #E01115;
+    box-shadow: none;
+    border: none;
+    text-shadow: none;
+}
+
+@media only screen and (max-width: 600px) {
+    #img { height: 25px; width: 25px; }
+
+    #span, #noReviewSpan { font-size: 16px; }
+    #text { font-size: 12px; }
+}
