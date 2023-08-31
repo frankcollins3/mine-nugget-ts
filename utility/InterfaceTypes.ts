@@ -1,4 +1,5 @@
 // * * * * * PSQL DATA TYPE INTERFACES BELOW! !!
+// somehow deployment isn't recognizing this as updated commit 
 
 // id | userId | strainid | into_it
 export interface digsINTERFACE {
