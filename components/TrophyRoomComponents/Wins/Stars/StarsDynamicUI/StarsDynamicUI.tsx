@@ -2,8 +2,6 @@ import {useEffect} from 'react'
 
 // components and styles
 import Container from "react-bootstrap/Container"
-import StarsSearch from "../StarsSearch"
-import StarsSearchUsers from '../StarsSearchUsers/StarsSearchUsers'
 import styles from "./StarsDynamicUI.module.scss"
 
 // @reduxjs/toolkit
