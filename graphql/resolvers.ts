@@ -4,23 +4,25 @@ import Redis from 'ioredis'
 import passport from "utility/passport"
 import { JWTsecretKeyMaker } from 'utility/utilityValues'
 import { usernameStrainidINTERFACE, userLoginINTERFACE, updateUserIconINTERFACE } from 'utility/InterfaceTypes'
-// 
 
-// import { hashPasser, SERIALIZESTRING, PARSESERIALIZEDSTRING } from 'utility/UtilityValues';
-// import {JWTsecretKeyMaker} from "utility/UtilityValues"
-// import puppeteer from "puppeteer"
-// import passport from "../utility/passport"; 
-// import jwt from "jsonwebtoken"
-// import Redis from 'ioredis'
-// import { SettingsInterface, HydroDataInterface } from "utility/interfaceNtypes"
+import { createClient } from 'redis';
+
+
+// this has to be NEXT_PUBLIC_REDIS_URL
+// password: process.env.NEXT_PUBLIC_REDIS_PASSWORD,
 
 const redis = new Redis({
-  port: 6379,
-  host: '127.0.0.1'
-  // password: NEXT_PUBLIC_APP_REDIS_PASSWORD
-})
+  host: 'redis-18808.c265.us-east-1-2.ec2.cloud.redislabs.com',
+  port: 18808,
+  password: 'KYWPyVGWuaAjAFglwtpG2BEx5IiTmFwo',
+});
 
 import prisma from "prisma/prismaClient"
+
+// async function connectRedis () {
+//   await redis.connect()
+// }
+// connectRedis()
 
 
 const allstrainsDB = prisma.strains.findMany
@@ -43,6 +45,97 @@ const getMyReviews = async(userId:any) => {
   const myReviews = allReviews.filter(reviews => reviews.userId === userId)
   return myReviews
 }
+
+// strains redis functions
+// const myMinersOnStrainsRedisCheck = async (userId:any) => { return redis.get(`myMinersOnStrains${userId}`, (error, myMinersOnStrains) => { return myMinersOnStrains ? myMinersOnStrains : error })}
+
+// MinersOnStrains redis functions
+
+// redis checking functions. if the redis cache is there, don't use prisma to execute DB query, return the cache and spare the need to make prisma/psql perform 
+
+//  npm i redis * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
+
+// const minersRedisCheck = async () => {
+//   try {
+//     const allUsers:any = await redis.get('miners')
+//     return allUsers
+//   } 
+//   catch(error) {
+//     return error
+//   } 
+// }
+
+// const strainsRedisCheck = async () => {
+//   try {
+//     const strains:any = await redis.get('strains');
+//     return strains
+//   }
+//   catch(error) {
+//     return error
+//   }
+// }
+
+// const myMinersOnStrainsRedisCheck = async (userId:any) => {
+//   try {
+//     const myMinersOnStrains:any = await redis.get(`myStrains${userId}`)
+//     return myMinersOnStrains
+//   }
+//   catch(error) {
+//     return error
+//   }
+
+// }
+
+// const allMinersOnStrainsRedisCheck = async () => {
+//   try { 
+//     const allMinersOnStrains:any = await redis.get('minersOnStrains')
+//     return allMinersOnStrains
+//   }
+//   catch (error)  {
+//     return error
+//   }
+// }
+
+// const allLikesRedisCheck = async () => {
+//   try {
+//     const digs:any = await redis.get('digs');
+//     return digs;
+//   } catch (error) {
+//     console.log("error in digs/likes redis check:", error);
+//   }
+// }
+
+// const myLikesRedisCheck = async (userId:any) => {
+//   try  {
+//     const myLikes:any = await redis.get(`myDigs${userId}`)
+//     return myLikes
+//   }
+//   catch (error) {
+//     return error
+//   }
+// }
+
+// const allReviewsRedisCheck = async () => {
+//   try {
+//     const allReviews:any = await redis.get('mines')
+//     return allReviews
+//   }
+//   catch (error) {
+//     return error
+//   }
+// }
+// const myMinesRedisCheck = async (userId:any) => {
+//   try {
+//     const myMines:any = await redis.get(`myMines${userId}`)
+//     return myMines
+//   }
+//   catch (error) {
+//     return error
+//   }
+// }
+
+
+// ioredis syntax: * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
 
 // strains redis functions
 const strainsRedisCheck = async () => { return redis.get("strains", (error, strains) => { return error ? error : strains }) }
@@ -116,6 +209,7 @@ const myMinesRedisCheck = async (userId:any) => {
   })
 }
 
+
 // redis checking functions. if the redis cache is there, don't use prisma to execute DB query, return the cache and spare the need to make prisma/psql perform
 
 const updateAllUsersRedis = async () => {
@@ -179,6 +273,7 @@ export const resolvers = {
       console.log("hey were here in the server")
   // strainRedisCheck is a cb()  ^ ^ that returns error if there is no redis.get("strains") very easy to check in redis-cli. same command: redis.get('strains')
       let checkStrainsRedis = await strainsRedisCheck() 
+      console.log('checkStrainsRedis in the server', checkStrainsRedis)
       // if redis.get('strains') returns string data from the cache then this condition will validate
       if (checkStrainsRedis) {
         // JSON.parse because, like localStorage.setItem(""), the cache needs stringified values. So returning them so they have usable endpoints requires JSON.parse(redisData)
