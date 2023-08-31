@@ -26,14 +26,12 @@ const RENDER = () => {
 
     const toggleHelmetClick = () => {
         setHelmetClick(helmetClick ? false : true)
-        // console.log("toggle Helmet Click")
-        // setHelmetClick(true)
     }
 
     return (
         <Container id={styles.Cont}>
             <pre className={styles.ghostPre}> hey </pre>
-            <img style={{ height: helmetClick && "25px",  width: helmetClick && "25px" }} onClick={toggleHelmetClick} id={styles.helmet} src={helmet}/>
+            <img style={{ height: helmetClick ? "25px" : "",  width: helmetClick ? "25px" : "" }} onClick={toggleHelmetClick} id={styles.helmet} src={helmet}/>
 
             <Container style={{ display: helmetClick ? "" : "none" }} id={styles.rowCont}>
 
