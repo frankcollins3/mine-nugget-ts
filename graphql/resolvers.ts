@@ -5,7 +5,7 @@ import passport from "utility/passport"
 import { JWTsecretKeyMaker } from 'utility/utilityValues'
 import { usernameStrainidINTERFACE, userLoginINTERFACE, updateUserIconINTERFACE } from 'utility/InterfaceTypes'
 
-import { createClient } from 'redis';
+// import { createClient } from 'redis';
 
 
 // this has to be NEXT_PUBLIC_REDIS_URL
