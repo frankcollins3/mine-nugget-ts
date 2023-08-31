@@ -35,8 +35,10 @@ export default function Checkbox(props:any) {
 
         <Container style=
         {{
-            position: cb === 2 && 'relative', left: cb === 2 && '-8px', 
-            pointerEvents: CHECKED.length > 1 ? CHECKED !== `cb${cb}` ? 'none' : "all" : "",
+            position: cb === 2 ? 'relative' : "static", left: cb === 2 ? '-8px' : "", 
+            // position: cb === 2 && 'relative', left: cb === 2 && '-8px', 
+            pointerEvents: CHECKED.length > 1 ? CHECKED !== `cb${cb}` ? 'none' : "all" : "all",
+            // pointerEvents: CHECKED.length > 1 ? CHECKED !== `cb${cb}` ? 'none' : "all" : "",     // works local not i n prod
             cursor: CHECKED.length > 1 ? CHECKED !== `cb${cb}` ? 'hidden' : "pointer" : "" 
         }}
         className={boxcont} id={boxcontID}>
