@@ -1,23 +1,24 @@
-#cont {
+#Cont {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-direction: space-between;
-    padding: 0 2em;
+    // padding: 0 2em;
+    // padding: 0 2em -2em 2em 0;
+    padding: 0 2em 1em 2em;
+}
+
+#heartRow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .img {
-    height: 75px;
-    width: 75px;
-    position: relative;
-    top: -2em;
+    height: 50px;
+    width: 50px;
 }
 
 @media only screen and (max-width: 400px) {
-    #cont { position: relative; top: -1em; }
-
-    .img {
-        height: 50px;
-        width: 50px;
-    }
+    #Cont { justify-content: center; position: relative; top: -1em; }
+    #heartRow { margin: 0 0.25em; }
 }
