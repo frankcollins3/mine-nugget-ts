@@ -1,11 +1,12 @@
   import {useEffect} from "react"
   import axios from 'axios'
+  import $ from 'jquery'
   
   // @reduxjs/toolkit
   import {RootState} from "redux/store/rootReducer"
   import {useSelector, useDispatch} from "react-redux"
   import { 
-    TOGGLE_PLAYING, TOGGLE_TERNARY_RENDER_KING, TOGGLE_TERNARY_RENDER_QUEEN, SET_WRONG_RIGHT_OPTION_BUCKET, 
+    TOGGLE_PLAYING, TOGGLE_TERNARY_RENDER_KING, TOGGLE_TERNARY_RENDER_QUEEN, SET_WRONG_RIGHT_OPTION_BUCKET, SET_CLICKED_CARD,
     TOGGLE_TERNARY_RENDER_OPTION_0, TOGGLE_TERNARY_RENDER_OPTION_1, TOGGLE_TERNARY_RENDER_OPTION_2, TOGGLE_TERNARY_RENDER_OPTION_3,
     TOGGLE_DRAGGED_OPTION_0, TOGGLE_DRAGGED_OPTION_1, TOGGLE_DRAGGED_OPTION_2, TOGGLE_DRAGGED_OPTION_3,
     SET_GAME_TITLE, SET_GAME_TEXT, DECREMENT_GAME_LIVES, RESET_GAME_LIVES, SET_GAME_OVER
@@ -41,6 +42,7 @@
     const PLAYING_GUESS_WRONG_2 = useSelector( (state:RootState) => state.familyTree.PLAYING_GUESS_WRONG_2)
     const PLAYING_GUESS_WRONG_3 = useSelector( (state:RootState) => state.familyTree.PLAYING_GUESS_WRONG_3)
     const WRONG_RIGHT_OPTION_BUCKET = useSelector( (state:RootState) => state.familyTree.WRONG_RIGHT_OPTION_BUCKET)
+    const CLICKED_CARD = useSelector( (state:RootState) => state.familyTree.CLICKED_CARD)
 
     const TERNARY_RENDER_KING = useSelector( (state:RootState) => state.familyTree.TERNARY_RENDER_KING)
     const TERNARY_RENDER_OPTION_0 = useSelector( (state:RootState) => state.familyTree.TERNARY_RENDER_OPTION_0)
@@ -91,32 +93,35 @@
       setTimeout( () => dispatch(SET_GAME_TEXT("")), 1000)
     }
 
-    const test = () => {      
-      console.log('currentUser', CURRENT_USER)
+    const cardClick = (event:any) => {
+      $('.table').addClass('hover')
+      const id = event.target.id
+      console.log("id", id)
+      console.log("type", typeof id)
 
-      console.log('king', PLAYING_PARENT_KING)
-      console.log('queen', PLAYING_PARENT_QUEEN)
-      console.log('correct', PLAYING_GUESS_RIGHT)
-      console.log('wrong 1', PLAYING_GUESS_WRONG_1)
-      console.log('wrong 2', PLAYING_GUESS_WRONG_2)
-      console.log('wrong 3', PLAYING_GUESS_WRONG_3)
-      
-      // dispatch(SET_PLAYING_PARENT_KING(king))
-                // dispatch(SET_PLAYING_PARENT_QUEEN(queen))
-                // dispatch(SET_PLAYING_GUESS_RIGHT(obj4.correctAnswer.strain))
-                // dispatch(SET_PLAYING_GUESS_WRONG_1(obj4.wrongAnswer1))
-                // dispatch(SET_PLAYING_GUESS_WRONG_2(obj4.wrongAnswer2))
-                // dispatch(SET_PLAYING_GUESS_WRONG_3(obj4.wrongAnswer3))
-                // dispatch(SET_PLAYING_GUESS_WRONG_3(obj4.wrongAnswer3))
-
-      // if (CURRENT_USER.username.length > 1) {
-      //   const query = `mutation { incrementUserWins(username: "${CURRENT_USER.username}") { username, password, email, age, icon, wins } }`
-      //   axios.post('/api/graphql', {query: `${query}` } )
-      //   .then( (userupdate) => {
-      //     console.log('userupdate', userupdate)
-      //   })
-      // }
+      if (id === "0") {
+        console.log(WRONG_RIGHT_OPTION_BUCKET[0])
+        dispatch(SET_CLICKED_CARD(WRONG_RIGHT_OPTION_BUCKET[0]))
+      }
+      if (id === "1") {
+        console.log(WRONG_RIGHT_OPTION_BUCKET[1])
+        dispatch(SET_CLICKED_CARD(WRONG_RIGHT_OPTION_BUCKET[1]))
+      }
+      if (id === "2") {
+        console.log(WRONG_RIGHT_OPTION_BUCKET[2])
+        dispatch(SET_CLICKED_CARD(WRONG_RIGHT_OPTION_BUCKET[2]))
+      }
+      if (id === "3") {
+        console.log(WRONG_RIGHT_OPTION_BUCKET[3])
+        dispatch(SET_CLICKED_CARD(WRONG_RIGHT_OPTION_BUCKET[3]))
+      }
     }
+
+    const tableClickGamePlay = () => {
+      console.log('clickedcard', CLICKED_CARD)
+      guessCardPROMISE({card: CLICKED_CARD})
+    }
+
 
     
         return (
@@ -131,7 +136,7 @@
           <pre className={styles.ghost}> ayoo </pre>
 
           <Container className={styles.cardColumn}>
-          <img onClick={test} className={styles.kingQueenCard} src={GAME_OVER === "lose" ? joker : GAME_OVER === "win" ? kingspades : king}/>
+          <img className={styles.kingQueenCard} src={GAME_OVER === "lose" ? joker : GAME_OVER === "win" ? kingspades : king}/>
           <pre className={styles.cardText}> {PLAYING_PARENT_KING} </pre>
           </Container>
 
@@ -149,9 +154,8 @@
           onDrop={guessCardPROMISE}
           // onDrop={forceHand}
           >            
-          <img onClick={GAME_OVER ? resetCardGamePROMISE : nothing} id={styles.table} src={GAME_OVER === "win" ? trophy : kingqueensplit}/>
+          <img className="table" onClick={GAME_OVER ? resetCardGamePROMISE : tableClickGamePlay} id={styles.table} src={GAME_OVER === "win" ? trophy : kingqueensplit}/>
           </Droppable>
-
 
           <Container style={{ display: GAME_OVER ? "none" : "flex" }} id={styles.cardRow}>
             <pre className={styles.ghost}> filler </pre>
@@ -159,7 +163,7 @@
           <Container className={styles.cardColumn}>
 
           <Draggable type={"card"} data={WRONG_RIGHT_OPTION_BUCKET[0]}> 
-          <img onMouseEnter={() => dispatch(TOGGLE_TERNARY_RENDER_OPTION_0())} onMouseLeave={() => dispatch(TOGGLE_TERNARY_RENDER_OPTION_0())} className={styles.card} src={upsidedowncard}/>
+          <img id="0" onClick={cardClick} onMouseEnter={() => dispatch(TOGGLE_TERNARY_RENDER_OPTION_0())} onMouseLeave={() => dispatch(TOGGLE_TERNARY_RENDER_OPTION_0())} className={styles.card} src={upsidedowncard}/>
           </Draggable>
 
   {TERNARY_RENDER_OPTION_0 && <pre style={{ fontSize: '14px' }} className={styles.cardText}> {WRONG_RIGHT_OPTION_BUCKET[0]} </pre>  }
@@ -167,14 +171,14 @@
 
           <Container className={styles.cardColumn}>
             <Draggable type="card" data={WRONG_RIGHT_OPTION_BUCKET[1]}> 
-          <img onMouseEnter={() => dispatch(TOGGLE_TERNARY_RENDER_OPTION_1())} onMouseLeave={() => dispatch(TOGGLE_TERNARY_RENDER_OPTION_1())} className={styles.card} src={upsidedowncard}/>
+          <img id="1" onClick={cardClick} onMouseEnter={() => dispatch(TOGGLE_TERNARY_RENDER_OPTION_1())} onMouseLeave={() => dispatch(TOGGLE_TERNARY_RENDER_OPTION_1())} className={styles.card} src={upsidedowncard}/>
           </Draggable>
           { TERNARY_RENDER_OPTION_1 && <pre style={{ fontSize: '14px' }} className={styles.cardText}> {WRONG_RIGHT_OPTION_BUCKET[1]} </pre> }
           </Container>
 
           <Container className={styles.cardColumn}>
           <Draggable type="card" data={WRONG_RIGHT_OPTION_BUCKET[2]}> 
-          <img onMouseEnter={() => dispatch(TOGGLE_TERNARY_RENDER_OPTION_2())} onMouseLeave={() => dispatch(TOGGLE_TERNARY_RENDER_OPTION_2())} className={styles.card} src={upsidedowncard}/>
+          <img id="2" onClick={cardClick} onMouseEnter={() => dispatch(TOGGLE_TERNARY_RENDER_OPTION_2())} onMouseLeave={() => dispatch(TOGGLE_TERNARY_RENDER_OPTION_2())} className={styles.card} src={upsidedowncard}/>
           { TERNARY_RENDER_OPTION_2 && <pre style={{ fontSize: '14px' }} className={styles.cardText}> {WRONG_RIGHT_OPTION_BUCKET[2]} </pre> }
           </Draggable>
           </Container>
@@ -182,7 +186,7 @@
           <Container className={styles.cardColumn}>
             
           <Draggable type="card" data={WRONG_RIGHT_OPTION_BUCKET[3]}> 
-          <img onMouseEnter={() => dispatch(TOGGLE_TERNARY_RENDER_OPTION_3())} onMouseLeave={() => dispatch(TOGGLE_TERNARY_RENDER_OPTION_3())} className={styles.card} src={upsidedowncard}/>
+          <img id="3" onClick={cardClick} onMouseEnter={() => dispatch(TOGGLE_TERNARY_RENDER_OPTION_3())} onMouseLeave={() => dispatch(TOGGLE_TERNARY_RENDER_OPTION_3())} className={styles.card} src={upsidedowncard}/>
           { TERNARY_RENDER_OPTION_3 && <pre style={{ fontSize: '14px' }} className={styles.cardText}> {WRONG_RIGHT_OPTION_BUCKET[3]} </pre> }
           </Draggable>
 
