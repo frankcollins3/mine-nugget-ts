@@ -22,16 +22,16 @@ interface familyTreeSliceState {
     // these 3 wrong options and the above PLAYING_GUESS_RIGHT correct option create the game.
     PLAYING_GUESS_WRONG_1: string;
     PLAYING_GUESS_WRONG_2: string;
-    PLAYING_GUESS_WRONG_3: string;
-    WRONG_RIGHT_OPTION_BUCKET: any[] // cant use string i think this needs a generic to add .pop() but out of time for now just considering for future. string[]
-
+    PLAYING_GUESS_WRONG_3: string
+    WRONG_RIGHT_OPTION_BUCKET: any[]; // cant use string i think this needs a generic to add .pop() but out of time for now just considering for future. string[]
+    CLICKED_CARD: string;
     // this code triggers the ternary to render UI. was considering just local state
-    TERNARY_RENDER_KING: boolean,
-    TERNARY_RENDER_QUEEN: boolean,
-    TERNARY_RENDER_OPTION_0: boolean,
-    TERNARY_RENDER_OPTION_1: boolean,
-    TERNARY_RENDER_OPTION_2: boolean,
-    TERNARY_RENDER_OPTION_3: boolean,
+    TERNARY_RENDER_KING: boolean;
+    TERNARY_RENDER_QUEEN: boolean;
+    TERNARY_RENDER_OPTION_0: boolean;
+    TERNARY_RENDER_OPTION_1: boolean;
+    TERNARY_RENDER_OPTION_2: boolean;
+    TERNARY_RENDER_OPTION_3: boolean;
 
     DRAGGED_OPTION_0: boolean;
     DRAGGED_OPTION_1: boolean;
@@ -59,6 +59,7 @@ const initialState: familyTreeSliceState = {
     PLAYING_GUESS_WRONG_2: '',
     PLAYING_GUESS_WRONG_3: '',
     WRONG_RIGHT_OPTION_BUCKET: [],
+    CLICKED_CARD: '',
 
     TERNARY_RENDER_KING: false,
     TERNARY_RENDER_QUEEN: false,
@@ -91,6 +92,7 @@ const familyTreeSlice = createSlice({
     SET_PLAYING_GUESS_WRONG_2: (state, action) => { state.PLAYING_GUESS_WRONG_2 = action.payload },
     SET_PLAYING_GUESS_WRONG_3: (state, action) => { state.PLAYING_GUESS_WRONG_3 = action.payload },
     SET_WRONG_RIGHT_OPTION_BUCKET: (state, action) => { state.WRONG_RIGHT_OPTION_BUCKET = action.payload},
+    SET_CLICKED_CARD: (state, action) => { state.CLICKED_CARD = action.payload},
     WRONG_RIGHT_OPTION_BUCKET_POP: (state) => { state.WRONG_RIGHT_OPTION_BUCKET = state.WRONG_RIGHT_OPTION_BUCKET.pop()},
 
     TOGGLE_TERNARY_RENDER_KING: (state) => { state.TERNARY_RENDER_KING = !state.TERNARY_RENDER_KING },
@@ -121,7 +123,7 @@ export const
  TOGGLE_PLAYING, SET_PLAYING_STRAIN, SET_PLAYING_PARENT_KING, SET_PLAYING_PARENT_QUEEN, 
  SET_PLAYING_GUESS_RIGHT, SET_PLAYING_GUESS_WRONG_1, SET_PLAYING_GUESS_WRONG_2, SET_PLAYING_GUESS_WRONG_3,
 
- SET_WRONG_RIGHT_OPTION_BUCKET, WRONG_RIGHT_OPTION_BUCKET_POP,
+ SET_WRONG_RIGHT_OPTION_BUCKET, WRONG_RIGHT_OPTION_BUCKET_POP, SET_CLICKED_CARD,
  TOGGLE_TERNARY_RENDER_KING, TOGGLE_TERNARY_RENDER_QUEEN, TOGGLE_TERNARY_RENDER_OPTION_0, TOGGLE_TERNARY_RENDER_OPTION_1, TOGGLE_TERNARY_RENDER_OPTION_2, TOGGLE_TERNARY_RENDER_OPTION_3, 
  TOGGLE_DRAGGED_OPTION_0, TOGGLE_DRAGGED_OPTION_1, TOGGLE_DRAGGED_OPTION_2, TOGGLE_DRAGGED_OPTION_3,
  SET_GAME_PLAYED, SET_GAME_TITLE, SET_GAME_TEXT,
