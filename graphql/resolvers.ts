@@ -27,10 +27,7 @@ import prisma from "prisma/prismaClient"
 
 const allstrainsDB = prisma.strains.findMany
 const allminersDB = prisma.miners.findMany
-// production with neon postgres lowercasing
-const allMinersOnStrainsDB = prisma.minersonstrains.findMany
-// local with different casing.
-// const allMinersOnStrainsDB = prisma.MinersOnStrains.findMany
+const allMinersOnStrainsDB = prisma.MinersOnStrains.findMany
 
 const allminesDB = prisma.mines.findMany
 const alldigsDB = prisma.digs.findMany
@@ -505,8 +502,7 @@ export const resolvers = {
           const meID = me.id
           const strainID = findStrain.id
 
-          return prisma.minersonstrains.create({
-          // return prisma.minersOnStrains.create({
+          return prisma.minersOnStrains.create({
               data: {
                 minersId: meID,
                 strainsid: strainID
@@ -525,8 +521,7 @@ export const resolvers = {
           const { username, strainid } = args
           const myid = await getUserIdWithUsername(username)
                                 
-          await prisma.minersonstrains.deleteMany({
-          // await prisma.MinersOnStrains.deleteMany({
+          await prisma.MinersOnStrains.deleteMany({
             where: { minersId: myid, strainsid: strainid }
           }).then(async(strain) => {
             await updateMyStrainsRedis(myid)
