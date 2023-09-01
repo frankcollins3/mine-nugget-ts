@@ -47,6 +47,26 @@ addEventListener("keyup", function(key) {
     delete keysDown[key.keyCode];
 });
 
+const cartClick = (event) => {
+  console.log("cart click!")
+  const canvas = canvasRef.current;
+  const rect = canvas.getBoundingClientRect();
+  const mouseX = event.clientX - rect.left;
+  const mouseY = event.clientY - rect.top;
+  cart.x += 50; // Adjust the value as needed to control the movement distance
+
+  // Check if the click occurred within the boundaries of the cart image
+  if (
+    mouseX >= cart.x &&
+    mouseX <= cart.x + cart.width &&
+    mouseY >= cart.y &&
+    mouseY <= cart.y + cart.height
+  ) {
+    // Move the cart to the right
+    // cart.x += 10; // Adjust the value as needed to control the movement distance
+  }
+};
+
 var counterId;
 
 /**
@@ -57,7 +77,7 @@ var init = function() {
     game.finished = false;    
 
     cart.x = 50;
-    cart.y = 110;
+    cart.y = 80;
 
     coin.x = 280;
     coin.y = 80;
@@ -65,6 +85,7 @@ var init = function() {
     cart.ready = true;
     coin.ready = true;
     canvas.removeEventListener("click", init);
+    canvas.addEventListener("click", cartClick);
 }
 
 /**
@@ -191,19 +212,31 @@ var main = function() {
 
 init();
 main();
-
-
     // Canvas drawing code here...
   }, []);
+
+  const left = () => {
+      if (cart.x > 15) {
+        cart.x -= cart.speed * modifier;
+        cart.width = 14;
+      }
+  }
+
+  const right = () => {
+      if (cart.x + cart.width < canvas.width - 15) {
+        cart.x += cart.speed * modifier;
+        cart.width = 14;
+      }
+  }
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh', flexDirection: 'column', border: 'none' }}>
       <canvas ref={canvasRef} />
-      {/* <pre> Welcome to Mine Nugget! </pre> */}
+
+      {/* was going to add buttons to solve issue #268 */}
+      {/* <button onClick={right} style={{ backgroundColor: 'gold', margin: '0 1em', height: '25px', width: '25px' }}> R </button> */}
     </div>
   );
-
-//   return <canvas ref={canvasRef} />;
 };
 
 export default MineCanvas;
