@@ -124,5 +124,7 @@ $brownzer: rgb(62, 50, 32);
 }
 
 @media only screen and (max-width: 400px) {
+    #StrainFooterCont { position: relative; top: -1em; }
+
     .pre { font-size: 16px;  }
 }
