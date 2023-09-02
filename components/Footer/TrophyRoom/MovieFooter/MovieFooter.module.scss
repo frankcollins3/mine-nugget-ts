@@ -15,3 +15,7 @@
     height: 50px;
     width: 50px;
 }
+
+@media only screen and (max-width: 400px) {
+    #Cont { position: relative; top: -3em;}
+}
