@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react"
 import axios from 'axios'
+import $ from 'jquery'
 
 // components and styles
 import Container from "react-bootstrap/Container"
@@ -40,19 +41,26 @@ export default function FindMine(props: any) {
     const DONT_RUN_USER_STRAINS_EFFECT_PROMISE = useSelector( (state:RootState) => state.findMine.DONT_RUN_USER_STRAINS_EFFECT_PROMISE)
     
     useEffect( () => {
+        // tampering with deployment! ! ! 
+        setTimeout( () => {
+            console.log("timeout click function firing!")
+            $('#vest').click()
+        }, 2000)
+        // tampering with deployment! ! ! 
+        
         dispatch(SET_CURRENT_PAGE("/findmine"))
             cookieFunc()
             .then(async(currentuser) => {
                 console.log('currentuser then block', currentuser)
                 console.log('currentuser', currentuser)
             
-            dispatch(SET_CURRENT_USER({ id: currentuser.id, age: currentuser.age, email: currentuser.email, icon: currentuser.icon, password: currentuser.password, username: currentuser.username, wins: currentuser.wins}))
+                dispatch(SET_CURRENT_USER({ id: currentuser.id, age: currentuser.age, email: currentuser.email, icon: currentuser.icon, password: currentuser.password, username: currentuser.username, wins: currentuser.wins}))
 
             })
     }, [])
 
     useEffect( () => {
-        console.log("TOGGLE USER STRAINS EFFECT!!!!!")
+        console.log("TOGGLE USER STRAINS EFFECT!!!!!")        
         // Promise.all([setCurrentUserStrainsPROMISE(CURRENT_USER.username), setAllUserStrainsPROMISE()])              
         if (DONT_RUN_USER_STRAINS_EFFECT_PROMISE) {
             return 
@@ -126,7 +134,7 @@ export default function FindMine(props: any) {
             </>
              :
             <Container > 
-            <img style={{ cursor: 'pointer', height: '200px', width: '200px' }} className="hover" onClick={hoverForMyUserStrains} src={vest}/>
+            <img id="vest" style={{ cursor: 'pointer', height: '200px', width: '200px' }} className="hover" onClick={hoverForMyUserStrains} src={vest}/>
             {/* <Container onMouseEnter={contHovered ? nothing : hoverForMyUserStrains}>  */}
             </Container>            
     }
