@@ -137,7 +137,8 @@ export default function FindMine(props: any) {
             </>
              :
             <Container > 
-            <img id="vest" style={{ cursor: 'pointer', height: '200px', width: '200px' }} className="hover" onClick={hoverForMyUserStrains} src={vest}/>
+                {/* tampering with deployment */}
+            {/* <img id="vest" style={{ cursor: 'pointer', height: '200px', width: '200px' }} className="hover" onClick={hoverForMyUserStrains} src={vest}/> */}
             {/* <Container onMouseEnter={contHovered ? nothing : hoverForMyUserStrains}>  */}
             </Container>            
     }
