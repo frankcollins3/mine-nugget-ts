@@ -42,18 +42,19 @@ export default function FindMine(props: any) {
     
     useEffect( () => {
         // tampering with deployment! ! ! 
-        setTimeout( () => {
-            console.log("timeout click function firing!")
-            $('#vest').click()
-        }, 2000)
+        // setTimeout( () => {
+        //     console.log("timeout click function firing!")
+        //     $('#vest').click()
+        // }, 2000)
         // tampering with deployment! ! ! 
-        
+
         dispatch(SET_CURRENT_PAGE("/findmine"))
             cookieFunc()
             .then(async(currentuser) => {
                 console.log('currentuser then block', currentuser)
                 console.log('currentuser', currentuser)
-            
+                setCurrentUserStrainsPROMISE(currentuser.username)
+            // setCurrentUserStrainsPROMISE(CURRENT_USER.username)
                 dispatch(SET_CURRENT_USER({ id: currentuser.id, age: currentuser.age, email: currentuser.email, icon: currentuser.icon, password: currentuser.password, username: currentuser.username, wins: currentuser.wins}))
 
             })
@@ -117,13 +118,15 @@ export default function FindMine(props: any) {
     <ConeContainer/>
     {
         SHOW_FEED
-        ? <FeedContainer 
+        ? 
+        <FeedContainer 
         allUsers={props.allUsers} 
         allStrainsForAllUsers={props.allStrainsForAllUsers} 
         allLikesFromAllUsers={props.allLikesFromAllUsers} 
         allReviewsFromAllUsers={props.allReviewsFromAllUsers} 
         />
-        : <NoFeedContainer/>
+        : 
+        <NoFeedContainer/>
     }
     {/* <p style={{ opacity: '0' }}> im a ghost </p> */}
     </Container>
