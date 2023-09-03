@@ -30,7 +30,7 @@ export default function TrophyRoomMain({allUsers}) {
 }
 
 function CURTAIN() {
-    const { curtain, moviesPopcorn, film, photos, winsCeremony, redCarpetHome } = useImage()
+    const { goldArrowLeft, goldArrowRight } = useImage()
     const dispatch = useDispatch()
     const WHICH_IMAGE_ARRAY = useSelector( (state:RootState) => state.trophyRoom.WHICH_IMAGE_ARRAY)
     const WHICH_IMAGE_INDEX = useSelector( (state:RootState) => state.trophyRoom.WHICH_IMAGE_INDEX)
@@ -72,9 +72,11 @@ function CURTAIN() {
     return (        
         <Container className={styles.trophyRoomMain}>        
         <Container id={styles.curtain}>    
-         <pre onMouseEnter={decrement} style={{ color: WHICH_IMAGE_INDEX === 0 ? "papayawhip" : 'rgb(247, 208, 32)', fontSize: "30px", cursor: 'none' }}> {left} </pre>
+         <pre onMouseEnter={decrement} style={{ color: WHICH_IMAGE_INDEX === 0 ? "papayawhip" : 'rgb(247, 208, 32)', fontSize: "40px", cursor: 'none', fontWeight: 'bolder' }}> {left} </pre>
+         {/* <img onMouseEnter={decrement} style={{ height: '35px', width: '35px', position: 'relative', left: '-10px'}} src={goldArrowLeft}/> */}
          <img onClick={imageClick} id={styles.img} src={WHICH_IMAGE_ARRAY[WHICH_IMAGE_INDEX]}/>
-         <pre onMouseEnter={increment} style={{ color: WHICH_IMAGE_INDEX === 2 ? "papayawhip" : 'rgb(247, 208, 32)', fontSize: "30px", cursor: 'none' }}> {right} </pre>                
+         {/* <img onMouseEnter={increment} style={{ height: '50px', width: '50px', position: 'relative', left: '10px'}} src={goldArrowRight}/> */}
+         <pre onMouseEnter={increment} style={{ color: WHICH_IMAGE_INDEX === 2 ? "papayawhip" : 'rgb(247, 208, 32)', fontSize: "40px", cursor: 'none', fontWeight: 'bolder' }}> {right} </pre>                
         </Container>    
         </Container>
     )
