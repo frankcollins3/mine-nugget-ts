@@ -3,7 +3,7 @@ import {useState} from "react"
 import {RootState} from "redux/store/rootReducer"
 import {useSelector, useDispatch} from "react-redux"
 import axios from 'axios'
-import { SET_VIEW_SELECTED_STRAIN, SET_VIEW_SELECTED_STRAIN_INDEX, SET_VIEW_SELECTED_STRAIN_KEY, SET_VIEW_SELECTED_STRAIN_VALUE } from "redux/main/mainSlice"
+import { TOGGLE_HOVER_EVEN_ODD } from "redux/main/mainSlice"
 
 // components and styles
 import Container from "react-bootstrap/Container"
@@ -17,9 +17,13 @@ export default function SaveMines() {
 }
 
 function RENDER () {
+    const dispatch = useDispatch()
+
     const { pick } = useImage()
-    const [hoverShow, setHoverShow] = useState(false)
+    const [hoverShow, setHoverShow] = useState(false)    
+
     const VIEW_SELECTED_STRAIN = useSelector( (state:RootState) => state.main.VIEW_SELECTED_STRAIN)
+    const HOVER_EVEN_ODD = useSelector( (state:RootState) => state.main.HOVER_EVEN_ODD)
     const CURRENT_USER = useSelector( (state:RootState) => state.main.CURRENT_USER)
 
     
@@ -45,15 +49,23 @@ function RENDER () {
             }
             `
          }).then( (savedStrain) => {
-            console.log('savedStrain', savedStrain)
+            console.log('savedStrain client!', savedStrain)
+         }).catch( (error) => {
+            console.log('error', error)
          })
         
+        }
+
+        const containerLeave = () => {
+            setHoverShow(false)
+            dispatch(TOGGLE_HOVER_EVEN_ODD())
         }
 
     return (
         <>
 
-    <Container onMouseLeave={() => setHoverShow(false)} id={styles.ValueCont}>        
+    <Container onMouseLeave={containerLeave} id={styles.ValueCont}>        
+    {/* <Container onMouseLeave={() => setHoverShow(false)} id={styles.ValueCont}>         */}
         {
             hoverShow
                 ?
@@ -62,7 +74,10 @@ function RENDER () {
     <pre 
         onMouseEnter={() => setHoverShow(true)}
         style={{ backgroundColor: 'transparent', color: 'papayawhip' }} 
-        className={styles.pre}> Dig {VIEW_SELECTED_STRAIN.strainValues.strain} From Mines <span className={styles.span}>?</span> 
+        className={styles.pre}
+        > 
+        {/* Dig {VIEW_SELECTED_STRAIN.strainValues.strain} From Mines <span className={styles.span}>?</span>  */}
+        {HOVER_EVEN_ODD ? "Mine To Be Gold ?" : "Gold To Be Mine ?"}
     </pre>
         }
     </Container>        
