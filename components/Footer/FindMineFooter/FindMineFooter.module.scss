@@ -14,8 +14,11 @@
 }
 
 @media only screen and (max-width: 400px) {
+    #cont { position: relative; top: -3em; }
+
     .img {
         height: 50px;
         width: 50px;
     }
 }
+
