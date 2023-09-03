@@ -62,7 +62,8 @@ function RENDER() {
     }, [CURRENT_USER])
 
     const goldClick = () => {
-        if (CURRENT_USER && CURRENT_USER.id) {
+        console.log("weve got the click!")
+        if (CURRENT_USER && CURRENT_USER.age > 0) {
             window.location.href = "/strain"
         } else {
             window.location.href = "/"
