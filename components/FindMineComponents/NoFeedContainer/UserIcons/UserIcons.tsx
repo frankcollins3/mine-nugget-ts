@@ -1,5 +1,6 @@
 import {useState, useEffect} from "react"
 import axios from 'axios'
+import $ from 'jquery'
 
 // components and styles
 import Container from "react-bootstrap/Container"
@@ -8,6 +9,7 @@ import styles from "./UserIcons.module.scss"
 // @reduxjs/toolkit
 import {RootState} from "redux/store/rootReducer"
 import {useSelector, useDispatch} from "react-redux"
+import { TOGGLE_USER_ICON_SAVE_ERROR } from "redux/findMine/findMineSlice"
 
 // utils
 import {useImage} from "Contexts/Img"
@@ -23,7 +25,10 @@ export default function UserIcons() {
 
 function RENDER () {
 
+    const dispatch = useDispatch()
     const CURRENT_USER = useSelector( (state:RootState) => state.main.CURRENT_USER)
+    const USER_ICON_SAVE_ERROR = useSelector( (state:RootState) => state.findMine.USER_ICON_SAVE_ERROR)
+
 
     const {updateUserIconPROMISE} = usePromise()
 
@@ -33,7 +38,7 @@ function RENDER () {
 
     const [localSearchTerm, setLocalSearchTerm] = useState('')
     const { MletterAfterSlash, MstringAfterHost3000 } = useRegex()
-    const { mine, barrel, firetag, winoneheart, king, queen, joker, kiss, shovel, ring, watch, barrier, cactus, signUpSigns, glasses, cart, coin, dynamite, } = useImage()
+    const { mine, barrel, firetag, winoneheart, king, queen, joker, kiss, shovel, ring, watch, barrier, cactus, signUpSigns, glasses, cart, coin, dynamite, caution } = useImage()
     const heart = "img/winoneheart.png"
     const optionArray:string[] = [ barrel, barrier, cactus, cart, coin, dynamite, firetag, glasses, joker, king, kiss, queen, ring, shovel, signUpSigns, watch, heart, ]
     const Left = "<"
@@ -90,31 +95,26 @@ function RENDER () {
     const imageHover = () => setDontChangeIndex(false)
 
     const updateUserIcon = (event:any) => {
-        console.log("hey were updating");
         const src:string = event.target.src
-        console.log('src', src)
-        console.log('CURRENT_USER', CURRENT_USER)
-
         // const regex:RegExp = /\/(\w+\/\w+\.\w+)/
         const imgSrc:any|null = src.match(MstringAfterHost3000)
         if (imgSrc !== 'null') {
             let str:string = imgSrc[1]
-            console.log('str', str)
 
             updateUserIconPROMISE(str)
-            .then( (updatedUser) => {
-                
-                console.log('updatedUser', updatedUser)
-            })
-
-            // const query = getUpdateUserIconStringFunc(CURRENT_USER.username, str)
-            // axios.post("/api/graphql", { query: `${query}` })
-            // .then( (userIconUpdate:any) => {
-            //     console.log('userIconUpdate', userIconUpdate)
-            // })
-
-        } else {
-        }        
+            .then( (updatedUser) => {                
+                if (updatedUser.data.errors) {
+                    if (updatedUser.data.errors[0]) {
+                        dispatch(TOGGLE_USER_ICON_SAVE_ERROR())
+                        setTimeout( () => dispatch(TOGGLE_USER_ICON_SAVE_ERROR()), 2000)
+                    }
+                } else {
+                    $(event.target).css('border-bottom', '5px solid rgb(247, 208, 32)')
+                    setTimeout( () => $(event.target).css('border-bottom', 'none'), 2000)
+                    // $(event.target).css('box-shadow', '5px 5px 5px rgb(247, 208, 32)')
+                }                
+            })            
+        } // no else block, graphQL will return an error within the .then() block if there is one.         
 
     }
 
@@ -130,7 +130,7 @@ function RENDER () {
             <input maxLength={1} id={styles.input} onChange={handleInputChange} type="text"/>
 
             <pre onClick={dontChangeIndex ? nothing : decrementState} className={styles.ghost}> {Left} </pre>
-             <img onClick={updateUserIcon} onMouseEnter={dontChangeIndex ? imageHover : nothing} id={styles.img} src={optionArray[index]}/>
+             <img onClick={updateUserIcon} onMouseEnter={dontChangeIndex ? imageHover : nothing} id={styles.img} src={USER_ICON_SAVE_ERROR ? caution : optionArray[index]}/>
              <pre onClick={dontChangeIndex ? nothing : incrementState} className={styles.ghost}> {Right} </pre>
             </Container>
             : 
