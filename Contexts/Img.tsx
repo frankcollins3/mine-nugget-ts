@@ -45,6 +45,8 @@ type imgContextType = {
     luckypullroulette: string;
     yesCursor: string;
     noCursor: string;
+    goldArrowLeft: string;
+    goldArrowRight: string;
         
     // findmine playing gcard game
     king: string;
@@ -136,7 +138,9 @@ const imgDefaults: imgContextType = {
     luckypullroulette: `img/luckypullroulette.png`,
     yesCursor: `img/yesCursor.png`,
     noCursor: `img/noCursor.png`,
-
+    goldArrowLeft: `img/goldArrowLeft.png`,
+    goldArrowRight: `img/goldArrowRIght.png`,
+    
     // findmine playing gcard game
     king: `img/king.png`,
     queen: `img/queen.png`,
@@ -236,6 +240,8 @@ export function ImgProvider({ children }: Props) {
     const [luckypullroulette, setluckypullroulette] = useState<string>(`img/luckypullroulette.png`);
     const [yesCursor, setyesCursor] = useState<string>(`img/yesCursor.png`);
     const [noCursor, setnoCursor] = useState<string>(`img/noCursor.png`);
+    const [goldArrowLeft, setgoldArrowLeft] = useState<string>(`img/goldArrowLeft.png`);
+    const [goldArrowRight, setgoldArrowRight] = useState<string>(`img/goldArrowRight.png`);
 
     // findmine playing card game 
     const [king, setking] = useState<string>(`img/king.png`);
@@ -322,6 +328,8 @@ export function ImgProvider({ children }: Props) {
         luckypullroulette,
         yesCursor,
         noCursor,
+        goldArrowLeft,
+        goldArrowRight,
 
         // familytree playing card game
         king,
