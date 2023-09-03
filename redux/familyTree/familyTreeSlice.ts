@@ -38,6 +38,8 @@ interface familyTreeSliceState {
     DRAGGED_OPTION_2: boolean;
     DRAGGED_OPTION_3: boolean;
 
+    BONUS_GAME: boolean;
+    LUCKY_PULL_PLAYING: boolean; 
 
     
 }
@@ -72,6 +74,10 @@ const initialState: familyTreeSliceState = {
     DRAGGED_OPTION_1: false,
     DRAGGED_OPTION_2: false,
     DRAGGED_OPTION_3: false,
+
+    BONUS_GAME: false,
+    LUCKY_PULL_PLAYING: false,
+    
   };
 
                                     
@@ -113,7 +119,10 @@ const familyTreeSlice = createSlice({
     DECREMENT_GAME_LIVES: (state) => { state.GAME_LIVES.pop() && state.GAME_LIVES.pop() },
     // DECREMENT_GAME_LIVES: (state) => { state.GAME_LIVES = state.GAME_LIVES.pop() && state.GAME_LIVES.pop() },
     RESET_GAME_LIVES: (state) => { state.GAME_LIVES = [1, 1, 2, 3, 4, 7]},
-    SET_GAME_OVER: (state, action) => { state.GAME_OVER = action.payload }
+    SET_GAME_OVER: (state, action) => { state.GAME_OVER = action.payload },
+
+    TOGGLE_BONUS_GAME: (state) => { state.BONUS_GAME = !state.BONUS_GAME },
+    TOGGLE_LUCKY_PULL_PLAYING: (state) => { state.LUCKY_PULL_PLAYING = !state.LUCKY_PULL_PLAYING },
         
   },
 });
@@ -127,7 +136,9 @@ export const
  TOGGLE_TERNARY_RENDER_KING, TOGGLE_TERNARY_RENDER_QUEEN, TOGGLE_TERNARY_RENDER_OPTION_0, TOGGLE_TERNARY_RENDER_OPTION_1, TOGGLE_TERNARY_RENDER_OPTION_2, TOGGLE_TERNARY_RENDER_OPTION_3, 
  TOGGLE_DRAGGED_OPTION_0, TOGGLE_DRAGGED_OPTION_1, TOGGLE_DRAGGED_OPTION_2, TOGGLE_DRAGGED_OPTION_3,
  SET_GAME_PLAYED, SET_GAME_TITLE, SET_GAME_TEXT,
- DECREMENT_GAME_LIVES, RESET_GAME_LIVES, SET_GAME_OVER
+ DECREMENT_GAME_LIVES, RESET_GAME_LIVES, SET_GAME_OVER,
+
+ TOGGLE_BONUS_GAME, TOGGLE_LUCKY_PULL_PLAYING
   
 } = familyTreeSlice.actions;
 
