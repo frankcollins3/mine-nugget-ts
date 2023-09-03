@@ -1,8 +1,10 @@
-
+import {useEffect} from 'react'
+import $ from 'jquery'
 
 import {RootState} from "redux/store/rootReducer"
 import {useSelector, useDispatch} from "react-redux"
 import { 
+    TOGGLE_BONUS_GAME, TOGGLE_LUCKY_PULL_PLAYING
 } from "redux/familyTree/familyTreeSlice"
 
 // components and styles
@@ -18,12 +20,48 @@ export default function FamilyTreeFooter() {
 }
 
 function RENDER() {
-    const {winoneheart, cards} = useImage()
-    const GAME_LIVES = useSelector( (state:RootState) => state.familyTree.GAME_LIVES)
+    const dispatch = useDispatch()
 
+    const {winoneheart, cards, luckypull} = useImage()
+    const GAME_LIVES = useSelector( (state:RootState) => state.familyTree.GAME_LIVES)
+    const BONUS_GAME = useSelector( (state:RootState) => state.familyTree.BONUS_GAME)
+    const GAME_OVER = useSelector( (state:RootState) => state.familyTree.GAME_OVER)
+    const LUCKY_PULL_PLAYING = useSelector( (state:RootState) => state.familyTree.LUCKY_PULL_PLAYING)
+
+    const CURRENT_USER = useSelector( (state:RootState) => state.main.CURRENT_USER)
+
+    useEffect( () => {
+        if (GAME_OVER === 'win') {
+            $('#otherimage').addClass('hover')
+        }
+    }, [GAME_OVER])
+
+
+
+    const luckyPullClick = () => {
+        console.log('currentuser', CURRENT_USER)
+        if (CURRENT_USER.age > 0) {
+            // GAME_OVER has to be true! 
+            if (CURRENT_USER.wins && CURRENT_USER.wins > 2 && GAME_OVER === 'win') {
+                dispatch(TOGGLE_BONUS_GAME())
+            }
+        }
+    }
+
+    const bonusClick = (event:any) => {
+        const src:string = event.target.src
+        console.log('src', src)
+        if (src.includes('luckypull')) {
+            if (LUCKY_PULL_PLAYING === false) dispatch(TOGGLE_LUCKY_PULL_PLAYING()) 
+        }
+        if (src.includes('cards')) {
+            if (LUCKY_PULL_PLAYING === true) dispatch(TOGGLE_LUCKY_PULL_PLAYING()) 
+        }
+
+    }
 
     return (
-        <Container id={styles.Cont}>
+        <Container onClick={luckyPullClick} id={styles.Cont}>
         <Container id={styles.heartRow}>
 
             { GAME_LIVES &&
@@ -38,7 +76,7 @@ function RENDER() {
             </Container>
 
 
-            <img className={styles.img} src={cards}/>
+            <img onClick={bonusClick} id="otherimage" className={styles.img} src={BONUS_GAME ? luckypull : cards}/>
         </Container>
     )
 }
