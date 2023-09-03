@@ -63,6 +63,7 @@ export const typeDefs = gql`
 
     type Query {
         allStrainsGET: [Strains]!
+        allStrainsNoRedisGET: [Strains]!
         allMinersGET: [Miners]!
 
         userLogin(
@@ -80,6 +81,7 @@ export const typeDefs = gql`
         
         getMyLikes(username: String!): [Digs]!
         getMyMines(username: String!): [MineReviews]!
+
     }
 
     type Mutation {
