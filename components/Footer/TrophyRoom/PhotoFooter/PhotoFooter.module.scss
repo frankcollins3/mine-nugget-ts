@@ -30,7 +30,7 @@
 #coin:hover { cursor: pointer; }
 
 @media only screen and (max-width: 300px) {
-    #photoBooth { padding: 0 0.5em 0.25em 1em; }
+    #photoBooth { padding: 0 0.5em 0.25em 1em; position: relative; top: -3em; }
     // .frame { transform: scale(0.75); }
     .frame { transform: scale(0.50); }
 }
