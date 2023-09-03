@@ -41,6 +41,8 @@ type imgContextType = {
     goldcursor2: string;
     kiss: string;
     luckypull: string;
+    luckypulldice: string;
+    luckypullroulette: string;
     yesCursor: string;
     noCursor: string;
         
@@ -130,6 +132,8 @@ const imgDefaults: imgContextType = {
     goldcursor2: 'img/goldcursor2.png',
     kiss: `img/kiss.png`,
     luckypull: `img/luckypull.png`,
+    luckypulldice: `img/luckypulldice.png`,
+    luckypullroulette: `img/luckypullroulette.png`,
     yesCursor: `img/yesCursor.png`,
     noCursor: `img/noCursor.png`,
 
@@ -228,6 +232,8 @@ export function ImgProvider({ children }: Props) {
     const [goldcursor2, setgoldcursor2] = useState<string>(`img/goldcursor2.png`);
     const [kiss, setKiss] = useState<string>(`img/kiss.png`);
     const [luckypull, setLuckypull] = useState<string>(`img/luckypull.png`);
+    const [luckypulldice, setluckypulldice] = useState<string>(`img/luckypulldice.png`);
+    const [luckypullroulette, setluckypullroulette] = useState<string>(`img/luckypullroulette.png`);
     const [yesCursor, setyesCursor] = useState<string>(`img/yesCursor.png`);
     const [noCursor, setnoCursor] = useState<string>(`img/noCursor.png`);
 
@@ -312,6 +318,8 @@ export function ImgProvider({ children }: Props) {
         goldcursor2,
         kiss,
         luckypull,
+        luckypulldice,
+        luckypullroulette,
         yesCursor,
         noCursor,
 
