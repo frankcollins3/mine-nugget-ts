@@ -6,7 +6,7 @@
     margin-top: 0.245em;
     max-width: 100vw;
     border-bottom: 5px solid papayawhip;
-    height: 25%;
+    min-height: 7vh;
 }
 
 .cone {
@@ -15,10 +15,20 @@
     margin-top: 0.25em 0.25em 0 0.25em;
 }
 
+.cone:hover { cursor: pointer; }
+
 @media only screen and (max-width: 600px) {
     .cone { height: 35px; width: 35px; }
 }
 
-@media only screen and (max-width: 400px) {
+@media only screen and (max-width: 500px) {
+    #coneContainer { min-height: 2.5vh; }
     .cone { height: 25px; width: 25px; }
+}
+
+@media only screen and (max-height: 800px) {
+    #coneContainer {
+        position: relative;
+        left: -50px; 
+    }
 }
