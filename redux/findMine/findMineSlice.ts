@@ -37,7 +37,9 @@ interface findMineSliceState {
     COIN_HOVER_STRAIN: feedSelectedStrainINTERFACE;
     SHOW_INPUT: boolean;
     CURRENT_USER_REVIEWS: minesINTERFACE[];
-    FEED_SEARCH_TERM: '';
+    FEED_SEARCH_TERM: string;
+
+    USER_ICON_SAVE_ERROR: boolean;
 }
 
 const initialState: findMineSliceState = {
@@ -72,6 +74,8 @@ const initialState: findMineSliceState = {
 
     COIN_HOVER_STRAIN: {id: 0, strain: '', like: false },
     SHOW_INPUT: false,
+
+    USER_ICON_SAVE_ERROR: false,
   };
 
                                     
@@ -112,6 +116,7 @@ const findMineSlice = createSlice({
     SET_COIN_HOVER_STRAIN: (state, action) => { state.COIN_HOVER_STRAIN = action.payload },
     
     TOGGLE_SHOW_INPUT: (state) => { state.SHOW_INPUT = !state.SHOW_INPUT },    
+    TOGGLE_USER_ICON_SAVE_ERROR: (state) => { state.USER_ICON_SAVE_ERROR = !state.USER_ICON_SAVE_ERROR },    
   },
 });
 
@@ -123,10 +128,11 @@ export const
   SET_NO_FEED_NO_STRAIN_MSGS, SET_COIN_HOVER_STRAIN, SET_FEED_SELECTED_USER, SET_FEED_SELECTED_USER_REVIEWS,
   TOGGLE_NO_FEED_SHOW_MINE, SET_MINE_TITLE_INPUT_VAL, SET_MINE_REVIEW_INPUT_VAL, TOGGLE_TRIGGER_MINE_EFFECT, TOGGLE_SHOW_ICONS, SET_CURRENT_USER_REVIEWS, SET_FEED_SEARCH_TERM,
 
-  TOGGLE_READY_TO_EDIT, 
-  
+  TOGGLE_READY_TO_EDIT,   
   // FEED_CONTAINER
   TOGGLE_SHOW_INPUT,
+
+  TOGGLE_USER_ICON_SAVE_ERROR
 
 } = findMineSlice.actions;
 
