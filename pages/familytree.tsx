@@ -66,8 +66,8 @@ export default function FamilyTree() {
 
       {
         PLAYING
-        // ? <DynamicFamilyTree gameType={LUCKY_PULL_PLAYING ? "luckypull" : "pairents"} />
-        ? <KingQueenPlaying/>
+        ? <DynamicFamilyTree gameType={LUCKY_PULL_PLAYING ? "luckypull" : "pairents"} />
+        // ? <KingQueenPlaying/>
         : <GameIntro/>
       }
       {/* <GameIntro/> */}
