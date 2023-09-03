@@ -5,6 +5,9 @@ import passport from "utility/passport"
 import { JWTsecretKeyMaker } from 'utility/utilityValues'
 import { usernameStrainidINTERFACE, userLoginINTERFACE, updateUserIconINTERFACE } from 'utility/InterfaceTypes'
 
+import fs from 'fs';
+import path from 'path';
+
 // import { createClient } from 'redis';
 
 
@@ -294,7 +297,20 @@ export const resolvers = {
         // could return the cache data here but returning the DB data since we already used prisma. too late to spare DB & ORM the need to perform. 
         return allStrains
       }
-    },    
+    }, 
+    // allStrainsNoRedisGET: [Strains]!
+    allStrainsNoRedisGET: async () => {
+        try {
+          const filePath = path.join(process.cwd(), 'utility/strainJSON.json'); // Construct the correct absolute path
+          const rawData = fs.readFileSync(filePath, 'utf-8');
+          const data = JSON.parse(rawData);
+          const strains = data.strains
+          return strains
+        } catch (error) {
+          console.error('Error reading JSON file:', error);
+          return
+        }
+    },
     allMinersGET: async () => {
       await updateAllUsersRedis()
       let checkMinersRedis = await minersRedisCheck()
@@ -715,9 +731,10 @@ export const resolvers = {
           })
         }
 
-      
-
-
-
     } // mutation bracket end
 }
+
+process.on('SIGINT', async () => {
+  await redis.quit();
+  process.exit(0);
+});
