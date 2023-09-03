@@ -3,7 +3,7 @@ import {useState} from "react"
 import {RootState} from "redux/store/rootReducer"
 import {useSelector, useDispatch} from "react-redux"
 import axios from 'axios'
-import { TOGGLE_HOVER_EVEN_ODD } from "redux/main/mainSlice"
+import { TOGGLE_HOVER_EVEN_ODD, TOGGLE_SELECTED_STRAIN_SAVE_ERROR } from "redux/main/mainSlice"
 
 // components and styles
 import Container from "react-bootstrap/Container"
@@ -19,12 +19,14 @@ export default function SaveMines() {
 function RENDER () {
     const dispatch = useDispatch()
 
-    const { pick } = useImage()
+    const { pick, caution } = useImage()
     const [hoverShow, setHoverShow] = useState(false)    
 
     const VIEW_SELECTED_STRAIN = useSelector( (state:RootState) => state.main.VIEW_SELECTED_STRAIN)
     const HOVER_EVEN_ODD = useSelector( (state:RootState) => state.main.HOVER_EVEN_ODD)
     const CURRENT_USER = useSelector( (state:RootState) => state.main.CURRENT_USER)
+    const SELECTED_STRAIN_SAVE_ERROR = useSelector( (state:RootState) => state.main.SELECTED_STRAIN_SAVE_ERROR)
+    
 
     
     const saveStrainToMinersOnStrains = () => {
@@ -40,9 +42,10 @@ function RENDER () {
         console.log('currentuser', CURRENT_USER)
         console.log('view selected strain', VIEW_SELECTED_STRAIN)
         axios.post('/api/graphql', { 
+            // mutation { addMinersOnStrains(username: "${CURRENT_USER.username}", strain:"chase") {
             query: 
             `
-            mutation { addMinersOnStrains(username: "${CURRENT_USER.username}", strain:"${VIEW_SELECTED_STRAIN.strainValues.strain}") {
+                mutation { addMinersOnStrains(username: "${CURRENT_USER.username}", strain:"${VIEW_SELECTED_STRAIN.strainValues.strain}") {
                 minersId,
                 strainsid
                   } 
@@ -50,6 +53,14 @@ function RENDER () {
             `
          }).then( (savedStrain) => {
             console.log('savedStrain client!', savedStrain)
+            if (savedStrain.data.errors) {
+                if (savedStrain.data.errors[0]) {
+                    console.log("weve found an error!");
+                    if (SELECTED_STRAIN_SAVE_ERROR === false) {
+                        dispatch(TOGGLE_SELECTED_STRAIN_SAVE_ERROR())
+                    }
+                }
+            }
          }).catch( (error) => {
             console.log('error', error)
          })
@@ -59,6 +70,9 @@ function RENDER () {
         const containerLeave = () => {
             setHoverShow(false)
             dispatch(TOGGLE_HOVER_EVEN_ODD())
+            if (SELECTED_STRAIN_SAVE_ERROR === true) {
+                dispatch(TOGGLE_SELECTED_STRAIN_SAVE_ERROR())
+            }
         }
 
     return (
@@ -69,7 +83,7 @@ function RENDER () {
         {
             hoverShow
                 ?
-     <img onClick={saveStrainToMinersOnStrains} style={{ cursor: 'pointer' }} id={styles.pick} src={pick}/> 
+     <img onClick={saveStrainToMinersOnStrains} style={{ cursor: 'pointer' }} id={styles.pick} src={SELECTED_STRAIN_SAVE_ERROR ? caution : pick}/> 
                 :
     <pre 
         onMouseEnter={() => setHoverShow(true)}
