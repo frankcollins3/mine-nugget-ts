@@ -15,6 +15,7 @@ import Container from "react-bootstrap/Container"
 import FamilyTreeFooter from "components/Footer/FamilyTreeFooter/FamilyTreeFooter"
 import GameIntro from "components/FamilyTreeComponents/GameIntro"
 import KingQueenPlaying from "components/FamilyTreeComponents/KingQueenPlaying"
+import DynamicFamilyTree from "components/FamilyTreeComponents/DynamicFamilyTree"
 
 // utils
 import {useImage} from "Contexts/Img"
@@ -35,6 +36,8 @@ export default function FamilyTree() {
   const CURRENT_PAGE = useSelector( (state:RootState) => state.main.CURRENT_PAGE)
   const PLAYING_GUESS_WRONG_3 = useSelector( (state:RootState) => state.familyTree.PLAYING_GUESS_WRONG_3)
   const PLAYING = useSelector( (state:RootState) => state.familyTree.PLAYING)
+  const BONUS_GAME = useSelector( (state:RootState) => state.familyTree.BONUS_GAME)
+  const LUCKY_PULL_PLAYING = useSelector( (state:RootState) => state.familyTree.LUCKY_PULL_PLAYING)
   
 
   const { familyTreeStrainsPROMISE, setallstrainsPROMISE } = usePromise()
@@ -63,7 +66,8 @@ export default function FamilyTree() {
 
       {
         PLAYING
-        ? <KingQueenPlaying/>
+        ? <DynamicFamilyTree gameType={LUCKY_PULL_PLAYING ? "luckypull" : "pairents"} />
+        // ? <KingQueenPlaying/>
         : <GameIntro/>
       }
       {/* <GameIntro/> */}
