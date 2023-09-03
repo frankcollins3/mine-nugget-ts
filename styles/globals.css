@@ -612,3 +612,9 @@ body {
     top: 5px
   }
 }
+
+
+@media only screen and (max-width: 400px) {
+  .Main-Find-Mine { position: relative; top: -3em; }
+   
+}
