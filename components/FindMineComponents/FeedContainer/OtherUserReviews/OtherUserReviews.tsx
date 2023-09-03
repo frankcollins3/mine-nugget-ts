@@ -30,7 +30,7 @@ function RENDER() {
 
     return (
         <Container onClick={test} id={styles.cont}>
-        <img id={styles.img} src={mine}/>
+        <img style={{ cursor: 'none', }} id={styles.img} src={mine}/>
             {
                 FEED_SELECTED_USER_REVIEWS.title === '' && COIN_HOVER_STRAIN.strain !== ''
                             ?
