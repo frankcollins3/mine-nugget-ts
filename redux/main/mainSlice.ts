@@ -15,7 +15,9 @@ interface MainSliceState {
   ALL_USERS: any[];
   ALL_USERNAMES: any[];
   ALL_EMAILS: any[];
-  CURRENT_USER: {id: number, username: string, email: string, password: string, age: number, icon: string|undefined, wins: number|undefined}
+  CURRENT_USER: {id: number, username: string, email: string, password: string, age: number, icon: string|undefined, wins: number|undefined};
+
+  HOVER_EVEN_ODD: boolean;
   // CURRENT_USER: minersINTERFACE  no ID moving on since I already used {Strain} with generics and Typescript OMIT
 }
 
@@ -32,7 +34,8 @@ const initialState: MainSliceState = {
   ALL_USERS: [],
   ALL_USERNAMES: [],
   ALL_EMAILS: [],
-  CURRENT_USER: {id: 0, username: '', email: '', password: '', age: 0, icon: '', wins: 0}
+  CURRENT_USER: {id: 0, username: '', email: '', password: '', age: 0, icon: '', wins: 0},
+  HOVER_EVEN_ODD: false
 };
 
                                         
@@ -54,7 +57,8 @@ const mainSlice = createSlice({
     SET_ALL_USERS: (state, action) => { state.ALL_USERS = action.payload; },
     SET_ALL_USERNAMES: (state, action) => { state.ALL_USERNAMES = action.payload; },
     SET_ALL_EMAILS: (state, action) => { state.ALL_EMAILS = action.payload; },
-    SET_CURRENT_USER: (state, action) => { state.CURRENT_USER = action.payload }
+    SET_CURRENT_USER: (state, action) => { state.CURRENT_USER = action.payload },
+    TOGGLE_HOVER_EVEN_ODD: (state) => { state.HOVER_EVEN_ODD = !state.HOVER_EVEN_ODD }
     
   },
 });
@@ -64,7 +68,7 @@ export const
   SET_VIEW_SELECTED_STRAIN, SET_VIEW_SELECTED_STRAIN_INDEX, SET_VIEW_SELECTED_STRAIN_KEY, SET_VIEW_SELECTED_STRAIN_VALUE, SET_ALL_STRAINS, TOGGLE_SELECTED_STRAIN_SAVE_OR_NOT,
   SET_CURRENT_PAGE, TOGGLE_MINE_CANVAS_TOUCH, 
 
-  SET_ALL_USERS, SET_ALL_USERNAMES, SET_ALL_EMAILS, SET_CURRENT_USER,
+  SET_ALL_USERS, SET_ALL_USERNAMES, SET_ALL_EMAILS, SET_CURRENT_USER, TOGGLE_HOVER_EVEN_ODD
 } = mainSlice.actions;
 
 export default mainSlice.reducer;
