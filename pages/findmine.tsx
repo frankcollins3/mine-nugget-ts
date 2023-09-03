@@ -8,6 +8,7 @@ import FindMineFooter from "components/Footer/FindMineFooter"
 import ConeContainer from "components/FindMineComponents/ConeContainer"
 import NoFeedContainer from "components/FindMineComponents/NoFeedContainer"
 import FeedContainer from "components/FindMineComponents/FeedContainer"
+import LoadingPickaxe from "components/LoadingPickaxe"
 
 // @reduxjs/toolkit
 import {RootState} from "redux/store/rootReducer"
@@ -140,6 +141,7 @@ export default function FindMine(props: any) {
                 {/* tampering with deployment */}
             {/* <img id="vest" style={{ cursor: 'pointer', height: '200px', width: '200px' }} className="hover" onClick={hoverForMyUserStrains} src={vest}/> */}
             {/* <Container onMouseEnter={contHovered ? nothing : hoverForMyUserStrains}>  */}
+            <LoadingPickaxe/>
             </Container>            
     }
         </>
@@ -161,16 +163,6 @@ function RENDER() {
     )
 }
 
-// export async function getServerSideProps() {
-    // Promise.all([setCurrentUserStrainsPROMISE(CURRENT_USER.username), setAllUserStrainsPROMISE()])                              
-
-    // axios.post('/api/graphql', { query: `${allMinersOnStrainsQuery}`})
-    //     .then( (allUserStrains:any) => {
-    //         allUserStrains = allUserStrains.data.data.allMinersOnStrains
-            // dispatch(SET_ALL_USER_STRAINS(allUserStrains))     
-        // })        
-
-// }
 
 export async function getServerSideProps(context:any) {
     
