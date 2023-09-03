@@ -52,9 +52,9 @@ function RENDER () {
     return (
         <Container id={styles.frameCont}>
             <Container id={styles.photoFrame}>
-            <pre onMouseEnter={() => clickLeftPhotoArrayDecrement()} style={{ color: 'papayawhip', fontSize: "40px", cursor: 'none', fontWeight: 'bolder' }}> {left} </pre>        
+            <pre onClick={() => clickLeftPhotoArrayDecrement()} style={{ color: 'papayawhip', fontSize: "40px", cursor: 'none', fontWeight: 'bolder' }}> {left} </pre>        
                 <img id={styles.photoImg} src={PHOTOS_ARRAY[OUTER_PHOTO_INDEX][NESTED_PHOTO_INDEX]}/>
-            <pre onMouseEnter={() => clickRightPhotoArrayIncrement()} style={{ color: 'papayawhip', fontSize: "40px", cursor: 'none', fontWeight: 'bolder' }}> {right} </pre>
+            <pre onClick={() => clickRightPhotoArrayIncrement()} style={{ color: 'papayawhip', fontSize: "40px", cursor: 'none', fontWeight: 'bolder' }}> {right} </pre>
             </Container>
             {/* <button style={{ height: '50px', width: '50px', backgroundColor: 'hotpink' }} onClick={test}></button> */}
         </Container>
