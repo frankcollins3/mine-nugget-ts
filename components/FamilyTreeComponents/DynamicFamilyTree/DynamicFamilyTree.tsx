@@ -28,7 +28,7 @@
 
   function RENDER(props:any) {
 
-    console.log('gameType in the render', props)
+    // console.log('gameType in the render', props)
 
     let gameType = props.gameType
     
@@ -64,6 +64,7 @@
     const GAME_TEXT = useSelector( (state:RootState) => state.familyTree.GAME_TEXT)
     const GAME_LIVES = useSelector( (state:RootState) => state.familyTree.GAME_LIVES)
     const GAME_OVER = useSelector( (state:RootState) => state.familyTree.GAME_OVER)
+    const LUCKY_PULL_PLAYING = useSelector( (state:RootState) => state.familyTree.LUCKY_PULL_PLAYING)
     
     const { king, queen, kingspades, queenspades, joker, upsidedowncard, kingqueensplit, goldcursor2, trophy, luckypull, luckypulldice, luckypullroulette, coin } = useImage()  
     const { guessCardPROMISE, familyTreeStrainsPROMISE, resetCardGamePROMISE } = usePromise()
@@ -130,9 +131,15 @@
 
     
         return (
-          <Container style={{ cursor: `url('${goldcursor2}'), auto`}} id={styles.cont}>
+          <Container style={{ cursor: `url('${goldcursor2}'), auto` }} id={styles.cont}>
             {/*     Dynamic UI -----> if  GAME_PLAYED === "pairents" || "Lucky Pull"    */}
-            <h1 id={styles.gameTitle}> Pairents </h1>
+
+            {
+              LUCKY_PULL_PLAYING
+              ? <h1 id={styles.gameTitle}> LuckyPull </h1>
+              : <h1 id={styles.gameTitle}> Pairents </h1> 
+            }
+            {/* <h1 id={styles.gameTitle}> Pairents </h1> */}
 
           {/* <img className="hover" src={goldenticket}/>     */}
           <Container id={styles.kingQueenRowCont}>
