@@ -9,6 +9,7 @@ import ConeContainer from "components/FindMineComponents/ConeContainer"
 import NoFeedContainer from "components/FindMineComponents/NoFeedContainer"
 import FeedContainer from "components/FindMineComponents/FeedContainer"
 import LoadingPickaxe from "components/LoadingPickaxe"
+import LoadingCoin from "components/LoadingCoin/LoadingCoin"
 
 // @reduxjs/toolkit
 import {RootState} from "redux/store/rootReducer"
@@ -41,29 +42,17 @@ export default function FindMine(props: any) {
     const SHOW_FEED = useSelector( (state:RootState) => state.findMine.SHOW_FEED)
     const DONT_RUN_USER_STRAINS_EFFECT_PROMISE = useSelector( (state:RootState) => state.findMine.DONT_RUN_USER_STRAINS_EFFECT_PROMISE)
     
-    useEffect( () => {
-        // tampering with deployment! ! ! 
-        // setTimeout( () => {
-        //     console.log("timeout click function firing!")
-        //     $('#vest').click()
-        // }, 2000)
-        // tampering with deployment! ! ! 
-
+    useEffect( () => {        
         dispatch(SET_CURRENT_PAGE("/findmine"))
             cookieFunc()
-            .then(async(currentuser) => {
-                console.log('currentuser then block', currentuser)
-                console.log('currentuser', currentuser)
+            .then(async(currentuser) => {                
                 setCurrentUserStrainsPROMISE(currentuser.username)
-            // setCurrentUserStrainsPROMISE(CURRENT_USER.username)
                 dispatch(SET_CURRENT_USER({ id: currentuser.id, age: currentuser.age, email: currentuser.email, icon: currentuser.icon, password: currentuser.password, username: currentuser.username, wins: currentuser.wins}))
-
             })
     }, [])
 
     useEffect( () => {
         console.log("TOGGLE USER STRAINS EFFECT!!!!!")        
-        // Promise.all([setCurrentUserStrainsPROMISE(CURRENT_USER.username), setAllUserStrainsPROMISE()])              
         if (DONT_RUN_USER_STRAINS_EFFECT_PROMISE) {
             return 
         } else {
@@ -76,9 +65,7 @@ export default function FindMine(props: any) {
     const {ilink, welink, pickaxe, goldcursor2, vest} = useImage()
 
 
-    const test = async () => {
-        // Promise.all([setCurrentUserStrainsPROMISE(CURRENT_USER.username), setAllUserStrainsPROMISE()])                        
-
+    const test = async () => {                                
         const allMinersOnStrainsFetch = await fetch('/api/graphql', {
             method: 'POST',
             headers: {
@@ -89,24 +76,11 @@ export default function FindMine(props: any) {
       
           if (!allMinersOnStrainsFetch) {
             throw new Error('Failed to fetch data from the GraphQL endpoint');
-          }
-      
+          }      
           const data = await allMinersOnStrainsFetch.json();
           const allUserStrains = data.data.allMinersOnStrains;
     }
     
-    const stateTest = () => {
-        console.log(CURRENT_USER_STRAINS)
-        console.log(ALL_USER_STRAINS)
-    }
-
-    const hoverForMyUserStrains = () => {
-        console.log("oh its false here we go!")
-        setCurrentUserStrainsPROMISE(CURRENT_USER.username)
-        setContHovered(true)
-    }
-
-
     return (
         <>
 
@@ -137,11 +111,11 @@ export default function FindMine(props: any) {
     </Container>
             </>
              :
-            <Container > 
-                {/* tampering with deployment */}
-            {/* <img id="vest" style={{ cursor: 'pointer', height: '200px', width: '200px' }} className="hover" onClick={hoverForMyUserStrains} src={vest}/> */}
-            {/* <Container onMouseEnter={contHovered ? nothing : hoverForMyUserStrains}>  */}
-            <LoadingPickaxe/>
+            <Container style={{ perspective: '200px'}}> 
+            
+            {/* gives the user something to look at while awaiting the main user data for both components {userProfile} {userSeesOtherUserData} */}
+            <LoadingCoin/>
+            
             </Container>            
     }
         </>
@@ -160,7 +134,7 @@ function RENDER() {
     <pre> test </pre>
     <pre> test </pre>
         </>    
-    )
+    ) 
 }
 
 
