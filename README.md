@@ -1,51 +1,45 @@
-Gold to be Mine. Mine to Be Gold.
-( GOING DOWN THE MOUNTAIN TO REDO THIS APP LIKE FILL_CONT with <header> {RenderApp()} </footer> design and GraphQL, redux toolkit instead of just redux, new table format seen at bottom:  }
+# Mine Nugget 🔑
+## A fullstack cannabis strain API app themed as a Gold Mine.
+Dig through the app with this link 👉 mine-nugget-ts.vercel.app
+Mine Nugget is a Single Page Application with: NextJS, TS, GraphQL, @redux/toolkit, Oauth2.0, JWT, and redis-console-cloud caching.
 
-// coming back to restructure the format: <header> {renderApp()} </footer> as is shown in WAPP/water/app/fill_cont (https://github.com/frankcollins3/fill_container)
-// add GraphQL schema && redux and Promises 
-// add componenent structure. mine is: /components && /styles -----------> WAPP: /component:  /Component.tsx /component.css|scss  index.js (import Component.tsx) auto loads index.js when imported 
+# User Stories with Visuals
+// retake signupcapptcha...
 
-// npm i puppeteer:
-1) want this app to dig for data through the web and save strain data from such sites as (leafly.com and friends) Reach out via email or text (possibly Twilio) and ask admin if they want to add to db
-2) if data submitted isn't acceptable to submit to postgres DB & puppeteer is found faulty, possible edge case: admin will be able to SMS/email back (through i.e. Twilio) acceptable object data for psql
+// retake logincapptcha...
 
+#### Remember Me() -> an effect that checks for JWT/cookie-userID autofills <MirrorForm> & allows easy login without manually entered credentials
+https://github.com/frankcollins3/mine-nugget-ts/assets/73137934/a3bacdec-f381-4fbe-8822-e8c7fbb40fbe
 
-// nitpickaxe
-the reminder page that allows user specification for the application to dig at that user to confirm messages. 
+#### /strain.tsx -> Consumes array of straindata.JSON and iterates through obj. endpoints with redux state. Allows user to save associative strain data
+https://github.com/frankcollins3/mine-nugget-ts/assets/73137934/d1baa30e-6c41-45ae-b94d-f71fc5871c92
 
-this app can probably use Context instead of grabbing data from github or having fs.json() as a backup to that github data. Every defaultType value would be an object
-and instead of a parent container with data spit out from postgres Db there can be a reusable dynamic component that renders its text state (object endpoint from above ^)
-Every single component would do the exact same thing separated only by the variable name that governs a specific strains corresponding object endpoint data.  
-// used context 2nd time now and start to feel natural I could be wrong that this could replace need for data base.
+#### Pairents / Luckypull -> Data based guessing game. Data that is kept from /strain.tsx is provided on /familyTree.tsx)
+`//  /strain.tsx allows user to see all endpoints besides strain.parents; game is created by providing strain.parents & allowing guess at strain.name`
+https://github.com/frankcollins3/mine-nugget-ts/assets/73137934/6f536834-fdbd-4dc8-ab4f-16acfe1b8f98
 
-^ ^ it makes sense too with associative data:
-dynamic components will loop over every UserId table and spit out a component with corresponding text state to the `<ObjectContext>` userId === userStrains.Id
+#### userProfile & simple social media "feed" where user can see other users' data, liked the strains they saved, whether they liked strain or not, and reviews.
+https://github.com/frankcollins3/mine-nugget-ts/assets/73137934/6cf03214-54f7-4832-9edf-af7d7642ddd5
+`this video also shows the bonus /trophyRoom component that is earned after winning the /familyTree.tsx "Pairents" card game 3x`
 
+#### User Profile Icon Selection: earned by beating the guessing game "Pairents" 1x. User can search or iterate by click through image array served by context
+https://github.com/frankcollins3/mine-nugget-ts/assets/73137934/2c2f5807-d3ee-45a0-9ea0-e88603b57999
 
-wouldn't replace 100% of psql
-but Context could replace need for a strains table.
-Context: string specified objects exported w/ defined JSON
+#### See all app images: at the /Trophyroom.tsx page, earned by beating "Pairents" guess game 3x 
+// retake all app images
 
-if (!data) {
-<loading/>
-}
+//
 
-if data Context.loop
+#### Technologies & Frameworks
 
-Composition Components could alleviate:
-relationship to strains.ID
-
-just be a userStrains table with userId
-match userId -> userStrainsId
-
-old way with postgres tables: user, strains, UsersOnStrains
-connected to API data from github with fs.json as a backup
+## Code Snippets
 
 
-new way tables: users userStrains no need for strains
-with source of truth as context and composition components doing all of the reusability handling easy as pie
 
-<StrainContext>
-  {...previousValues}
-  + users: [] // user.id stored for comparison against users table which context wont eliminate unlike table.strains 
-  
+
+
+
+
+
+
+
