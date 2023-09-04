@@ -45,7 +45,7 @@ import {
 
 // utils
 import { strainsINTERFACE, minersINTERFACE, minersOnStrainsINTERFACE } from "utility/InterfaceTypes";
-import { getCookie, nonGenericKeysAndValuesFromStrain, findStrainFromAllStrains, randomValueFromArray, shuffleArray, shuffleArrayOfObjects } from "utility/utilityValues"
+import { getCookie, nonGenericKeysAndValuesFromStrain, findStrainFromAllStrains, randomValueFromArray, shuffleArray, shuffleArrayOfObjects, clearCookie } from "utility/utilityValues"
 
 // queries
 import { 
@@ -60,10 +60,12 @@ type PromiseTypes = {
 
     iPROMISEcookies: () => any;
     cookieFunc: () => any;
+    logoutPROMISE: () => any;
     setallstrainsPROMISE: () => any;
     setallminersPROMISE: () => any;
     deleteEndpointsPROMISE: (strain:any) => any;
     strainIndexIncrementPROMISE: () => any;
+
 
     strainClickPROMISE: (strain:string) => any;
     
@@ -109,6 +111,7 @@ type PromiseTypes = {
 const PromiseDefaults = {
     iPROMISEcookies: () => {},
     cookieFunc: () => {},
+    logoutPROMISE: () => {},
     setallstrainsPROMISE: () => {},
     setallminersPROMISE: () => {},
     deleteEndpointsPROMISE: (strain:any) => {},
@@ -285,6 +288,13 @@ export function PromiseProvider({children}:Props) {
             } 
         } else { return }
       }
+
+    const logoutPROMISE = () => {
+        return new Promise( (resolve:any, reject:any) => {
+            clearCookie('id')
+            clearCookie('token')
+        })
+    }
 
     function setallstrainsPROMISE() {
         return new Promise( (resolve:any, reject:any) => {
@@ -1010,6 +1020,7 @@ const rememberMeCookiePROMISE = () => {
         const value = {
             iPROMISEcookies,
             cookieFunc,
+            logoutPROMISE,
             setallstrainsPROMISE,
             setallminersPROMISE,
             deleteEndpointsPROMISE,
