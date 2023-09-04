@@ -47,6 +47,7 @@ type imgContextType = {
     noCursor: string;
     goldArrowLeft: string;
     goldArrowRight: string;
+    logout: string;
         
     // findmine playing gcard game
     king: string;
@@ -139,7 +140,8 @@ const imgDefaults: imgContextType = {
     yesCursor: `img/yesCursor.png`,
     noCursor: `img/noCursor.png`,
     goldArrowLeft: `img/goldArrowLeft.png`,
-    goldArrowRight: `img/goldArrowRIght.png`,
+    goldArrowRight: `img/goldArrowRight.png`,
+    logout: 'img/logout.png',
     
     // findmine playing gcard game
     king: `img/king.png`,
@@ -242,6 +244,7 @@ export function ImgProvider({ children }: Props) {
     const [noCursor, setnoCursor] = useState<string>(`img/noCursor.png`);
     const [goldArrowLeft, setgoldArrowLeft] = useState<string>(`img/goldArrowLeft.png`);
     const [goldArrowRight, setgoldArrowRight] = useState<string>(`img/goldArrowRight.png`);
+    const [logout, setlogout] = useState<string>(`img/logout.png`);
 
     // findmine playing card game 
     const [king, setking] = useState<string>(`img/king.png`);
@@ -330,6 +333,7 @@ export function ImgProvider({ children }: Props) {
         noCursor,
         goldArrowLeft,
         goldArrowRight,
+        logout,
 
         // familytree playing card game
         king,
