@@ -15,13 +15,17 @@ function RENDER({userData}) {
     
 
     return (        
-            userData &&
-            userData.map( (item, index) => {
-                // CURRENT_USER.username !== userData[index].username && localStateHide === false
 
+            <Container id={styles.cont}>
+            {
+                userData &&
+            userData.map( (item, index) => {
+                // CURRENT_USER.username !== userData[index].username && localStateHide === false                
                 return (                
                     <PanelUserUI index={index} key={index} userData={userData}/>
-                )
-            })        
+                    )
+                })        
+            }
+            </Container>
     )
 }
