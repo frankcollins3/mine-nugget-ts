@@ -613,6 +613,59 @@ body {
   }
 }
 
+.ZindexCoin {
+
+  animation-duration: 1s;
+  animation-name: zIndexLoad;
+  animation-iteration-count: 1;
+}
+
+@keyframes zIndexLoad {
+  0% {
+    transform: translate3d(0, 0, 30px);
+  }
+  10% {
+    transform: translate3d(0, 0, 60px);
+    /* transform: translateZ(20); */
+  }
+  20% {
+    transform: translate3d(0, 0, 90px);
+    /* transform: translateZ(40); */
+  }
+  30% {
+    transform: translate3d(0, 0, 120px);
+    /* transform: translateZ(60); */
+  }
+  40% {
+    transform: translate3d(0, 0, 150px);
+    /* transform: translateZ(80); */
+  }
+  50% {
+    transform: translate3d(0, 0, 180px);
+    /* transform: translateZ(100); */
+  }
+  60% {
+    transform: translate3d(0, 0, 210px);
+    /* transform: translateZ(120); */
+  }
+  70% {
+    transform: translate3d(0, 0, 240px);
+    /* transform: translateZ(140); */
+  }
+  80% {
+    transform: translate3d(0, 0, 270px);
+    /* transform: translateZ(160); */
+  }
+  90% {
+    transform: translate3d(0, 0, 300px);
+    /* transform: translateZ(180); */
+  }
+  100% {
+    transform: translate3d(0, 0, 330px);
+    /* transform: translateZ(200); */
+  }
+}
+
 
 @media only screen and (max-width: 400px) {
   .Main-Find-Mine { position: relative; top: -3em; }
