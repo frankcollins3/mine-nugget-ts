@@ -62,6 +62,7 @@ function RENDER() {
 
     useEffect( () => {
         if (GAME_OVER === 'win') {
+            console.log("hey weve got a win in the navbar");
             cookieFunc()
             .then( (currentuser) => {
                 dispatch(SET_CURRENT_USER(currentuser))
@@ -150,7 +151,7 @@ function RENDER() {
             </Container> 
             
             {/* { CURRENT_PAGE === "/" || CURRENT_PAGE === "/strain" && <img style={{ cursor: 'pointer' }} className={styles.img} id={styles.mine} src={mine}/> } */}
-            { CURRENT_PAGE === "/familytree" && <img onClick={leftIconClick} style={{ cursor: 'pointer' }} className={styles.img} id={styles.mine} src={CURRENT_USER.wins && CURRENT_USER.wins > 2 ? trophy : navbardice}/> }
+            { CURRENT_PAGE === "/familytree" && <img onClick={leftIconClick} style={{ cursor: 'pointer' }} className={styles.img} id={styles.mine} src={CURRENT_USER && CURRENT_USER.wins && CURRENT_USER.wins > 2 ? trophy : navbardice}/> }
             { CURRENT_PAGE === "/findmine" && <img id="iconVest" onClick={findMineClickForIcons} style={{ cursor: 'pointer', borderRadius: '0%' }} className={styles.img} src={CURRENT_USER_STRAINS.length > 1 ? vest : signUpSigns}/> }
 
             </Container>
