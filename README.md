@@ -35,6 +35,10 @@ https://github.com/frankcollins3/mine-nugget-ts/assets/73137934/2c2f5807-d3ee-45
 ## Code Snippets
 
 
+#### updates from the original app:
+denormalized strains & effects tables:
+1: by using the effects columns in the strains table. 
+2: This removes the effects table from existence and makes the effects columns easier to access with simpler queries.
 
 
 
