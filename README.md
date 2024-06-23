@@ -1,3 +1,8 @@
+// redesign & redeploy:
+possibly strains get initialized in the beginning by the mine cart driving into the coins. 
+// edge case for <FamilyTree>: pre-established guessing game conditions for when data doesn't load. 
+* * * * * * * * * * * * * * * * * * *
+
 # Mine Nugget 🔑
 ## A fullstack cannabis strain API app themed as a Gold Mine.
 Dig through the app with this link 👉 mine-nugget-ts.vercel.app
