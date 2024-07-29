@@ -1,6 +1,9 @@
 // redesign & redeploy:
 possibly strains get initialized in the beginning by the mine cart driving into the coins. 
 // edge case for <FamilyTree>: pre-established guessing game conditions for when data doesn't load. 
+
+// almost done building web app for social platform. checking redis because "free db might get deleted"
+FamilyTree: add "strain or estrained" // intentional typo  
 * * * * * * * * * * * * * * * * * * *
 
 # Mine Nugget 🔑
